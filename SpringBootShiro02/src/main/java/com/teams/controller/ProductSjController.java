@@ -8,10 +8,7 @@ public class ProductSjController {
   public  void qifei() {
 	System.out.println("起飞");
 }
-
-	
-	
-	
+  
 	public void lidong() {
 		System.out.println("哈哈哈");
 	}
