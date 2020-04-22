@@ -16,4 +16,9 @@ public class ProductSjController {
 		System.out.println("哈哈哈");
 	}
 
+	public void lidong2() {
+		System.out.println("哈哈哈2");
+	}
+	
+	
 }
