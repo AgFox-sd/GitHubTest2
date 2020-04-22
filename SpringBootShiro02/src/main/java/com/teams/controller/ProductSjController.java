@@ -8,5 +8,5 @@ import com.teams.pojo.D_file;
 @Controller
 public class ProductSjController {
 	@Autowired
-ProductSjService servic;
+    ProductSjService service;
 }
