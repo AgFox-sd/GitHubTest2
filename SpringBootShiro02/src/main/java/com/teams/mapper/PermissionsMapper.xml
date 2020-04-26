@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.teams.mapper.PermissionsMapper">
+  <select id="selectPermission" resultType="permission">
+   SELECT p.*
+		FROM user u LEFT JOIN user_role ur
+		ON u.id=ur.uid
+		LEFT JOIN  roles r
+		ON ur.rid=r.id
+		LEFT JOIN permissions_role pr
+		ON pr.rid=r.id
+		LEFT JOIN permissions p
+		ON p.id=pr.pid
+		WHERE username=#{username}
+  </select>
+  </mapper>

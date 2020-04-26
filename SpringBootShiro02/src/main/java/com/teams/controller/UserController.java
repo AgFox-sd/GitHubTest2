@@ -1,5 +1,9 @@
 package com.teams.controller;
 
+
+
+import javax.servlet.http.HttpSession;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -7,60 +11,41 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 
 
 @Controller
 public class UserController {
 
-	
-	
-	@RequestMapping("/add")
-	public String add() {
-		System.out.println("add...");
-		return "/user/add";
+	@RequestMapping("{page}")
+	public String Page(@PathVariable String page) {
+		return page;
 	}
 	
-	@RequestMapping("/update")
-	public String update() {
-		System.out.println("update...");
-		return "/user/update";
-	}
 	
-	@RequestMapping("/toLogin")
-	public String toLogin() {
-		System.out.println("login...");
-		return "/login";
-	}
 	
+	/*
+	 * 无权限者
+	 */
 	@RequestMapping("/noAuth")
 	public String noAuth() {
 		System.out.println("noAuth...");
 		return "/noAuth";
 	}
 	
-	/*
-	 * 测试thymeleaf
-	 */
-	@RequestMapping("/testThymeleaf")
-	public  String testThymeleaf(Model model) {
-		//存数据
-		model.addAttribute("name", "zp");
-		//返回index.html
-		return  "index";
+	@RequestMapping("/toLogin")
+	public String login() {
+		return "/login";
 	}
-	
 	
 	/*
 	 * 登录逻辑处理
 	 * */
 	
 	@RequestMapping("/Login")
-	public String login(String username,String password,Model model) {
-		
-		System.out.println("username="+username);
-		System.out.println("password="+password);
-		
+	public String login(String username,String password,Model model,HttpSession session) {	
 		//使用shiro编写认证操作
 		//1:获取Subject
 		Subject subject=SecurityUtils.getSubject();
@@ -70,10 +55,10 @@ public class UserController {
 		//3：执行登录方法
 		try {
 			subject.login(token);
-			
+			session.setAttribute("username",username);
 			//登录成功
 			//跳转到index.html
-			return "redirect:/testThymeleaf";
+			return "redirect:/index";
 		} catch (UnknownAccountException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();

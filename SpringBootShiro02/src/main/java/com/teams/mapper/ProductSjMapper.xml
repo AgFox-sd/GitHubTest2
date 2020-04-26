@@ -5,4 +5,24 @@
   
   <mapper namespace="com.teams.mapper.ProductSjMapper">
   
+  <!--查询审核通过的产品信息  -->
+  <select id="selectProduct" resultType="D_file">
+			SELECT a.product_id,a.product_name,a.list_price,
+			a.factory_name,a.amount_unit,a.delete_tag,
+			b.tname,c.pname FROM D_FILE a,TYPE b,pclass c
+			WHERE b.`tid`=a.`tid` 
+			AND c.`pid`=a.`pid`
+			AND CHECK_TAG=#{CHECK_TAG}
+  </select>
+  
+  <!--删除和恢复审核通过的产品信息 -->
+  <update id="updDelete_tag">
+            update d_file set delete_tag =#{delete_tag} 
+            where product_id =#{product_id}
+  </update>
+  
+  <!--永久删除审核通过的产品信息 -->
+  <delete id="yjDeleteProduct">
+            delete from d_file where product_id =#{product_id}
+  </delete>
   </mapper>

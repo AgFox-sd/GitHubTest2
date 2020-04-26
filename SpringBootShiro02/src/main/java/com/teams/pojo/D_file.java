@@ -1,13 +1,15 @@
 package com.teams.pojo;
 
 public class D_file {
-	  private int id;//序号
+	
+	 private int id;//序号
 	  private String product_id;//产品编号 
 	  private String product_name;//产品名称
 	  private String factory_name;//制造商
 	  private String product_nick;//产品简称
-	  private String type;//用途类型  '商品','物料'
-	  private String product_class;//档次级别 ‘高档’，‘抵挡’
+	  private int fid;//产品分类编号
+	  private int tid;//产品类型编号
+	  private int pid;//产品档案编号
 	  private String personal_unit;//计算单位
 	  private String personal_value;//计量值
 	  private String provider_group;//供应商集合
@@ -35,24 +37,35 @@ public class D_file {
 	  private String design_module_tag;//'物料组成标志 W001-0：未设计 W001-1：已设计',9
 	  private String design_procedure_tag;// '工序组成标志 G001-0：未设计 G001-1：已设计', 10
 	  private String design_cell_tag;// '库存分配标志 K001-0：未设计
+	  
+	  
+	  private String fname; //产品分类名称
+	  private String tname;//产品类型名称
+	  private String pname;//产品档次名称
+	  
+	  
+	  
 	public D_file() {
 		super();
 	}
-	public D_file(int id, String product_id, String product_name, String factory_name, String product_nick, String type,
-			String product_class, String personal_unit, String personal_value, String provider_group, String warranty,
+	
+	public D_file(int id, String product_id, String product_name, String factory_name, String product_nick, int fid,
+			int tid, int pid, String personal_unit, String personal_value, String provider_group, String warranty,
 			String twin_name, String twin_id, String lifecycle, double list_price, double cost_price,
 			double real_cost_price, String amount_unit, String product_describe, String responsible_person,
 			String register, String register_time, String checker, String check_time, String check_tag, String changer,
 			String change_time, String change_tag, String price_change_tag, String file_change_amount,
-			String delete_tag, String design_module_tag, String design_procedure_tag, String design_cell_tag) {
+			String delete_tag, String design_module_tag, String design_procedure_tag, String design_cell_tag,
+			String fname, String tname, String pname) {
 		super();
 		this.id = id;
 		this.product_id = product_id;
 		this.product_name = product_name;
 		this.factory_name = factory_name;
 		this.product_nick = product_nick;
-		this.type = type;
-		this.product_class = product_class;
+		this.fid = fid;
+		this.tid = tid;
+		this.pid = pid;
 		this.personal_unit = personal_unit;
 		this.personal_value = personal_value;
 		this.provider_group = provider_group;
@@ -80,7 +93,11 @@ public class D_file {
 		this.design_module_tag = design_module_tag;
 		this.design_procedure_tag = design_procedure_tag;
 		this.design_cell_tag = design_cell_tag;
+		this.fname = fname;
+		this.tname = tname;
+		this.pname = pname;
 	}
+
 	public int getId() {
 		return id;
 	}
@@ -111,17 +128,23 @@ public class D_file {
 	public void setProduct_nick(String product_nick) {
 		this.product_nick = product_nick;
 	}
-	public String getType() {
-		return type;
+	public int getFid() {
+		return fid;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setFid(int fid) {
+		this.fid = fid;
 	}
-	public String getProduct_class() {
-		return product_class;
+	public int getTid() {
+		return tid;
 	}
-	public void setProduct_class(String product_class) {
-		this.product_class = product_class;
+	public void setTid(int tid) {
+		this.tid = tid;
+	}
+	public int getPid() {
+		return pid;
+	}
+	public void setPid(int pid) {
+		this.pid = pid;
 	}
 	public String getPersonal_unit() {
 		return personal_unit;
@@ -285,5 +308,26 @@ public class D_file {
 	public void setDesign_cell_tag(String design_cell_tag) {
 		this.design_cell_tag = design_cell_tag;
 	}
+	public String getFname() {
+		return fname;
+	}
+	public void setFname(String fname) {
+		this.fname = fname;
+	}
+	public String getTname() {
+		return tname;
+	}
+	public void setTname(String tname) {
+		this.tname = tname;
+	}
+	public String getPname() {
+		return pname;
+	}
+	public void setPname(String pname) {
+		this.pname = pname;
+	}
+	
+	
+	  
 	  
 }
