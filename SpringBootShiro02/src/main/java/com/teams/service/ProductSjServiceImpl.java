@@ -174,4 +174,22 @@ public class ProductSjServiceImpl implements ProductSjService{
 		// TODO Auto-generated method stub
 		return mapper.selectpclass();
 	}
+	
+	@Override
+	public List<D_file> selecId() {
+		// TODO Auto-generated method stub
+		return mapper.selecId();
+	}
+
+	@Override
+	public List<D_module> selD_module() {
+		// TODO Auto-generated method stub
+		return mapper.selD_module();
+	}
+
+	@Override
+	public List<D_module_details> selD_MODULE_DETAILS(String design_id) {
+		// TODO Auto-generated method stub
+		return mapper.selD_MODULE_DETAILS(design_id);
+	}
 }

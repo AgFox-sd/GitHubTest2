@@ -212,4 +212,28 @@ public class ProductSjController {
 		return list;
 	}
 	
+	//产品档案查询
+	@RequestMapping("/selD_fileId")
+	@ResponseBody
+	public  List<D_file> selectId() {
+		List<D_file> list=service.selecId();
+		return list;
+	}
+	
+	//物料查询
+	@RequestMapping("/selD_module")
+	@ResponseBody
+	public  List<D_module> selD_module() {
+		List<D_module> list=service.selD_module();
+		System.out.println(list);
+		return list;
+	}
+	
+	//物料查询详情
+	@RequestMapping("/selD_module_details")
+	@ResponseBody
+	public  List<D_module_details> selD_MODULE_DETAILS(String design_id) {
+		List<D_module_details> list=service.selD_MODULE_DETAILS(design_id);
+		return list;
+	}
 }

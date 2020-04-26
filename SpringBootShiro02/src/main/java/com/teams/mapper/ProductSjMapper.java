@@ -69,4 +69,13 @@ public interface ProductSjMapper {
     
 	//增加产品
 	int addda(D_file file);
+	
+	//产品档案查询
+    List<D_file> selecId();
+    
+    //物料查询
+    List<D_module> selD_module();
+    
+    //物料查询详情
+  	List<D_module_details> selD_MODULE_DETAILS(String design_id);
 }

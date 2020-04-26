@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>文档列表 - 物料变更查询</title>
+<link rel="icon" href="favicon.ico" type="image/ico">
+<meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
+<meta name="description"
+	content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="author" content="yinqi">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/materialdesignicons.min.css" rel="stylesheet">
+<link href="css/style.min.css" rel="stylesheet">
+<script type="text/javascript" src="js/axios.min.js"></script>
+<script type="text/javascript" src="js/vue-2.4.0.js"></script>
+<script type="text/javascript">
+$(function(){
+	
+})
+</script>
+</head>
+
+<body>
+	<div id="app">
+		<div class="lyear-layout-web">
+			<div class="lyear-layout-container">
+				<!--头部信息-->
+				<header class="lyear-layout-header">
+
+					<nav class="navbar navbar-default">
+						<div class="topbar">
+
+							<div class="topbar-left">
+								<div class="lyear-aside-toggler">
+									<span class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span>
+								</div>
+								<span class="navbar-page-title"> 示例页面 - 物料变更查询</span>
+							</div>
+						</div>
+					</nav>
+
+				</header>
+				<!--End 头部信息-->
+
+				<!--页面主要内容-->
+				<main class="lyear-layout-content">
+
+				<div class="container-fluid">
+
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="table table-hover">
+											<thead>
+												<tr>
+													<th>设计单编号</th>
+													<th>产品编号</th>
+													<th>产品名称</th>
+													<th>设计人</th>
+													<th>登入时间</th>
+													<th>物料总成本</th>
+													<th>变更</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr v-for="v in list">
+													<td>{{v.design_id}}</td>
+													<td>{{v.product_id}}</td>
+													<td>{{v.product_name}}</td>
+													<td>{{v.designer}}</td>
+													<td>{{v.register_time}}</td>
+													<td>{{v.cost_price_sum}}</td>
+													<td>
+														<button type="button" class="btn btn-primary"
+															data-toggle="modal" data-target=".bs-example-modal-lg"
+															@click.prevent="wlcx(v.product_id)">变更</button>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+
+										<div class="modal fade bs-example-modal-lg" tabindex="-1"
+											role="dialog" aria-labelledby="myLargeModalLabel">
+											<div class="modal-dialog modal-lg" role="document">
+												<div class="modal-content">
+													<div class="modal-content">
+														<div class="modal-body">
+															<h5>物料组成设计单</h5>
+															<form action="#" method="post">
+																<div class="form-group">
+																	<label for="message-text" class="control-label">设计单编号:</label>
+																	<span>{{cus.design_id}}</span> <label
+																		for="message-text" class="control-label">设计人:</label>
+																	<span>{{cus.designer}}</span>
+																</div>
+																<div class="form-group">
+																	<label for="message-text" class="control-label">产品名称:</label>
+																	<span>{{cus.product_name}}</span> <label
+																		for="message-text" class="control-label">产品编号:</label>
+																	<span>{{cus.product_id}}</span>
+																</div>
+																<div class="form-group">
+																	<table class="table table-hover">
+																		<thead>
+																			<tr>
+																				<th>序号</th>
+																				<th>物料编号</th>
+																				<th>物料名称</th>
+																				<th>用途</th>
+																				<th>描述</th>
+																				<th>数量</th>
+																				<th>单位</th>
+																				<th>单价</th>
+																				<th>小计</th>
+																				<th>操作</th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			<tr v-for="v in cus">
+																				<td>{{v.id}}</td>
+																				<td>{{v.product_id}}</td>
+																				<td>{{v.product_name}}</td>
+																				<td>{{v.designer}}</td>
+																				<td>{{v.product_describe}}</td>
+																				<td>{{v.amount}}</td>
+																				<td>{{v.amount_unit}}</td>
+																				<td>{{v.cost_price}}</td>
+																				<td>{{v.subtotal}}</td>
+																				<td><button>删除</button></td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</div>
+                                                                <div class="form-group">
+																	<label for="message-text" class="control-label">物料总成本:</label>
+																	<span>{{cus.design_id}}</span> 
+																</div>
+																<div class="form-group">
+																	<label for="message-text" class="control-label">变更人:</label>
+																	<span>{{cus.product_name}}</span>
+																</div>
+																<div class="form-group">
+																	<label for="message-text" class="control-label">设计要求:</label>
+																	<textarea id="txtCon"  ></textarea>
+																</div>
+															</form>
+														</div>
+														<div class="modal-footer">
+															<button type="button" class="btn btn-default"
+																data-dismiss="modal">关闭</button>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+				</main>
+				<!--End 页面主要内容-->
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+	<script type="text/javascript" src="js/main.min.js"></script>
+	<script type="text/javascript">
+$(function(){
+    $('.search-bar .dropdown-menu a').click(function() {
+        var field = $(this).data('field') || '';
+        $('#search-field').val(field);
+        $('#search-btn').html($(this).text() + ' <span class="caret"></span>');
+    });
+});
+</script>
+
+	<script>
+			var vm=new Vue({
+				el:'#app',
+				data:{
+					list:[],
+					cus:[],
+					design_id:'',
+					product_name:'',
+					designer:'',
+					product_id:''
+					
+				},
+				mounted(){//初始化显示完成调用
+					this.selectId();
+				},
+				methods:{
+					selectId(){
+						//发送异步请求，请求后端控制器，获取所有的品牌信息
+						axios.get("selwl").then(res=>{
+							this.list=res.data;
+						})
+						
+					},
+					wlcx(product_id){
+						//发送异步请求，请求后端控制器，获取所有的品牌信息
+						axios.get("selwlbgcx?product_id="+product_id).then(res=>{
+								this.cus=res.data;
+							})
+					},
+			}
+				
+			})
+			
+		</script>
+
+</body>
+</html>

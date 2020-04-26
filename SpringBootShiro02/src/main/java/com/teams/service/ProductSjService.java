@@ -69,4 +69,12 @@ public interface ProductSjService {
 		//修改物料为已设计
 		void updWlSj(String product_id, String design_module_tag);
 		
+		//产品档案查询
+		 List<D_file> selecId();
+		 
+	    //物料查询
+		List<D_module> selD_module();
+		
+		 //物料查询详情
+		List<D_module_details> selD_MODULE_DETAILS(String design_id);
 }
