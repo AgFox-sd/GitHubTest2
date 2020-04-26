@@ -6,8 +6,9 @@ public class D_file {
 	  private String product_name;//产品名称
 	  private String factory_name;//制造商
 	  private String product_nick;//产品简称
-	  private String type;//用途类型  '商品','物料'
-	  private String product_class;//档次级别 ‘高档’，‘抵挡’
+	  private int fid;//档次级别 ‘一级风险’，‘二级风险’
+	  private int tid;//用途类型  '物料'商品','
+	  private int pid;//档次级别 ‘高档’，‘抵挡’
 	  private String personal_unit;//计算单位
 	  private String personal_value;//计量值
 	  private String provider_group;//供应商集合
@@ -38,8 +39,8 @@ public class D_file {
 	public D_file() {
 		super();
 	}
-	public D_file(int id, String product_id, String product_name, String factory_name, String product_nick, String type,
-			String product_class, String personal_unit, String personal_value, String provider_group, String warranty,
+	public D_file(int id, String product_id, String product_name, String factory_name, String product_nick, int fid,
+			int tid, int pid, String personal_unit, String personal_value, String provider_group, String warranty,
 			String twin_name, String twin_id, String lifecycle, double list_price, double cost_price,
 			double real_cost_price, String amount_unit, String product_describe, String responsible_person,
 			String register, String register_time, String checker, String check_time, String check_tag, String changer,
@@ -51,8 +52,9 @@ public class D_file {
 		this.product_name = product_name;
 		this.factory_name = factory_name;
 		this.product_nick = product_nick;
-		this.type = type;
-		this.product_class = product_class;
+		this.fid = fid;
+		this.tid = tid;
+		this.pid = pid;
 		this.personal_unit = personal_unit;
 		this.personal_value = personal_value;
 		this.provider_group = provider_group;
@@ -111,17 +113,23 @@ public class D_file {
 	public void setProduct_nick(String product_nick) {
 		this.product_nick = product_nick;
 	}
-	public String getType() {
-		return type;
+	public int getFid() {
+		return fid;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setFid(int fid) {
+		this.fid = fid;
 	}
-	public String getProduct_class() {
-		return product_class;
+	public int getTid() {
+		return tid;
 	}
-	public void setProduct_class(String product_class) {
-		this.product_class = product_class;
+	public void setTid(int tid) {
+		this.tid = tid;
+	}
+	public int getPid() {
+		return pid;
+	}
+	public void setPid(int pid) {
+		this.pid = pid;
 	}
 	public String getPersonal_unit() {
 		return personal_unit;
@@ -285,5 +293,6 @@ public class D_file {
 	public void setDesign_cell_tag(String design_cell_tag) {
 		this.design_cell_tag = design_cell_tag;
 	}
+		
 	  
 }
