@@ -241,4 +241,8 @@ insert into d_file values(null,
 	<select id="selD_MODULE_DETAILS" resultType="D_module_details">
 		select * from d_module_details where design_id=#{design_id} 
 	</select>
+	<!-- 查询产品名称是否重复 -->
+	<select id="selectname" resultType="int">
+	select count(product_name) from d_file where product_name=#{product_name}
+	</select>
   </mapper>

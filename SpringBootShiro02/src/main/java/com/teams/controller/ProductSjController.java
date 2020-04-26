@@ -236,4 +236,13 @@ public class ProductSjController {
 		List<D_module_details> list=service.selD_MODULE_DETAILS(design_id);
 		return list;
 	}
+	//查询名称是否重复
+	@RequestMapping("/selectname")
+	@ResponseBody
+	public int selectname(@RequestBody D_file file) {
+		int row =service.selectname(file);
+		System.out.println(file.getProduct_name());
+		System.out.println("11111111");
+		return row;
+	}
 }

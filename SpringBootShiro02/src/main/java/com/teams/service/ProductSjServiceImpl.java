@@ -192,4 +192,12 @@ public class ProductSjServiceImpl implements ProductSjService{
 		// TODO Auto-generated method stub
 		return mapper.selD_MODULE_DETAILS(design_id);
 	}
+
+	@Override
+	public int selectname(D_file file) {
+		// TODO Auto-generated method stub
+		return mapper.selectname(file);
+	}
+
+	
 }

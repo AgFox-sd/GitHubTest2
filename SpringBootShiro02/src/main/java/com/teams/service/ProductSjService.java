@@ -77,4 +77,7 @@ public interface ProductSjService {
 		
 		 //物料查询详情
 		List<D_module_details> selD_MODULE_DETAILS(String design_id);
+        //查询名称是否重复		
+	  	int selectname(D_file file);
+
 }
