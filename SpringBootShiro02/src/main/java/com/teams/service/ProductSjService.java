@@ -54,7 +54,7 @@ public interface ProductSjService {
 
 	int delwlsj(String design_id);//物料组成设计不通过
 
-      //查询显示的信息为所有已通过复核的产品档案
+        //查询显示的信息为所有已通过复核的产品档案
 		List<D_file> selectId2(String check_tag);
 		//通过产品编号(id)查询档案信息
 		D_file Selidxx(String product_id);
@@ -70,7 +70,7 @@ public interface ProductSjService {
 		void updWlSj(String product_id, String design_module_tag);
 		
 		//产品档案查询
-		 List<D_file> selecId();
+		List<D_file> selecId();
 		 
 	    //物料查询
 		List<D_module> selD_module();
