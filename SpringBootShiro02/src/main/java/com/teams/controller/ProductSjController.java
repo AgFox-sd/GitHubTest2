@@ -31,21 +31,21 @@ public class ProductSjController {
 	//删除审核通过的产品信息
 	@RequestMapping("/deleteProduct")
 	@ResponseBody
-	public int deleteProduct(@RequestParam("product_id") int product_id) {
+	public int deleteProduct(@RequestParam("product_id") String product_id) {
 		return service.updDelete_tag(product_id,"已删除");
 	}
 	
 	//恢复审核通过的产品信息
 	@RequestMapping("/recoverProduct")
 	@ResponseBody
-	public int recoverProduct(@RequestParam("product_id") int product_id) {
+	public int recoverProduct(@RequestParam("product_id") String product_id) {
 		return service.updDelete_tag(product_id,"未删除");
 	}
 	
 	//永久删除审核通过的产品信息
 	@RequestMapping("/yjDeleteProduct")
 	@ResponseBody
-	public int yjDeleteProduct(@RequestParam("product_id") int product_id) {
+	public int yjDeleteProduct(@RequestParam("product_id") String product_id) {
 		return service.yjDeleteProduct(product_id);
 	}
 	

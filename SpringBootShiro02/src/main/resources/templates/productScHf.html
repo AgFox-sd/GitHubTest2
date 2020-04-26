@@ -130,7 +130,7 @@
 					},
 					deleteId(id,delete_tag){
 						if(delete_tag=="未删除"){
-						if(confirm("是否删除此档案信息？")){
+						if(confirm("是否删除此档案信息？")){				
 							axios.get("deleteProduct?product_id="+id+"").then(res=>{
 								if(res.data>0){
 									alert("删除成功！");

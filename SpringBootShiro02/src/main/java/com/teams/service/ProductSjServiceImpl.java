@@ -29,13 +29,13 @@ public class ProductSjServiceImpl implements ProductSjService{
 
 	//删除和恢复审核通过的产品信息
 	@Override
-	public int updDelete_tag(int product_id, String delete_tag) {
+	public int updDelete_tag(String product_id, String delete_tag) {
 		return mapper.updDelete_tag(product_id, delete_tag);
 	}
 
 	//永久删除审核通过的产品信息
 	@Override
-	public int yjDeleteProduct(int product_id) {
+	public int yjDeleteProduct(String product_id) {
 		return mapper.yjDeleteProduct(product_id);
 	}
 	@Override

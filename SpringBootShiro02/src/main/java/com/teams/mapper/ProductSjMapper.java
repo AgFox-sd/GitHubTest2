@@ -15,10 +15,10 @@ public interface ProductSjMapper {
 	List<D_file> selectProduct(String check_tag);
 
 	//删除和恢复审核通过的产品信息
-	int updDelete_tag(@Param("product_id") int product_id, @Param("delete_tag") String delete_tag);
+	int updDelete_tag(@Param("product_id") String product_id, @Param("delete_tag") String delete_tag);
 
 	//永久删除审核通过的产品信息
-	int yjDeleteProduct(int product_id);
+	int yjDeleteProduct(String product_id);
 
 	List<D_file> selectcpdash(String check_tag);//产品档案等待审核查询
 
