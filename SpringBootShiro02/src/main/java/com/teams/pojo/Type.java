@@ -28,4 +28,5 @@ public class Type {
 	public void setTname(String tname) {
 		this.tname = tname;
 	}
+
 }

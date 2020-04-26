@@ -2,8 +2,12 @@ package com.teams.service;
 import java.util.List;
 
 import com.teams.pojo.D_file;
+<<<<<<< HEAD
 import com.teams.pojo.D_module;
 import com.teams.pojo.D_module_details;
+=======
+import com.teams.pojo.Feilei;
+>>>>>>> refs/heads/zc
 import com.teams.pojo.Pclass;
 import com.teams.pojo.Type;
 
@@ -14,7 +18,12 @@ public interface ProductSjService {
 
 	//删除和恢复审核通过的产品信息
 	int updDelete_tag(String product_id, String delete_tag);
-
+	
+	//查询风险
+	List<Feilei> selectfeilei();
+	
+	//增加产品
+	int addda(D_file file);
 	//永久删除审核通过的产品信息
 	int yjDeleteProduct(String product_id);
 

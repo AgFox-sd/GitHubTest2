@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.teams.pojo.D_file;
 import com.teams.pojo.D_module;
 import com.teams.pojo.D_module_details;
+import com.teams.pojo.Feilei;
 import com.teams.pojo.Pclass;
 import com.teams.pojo.Type;
 import com.teams.mapper.ProductSjMapper;
@@ -43,18 +44,6 @@ public class ProductSjServiceImpl implements ProductSjService{
 	public List<D_file> selectcpdash(@Param("check_tag")String check_tag) {
 		
 		return mapper.selectcpdash(check_tag);
-	}
-
-	@Override
-	public List<Type> selecttype() {
-		// TODO Auto-generated method stub
-		return mapper.selecttype();
-	}
-
-	@Override
-	public List<Pclass> selectpclass() {
-		// TODO Auto-generated method stub
-		return mapper.selectpclass();
 	}
 
 	@Override
@@ -162,4 +151,27 @@ public class ProductSjServiceImpl implements ProductSjService{
 		mapper.updWlSj(product_id, design_module_tag);
 	}
 
+	@Override
+	public int addda(D_file file) {
+		// TODO Auto-generated method stub
+		return mapper.addda(file);
+	}
+
+	@Override
+	public List<Type> selecttype() {
+		// TODO Auto-generated method stub
+		return mapper.selecttype();
+	}
+
+	@Override
+	public List<Feilei> selectfeilei() {
+		// TODO Auto-generated method stub
+		return mapper.selectfeilei();
+	}
+
+	@Override
+	public List<Pclass> selectpclass() {
+		// TODO Auto-generated method stub
+		return mapper.selectpclass();
+	}
 }

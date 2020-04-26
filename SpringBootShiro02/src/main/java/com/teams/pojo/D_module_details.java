@@ -22,6 +22,7 @@ public class D_module_details {
 		super();
 	}
 
+
 	public D_module_details(String product_id, String product_name, String amount_unit, int amount, double cost_price,
 			double subtotal, String lx,String dc) {
 		super();
@@ -71,98 +72,5 @@ public class D_module_details {
 	public void setDesign_id(String design_id) {
 		this.design_id = design_id;
 	}
-
-
-	public String getProduct_id() {
-		return product_id;
-	}
-
-	public void setProduct_id(String product_id) {
-		this.product_id = product_id;
-	}
-
-	public String getProduct_name() {
-		return product_name;
-	}
-
-	public void setProduct_name(String product_name) {
-		this.product_name = product_name;
-	}
-
-	public String getProduct_describe() {
-		return product_describe;
-	}
-
-	public void setProduct_describe(String product_describe) {
-		this.product_describe = product_describe;
-	}
-
-	public String getAmount_unit() {
-		return amount_unit;
-	}
-
-	public void setAmount_unit(String amount_unit) {
-		this.amount_unit = amount_unit;
-	}
-
-	public int getAmount() {
-		return amount;
-	}
-
-	public void setAmount(int amount) {
-		this.amount = amount;
-	}
-
-	public int getResidual_amount() {
-		return residual_amount;
-	}
-
-	public void setResidual_amount(int residual_amount) {
-		this.residual_amount = residual_amount;
-	}
-
-	public double getCost_price() {
-		return cost_price;
-	}
-
-	public void setCost_price(double cost_price) {
-		this.cost_price = cost_price;
-	}
-
-	public double getSubtotal() {
-		return subtotal;
-	}
-
-	public void setSubtotal(double subtotal) {
-		this.subtotal = subtotal;
-	}
-
-	public String getLx() {
-		return lx;
-	}
-
-	public void setLx(String lx) {
-		this.lx = lx;
-	}
-
-	
-	public String getDc() {
-		return dc;
-	}
-
-	public void setDc(String dc) {
-		this.dc = dc;
-	}
-
-	@Override
-	public String toString() {
-		return "D_module_details [id=" + id + ", design_id=" + design_id + ", product_id=" + product_id
-				+ ", product_name=" + product_name + ", product_describe=" + product_describe + ", amount_unit="
-				+ amount_unit + ", amount=" + amount + ", residual_amount=" + residual_amount + ", cost_price="
-				+ cost_price + ", subtotal=" + subtotal + ", lx=" + lx + "]";
-	}
-	
-	
-	
 	
 }

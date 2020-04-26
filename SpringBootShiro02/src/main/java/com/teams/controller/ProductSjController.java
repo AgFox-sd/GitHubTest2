@@ -1,10 +1,7 @@
 package com.teams.controller;
 
 import java.util.List;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 
 
@@ -23,6 +20,7 @@ import com.github.pagehelper.PageInfo;
 import com.teams.pojo.D_file;
 import com.teams.pojo.D_module;
 import com.teams.pojo.D_module_details;
+import com.teams.pojo.Feilei;
 import com.teams.pojo.Pclass;
 import com.teams.pojo.Type;
 
@@ -203,4 +201,19 @@ public class ProductSjController {
 		service.productWlZc(sjdh,product_id,product_name,sjr,zje);
 		return list;
 	}
+    
+    @RequestMapping("/addda")
+	@ResponseBody
+	 public String addda(@RequestBody D_file file ) {
+		 int row =service.addda(file);
+		 return row>0?"成功":"失败";
+	 } 	
+	
+	@RequestMapping("/selectfeilei")
+	@ResponseBody
+	public List<Feilei> selectfeilei(){
+		List<Feilei> list =service.selectfeilei();
+		return list;
+	}
+	
 }

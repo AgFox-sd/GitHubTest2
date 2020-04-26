@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import com.teams.pojo.D_file;
 import com.teams.pojo.D_module;
 import com.teams.pojo.D_module_details;
+import com.teams.pojo.Feilei;
 import com.teams.pojo.Pclass;
 import com.teams.pojo.Type;
 
@@ -62,4 +63,10 @@ public interface ProductSjMapper {
 	
 	//修改物料设计
 	void updWlSj(@Param("product_id")String product_id, @Param("design_module_tag")String design_module_tag);
+
+	//风险查询
+	List<Feilei> selectfeilei();
+    
+	//增加产品
+	int addda(D_file file);
 }
