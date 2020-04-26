@@ -1,14 +1,110 @@
 package com.teams.service;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.teams.pojo.D_file;
+import com.teams.pojo.D_module;
+import com.teams.pojo.D_module_details;
+import com.teams.pojo.Pclass;
+import com.teams.pojo.Type;
 import com.teams.mapper.ProductSjMapper;
+
 @Transactional
 @Service
 public class ProductSjServiceImpl implements ProductSjService{
 	@Autowired
 	ProductSjMapper mapper;
+
+	@Override
+	public List<D_file> selectcpdash(@Param("check_tag")String check_tag) {
+		
+		return mapper.selectcpdash(check_tag);
+	}
+
+	@Override
+	public List<Type> selecttype() {
+		// TODO Auto-generated method stub
+		return mapper.selecttype();
+	}
+
+	@Override
+	public List<Pclass> selectpclass() {
+		// TODO Auto-generated method stub
+		return mapper.selectpclass();
+	}
+
+	@Override
+	public int updfh(D_file d_file) {
+		// TODO Auto-generated method stub
+		return mapper.updfh(d_file);
+	}
+
+	@Override
+	public int selectddfh(@Param("check_tag")String check_tag) {
+		// TODO Auto-generated method stub
+		return mapper.selectddfh(check_tag);
+	}
+
+	@Override
+	public int selecttgfh(@Param("check_tag")String check_tag) {
+		// TODO Auto-generated method stub
+		return mapper.selecttgfh(check_tag);
+	}
+
+	
+	
+	
+	/*/
+	 * 产品物料设计单查询
+	 */
+	@Override
+	public List<D_module> selectwusjsh(@Param("check_tag")String check_tag) {
+		// TODO Auto-generated method stub
+		return mapper.selectwusjsh(check_tag);
+	}
+
+	@Override
+	public int selectwuddshsum(@Param("check_tag")String check_tag) {
+		// TODO Auto-generated method stub
+		return mapper.selectwuddshsum(check_tag);
+	}
+
+	@Override
+	public List<D_module_details> selectwlmx(@Param("design_id")String design_id) {
+		// TODO Auto-generated method stub
+		return mapper.selectwlmx(design_id);
+	}
+
+	@Override
+	public int updatewlsh(D_module d_module) {
+		// TODO Auto-generated method stub
+		return mapper.updatewlsh(d_module);
+	}
+
+	@Override
+	public void delwlsjmx(@Param("design_id")String design_id) {
+		// TODO Auto-generated method stub
+		mapper.delwlsjmx(design_id);
+	}
+
+	@Override
+	public void updcpdnwlsj(@Param("product_id")String product_id,@Param("design_module_tag")String design_module_tag) {
+		// TODO Auto-generated method stub
+		mapper.updcpdnwlsj(product_id,design_module_tag);
+	}
+
+	@Override
+	public int delwlsj(@Param("design_id")String design_id) {
+		// TODO Auto-generated method stub
+		return mapper.delwlsj(design_id);
+	}
+
+	
+
+	
 }

@@ -1,5 +1,7 @@
 package com.teams.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -56,7 +58,7 @@ public class UserController {
 	 * */
 	
 	@RequestMapping("/Login")
-	public String login(String username,String password,Model model) {
+	public String login(String username,String password,Model model,HttpSession session) {
 		
 		System.out.println("username="+username);
 		System.out.println("password="+password);
@@ -70,7 +72,7 @@ public class UserController {
 		//3：执行登录方法
 		try {
 			subject.login(token);
-			
+			session.setAttribute("username", username);
 			//登录成功
 			//跳转到index.html
 			return "redirect:/testThymeleaf";

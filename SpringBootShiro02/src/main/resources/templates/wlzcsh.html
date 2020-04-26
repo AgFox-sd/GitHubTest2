@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>物料组成设计单审核</title>
+<link rel="icon" href="favicon.ico" type="image/ico">
+<meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
+<meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="author" content="yinqi">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/materialdesignicons.min.css" rel="stylesheet">
+<link href="css/style.min.css" rel="stylesheet">
+<script type="text/javascript" src="js/axios.min.js"></script>
+<script type="text/javascript"   src="js/vue-2.4.0.js"></script>
+</head>
+  
+<body>
+<div id="app">
+<div class="lyear-layout-web">
+  <div class="lyear-layout-container">
+    
+    <header class="lyear-layout-header" style="margin-left: -10%;">
+      
+      <nav class="navbar navbar-default">
+        <div class="topbar">
+          
+          <div class="topbar-left">
+            <div class="lyear-aside-toggler">
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+            </div>
+            <span class="navbar-page-title">物料组成设计单审核</span>
+            <span style="margin-left: 500px">当前等待审核的设计单总数:</span>
+            <span style="margin-left: 5px">{{ddshsum}}</span>
+          </div>
+        </div>
+      </nav>
+      
+    </header>
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      
+      <div class="container-fluid">
+        
+        <div class="row">
+          <div class="col-lg-12" style="margin-left: -12%;margin-top: -6%;">
+            <div class="card">
+              <div class="card-toolbar clearfix">
+                <form class="pull-right search-bar" method="get" action="#!" role="form">
+                  <div class="input-group">
+                    <div class="input-group-btn">
+                      <input type="hidden" name="search_field" id="search-field" value="title">
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="card-body">
+              <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>设计单编号</th>
+					    <th>产品编号</th>
+					    <th>产品名称</th>
+					    <th>设计人</th>
+						<th>登记时间</th>
+						<th>物料总成本</th>
+						<th>审核</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+					<tr v-for="(wuzc,index) in list" :key="index">
+					    <td>{{wuzc.design_id}}</td>
+					    <td>{{wuzc.product_id}}</td>
+					    <td>{{wuzc.product_name}}</td>
+						<td>{{wuzc.designer}}</td>
+						<td>{{wuzc.register_time}}</td>
+						<td>{{wuzc.cost_price_sum | moneyFormat(2,'$')}}</td>
+						<td>
+						  <div class="btn-group">
+                             <button type="button" class="btn btn-primary  btn-xs" data-toggle="modal" data-target="#modal1" @click="gosh(wuzc.design_id,wuzc.designer,wuzc.product_id,wuzc.product_name,wuzc.cost_price_sum,wuzc.module_describe)">审核</button>
+                          </div>
+						</td>
+					</tr>
+				</tbody>
+		
+                  </table>
+              </div>
+              
+              <!-- 审核模态框开始 -->
+		      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal1">
+                  <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 style="margin-left: 360px" class="modal-title" id="myLargeModalLabel">物料组成设计单
+                        <span style="margin-left: 150px">
+                           <input type="radio" checked="checked" name="hh" value="未通过">未通过
+                           <input style="margin-left: 15px" type="radio" name="hh" value="通过">通过
+                        </span>
+                        </h4>
+                      </div>
+                      <div class="modal-body">
+                    	 <form action="#" method="post">
+							  <div class="form-group">
+							    <label for="message-text" class="control-label">设计单编号:</label>
+					            <span style="margin-left: 10px;color: red">{{design_id}}</span>
+					            <label for="message-text" class="control-label" style="margin-left: 340px">设计人:</label>
+					            <span style="margin-left: 10px;color: red">{{designer}}</span>
+					          </div>
+					          <div class="form-group">
+					            <label for="message-text" class="control-label" style="margin-left: 15px">产品编号:</label>
+					            <span style="margin-left: 10px;color: red">{{product_id}}</span>
+					            <label for="message-text" class="control-label" style="margin-left: 325px">产品名称:</label>
+					            <span style="margin-left: 10px;color: red">{{product_name}}</span>
+					          </div>
+					          <div class="form-group">
+					   <table class="table table-bordered" >
+	                    <thead>
+	                      <tr>
+	                        <th>序号</th>
+	                        <th>物料名称</th>
+	                        <th>物料编号</th>
+	                        <th>描述</th>
+	                        <th>数量</th>
+	                        <th>单位</th>
+	                        <th>单价</th>
+	                        <th>小计(元)</th>
+	                      </tr>
+	                    </thead>
+	                    <tbody>
+	                      <tr v-for="(wl,index) in xxlist" :key="index">
+		                        <td>{{wl.id}}</td>
+                       			<td>{{wl.product_name}}</td>
+                        		<td>{{wl.product_id}}</td>
+                       			<td>{{wl.product_describe}}</td>
+                       			<td>{{wl.amount}}</td>
+                       			<td>{{wl.amount_unit}}</td>
+                       			<td>{{wl.cost_price | moneyFormat(2,'$')}}</td>
+                       			<td>{{wl.subtotal | moneyFormat(2,'$')}}</td>
+	                      </tr>
+	                    </tbody>
+	                  </table>
+					             
+					      </div>
+					      
+					          <div class="form-group" style="margin-top: 20px">
+					            <label for="message-text" class="control-label" style="margin-left: 3px" >物料总成本:</label>
+					            <span style="margin-left: 10px;color: red">{{cost_price_sum}}</span>		            
+					            <label for="message-text" class="control-label" style="margin-left: 450px">审核人:</label>
+					            <span id="shr" style="margin-left: 10px;color: red" th:text="${session.username}"></span>
+					          </div>
+					          <div class="form-group" style="margin-top: 10px">
+					            <label for="message-text" class="control-label" style="margin-left: 18px;">设计要求:</label>
+					            <div>
+					            <textarea rows="3" cols="100" style="margin-left: 18px" v-model="module_describe"></textarea>		            
+					            </div>
+					          </div>
+		                </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+                        <button type="button" class="btn btn-primary" @click="sh()" data-dismiss="modal">确定</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+		      <!-- 审核模态框结束 -->
+                
+                
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+      
+    </main>
+    <!--End 页面主要内容-->
+  </div>
+</div>
+</div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+
+<script>
+      Vue.filter('moneyFormat',function(money,length,sign){
+	    return sign+money.toFixed(length)
+      })
+      var vm=new Vue({
+    	  el:'#app',
+    	  data:{
+    		  list:[],  //产品物料设计单list
+    		  xxlist:[], //产品物料组成明细list
+    		  
+    		  ddshsum:'', //等待审核总数
+    		  
+    		  design_id:'',  //设计单编号
+    		  designer:'',  //设计人
+    		  product_id:'', //产品编号
+    		  product_name:'', //产品名称
+    		  cost_price_sum:'', //物料总成本
+    	      module_describe:'',//设计要求
+    	  },
+    	  mounted(){//页面挂载完成调用查询全部的方法
+				this.load();
+    	        this.load2();
+		  },
+		  methods:{
+			  load:function(){//查询所有等待审核的物料设计单
+				  var check_tag="等待审核";
+				  axios.get('wusjsh?check_tag='+check_tag+'').then(res=>{
+							this.list=res.data;
+				  }).catch(err=>{
+						alert('请求失败')
+				  })
+			  },
+			  load2:function(){
+				  var check_tag="等待审核";
+				  axios.get('wuddshsum?check_tag='+check_tag+'').then(res=>{
+						this.ddshsum=res.data;
+			  }).catch(err=>{
+					alert('请求失败')
+			  })
+			  },
+			  load3:function(){ //查询物料明细
+				  axios.get('wlmx?design_id='+this.design_id+'').then(res=>{
+			    	  this.xxlist=res.data;
+			      }).catch(err=>{
+			    	  alert('请求失败')
+			      })
+			  },
+			  gosh:function(design_id,designer,product_id,product_name,cost_price_sum,module_describe){ 
+				  this.design_id=design_id;this.designer=designer;this.product_id=product_id;this.product_name=product_name;this.cost_price_sum=cost_price_sum;this.module_describe=module_describe;
+			      this.load3();
+			  },
+			  sh:function(){
+				  var s=$("input[name=hh]:checked").val(); //单选按钮
+				  var checker=$("#shr").text()  //审核人
+				  if(s=="通过"){
+					 var check_tag="审核通过";
+					 var param={design_id:this.design_id,module_describe:this.module_describe,checker:checker,check_tag:check_tag};
+					 axios.post('updatewlsh',param).then(res=>{
+						 if(res.data>0){
+							 alert('审核成功')
+							 this.load();
+							 this.load2();
+						 }
+					 }).catch(err=>{
+						 alert('请求失败')
+					 })
+				  }else{
+					  var design_module_tag="未设计";
+					  var url="delwlsj?design_id="+this.design_id+"&product_id="+this.product_id+"&design_module_tag="+design_module_tag+"";
+					  axios.get(url).then(res=>{
+						  if(res.data>0){
+							  alert('审核不通过,请重新设计物料组成')
+							  this.load();
+							  this.load2();
+						  }
+					  }).catch(err=>{
+						  alert('请求失败')
+					  })
+					  
+					  
+				  }
+				  
+				  
+				  
+			  },
+			  
+			  
+			  
+    	  }
+      
+      }) 
+
+   </script>
+
+</body>
+</html>

@@ -65,6 +65,13 @@
         <artifactId>spring-boot-devtools</artifactId>
         <optional>true</optional>
      </dependency>
-		
+	<!-- springboot 分页 -->
+    <dependency>
+       <groupId>com.github.pagehelper</groupId>
+       <artifactId>pagehelper-spring-boot-starter</artifactId>
+       <version>1.2.5</version>
+    </dependency>
+	
+	
 	</dependencies>
 </project>
