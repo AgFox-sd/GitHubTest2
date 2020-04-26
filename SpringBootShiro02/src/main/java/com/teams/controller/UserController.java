@@ -1,10 +1,6 @@
 package com.teams.controller;
 
-<<<<<<< HEAD
 
-
-=======
->>>>>>> refs/heads/ld
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
@@ -26,8 +22,6 @@ public class UserController {
 	public String Page(@PathVariable String page) {
 		return page;
 	}
-	
-	
 	
 	/*
 	 * 无权限者
