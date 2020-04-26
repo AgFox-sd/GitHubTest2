@@ -1,6 +1,9 @@
 package com.teams.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
@@ -18,9 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class UserController {
 
-	@RequestMapping("{page}")
-	public String Page(@PathVariable String page) {
-		return page;
+	//路径是什么 就跳转到对应的页面
+    @RequestMapping("{page}")
+	public String page(@PathVariable String page,HttpServletRequest res) {
+       res.setAttribute("sjdh",Dindan());
+       System.out.println(Dindan());
+	   return page;
 	}
 	
 	/*
@@ -32,18 +38,19 @@ public class UserController {
 		return "/noAuth";
 	}
 	
-	@RequestMapping("/toLogin")
-	public String login() {
-		return "/login";
+	//生成订单编号
+	public String Dindan() {
+		SimpleDateFormat format=new SimpleDateFormat("yyyyMMdd");
+		String batchno=format.format(new Date());
+		int num=(int)((Math.random()*9+1)*100000);
+		return 100+batchno+num;
 	}
 	
 	/*
-	 * 登录逻辑处理
+	 *  * 登录逻辑处理
 	 * */
-	
 	@RequestMapping("/Login")
-	public String login(String username,String password,Model model,HttpSession session) {	
-		
+	public String login(String username,String password,Model model,HttpSession session) {
 		//使用shiro编写认证操作
 		//1:获取Subject
 		Subject subject=SecurityUtils.getSubject();
@@ -56,6 +63,7 @@ public class UserController {
 			session.setAttribute("username", username);
 			//登录成功
 			//跳转到index.html
+			session.setAttribute("username", username);
 			return "redirect:/index";
 		} catch (UnknownAccountException e) {
 			// TODO Auto-generated catch block

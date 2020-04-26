@@ -22,8 +22,21 @@ public class D_module_details {
 		super();
 	}
 
+	public D_module_details(String product_id, String product_name, String amount_unit, int amount, double cost_price,
+			double subtotal, String lx,String dc) {
+		super();
+		this.product_id = product_id;
+		this.product_name = product_name;
+		this.amount_unit = amount_unit;
+		this.amount = amount;
+		this.cost_price = cost_price;
+		this.subtotal = subtotal;
+		this.lx = lx;
+		this.dc = dc;
+	}
 	public D_module_details(int id, String design_id, String product_id, String product_name, String product_describe,
-			String amount_unit, int amount, int residual_amount, double cost_price, double subtotal, String lx,String dc) {
+			String amount_unit, int amount, int residual_amount, double cost_price, double subtotal, String lx,
+			String dc) {
 		super();
 		this.id = id;
 		this.design_id = design_id;
@@ -33,19 +46,6 @@ public class D_module_details {
 		this.amount_unit = amount_unit;
 		this.amount = amount;
 		this.residual_amount = residual_amount;
-		this.cost_price = cost_price;
-		this.subtotal = subtotal;
-		this.lx = lx;
-		this.dc =dc;
-	}
-
-	public D_module_details(String product_id, String product_name, String amount_unit, int amount, double cost_price,
-			double subtotal, String lx,String dc) {
-		super();
-		this.product_id = product_id;
-		this.product_name = product_name;
-		this.amount_unit = amount_unit;
-		this.amount = amount;
 		this.cost_price = cost_price;
 		this.subtotal = subtotal;
 		this.lx = lx;
@@ -60,13 +60,18 @@ public class D_module_details {
 		this.id = id;
 	}
 
+
+
 	public String getDesign_id() {
 		return design_id;
 	}
 
+
+
 	public void setDesign_id(String design_id) {
 		this.design_id = design_id;
 	}
+
 
 	public String getProduct_id() {
 		return product_id;

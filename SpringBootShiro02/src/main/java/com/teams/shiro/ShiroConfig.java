@@ -32,16 +32,14 @@ public class ShiroConfig {
 		filterMap.put("/testThymeleaf","anon");
 		//放行login.html页面
 		filterMap.put("/Login","anon");
-		
 		//授权过滤器
 		//注意：当前授权拦截后，shiro会自动跳转到未授权页面
 		filterMap.put("/add", "perms[user:add]");
 		filterMap.put("/update", "perms[user:update]");
-		
 		//所有资源拦截
 		filterMap.put("/*","authc");
 		//修改拦截后调整的登录页面
-		shiroFilterFactoryBean.setLoginUrl("/toLogin");
+		shiroFilterFactoryBean.setLoginUrl("/login");
 		//设置未授权提示页面
 		shiroFilterFactoryBean.setUnauthorizedUrl("/noAuth");
 		
