@@ -227,7 +227,7 @@ insert into d_file values(null,
 
    <!-- 产品档案查询 -->
    <select id="selecId" resultType="D_file">
-		select a.product_id,a.product_name,b.fname,c.tname,d.pname
+		select a.*,b.fname,c.tname,d.pname
 		from d_file a,feilei b,type c,pclass d
 		where a.fid=b.fid and a.tid=c.tid and a.pid=d.pid and a.check_tag='审核通过'
 	</select>
