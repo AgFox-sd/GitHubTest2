@@ -33,6 +33,7 @@ $(function(){
 
 					<nav class="navbar navbar-default">
 						<div class="topbar">
+
 							<div class="topbar-left">
 								<div class="lyear-aside-toggler">
 									<span class="lyear-toggler-bar"></span> <span
@@ -77,73 +78,63 @@ $(function(){
 													<td>{{v.check_tag}}</td>
 													<td>
 														<button type="button" class="btn btn-primary"
-															data-toggle="modal" data-target=".bs-example-modal-lg"
-															@click.prevent="wlcx(v.design_id)">装配树</button>
+															data-toggle="modal" data-target="#myModal"
+															@click="wlcx(v.design_id)">装配树</button>
 													</td>
 												</tr>
 											</tbody>
+										</table>	
+										<div class="modal fade" id="myModal" tabindex="-1"
+										role="dialog" aria-labelledby="myModalLabel">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content">
+												<div class="modal-body">
+												<table class="table table-hover">
+											<table class="table table-hover">
+											<thead>
+												<tr>
+													<th>物料编号</th>
+													<th>物料名称</th>
+													<th>描述</th>
+													<th>数量</th>
+													<th>单价</th>
+													<th>小计</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr v-for="v in cus">
+													<td>{{v.product_id}}</td>
+													<td>{{v.product_name}}</td>
+													<td>{{v.product_describe}}</td>
+													<td>{{v.amount}}</td>
+													<td>{{v.cost_price}}</td>
+													<td>{{v.subtotal}}</td>
+												</tr>
+											</tbody>
 										</table>
-															</div>
-															</div>
-															</div>
-															</div>
-															</div>
-															</main>
-					<!--End 页面主要内容-->
-		
-</div>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-default"
+														data-dismiss="modal">关闭</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</main>
+				<!--End 页面主要内容-->
+			</div>
 		</div>
-		
-			  <!-- 模态框开始 -->
-                  <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-                  <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                        <h4 class="modal-title" id="myLargeModalLabel">物料明细</h4>
-                      </div>
-                      <div class="modal-body">
-                    	<form action="#" method="post">
-					   <div style="margin-left: 20px">
-					   <table class="table table-hover">
-			<thead>
-	  <tr>
-			<th>物料编号</th>
-			<th>物料名称</th>
-		    <th>描述</th>
-			<th>数量</th>
-			<th>单价</th>
-			<th>小计</th>
-	</tr>
-			</thead>
-			<tbody>
-	<tr v-for="v in cus">
-			<td>{{v.product_id}}</td>
-			<td>{{v.product_name}}</td>
-			<td>{{v.product_describe}}</td>
-			<td>{{v.amount}}</td>
-			<td>{{v.cost_price}}</td>
-			<td>{{v.subtotal}}</td>
-			</tr>
-			</tbody>
-			</table>
-	                  </div>  
-		        		</form>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                      </div>
-                    </div>
-                  </div>
-                </div> 
-                <!-- 模态框结束 -->
-</div>
-
-	<script type="text/javascript" src="js/jquery-1.12.4.js"></script>
+	</div>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
-<script type="text/javascript" src="js/main.min.js"></script>
-<script type="text/javascript">
+	<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+	<script type="text/javascript" src="js/main.min.js"></script>
+	<script type="text/javascript">
 $(function(){
     $('.search-bar .dropdown-menu a').click(function() {
         var field = $(this).data('field') || '';
@@ -152,33 +143,34 @@ $(function(){
     });
 });
 </script>
-															<script>
+	<script>
 			var vm=new Vue({
 				el:'#app',
 				data:{
 					list:[],
-					cus:[],
+					cus:[]
 				},
 				mounted(){//初始化显示完成调用
 					this.selectId();
 				},
 				methods:{
 					selectId(){
-						//发送异步请求，请求后端控制器，获取所有的品牌信息
+						//发送异步请求，请求后端控制器，获取所有的信息
 						axios.get("selD_module").then(res=>{
 							this.list=res.data;
-						})	
+						})				
 					},
 					wlcx(design_id){
-						//发送异步请求，请求后端控制器，获取所有的品牌信息
+						//发送异步请求，请求后端控制器，获取所有的信息
 						axios.get("selD_module_details?design_id="+design_id).then(res=>{
-								this.cus=res.data;
+							this.cus=res.data;
 							})
 					}
-			}
+					}
 				
 			})
 			
 		</script>
+
 </body>
 </html>
