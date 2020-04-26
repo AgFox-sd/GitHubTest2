@@ -191,14 +191,16 @@ public class ProductSjController {
 	@RequestMapping("/productWlZc")
 	@ResponseBody
     public List<D_module_details> productWlZc(@RequestParam("bh") String[] bh,@RequestParam("mc") String[] mc,@RequestParam("lx") String[] lx,@RequestParam("dc") String[] dc,@RequestParam("sl") int[] sl,@RequestParam("dw") String[] dw,@RequestParam("dj") double[] dj,@RequestParam("product_id") String product_id,@RequestParam("product_name") String product_name,@RequestParam("sjdh") String sjdh,@RequestParam("sjr") String sjr) {		
-		List<D_module_details> list = new ArrayList<D_module_details>();
+		double zje =0;
+    	List<D_module_details> list = new ArrayList<D_module_details>();
 		for (int i = 0; i < dj.length; i++) {
-			service.productWlZc(sjdh,product_id,product_name,sjr,sl[i]*dj[i]);
 			service.wlZcMx(sjdh,bh[i],mc[i],dw[i],sl[i],dj[i],sl[i]*dj[i]);
 			service.updWlSj(product_id,"已设计");
 			D_module_details dmd = new D_module_details(bh[i],mc[i],dw[i],sl[i],dj[i],sl[i]*dj[i],lx[i],dc[i]);
+			zje +=sl[i]*dj[i];
 			list.add(dmd);
 		}
+		service.productWlZc(sjdh,product_id,product_name,sjr,zje);
 		return list;
 	}
 }
