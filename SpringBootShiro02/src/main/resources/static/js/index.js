@@ -1,7 +1,7 @@
 ﻿(function ($) {
 	var data=[];
 	$.ajax({
-        type:"POST",
+      type:"POST",
   	  dataType:"json",
   	  async:false,
   	  url:"selectPermission",
@@ -315,9 +315,7 @@
                 var row = data[i];
                 if (row.f_ParentId == "0") {
                     if (i == 0) {
-                        _html += '<li class="treeview
-                        	
-                        	">';
+                        _html += '<li class="treeview">';
                     } else {
                         _html += '<li class="treeview">';
                     }
