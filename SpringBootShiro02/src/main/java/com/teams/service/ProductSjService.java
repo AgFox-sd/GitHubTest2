@@ -2,12 +2,9 @@ package com.teams.service;
 import java.util.List;
 
 import com.teams.pojo.D_file;
-<<<<<<< HEAD
 import com.teams.pojo.D_module;
 import com.teams.pojo.D_module_details;
-=======
 import com.teams.pojo.Feilei;
->>>>>>> refs/heads/zc
 import com.teams.pojo.Pclass;
 import com.teams.pojo.Type;
 

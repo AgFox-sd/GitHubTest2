@@ -239,7 +239,6 @@
 					getAllBrandss(){
 						//查询所有
 						axios.get("selectfeilei").then(res=>{
-							console.log(res)
 							this.listss=res.data
 						}).catch(err=>{
 							console.log("请求失败")

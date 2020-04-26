@@ -4,7 +4,6 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="com.teams.mapper.ProductSjMapper">
-<<<<<<< HEAD
   <!--查询审核通过的产品信息  -->
   <select id="selectProduct" resultType="D_file">
 			SELECT a.product_id,a.product_name,a.list_price,
@@ -179,11 +178,10 @@
 		<update id="updWlSj">
 		update d_file set design_module_tag =#{design_module_tag} where product_id =#{product_id}
 		</update>
-</mapper>
  
   <!-- 查询风险 -->
   <select id="selectfeilei" resultType="Feilei">
- select *from feilei
+    select * from feilei
   </select>
  
  <!-- 增加产品 -->
