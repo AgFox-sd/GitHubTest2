@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title> 产品档案复核</title>
+<link rel="icon" href="favicon.ico" type="image/ico">
+<meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
+<meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="author" content="yinqi">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/materialdesignicons.min.css" rel="stylesheet">
+<link href="css/style.min.css" rel="stylesheet">
+<script type="text/javascript" src="js/axios.min.js"></script>
+<script type="text/javascript"   src="js/vue-2.4.0.js"></script>
+</head>
+  
+<body>
+<div id="app">
+<div class="lyear-layout-web">
+  <div class="lyear-layout-container">
+    
+    <header class="lyear-layout-header" style="margin-left: -10%;">
+      
+      <nav class="navbar navbar-default">
+        <div class="topbar">
+          
+          <div class="topbar-left">
+            <div class="lyear-aside-toggler">
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+            </div>
+            <span class="navbar-page-title">产品档案复核</span>
+            <span style="margin-left: 500px">当前等待复核:</span>
+            <span style="margin-left: 5px">{{ddfynum}}</span>
+            <span style="margin-left: 15px">已复核:</span>
+            <span style="margin-left: 5px">{{tgfynum}}</span>
+          </div>
+        </div>
+      </nav>
+      
+    </header>
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      
+      <div class="container-fluid">
+        
+        <div class="row">
+          <div class="col-lg-12" style="margin-left: -12%;margin-top: -6%;">
+            <div class="card">
+              <div class="card-toolbar clearfix">
+                <form class="pull-right search-bar" method="get" action="#!" role="form">
+                  <div class="input-group">
+                    <div class="input-group-btn">
+                      <input type="hidden" name="search_field" id="search-field" value="title">
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>产品编号</th>
+					    <th>产品名称</th>
+					    <th>产品分类</th>
+					    <th>用途类型</th>
+						<th>产品档次</th>
+						<th>复核</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+					<tr v-for="(products,index) in list" :key="index">
+					    <td>{{products.product_id}}</td>
+					    <td>{{products.product_name}}</td>
+					    <td>{{products.fname}}</td>
+						<td>{{products.tname}}</td>
+						<td>{{products.pname}}</td>
+						<td>
+						  <div class="btn-group">
+                             <button type="button" class="btn btn-primary  btn-xs" data-toggle="modal" data-target="#modal1" @click="gofh(products.product_id,products.product_name,products.factory_name,products.product_nick,products.tid,products.pid,products.personal_unit,products.personal_value,products.provider_group,products.list_price,products.cost_price,products.amount_unit,products.warranty,products.twin_name,products.twin_id,products.lifecycle,products.responsible_person,products.register)">复核</button>
+                          </div>
+						</td>
+					</tr>
+				</tbody>
+		<!-- 复核模态框开始 -->
+		<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal1">
+                  <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" id="myLargeModalLabel">产品档案登记复核</h4>
+                      </div>
+                      <div class="modal-body">
+                    	 <form action="#" method="post">
+							  <div class="form-group">
+					            <label for="message-text" class="control-label">产品编号:</label>
+					            <span style="margin-left: 10px;color: red">{{product_id}}</span>
+					          </div>
+					          <div class="form-group">
+					            <label for="message-text" class="control-label">产品名称:</label>
+					            <input type="text" name="factory_name" v-model="product_name">
+					            <label for="message-text" class="control-label" style="margin-left: 160px">制造商:</label>
+					            <input type="text" name="factory_name" v-model="factory_name" style="margin-left: 13px">
+					          </div>
+					          <div class="form-group">
+					            <label for="message-text">用途类型:</label>
+								<select v-model="tid" style="width: 200px;height: 30px">
+					                <option v-for="(type,index) in typelist" :value="type.tid">{{type.tname}}</option>
+					            </select>
+								<label for="message-text"style="margin-left: 120px" >档次级别:</label>
+					            <select v-model="pid" style="width: 200px;height: 30px">
+									<option v-for="(plcass,index) in plcasslist" :value="plcass.pid">{{plcass.pname}}</option>
+								</select>
+					          </div>
+					           <div class="form-group">
+					           <label for="message-text" class="control-label">产品简称:</label>
+					             <input type="text" name="product_nick" v-model="product_nick" style="margin-left: 13px">
+					             
+					            <label for="message-text" class="control-label" style="margin-left: 50px">计量单位:</label>
+					             <input type="text" name="personal_unit" v-model="personal_unit">
+					             
+					            <label for="message-text" class="control-label" style="margin-left: 50px">计量值:</label>
+					             <input type="text" name="personal_value" v-model="personal_value" style="margin-left: 27px">
+					          </div>
+					          <div class="form-group">
+					            <label for="message-text" class="control-label">市场单价:</label>
+					            <input type="text" name="personal_value" v-model="list_price" style="margin-left: 13px">
+					            <label for="message-text" class="control-label" style="margin-left: 45px">计划成本单价:</label>
+					            <input type="text" name="personal_value" v-model="cost_price" style="margin-left: 13px">
+					            <label for="message-text" class="control-label" style="margin-left: 30px">单位:</label>
+					             <input type="text" name="amount_unit" v-model="amount_unit" style="margin-left: 25px">
+					          </div>
+					          <div class="form-group">
+					            <label for="message-text" class="control-label">供应商集合:</label>
+					             <input type="text" name="provider_group" v-model="provider_group">
+					            <label for="message-text" class="control-label" style="margin-left: 50px">保修期:</label>
+					             <input type="text" name="warranty" v-model="warranty" style="margin-left: 13px">
+					            <label for="message-text" class="control-label" style="margin-left: 50px">代替者名称:</label>
+					             <input type="text" name="twin_name" v-model="twin_name">
+					          </div>
+					          <div class="form-group">
+					            <label for="message-text" class="control-label">替代品编号:</label>
+					             <input type="text" name="twin_id" v-model="twin_id">
+					            <label for="message-text" class="control-label" style="margin-left: 50px">生命周期:</label>
+					             <input type="text" name="lifecycle" v-model="lifecycle">
+					             <label for="message-text" class="control-label" style="margin-left: 50px">产品经理:</label>
+					             <input type="text" name="responsible_person" v-model="responsible_person" style="margin-left: 15px">
+					            
+					          </div>   
+					          <div class="form-group">
+					            <label for="message-text" class="control-label" >登记人:</label>
+					             <input readonly="readonly" type="text" name="product_describe"  v-model="register" style="margin-left: 30px;color: red">			            
+					             <label for="message-text" class="control-label" style="margin-left: 50px">复核人:</label>
+					             <input id="fhr" readonly="readonly" type="text" th:value="${session.username}" name="product_describe" style="margin-left: 30px;color: red">
+					          </div>
+		        </form>
+                    
+                    
+                    
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+                        <button type="button" class="btn btn-primary" @click="fh()" data-dismiss="modal">复核通过</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+		<!-- 复核模态框结束 -->
+                  </table>
+                </div>
+                
+                
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+      
+    </main>
+    <!--End 页面主要内容-->
+  </div>
+</div>
+</div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+
+<script>
+      var vm=new Vue({
+    	  el:'#app',
+    	  data:{
+    		  list:[],  //产品档案list
+    		  typelist:[], //产品类型list
+    		  plcasslist:[],//产品档次list
+    		  
+    		  product_id:'', //产品编号
+    		  product_name:'', //产品名称
+    		  factory_name:'',//制造商
+    		  product_nick:'',//产品简称
+    		  tid:'',//产品类型编号
+    		  pid:'',//档次级别编号
+    		  personal_unit:'',//计量单位
+    		  personal_value:'',//计量值
+    		  provider_group:'',//供应商集合
+    		  list_price:'',//市场单价
+    		  cost_price:'',//计划成本单价
+    		  amount_unit:'',//单位
+    		  warranty:'',//保修期
+    		  twin_name:'',//替代品名称
+    		  twin_id:'',//替代品编号
+    		  lifecycle:'',//'生命周期',
+    		  responsible_person:'',// '产品经理
+    		  register:'',//'登记人',
+    		  //checker:'',//'复核人',
+    		  
+    		  ddfynum:'', //等待复核总数
+    		  tgfynum:'', //审核通过总数
+    		  
+    	  },
+    	  mounted(){//页面挂载完成调用查询全部的方法
+				this.load();
+    	        this.load2();
+    	        this.load3();
+				this.loadtype();
+				this.loadpclass();
+		  },
+		  methods:{
+			  load:function(){//查询所有等待审核的产品档案
+				  var check_tag="等待审核";
+				  axios.get('cpdash?check_tag='+check_tag+'').then(res=>{
+							this.list=res.data;
+				  }).catch(err=>{
+						alert('请求失败')
+				  })
+			  },
+			  load2:function(){
+				  var check_tag="等待审核";
+				  axios.get('ddfynum?check_tag='+check_tag+'').then(res=>{
+						this.ddfynum=res.data;
+			  }).catch(err=>{
+					alert('请求失败')
+			  })
+			  },
+			  load3:function(){
+				  var check_tag="审核通过";
+				  axios.get('tgfynum?check_tag='+check_tag+'').then(res=>{
+						this.tgfynum=res.data;
+			  }).catch(err=>{
+					alert('请求失败')
+			  })
+			  },
+			  loadtype:function(){
+				  axios.get('selecttype').then(res=>{
+					  this.typelist=res.data;
+				  }).catch(err=>{
+						alert('请求失败')
+				  }) 
+			  },
+			  loadpclass:function(){
+				  axios.get('selectpclass').then(res=>{
+					  this.plcasslist=res.data;
+				  }).catch(err=>{
+						alert('请求失败')
+				  })
+			  },
+			  gofh:function(product_id,product_name,factory_name,product_nick,tid,pid,personal_unit,personal_value,provider_group,list_price,cost_price,amount_unit,warranty,twin_name,twin_id,lifecycle,responsible_person,register){ //产品档案详细
+				  this.product_id=product_id;this.product_name=product_name;this.factory_name=factory_name;this.product_nick=product_nick;this.tid=tid;this.pid=pid;this.personal_unit=personal_unit;
+				  this.personal_value=personal_value;this.provider_group=provider_group;this.list_price=list_price;this.cost_price=cost_price;this.amount_unit=amount_unit;this.warranty=warranty;this.twin_name=twin_name;this.twin_id=twin_id;this.lifecycle=lifecycle;this.responsible_person=responsible_person;this.register=register;
+			  },
+			  fh:function(){
+				  var check_tag="审核通过";
+				  var checker=$('#fhr').val();
+				  var param={product_id:this.product_id,product_name:this.product_name,factory_name:this.factory_name,product_nick:this.product_nick,tid:this.tid,pid:this.pid,personal_unit:this.personal_unit,personal_value:this.personal_value,provider_group:this.provider_group,list_price:this.list_price,cost_price:this.cost_price,amount_unit:this.amount_unit,warranty:this.warranty,twin_name:this.twin_name,twin_id:this.twin_id,lifecycle:this.lifecycle,responsible_person:this.responsible_person,register:this.register,check_tag:check_tag,checker:checker};
+				  axios.post('updatefh',param).then(res=>{
+					  if(res.data=="成功"){
+						  alert("复核成功");
+						  this.load();
+						  this.load2();
+						  this.load3();
+					  }
+				  }).catch(error=>{
+					  alert('请求失败');
+				  })
+				  
+			  }
+			  
+			  
+    	  }
+      
+      }) 
+
+   </script>
+
+</body>
+</html>

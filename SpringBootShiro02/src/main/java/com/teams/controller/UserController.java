@@ -1,7 +1,10 @@
 package com.teams.controller;
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> refs/heads/ld
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
@@ -46,6 +49,7 @@ public class UserController {
 	
 	@RequestMapping("/Login")
 	public String login(String username,String password,Model model,HttpSession session) {	
+		
 		//使用shiro编写认证操作
 		//1:获取Subject
 		Subject subject=SecurityUtils.getSubject();
@@ -55,7 +59,7 @@ public class UserController {
 		//3：执行登录方法
 		try {
 			subject.login(token);
-			session.setAttribute("username",username);
+			session.setAttribute("username", username);
 			//登录成功
 			//跳转到index.html
 			return "redirect:/index";
