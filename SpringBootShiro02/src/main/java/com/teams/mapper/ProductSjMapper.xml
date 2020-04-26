@@ -5,4 +5,82 @@
   
   <mapper namespace="com.teams.mapper.ProductSjMapper">
   
-  </mapper>
+		<!-- 查询显示的信息为所有已通过复核的产品档案 -->  	
+		<select id="selectId2" resultType="D_file">
+			SELECT a.product_id,a.product_name,a.list_price,a.factory_name,a.amount_unit,
+			b.tname,c.pname FROM D_FILE a,TYPE b,pclass c
+			WHERE b.`tid`=a.`tid` 
+			AND c.`pid`=a.`pid`
+			AND CHECK_TAG=#{CHECK_TAG}
+		</select>
+		
+		<!-- 通过产品编号(id)查询档案信息 -->
+		<select id="Selidxx" resultType="D_file">
+			SELECT a.*,b.tname,c.pname FROM D_FILE a,TYPE b,pclass c
+			WHERE b.`tid`=a.`tid` 
+			AND c.`pid`=a.`pid`
+			AND product_id=#{product_id}
+		</select>
+		
+		<!-- 修改产品档案信息 -->
+		<update id="updBG">
+			update D_file
+			<set>
+				change_time=NOW(),file_change_amount=(file_change_amount+1),CHECK_TAG=#{check_tag},
+				<if test="product_name!=null and product_name!=''">product_name=#{product_name},</if>
+				<if test="factory_name!=null and factory_name!=''">factory_name=#{factory_name},</if>
+				<if test="product_nick!=null and product_nick!=''">product_nick=#{product_nick},</if>
+				<if test="tid!=null and tid!=''">tid=#{tid},</if>
+				<if test="pid!=null and pid!=''">pid=#{pid},</if>
+				<if test="personal_unit!=null and personal_unit!=''">personal_unit=#{personal_unit},</if>
+				<if test="personal_value!=null and personal_value!=''">personal_value=#{personal_value},</if>
+				<if test="provider_group!=null and provider_group!=''">provider_group=#{provider_group},</if>
+				<if test="warranty!=null and warranty!=''">warranty=#{warranty},</if>
+				<if test="twin_name!=null and twin_name!=''">twin_name=#{twin_name},</if>
+				<if test="twin_id!=null and twin_id!=''">twin_id=#{twin_id},</if>
+				<if test="lifecycle!=null and lifecycle!=''">lifecycle=#{lifecycle},</if>
+				<if test="list_price!=null and list_price!=''">list_price=#{list_price},</if>
+				<if test="cost_price!=null and cost_price!=''">cost_price=#{cost_price},</if>
+				<if test="real_cost_price!=null and real_cost_price!=''">real_cost_price=#{real_cost_price},</if>
+				<if test="amount_unit!=null and amount_unit!=''">amount_unit=#{amount_unit},</if>
+				<if test="product_describe!=null and product_describe!=''">product_describe=#{product_describe},</if>
+				<if test="responsible_person!=null and responsible_person!=''">responsible_person=#{responsible_person},</if>
+				<if test="register!=null and register!=''">register=#{register},</if>
+				<if test="register_time!=null and register_time!=''">register_time=#{register_time},</if>
+				<if test="checker!=null and checker!=''">checker=#{checker},</if>
+				<if test="check_time!=null and check_time!=''">check_time=#{check_time},</if>
+				<if test="check_tag!=null and check_tag!=''">check_tag=#{check_tag},</if>
+				<if test="changer!=null and changer!=''">changer=#{changer},</if>
+				<if test="price_change_tag!=null and price_change_tag!=''">price_change_tag=#{price_change_tag},</if>
+				<if test="delete_tag!=null and delete_tag!=''">delete_tag=#{delete_tag},</if>
+				<if test="design_module_tag!=null and design_module_tag!=''">design_module_tag=#{design_module_tag},</if>
+				<if test="design_procedure_tag!=null and design_procedure_tag!=''">design_procedure_tag=#{design_procedure_tag},</if>
+				<if test="design_cell_tag!=null and design_cell_tag!=''">design_cell_tag=#{design_cell_tag},</if>
+			</set>	
+			where product_id=#{product_id}
+		</update>
+		
+		<!-- 查询通过审核的商品档案信息 -->
+		<select id="Selad" resultType="D_file">
+			SELECT a.product_id ,a.product_name,a.factory_name ,a.amount_unit,a.cost_price ,c.tname ,d.pname 
+			FROM d_file a,TYPE c,pclass d 
+			WHERE a.tid=c.tid AND a.pid=d.pid AND a.check_tag=#{check_tag} AND c.tid=#{tid}
+			AND design_module_tag = #{design_module_tag};
+		</select>
+		
+		
+		<!-- 物料组成设计单 -->
+		<insert id="productWlZc">
+		insert into d_module values(null,#{sjdh},#{product_id},#{product_name},#{sjr},null,#{d},#{sjr},sysdate(),null,default,null,default,default,default);
+		</insert>
+		
+		<!-- 物料明细 -->
+		<insert id="wlZcMx">
+		insert into d_module_details values(null,#{sjdh},#{string},#{string2},null,#{string3},#{i},#{i},#{d},#{e});
+		</insert>
+		
+		<!-- 修改物料设计 -->
+		<update id="updWlSj">
+		update d_file set design_module_tag =#{design_module_tag} where product_id =#{product_id}
+		</update>
+</mapper>

@@ -1,36 +1,35 @@
 package com.teams.controller;
 
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.session.HttpServletSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 
 
 @Controller
 public class UserController {
-
 	
 	
-	@RequestMapping("/add")
-	public String add() {
-		System.out.println("add...");
-		return "/user/add";
-	}
-	
-	@RequestMapping("/update")
-	public String update() {
-		System.out.println("update...");
-		return "/user/update";
-	}
-	
-	@RequestMapping("/toLogin")
-	public String toLogin() {
-		System.out.println("login...");
-		return "/login";
+	//路径是什么 就跳转到对应的页面
+    @RequestMapping("{page}")
+	public String page(@PathVariable String page,HttpServletRequest res) {
+       res.setAttribute("sjdh",Dindan());
+       System.out.println(Dindan());
+	   return page;
 	}
 	
 	@RequestMapping("/noAuth")
@@ -39,24 +38,21 @@ public class UserController {
 		return "/noAuth";
 	}
 	
-	/*
-	 * 测试thymeleaf
-	 */
-	@RequestMapping("/testThymeleaf")
-	public  String testThymeleaf(Model model) {
-		//存数据
-		model.addAttribute("name", "zp");
-		//返回index.html
-		return  "index";
+	//生成订单编号
+	public String Dindan() {
+		SimpleDateFormat format=new SimpleDateFormat("yyyyMMdd");
+		String batchno=format.format(new Date());
+		int num=(int)((Math.random()*9+1)*100000);
+		return 100+batchno+num;
 	}
 	
 	
 	/*
-	 * 登录逻辑处理
+	 *  * 登录逻辑处理
 	 * */
 	
 	@RequestMapping("/Login")
-	public String login(String username,String password,Model model) {
+	public String login(String username,String password,Model model,HttpSession session) {
 		
 		System.out.println("username="+username);
 		System.out.println("password="+password);
@@ -73,7 +69,8 @@ public class UserController {
 			
 			//登录成功
 			//跳转到index.html
-			return "redirect:/testThymeleaf";
+			session.setAttribute("username", username);
+			return "redirect:/index";
 		} catch (UnknownAccountException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
