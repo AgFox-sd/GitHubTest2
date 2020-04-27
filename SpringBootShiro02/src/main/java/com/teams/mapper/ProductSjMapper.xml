@@ -160,7 +160,7 @@
 			SELECT a.product_id ,a.product_name,a.factory_name ,a.amount_unit,a.cost_price ,c.tname ,d.pname 
 			FROM d_file a,TYPE c,pclass d 
 			WHERE a.tid=c.tid AND a.pid=d.pid AND a.check_tag=#{check_tag} AND c.tid=#{tid}
-			AND design_module_tag = #{design_module_tag};
+			AND design_module_tag = #{design_module_tag}  AND  a.delete_tag ='未删除'
 		</select>
 		
 		
@@ -227,14 +227,12 @@ insert into d_file values(null,
 
    <!-- 产品档案查询 -->
    <select id="selecId" resultType="D_file">
-		select a.*,b.fname,c.tname,d.pname
-		from d_file a,feilei b,type c,pclass d
-		where a.fid=b.fid and a.tid=c.tid and a.pid=d.pid and a.check_tag='审核通过'
+select a.*,b.fname,c.tname,d.pname from d_file a,feilei b,type c,pclass d where a.fid=b.fid and a.tid=c.tid and a.pid=d.pid and a.delete_tag='未删除' and a.check_tag='审核通过' 
 	</select>
 
    <!-- 物料查询 -->
 	<select id="selD_module" resultType="D_module">
-		select * from d_module where check_tag='审核通过'
+		select * from d_module where check_tag='审核通过'  and  delete_tag ='未刪除'
 	</select>
 	
 	<!-- 物料查询详情 -->
