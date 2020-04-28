@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.teams.mapper.ProductGxWlMapper">
+    <!-- 查询已设计完工序的产品信息 -->
+    <select id="productGxWl" resultType="M_design_procedure">
+    select * from m_design_procedure 
+    where check_tag = '审核通过' and design_module_tag = '未设计'
+    </select>
+    
+    <!-- 查询设计完产品工序的工序信息 -->
+    <select id="productGxMx" resultType="M_design_procedure_details">
+    select a.*,b.name from m_design_procedure_details a,m_gonxu b,
+    m_design_procedure c where a.parent_id = c.design_id and a.procedure_id
+    = b.id and c.check_tag = '审核通过'
+    </select>
+    
+    <!-- 根据产品编号查询设计完产品工序所需的物料信息 -->
+    <select id="productGxWlSj" resultType="D_module_details">
+    select * from d_module_details where design_id in 
+    (select  design_id from d_module where product_id=#{product_id} and check_tag ='审核通过')
+    </select>
+    
+    <!-- 修改产品工序的设计字段 -->
+    <update id="updCpGx">
+    update m_design_procedure_details set module_subtotal=module_subtotal+#{module_subtotal},design_module_tag='已设计' 
+    where parent_id =#{design_id} 
+    and procedure_id in (select id from m_gonxu where name = #{gongxu_name})
+    </update>
+    
+     <!-- 修改产品工序的设计字段2 -->
+    <update id="updCpGx2">
+    update m_design_procedure_details set module_subtotal=0,design_module_tag='未设计' 
+    where parent_id =#{design_id} 
+    </update>
+    
+    <!-- 添加物料工序表 -->
+    <insert id="addGxWl">
+    insert into m_procedure_module values(null,#{design_id},
+    #{procedure_name},#{product_id},#{product_name},default,#{amount},#{amount_unit},#{cost_price},#{subtotal});
+    </insert>
+    
+    <!-- 修改物料明细表的数量 -->
+    <update id="updWlMx">
+    update d_module_details  set residual_amount=residual_amount-#{i}
+    where product_id=#{string} and design_id in 
+    (select  design_id from d_module where product_id=#{product_id} and check_tag ='审核通过')
+    </update>
+
+   <!-- 修改物料明细表的数量2 -->
+   <update id="updWlMx2">
+    update d_module_details  set residual_amount=residual_amount+#{amount}
+    where product_id=#{product_id} and design_id in 
+    (select  design_id from d_module where product_id=#{product_ids} and check_tag ='审核通过')
+    </update>
+
+    <!-- 根据工序单编号和名称查询工序物料 -->
+    <select id="selectGxWl" resultType="m_procedure_module">
+    select * from m_procedure_module
+    where design_id=#{design_id} and procedure_name =#{gongxu_name}
+    </select>
+    
+    <!-- 修改物料总成本 -->
+    <update id="updWlZcb">
+    update m_design_procedure set module_cost_price_sum=module_cost_price_sum+#{module_subtotal}
+    where design_id	 =#{design_id} 
+    </update>
+    
+     <!-- 修改物料总成本2 -->
+    <update id="updWlZcb2">
+    update m_design_procedure set module_cost_price_sum=0
+    where design_id	 =#{design_id} 
+    </update>
+    <!-- 修改产品工序表设计字段 -->
+    <update id="updGxWlSj">
+    update   m_design_procedure  set design_module_tag=#{design_module_tag}
+     where design_id = #{design_id}
+    </update>
+    
+    <!-- 修改产品表设计字段 -->
+    <update id="productGxSj">
+    update d_file set design_procedure_tag =#{design_module_tag}
+    where product_id =#{product_id}
+    </update>
+    
+    <!-- 查询已设计完物料工序的产品 -->
+     <select id="productGxWlSh" resultType="M_design_procedure">
+    select * from m_design_procedure 
+    where check_tag = '审核通过' and design_module_tag = '已设计'
+    </select>
+    
+    <!-- 修改产品工序为已审核 -->
+    <update id="updateGxWlSh">
+     update   m_design_procedure  set design_module_tag='已审核'  where design_id = #{design_id}
+    </update>
+    
+    <!-- //删除工序物料表 -->
+    <delete id="delete">
+    delete from m_procedure_module where design_id = #{design_id}
+    </delete>
+    
+    <!-- 查询所有工序 -->
+    <select id="cxsygx" resultType="M_procedure_module">
+    select * from m_procedure_module where design_id = #{design_id}
+    </select>
+  </mapper>
