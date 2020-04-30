@@ -46,6 +46,7 @@ public class UserController {
 		return 100+batchno+num;
 	}
 	
+	
 	/*
 	 *  * 登录逻辑处理
 	 * */

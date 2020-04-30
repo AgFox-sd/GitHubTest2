@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.teams.mapper.LidongMapper">
+     
+     <!-- 添加产品  查询符合条件的产品 -->
+     <select id="selectcp" resultType="D_file">
+        select a.*,c.tname from d_file a,type c
+        where a.tid=c.tid and 
+        a.tid=1 and 
+        a.design_procedure_tag=#{design_procedure_tag}
+     </select>
+     
+     <!-- 添加产品  查询选中的产品信息 -->
+     <select id="selectcpxx" resultType="D_file">
+        select a.*,c.tname from d_file a,type c
+        where a.tid=c.tid and 
+        a.tid=1 and 
+        a.product_id=#{product_id}
+     </select>
+     
+     <!-- 添加生产计划 -->
+     <insert id="addSc">
+         insert into m_apply(id,apply_id,remark,subtotal,register,register_time,check_tag) 
+         values(null,#{apply_id},#{remark},#{subtotal},#{register},now(),#{check_tag})
+     </insert>  
+     
+     <!-- 添加生产计划产品明细 -->
+     <insert id="addScmx">
+         insert into m_apply_mx(id,apply_id,product_id,product_name,product_describe,amount,personal_unit,real_cost_price,manufacture_tag) 
+         values(null,#{apply_id},#{product_id},#{product_name},#{product_describe},#{amount},#{personal_unit},#{real_cost_price},#{manufacture_tag})
+     </insert>
+     
+     <!-- 查询生产计划明细 -->
+     <select id="selectscmx" resultType="m_apply_mx">
+        select * from m_apply_mx where apply_id=#{apply_id}
+     </select>
+     
+     <!--查询所有等待审核的生产计划 -->
+     <select id="selectShcx" resultType="m_apply">
+        select * from m_apply where check_tag=#{check_tag}
+     </select>
+     
+     <!-- 查询所有等待审核的生产计划总数 -->
+     <select id="selectShcxsum" resultType="int">
+        select count(1) from m_apply where check_tag=#{check_tag}
+     </select>
+     
+     <!-- 生产计划审核通过 -->
+     <update id="updShjh">
+        update m_apply set checker=#{checker},check_suggestion=#{check_suggestion},check_time=now(),check_tag=#{check_tag}
+        where apply_id=#{apply_id}
+     </update>
+     
+     <!-- 生产计划审核不通过 -->
+     <delete id="delShjh">
+        delete from m_apply where apply_id=#{apply_id}
+     </delete>
+     
+     <!-- 生产计划审核不通过 -->
+     <delete id="delShjhmx">
+        delete from m_apply_mx where apply_id=#{apply_id}
+     </delete>
+     
+     <!-- 查询所有生产计划 -->
+     <select id="selectShjh" resultType="m_apply">
+        select * from m_apply
+     </select>
+     
+     
+     
+     
+     
+  </mapper>

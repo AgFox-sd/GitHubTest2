@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>生产计划单审核</title>
+<link rel="icon" href="favicon.ico" type="image/ico">
+<meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
+<meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="author" content="yinqi">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/materialdesignicons.min.css" rel="stylesheet">
+<link href="css/style.min.css" rel="stylesheet">
+<script type="text/javascript" src="js/axios.min.js"></script>
+<script type="text/javascript"   src="js/vue-2.4.0.js"></script>
+</head>
+  
+<body>
+<div id="app">
+<div class="lyear-layout-web">
+  <div class="lyear-layout-container">
+    
+    <header class="lyear-layout-header" style="margin-left: -18%;">
+      
+      <nav class="navbar navbar-default">
+        <div class="topbar">
+          
+          <div class="topbar-left">
+            <div class="lyear-aside-toggler">
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+            </div>
+            <span class="navbar-page-title">生产管理 -生产计划-生产计划查询</span>
+            <span style="margin-left: 500px;color: yellow;">等待审核生产计划总数:</span>
+            <span style="margin-left: 5px;color: yellow;">{{ddshsum}}</span>
+            <span style="margin-left: 20px;color: red">通过审核生产计划总数:</span>
+            <span style="margin-left: 5px;color: red">{{tgfynum}}</span>
+          </div>
+        </div>
+      </nav>
+      
+    </header>
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      
+      <div class="container-fluid">
+        
+        <div class="row">
+          <div class="col-lg-12" style="margin-left: -12%;margin-top: 0.5%;">
+            <div class="card">
+              <div class="card-toolbar clearfix">
+                <form class="pull-right search-bar" method="get" action="#!" role="form">
+                  <div class="input-group">
+                    <div class="input-group-btn">
+                      <input type="hidden" name="search_field" id="search-field" value="title">
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="card-body">
+              <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>生产计划编号</th>
+					    <th>登记人</th>
+						<th>登记时间</th>
+						<th>审核人</th>
+						<th>审核时间</th>
+						<th>计划单状态</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+					<tr v-for="(scjh,index) in scjhlist" :key="index">
+					    <td>
+					       <a style="cursor: pointer;" data-toggle="modal" data-target="#modal1" @click="ck(scjh.apply_id,scjh.register,scjh.checker,scjh.check_time,scjh.subtotal)">{{scjh.apply_id}}</a>
+					    </td>
+					    <td>{{scjh.register}}</td>
+					    <td>{{scjh.register_time}}</td>
+						<td>{{scjh.checker}}</td>
+						<td>{{scjh.check_time}}</td>
+						<td>{{scjh.check_tag}}</td>
+					</tr>
+				</tbody>
+		
+                  </table>
+              </div>
+              
+              <!-- 计划单明细模态框开始 -->
+		      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal1">
+                  <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 style="margin-left: 360px" class="modal-title" id="myLargeModalLabel">生产计划单</h4>
+                      </div>
+                      <div class="modal-body">
+                    	 <form action="#" method="post">
+							  <div class="form-group">
+							    <label for="message-text" class="control-label">计划单编号:</label>
+					            <span style="margin-left: 10px;color: red">{{apply_id}}</span>
+					            <label for="message-text" class="control-label" style="margin-left: 300px;">登记人:</label>
+					            <span id="shr" style="margin-left: 10px;color: red">{{register}}</span>
+					          </div>
+					          <div class="form-group">
+					   <table class="table table-bordered" >
+	                    <thead>
+	                      <tr>
+	                        <th>产品编号</th>
+	                        <th>产品名称</th>
+	                        <th>描述</th>
+	                        <th>数量</th>
+	                        <th>单位</th>
+	                        <th>单价(元)</th>
+	                        <th>单位(元)</th>
+	                      </tr>
+	                    </thead>
+	                    <tbody>
+	                      <tr v-for="(scjhmx,index) in scjhmxlist" :key="index">
+                       			<td>{{scjhmx.product_id}}</td>
+                        		<td>{{scjhmx.product_name}}</td>
+                       			<td>{{scjhmx.product_describe}}</td>
+                       			<td>{{scjhmx.amount}}</td>
+                       			<td>{{scjhmx.personal_unit}}</td>
+                       			<td>{{scjhmx.real_cost_price | moneyFormat(2)}}</td>
+                       			<td>{{scjhmx.real_cost_price*scjhmx.amount | moneyFormat(2)}}</td>
+	                      </tr>
+	                    </tbody>
+	                  </table>
+					             
+					      </div>
+					          <div class="form-group" style="margin-top: 20px">
+					            <label for="message-text" class="control-label" style="margin-left: 3px" >审核人:</label>
+					            <span style="margin-left: 10px;color: red">{{checker}}</span>		            
+					            <label for="message-text" class="control-label" style="margin-left: 450px">审核时间:</label>
+					            <span id="shr" style="margin-left: 10px;color: red">{{check_time}}</span>
+					          </div>
+					          <div class="form-group" style="margin-top: 20px">
+					            <label for="message-text" class="control-label" style="margin-left: 3px" >计划总成本(元):</label>
+					            <span style="margin-left: 10px;color: red">{{subtotal}}</span>		            
+					          </div>
+		                </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+		      <!-- 计划单明细模态框开始 -->
+                
+                
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+      
+    </main>
+    <!--End 页面主要内容-->
+  </div>
+</div>
+</div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+
+<script>
+      Vue.filter('moneyFormat',function(money,length){
+	    return money.toFixed(length)
+      })
+      var vm=new Vue({
+    	  el:'#app',
+    	  data:{
+    		  scjhlist:[],  //生产计划单list
+    		  scjhmxlist:[], //生产计划明细list
+    		  ddshsum:'', //等待审核总数
+    		  tgfynum:'', //通过审核总数
+    		  apply_id:'', //生产计划编号
+    		  register:'', //登记人
+    		  checker:'', //审核人
+    		  check_time:'',//审核时间
+    		  subtotal:'', //计划总成本
+    		  
+    	  },
+    	  mounted(){//页面挂载完成调用查询全部的方法
+				this.load();
+    	        this.load2();
+    	        this.load3();
+		  },
+		  methods:{
+			  load:function(){//查询所有生产计划单
+				  axios.get('GetShjh').then(res=>{
+							this.scjhlist=res.data;
+				  }).catch(err=>{
+						alert('请求失败')
+				  })
+			  },
+			  load2:function(){  //查询所有等待审核的生产计划单总数
+				  var check_tag="等待审核";
+				  axios.get('productShcxsum?check_tag='+check_tag+'').then(res=>{
+						this.ddshsum=res.data;
+			  }).catch(err=>{
+					alert('请求失败')
+			  })
+			  },
+			  load3:function(){  //查询所有通过审核的生产计划单总数
+				  var check_tag="审核通过";
+				  axios.get('productShcxsum?check_tag='+check_tag+'').then(res=>{
+						this.tgfynum=res.data;
+			  }).catch(err=>{
+					alert('请求失败')
+			  })
+			  },
+			  load4:function(){ //查询生产计划明细
+				  axios.get('productScmx?apply_id='+this.apply_id+'').then(res=>{
+			    	  this.scjhmxlist=res.data;
+			      }).catch(err=>{
+			    	  alert('请求失败')
+			      })
+			  },
+			  ck:function(apply_id,register,checker,check_time,subtotal){ 
+				  this.apply_id=apply_id;this.register=register;this.checker=checker;this.check_time=check_time;this.subtotal=subtotal;
+			      this.load4();
+			  },
+			  
+				  
+				  
+				  
+			  }
+			  
+      
+      }) 
+
+   </script>
+
+</body>
+</html>
