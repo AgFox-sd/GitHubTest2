@@ -64,15 +64,14 @@ public class ProductGxWlController {
 	@RequestMapping("/updGxWlSj")
 	@ResponseBody
 	public int updGxWlSj(String design_id) {
-		service.productGxSj("已设计",design_id);
 		return service.updGxWlSj("已设计",design_id);
 	}
 	
 	//修改产品工序表为已审核
 	@RequestMapping("/updateGxWlSh")
 	@ResponseBody
-	public int updateGxWlSh(String design_id) {
-		System.out.println(design_id+"s");
+	public int updateGxWlSh(String design_id,String real_cost_price) {
+		service.productGxSj("已设计",real_cost_price,design_id);
 		return service.updateGxWlSh(design_id);
 	}
 	
@@ -104,7 +103,6 @@ public class ProductGxWlController {
 	@ResponseBody
 	public  int updateSySj(String design_id,int[] sl,String[] wlbh,String product_id) {
 	service.updWlZcb2(design_id);
-	service.productGxSj("未设计",product_id);
 	service.updCpGx2(design_id);
 	service.delete(design_id);
 		for (int i = 0; i < wlbh.length; i++) {

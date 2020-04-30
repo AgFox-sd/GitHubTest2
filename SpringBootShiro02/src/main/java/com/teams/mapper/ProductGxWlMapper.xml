@@ -81,8 +81,8 @@
     
     <!-- 修改产品表设计字段 -->
     <update id="productGxSj">
-    update d_file set design_procedure_tag =#{design_module_tag}
-    where product_id =#{product_id}
+    update d_file set design_procedure_tag =#{design_module_tag},real_cost_price=#{real_cost_price}
+    where product_id in (select product_id from m_design_procedure where design_id = #{design_id})
     </update>
     
     <!-- 查询已设计完物料工序的产品 -->

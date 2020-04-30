@@ -316,9 +316,10 @@
 					QueRen(){	
 						$("#box1").toggle();
 						$("#box2").toggle();
+						var dj = this.module_cost_price_sum+this.cost_price_sum;
 						 var s=$("input[name=hh]:checked").val(); //单选按钮
 						  if(s=="通过"){
-							 axios.get("updateGxWlSh?design_id="+this.design_id+"").then(res=>{
+							 axios.get("updateGxWlSh?design_id="+this.design_id+"&real_cost_price="+dj+"").then(res=>{
 								 if(res.data>0){
 									 alert('审核成功')
 									 this.Selad();

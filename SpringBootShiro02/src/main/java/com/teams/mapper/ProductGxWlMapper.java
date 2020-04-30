@@ -38,7 +38,7 @@ public interface ProductGxWlMapper {
 	public int updGxWlSj(String design_module_tag,String design_id);
 
 	//修改产品表为已设计
-	public void productGxSj(String design_module_tag,String product_id);
+	public void productGxSj(String design_module_tag,String real_cost_price,String design_id);
 
 	//查询已设计完物料工序的产品
 	public List<M_design_procedure> productGxWlSh(String design_module_tag);

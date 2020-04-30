@@ -75,8 +75,8 @@ public class ProductGxWlServiceImpl implements ProductGxWlService {
 	
 	//修改产品表为已设计
 	@Override
-	public void productGxSj(String design_id,String design_module_tag) {
-		mapper.productGxSj(design_id,design_module_tag);
+	public void productGxSj(String design_module_tag,String real_cost_price,String design_id) {
+		mapper.productGxSj(design_module_tag,real_cost_price,design_id);
 	}
 
 	@Override
