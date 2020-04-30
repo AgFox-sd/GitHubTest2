@@ -31,8 +31,8 @@ public class ProductGxWlController {
 	//查询设计完产品工序的工序信息
 	@RequestMapping("/productGxMx")
 	@ResponseBody
-	public List<M_design_procedure_details> productGxMx(){
-		List<M_design_procedure_details>  list = service.productGxMx();
+	public List<M_design_procedure_details> productGxMx(String product_id){
+		List<M_design_procedure_details>  list = service.productGxMx(product_id);
 		return  list;
 	}
 	
@@ -80,7 +80,15 @@ public class ProductGxWlController {
 	@RequestMapping("/productGxWlSh")
 	@ResponseBody
 	public List<M_design_procedure> productGxWlSh(){
-		List<M_design_procedure> list = service.productGxWlSh();
+		List<M_design_procedure> list = service.productGxWlSh("已设计");
+		return list;
+	}
+	
+	//查询已设计或已审核的产品
+	@RequestMapping("/productGxWlCx")
+	@ResponseBody
+	public List<M_design_procedure> productGxWlCx(){
+		List<M_design_procedure> list = service.productGxWlCx();
 		return list;
 	}
 	
@@ -111,5 +119,13 @@ public class ProductGxWlController {
 	@ResponseBody
 	public List<m_procedure_module> cxsygx(String design_id){
 		return service.cxsygx(design_id);
+	}
+	
+	//查询已审核的产品信息
+	@RequestMapping("/productGxWlSh2")
+	@ResponseBody
+	public List<M_design_procedure> productGxWlSh2(){
+		List<M_design_procedure> list = service.productGxWlSh("已审核");
+		return list;
 	}
 }

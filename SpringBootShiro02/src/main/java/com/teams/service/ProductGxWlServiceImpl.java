@@ -27,8 +27,8 @@ public class ProductGxWlServiceImpl implements ProductGxWlService {
 	
 	//查询设计完产品工序的工序信息
 	@Override
-	public List<M_design_procedure_details> productGxMx() {
-		return mapper.productGxMx();
+	public List<M_design_procedure_details> productGxMx(String product_id) {
+		return mapper.productGxMx(product_id);
 	}
 	
 	//根据产品编号查询设计完产品工序所需的物料信息
@@ -80,8 +80,8 @@ public class ProductGxWlServiceImpl implements ProductGxWlService {
 	}
 
 	@Override
-	public List<M_design_procedure> productGxWlSh() {
-		return mapper.productGxWlSh();
+	public List<M_design_procedure> productGxWlSh(String design_module_tag) {
+		return mapper.productGxWlSh(design_module_tag);
 	}
 
 	//修改产品工序表为已审核
@@ -115,5 +115,12 @@ public class ProductGxWlServiceImpl implements ProductGxWlService {
 	@Override
 	public List<m_procedure_module> cxsygx(String design_id) {
 		return mapper.cxsygx(design_id);
+	}
+
+	
+	//查询已设计或已审核的产品
+	@Override
+	public List<M_design_procedure> productGxWlCx() {
+		return mapper.productGxWlCx();
 	}
 }

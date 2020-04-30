@@ -14,7 +14,7 @@
     <select id="productGxMx" resultType="M_design_procedure_details">
     select a.*,b.name from m_design_procedure_details a,m_gonxu b,
     m_design_procedure c where a.parent_id = c.design_id and a.procedure_id
-    = b.id and c.check_tag = '审核通过'
+    = b.id and c.check_tag = '审核通过' and c.product_id=#{product_id}
     </select>
     
     <!-- 根据产品编号查询设计完产品工序所需的物料信息 -->
@@ -88,7 +88,7 @@
     <!-- 查询已设计完物料工序的产品 -->
      <select id="productGxWlSh" resultType="M_design_procedure">
     select * from m_design_procedure 
-    where check_tag = '审核通过' and design_module_tag = '已设计'
+    where check_tag = '审核通过' and design_module_tag = #{design_module_tag}
     </select>
     
     <!-- 修改产品工序为已审核 -->
@@ -104,5 +104,11 @@
     <!-- 查询所有工序 -->
     <select id="cxsygx" resultType="M_procedure_module">
     select * from m_procedure_module where design_id = #{design_id}
+    </select>
+    
+    <!-- 查询已审核或已设计的产品 -->
+     <select id="productGxWlCx" resultType="M_design_procedure">
+    select * from m_design_procedure 
+    where check_tag = '审核通过' and design_module_tag != '未设计'
     </select>
   </mapper>
