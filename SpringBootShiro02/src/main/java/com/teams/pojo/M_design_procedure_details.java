@@ -2,7 +2,7 @@ package com.teams.pojo;
 //产品工序明细表
 public class M_design_procedure_details {
 	  private int id;//序号
-	  private int parent_id;//m_design_procedure序号
+	  private String parent_id;//m_design_procedure序号
 	  private String procedure_id;//工序编号
 	  private double labour_hour_amount;//工时数
 	  private String procedure_describe;//工序描述
@@ -19,7 +19,7 @@ public class M_design_procedure_details {
 	public M_design_procedure_details() {
 		super();
 	}
-	public M_design_procedure_details(int id, int parent_id, String procedure_id, double labour_hour_amount,
+	public M_design_procedure_details(int id, String parent_id, String procedure_id, double labour_hour_amount,
 			String procedure_describe, String amount_unit, double cost_price, double subtotal, double module_subtotal,
 			String register, String register_time, String design_module_tag, String design_module_change_tag,String name) {
 		super();
@@ -44,10 +44,10 @@ public class M_design_procedure_details {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getParent_id() {
+	public String getParent_id() {
 		return parent_id;
 	}
-	public void setParent_id(int parent_id) {
+	public void setParent_id(String parent_id) {
 		this.parent_id = parent_id;
 	}
 	public String getProcedure_id() {
