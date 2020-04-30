@@ -134,11 +134,7 @@ public class m_apply_mx {
 
 	public void setCheck_time(String check_time) {
 		this.check_time = check_time;
-	}
-
-
-	
-	
+	}	
 	
 	
 	
