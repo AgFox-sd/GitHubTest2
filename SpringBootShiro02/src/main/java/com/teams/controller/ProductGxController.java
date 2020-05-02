@@ -85,9 +85,9 @@ public class ProductGxController {
 	    @RequestMapping("/delgxsj")
 	    @ResponseBody
 	    public int delgxsj(@RequestParam("design_id")String design_id) {
+	    	service.updGx("未设计",design_id);
 	    	int row=service.delgxsj(design_id);
-	    	int row1=service.delgxsjs(design_id);
-	    	System.out.println("进入delgxsj");
+	    	service.delgxsjs(design_id);
 	    	return row;
 	    } 
 	    

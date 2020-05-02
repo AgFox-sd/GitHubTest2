@@ -84,6 +84,10 @@ public class ProductGxServicImpl implements ProductGxService{
 		// TODO Auto-generated method stub
 		return mapper.delgxbg(parent_id);
 	}
+	@Override
+	public int updGx(String design_procedure_tag,String design_id) {
+	  return  mapper.updGx(design_procedure_tag,design_id);
+	}
 
 
 }

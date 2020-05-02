@@ -36,4 +36,5 @@ public interface ProductGxService {
 	    int updbg(@Param("cost_price_sum")double cost_price_sum,@Param("design_id")String design_id);
 
 	    int delgxbg(@Param("parent_id")String parent_id);
+		int updGx(String design_procedure_tag,String design_id);
 }
