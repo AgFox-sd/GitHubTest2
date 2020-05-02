@@ -76,10 +76,9 @@ public class ProductGxController {
 	    
 	    @RequestMapping("/updsjd")
 	    @ResponseBody
-	    public int updsjd(@RequestParam("check_tag")String check_tag,@RequestParam("design_id")String design_id,@RequestParam("product_id")String product_id) {
-	    	int row=service.updsjd(check_tag, design_id);
+	    public int updsjd(@RequestParam("check_tag")String check_tag,@RequestParam("design_id")String design_id,@RequestParam("product_id")String product_id,@RequestParam("checker")String checker) {
+	    	int row=service.updsjd(check_tag,checker, design_id);
 	    	int row1=service.updsj("已审核", product_id);
-	    	System.out.println("进入updsjd");
 	    	return row;
 	    }
 	    

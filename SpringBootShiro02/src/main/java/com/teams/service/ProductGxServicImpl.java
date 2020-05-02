@@ -55,9 +55,9 @@ public class ProductGxServicImpl implements ProductGxService{
 		return mapper.selectcpmxb(parent_id);
 	}
 	@Override
-	public int updsjd(String check_tag, String design_id) {
+	public int updsjd(String check_tag,String checker, String design_id) {
 		// TODO Auto-generated method stub
-		return mapper.updsjd(check_tag, design_id);
+		return mapper.updsjd(check_tag,checker, design_id);
 	}
 	@Override
 	public int delgxsj(String design_id) {

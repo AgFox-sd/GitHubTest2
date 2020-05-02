@@ -58,7 +58,7 @@
                 </form>
               </div>
               <div class="card-body">
-              <div class="table-responsive">
+              <div class="table-responsive" id="box1">
                   <table class="table table-hover">
                     <thead>
                       <tr>
@@ -73,21 +73,146 @@
                       </tr>
                     </thead>
                     <tbody>
-					<tr v-for="(cx,index) in list" :key="index">
-					    <td>{{cx.pg_id}}</td>
-					    <td>{{cx.product_id}}</td>
-					    <td>{{cx.product_name}}</td>
-						<td>{{cx.amount}}</td>
+					<tr v-for="(sh,index) in list" :key="index">
+					    <td style="color:red;" @click="gosh(sh.pg_id,sh.product_id,sh.product_name,sh.amount,sh.pg_time,sh.jhdbh,sh.pg_ren)">{{sh.pg_id}}</td>
+					    <td>{{sh.product_id}}</td>
+					    <td>{{sh.product_name}}</td>
+						<td>{{sh.amount}}</td>
 						<td>生产中</td>
 						<td>执行</td>
-						<td>{{cx.check_tag}}</td>
+						<td>{{sh.check_tag}}</td>
 						<td>等待</td>
 					</tr>
 				</tbody>
 		
                   </table>
               </div>
-              
+        
+                       <!-- box2开始 -->
+        <div class="btn-group" id="box2" style="display:none">
+       			    <div>
+          				<p style="margin-left: 440px;margin-top: 10px;font-size: 25px;">生产派工单</p>
+       				</div>
+  					<div class="example-box" style="margin-left: 610px">
+                	</div>
+   					<div class="form-group" style="margin-left: 200px;margin-top: 20px">
+						  <label for="message-text" class="control-label">派工单编号:</label>
+					      <span style="margin-left: 10px;">{{pg_id}}</span>
+					</div>
+					<div class="form-group">
+					      <label for="message-text" class="control-label" style="margin-left: 200px">产品编号:</label>
+					      <span style="margin-left: 10px;">{{product_id}}</span>
+					      <label for="message-text" class="control-label" style="margin-left: 200px">产品名称:</label>
+					      <span style="margin-left: 10px;">{{product_name}}</span>
+					</div>
+					<div class="form-group" >
+					      <label for="message-text" class="control-label" style="margin-left: 200px">数量:</label>
+					      <span style="margin-left: 10px;">{{amount}}</span>
+					      <label for="message-text" class="control-label" style="margin-left: 360px">工单制定人:</label>
+					      <span style="margin-left: 10px;">{{pg_ren}}</span>
+					</div>
+					<div class="form-group" style="margin-left: 150px">
+						  <table class="table table-hover" >
+				                  <thead>
+				                     <tr>
+				                        <th>序号</th>
+				                        <th>工序名称</th>
+				                        <th>工序编号</th>
+				                        <th>工序描述</th>
+				                        <th>工时数(小时)</th>
+				                        <th>工时成本小计(元)</th>
+				                        <th>物料成本小计</th>
+				                        <th>查看物料</th>
+				                      </tr>
+				                    </thead>
+				                    <tbody>
+				                    <tr v-for="gx in gxlist">
+					                    <td>{{gx.id}}</td>
+				                        <td>{{gx.name}}</td>
+				                       	<td>{{gx.procedure_id}}</td>
+				                        <td>{{gx.procedure_describe}}</td>
+				                        <td>{{gx.labour_hour_amount}}</td>
+				                        <td>{{gx.subtotal}}</td>
+				                        <td>{{gx.module_subtotal}}</td>
+				                        <td>
+				                        <a type="button" class="btn btn-pink  btn-xs"  data-toggle="modal" data-target=".bs-example-modal-lg" 
+				                         @click="ckwl(gx.parent_id,gx.name,gx.subtotal,gx.module_subtotal)">查看物料</a>
+				                        </td>
+				                     </tr>
+				                    </tbody>
+				                  </table>
+					      </div>
+					      <div class="form-group" style="margin-top: 20px">
+					           	<label for="message-text" class="control-label" style="margin-left: 200px" >工时总成本:</label>
+					            <span style="margin-left: 10px;" th:text="${session.gscb}"></span>	
+					            <label for="message-text" class="control-label" style="margin-left: 340px" >物料总成本:</label>
+					            <span style="margin-left: 10px;" th:text="${session.wlcb}"></span>		            
+					      </div>
+					      <div class="form-group" style="margin-top: 20px">
+					         	<label for="message-text" class="control-label" style="margin-left: 200px">登记人:</label>
+					            <span id="shr" style="margin-left: 10px;color: red" th:text="${session.username}"></span>
+					            <label for="message-text" class="control-label" style="margin-left: 370px">审核人:</label>
+					            <span id="shr" style="margin-left: 10px;color: red" th:text="${session.username}"></span>
+					    </div>
+					    <button type="button" class="btn btn-primary" style="margin-left: 730px" 
+		            	@click="Queren()">
+		                                                 确认
+		                </button>
+		<!-- 模态框开始 -->
+                  <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                  <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" id="myLargeModalLabel" style="margin-left: 380px">工序物料单</h4>
+                      </div>
+                      <div class="modal-body">
+                      <div class="form-group" style="margin-left: 200px">
+						<label for="message-text" class="control-label" >设计单编号:</label>
+						<span>{{sjdbh}}</span>
+						<label for="message-text" class="control-label" style="margin-left: 200px" >工序名称:</label>
+						<span>{{gxmc}}</span>
+		         	 </div>
+                    <form action="#" method="post">
+					   <div style="margin-left: 10px">
+			           <table class="table table-hover" >
+	                    <thead>
+	                      <tr>
+	                        <th>序号</th>
+	                        <th>物料名称</th>
+	                        <th>物料编号</th>
+	                        <th>描述</th>
+	                        <th>本工序数量</th>
+	                        <th>单位</th>
+	                        <th>单价(元)</th>
+	                        <th>小计(元)</th>
+	                      </tr>
+	                    </thead>
+	                    <tbody>
+	                      <tr v-for="wl in wllist">
+			            	<th>{{wl.id}}</th>
+	                        <th>{{wl.product_name}}</th>
+	                        <th>{{wl.product_id}}</th>
+	                        <th>{{wl.product_describe}}</th>
+	                        <th>{{wl.amount}}</th>
+	                        <th>{{wl.amount_unit}}</th>
+	                        <th>{{wl.cost_price}}</th>
+	                        <th>{{wl.subtotal}}</th>
+	                      </tr>
+	                    </tbody>
+	                  </table>
+	                  </div>  
+		        		</form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                      </div>
+                    </div>
+                  </div>
+                </div> 
+                <!-- 模态框结束 -->
+        </div>
+        <!-- box2结束 -->       
              
                 
               </div>
@@ -117,6 +242,19 @@
     	  data:{
     		  list:[],
     		  ddshsum:'', //等待审核总数
+    		  id:'',
+    		  product_id:'',
+    		  product_name:'',
+    		  amount:'',
+    		  pg_time:'',
+    		  gxlist:[],
+    		  wllist:[],
+    		  sjdbh:'',
+			  gxmc:'',
+			  gscb:'',//工时总成本
+			  wlcb:'' ,     //物料总成本
+			  apply_id:'',
+			  pg_ren:''
     	  },
     	  mounted(){//页面挂载完成调用查询全部的方法
 				this.load();
@@ -137,7 +275,43 @@
 						console.log("请求失败");
 				 });
 			  },
-			  
+			  gosh:function(id,product_id,product_name,amount,pg_time,apply_id,pg_ren){ 
+				  this.pg_id=id;this.product_id=product_id;this.product_name=product_name;
+				  this.product_name=product_name;this.amount=amount;this.pg_time=pg_time;
+				  this.apply_id=apply_id;this.pg_ren=pg_ren;
+			      //this.load3();
+			      
+				  //盒子切换
+				  $("#box1").toggle();
+				  $("#box2").toggle();
+				  
+				  this.Prt();//查工序
+					
+			  },
+			  Prt(){
+					axios.get("Prt?product_id="+this.product_id+"").then(res=>{
+						this.gxlist=res.data;
+					}).catch(err=>{
+						console.log("请求失败");
+					});
+					
+				},
+				ckwl(id,name,gscb,wlcb){
+					this.sjdbh=id;
+					this.gxmc=name;
+					this.subtotal=gscb;
+				    this.module_subtotal=wlcb;
+					axios.get("SelWL?design_id="+id+"&name="+name+"").then(res=>{
+						this.wllist=res.data;
+					}).catch(err=>{
+						console.log("请求失败");
+					});
+					
+				},
+				Queren(){//点击确认
+				    $("#box1").toggle();
+					$("#box2").toggle();
+						  }
     	  }
       
       }) 

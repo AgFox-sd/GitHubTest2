@@ -37,7 +37,7 @@ INSERT INTO m_design_procedure_details VALUES(NULL,#{parent_id},#{procedure_id},
 	</select>
 	<!-- 审核通过修改 -->
 	<update id="updsjd">
-	update M_design_procedure set check_tag =#{check_tag} 
+	update M_design_procedure set check_tag =#{check_tag},checker=#{checker},check_time=sysdate()
             where design_id =#{design_id}
 	</update>
 	<!-- 审核不通过删除工序表 -->

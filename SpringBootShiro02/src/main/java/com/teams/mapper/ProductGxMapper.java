@@ -28,7 +28,7 @@ public interface ProductGxMapper {
     
 	List<M_design_procedure_details> selectcpmxb(@Param("parent_id")String parent_id);
 
-    int updsjd(@Param("check_tag")String check_tag,@Param("design_id")String design_id);
+    int updsjd(@Param("check_tag")String check_tag,@Param("checker") String checker,@Param("design_id")String design_id);
     
     int delgxsj(@Param("design_id")String design_id);
     

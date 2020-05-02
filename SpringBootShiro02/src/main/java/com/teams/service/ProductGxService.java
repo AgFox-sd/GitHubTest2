@@ -25,7 +25,7 @@ public interface ProductGxService {
 
 		List<M_design_procedure_details> selectcpmxb(String parent_id);
 
-	    int updsjd(String check_tag,String design_id);
+	    int updsjd(String check_tag,String checker,String design_id);
 
 	    int delgxsj(String design_id);
 	    
