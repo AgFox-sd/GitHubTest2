@@ -48,6 +48,7 @@ public class LidongController {
 	@ResponseBody
 	public int addSc(@RequestParam("apply_id")String apply_id,@RequestParam("remark")String remark,@RequestParam("subtotal")Double subtotal,@RequestParam("register")String register,@RequestParam("check_tag")String check_tag,@RequestParam("manufacture_tag")String manufacture_tag,
 			@RequestParam("product_id")String [] product_id,@RequestParam("product_name")String [] product_name,@RequestParam("product_describe")String [] product_describe,@RequestParam("amount")Integer [] amount,@RequestParam("personal_unit")String [] personal_unit,@RequestParam("real_cost_price")Double [] real_cost_price){
+		System.out.println(product_id.length);
 		for (int i = 0; i < product_id.length; i++) {
 			service.addScmx(apply_id,product_id[i],product_name[i],product_describe[i],amount[i],personal_unit[i],real_cost_price[i],manufacture_tag);
 		}
