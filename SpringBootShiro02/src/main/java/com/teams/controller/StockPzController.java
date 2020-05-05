@@ -58,6 +58,13 @@ public class StockPzController {
 		return service.selectAll(check_tag);
 	}
 	
+	//查询可变更的配置单总数
+	@RequestMapping("selectAllKbg")
+	@ResponseBody
+	public int selectAllKbg(){
+		String check_tag="审核通过";
+		return service.selectAllKbg(check_tag);
+	}
 	//查询所有未审核或审核通过的配置单数量
 	@RequestMapping("selectAllCount")
 	@ResponseBody

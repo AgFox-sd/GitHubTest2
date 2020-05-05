@@ -11,24 +11,14 @@ public class m_procedure_module {
 	private  String   amount_unit;//单位
 	private  double  cost_price;//物料单价
 	private  double  subtotal;//物料成本小计
+	
+	private int amount_num;//本次工序实际使用数量
 	public m_procedure_module() {
 		super();
 	}
-	
-	public m_procedure_module(String design_id, String procedure_name, String product_id, String product_name, int amount, String amount_unit, double cost_price, double subtotal) {
-		super();
-		this.design_id = design_id;
-		this.procedure_name = procedure_name;
-		this.product_id = product_id;
-		this.product_name = product_name;
-		this.amount = amount;
-		this.amount_unit = amount_unit;
-		this.cost_price = cost_price;
-		this.subtotal = subtotal;
-	}
-
 	public m_procedure_module(int id, String design_id, String procedure_name, String product_id, String product_name,
-			String product_describe, int amount, String amount_unit, double cost_price, double subtotal) {
+			String product_describe, int amount, String amount_unit, double cost_price, double subtotal,
+			int amount_num) {
 		super();
 		this.id = id;
 		this.design_id = design_id;
@@ -40,6 +30,7 @@ public class m_procedure_module {
 		this.amount_unit = amount_unit;
 		this.cost_price = cost_price;
 		this.subtotal = subtotal;
+		this.amount_num = amount_num;
 	}
 	public int getId() {
 		return id;
@@ -101,4 +92,19 @@ public class m_procedure_module {
 	public void setSubtotal(double subtotal) {
 		this.subtotal = subtotal;
 	}
+	public int getAmount_num() {
+		return amount_num;
+	}
+	public void setAmount_num(int amount_num) {
+		this.amount_num = amount_num;
+	}
+	@Override
+	public String toString() {
+		return "m_procedure_module [id=" + id + ", design_id=" + design_id + ", procedure_name=" + procedure_name
+				+ ", product_id=" + product_id + ", product_name=" + product_name + ", product_describe="
+				+ product_describe + ", amount=" + amount + ", amount_unit=" + amount_unit + ", cost_price="
+				+ cost_price + ", subtotal=" + subtotal + ", amount_num=" + amount_num + "]";
+	}
+	
+	
 }

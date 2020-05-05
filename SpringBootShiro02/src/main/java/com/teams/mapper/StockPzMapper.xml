@@ -50,6 +50,11 @@
     select * from s_cell where check_tag=#{check_tag}
     </select>
     
+    <!-- 查询可变更的配置单总数-->
+    <select id="selectAllKbg" resultType="int">
+    select count(1) from s_cell where check_tag=#{check_tag}
+    </select>
+    
     <!-- 查询所有未审核或审核通过的库存配置信息数量 -->
     <select id="selectAllCount" resultType="int">
     select count(1) from s_cell where check_tag=#{check_tag}

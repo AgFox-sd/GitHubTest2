@@ -97,4 +97,10 @@ public class StockPzServiceImpl implements StockPzService{
 	public List<s_cell> selectSycount3() {
 		return mapper.selectSycount3();
 	}
+
+	//查询可变更的配置单总数
+	@Override
+	public int selectAllKbg(String check_tag) {
+		return mapper.selectAllKbg(check_tag);
+	}
 }

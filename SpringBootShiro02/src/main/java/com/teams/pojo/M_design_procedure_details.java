@@ -16,12 +16,18 @@ public class M_design_procedure_details {
 	  private String design_module_change_tag;//当前工序物料变更标志  D003-0: 未变更,D003-0: 已变更
 	  
 	  private String  name;//工序名称
+	  
+	  private double subtotal_sj;
+	  private String dj_jj;
+	  private String dj_sh;
+	  private String did;
 	public M_design_procedure_details() {
 		super();
 	}
 	public M_design_procedure_details(int id, String parent_id, String procedure_id, double labour_hour_amount,
 			String procedure_describe, String amount_unit, double cost_price, double subtotal, double module_subtotal,
-			String register, String register_time, String design_module_tag, String design_module_change_tag,String name) {
+			String register, String register_time, String design_module_tag, String design_module_change_tag,
+			String name, double subtotal_sj, String dj_jj, String dj_sh, String did) {
 		super();
 		this.id = id;
 		this.parent_id = parent_id;
@@ -37,6 +43,10 @@ public class M_design_procedure_details {
 		this.design_module_tag = design_module_tag;
 		this.design_module_change_tag = design_module_change_tag;
 		this.name = name;
+		this.subtotal_sj = subtotal_sj;
+		this.dj_jj = dj_jj;
+		this.dj_sh = dj_sh;
+		this.did = did;
 	}
 	public int getId() {
 		return id;
@@ -122,6 +132,40 @@ public class M_design_procedure_details {
 	public void setName(String name) {
 		this.name = name;
 	}
-	  
+	public double getSubtotal_sj() {
+		return subtotal_sj;
+	}
+	public void setSubtotal_sj(double subtotal_sj) {
+		this.subtotal_sj = subtotal_sj;
+	}
+	public String getDj_jj() {
+		return dj_jj;
+	}
+	public void setDj_jj(String dj_jj) {
+		this.dj_jj = dj_jj;
+	}
+	public String getDj_sh() {
+		return dj_sh;
+	}
+	public void setDj_sh(String dj_sh) {
+		this.dj_sh = dj_sh;
+	}
+	public String getDid() {
+		return did;
+	}
+	public void setDid(String did) {
+		this.did = did;
+	}
+	@Override
+	public String toString() {
+		return "M_design_procedure_details [id=" + id + ", parent_id=" + parent_id + ", procedure_id=" + procedure_id
+				+ ", labour_hour_amount=" + labour_hour_amount + ", procedure_describe=" + procedure_describe
+				+ ", amount_unit=" + amount_unit + ", cost_price=" + cost_price + ", subtotal=" + subtotal
+				+ ", module_subtotal=" + module_subtotal + ", register=" + register + ", register_time=" + register_time
+				+ ", design_module_tag=" + design_module_tag + ", design_module_change_tag=" + design_module_change_tag
+				+ ", name=" + name + ", subtotal_sj=" + subtotal_sj + ", dj_jj=" + dj_jj + ", dj_sh=" + dj_sh + ", did="
+				+ did + "]";
+	}
+
 	
 }

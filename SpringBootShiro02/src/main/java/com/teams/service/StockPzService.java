@@ -46,4 +46,7 @@ public interface StockPzService {
 
 	List<s_cell> selectSycount3();
 
+	//查询可变更的配置单总数
+	int selectAllKbg(String check_tag);
+
 }

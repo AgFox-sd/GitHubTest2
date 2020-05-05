@@ -46,4 +46,7 @@ public interface StockPzMapper {
 
 	public List<s_cell> selectSycount3();
 
+	//查询可变更的配置单总数
+	public int selectAllKbg(String check_tag);
+
 }
