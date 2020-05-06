@@ -96,7 +96,24 @@ public class StockDiaoduServiceImpl implements StockDiaoduService {
 		mapper.updZb1(paid_amount, pay_id);
 	}
 
+	@Override
+	public void updKc2(String paid_amount, String product_id) {
+		mapper.updKc2(paid_amount, product_id);
+	}
 
+	@Override
+	public int updDiaodu3(String paid_amount, String product_id,String pay_id) {
+		return mapper.updDiaodu3(paid_amount, product_id, pay_id);
+	}
+
+	@Override
+	public int updZdiaodu3(String attemper, String pay_id) {
+		return mapper.updZdiaodu3(attemper, pay_id);
+	}
+	@Override
+	public void updZb2(String paid_amount, String pay_id) {
+		mapper.updZb2(paid_amount, pay_id);
+	}
 	//修改入库表为已调度
 	@Override
 	public int updZdiaodu(String attemper,String gather_id) {
@@ -107,6 +124,16 @@ public class StockDiaoduServiceImpl implements StockDiaoduService {
 	@Override
 	public int updZdiaodu1(String attemper,String pay_id) {
 		return mapper.updZdiaodu1(attemper,pay_id);
+	}
+
+	@Override
+	public int updZdiaodu2(String attemper,String pay_id) {
+		return mapper.updZdiaodu2(attemper,pay_id);
+	}
+	
+	@Override
+	public int updDiaodu2(String product_id,String paid_amount,String pay_id) {
+		return mapper.updDiaodu2(product_id, paid_amount, pay_id);
 	}
 
 	@Override
@@ -128,7 +155,7 @@ public class StockDiaoduServiceImpl implements StockDiaoduService {
 	public int updDdu1(String attemper, String pay_id) {
 		return mapper.updDdu1(attemper, pay_id);
 	}
-
+	
 	@Override
 	public int selectoutStockcount1() {
 		return mapper.selectoutStockcount1();
@@ -149,6 +176,25 @@ public class StockDiaoduServiceImpl implements StockDiaoduService {
 		return mapper.selectoutStockcount4();
 	}
 
+	@Override
+	public int selectoutStockcount5() {
+		return mapper.selectoutStockcount5();
+	}
+
+	@Override
+	public int selectoutStockcount6() {
+		return mapper.selectoutStockcount6();
+	}
+	
+	@Override
+	public int selectoutStockcount7() {
+		return mapper.selectoutStockcount7();
+	}
+
+	@Override
+	public int selectoutStockcount8() {
+		return mapper.selectoutStockcount8();
+	}
 	//查询库存
 	@Override
 	public List<s_cell> selectscell() {
@@ -174,4 +220,40 @@ public class StockDiaoduServiceImpl implements StockDiaoduService {
 	public int selectscellcount4() {
 		return mapper.selectscellcount4();
 	}
+
+	@Override
+	public List<S_gather> selectAlloutStock() {
+		return mapper.selectAlloutStock();
+	}
+
+	@Override
+	public int selectAlloutStockcount1() {
+		return mapper.selectAlloutStockcount1();
+	}
+
+	@Override
+	public int selectAlloutStockcount2() {
+		return mapper.selectAlloutStockcount2();
+	}
+
+	@Override
+	public int selectAlloutStockcount3() {
+		return mapper.selectAlloutStockcount3();
+	}
+
+	@Override
+	public int selectAlloutStockcount4() {
+		return mapper.selectAlloutStockcount4();
+	}
+	//查询所有出库单
+	@Override
+	public List<s_pay> selectGetCkd(String reason, String store_tag, String check_tag) {
+		return mapper.selectGetCkd(reason, store_tag, check_tag);
+	}
+
+	@Override
+	public List<s_pay> selectAllinStock() {
+		return mapper.selectAllinStock();
+	}
+
 }

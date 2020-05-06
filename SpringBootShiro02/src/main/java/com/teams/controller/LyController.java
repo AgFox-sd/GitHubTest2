@@ -75,7 +75,7 @@ public class LyController {
 			@RequestParam("xq_sh") String xq_sh,HttpSession ses) {
 		double zcb = 0;
 		double zjs = 0;
-		String pay_id = Dindan();
+		String pay_id = Dindan1();
 		String storer = (String) ses.getAttribute("username");
 		String reason = "生产领料";
 		for (int i = 0; i < sl.length; i++) {
@@ -193,6 +193,13 @@ public class LyController {
 		SimpleDateFormat format=new SimpleDateFormat("yyyyMMdd");
 		String batchno=format.format(new Date());
 		int num=(int)((Math.random()*9+1)*100000);
-		return 100+batchno+num;
+		return 401+batchno+num;
+	}
+	
+	public String Dindan1() {
+		SimpleDateFormat format=new SimpleDateFormat("yyyyMMdd");
+		String batchno=format.format(new Date());
+		int num=(int)((Math.random()*9+1)*100000);
+		return 402+batchno+num;
 	}
 }

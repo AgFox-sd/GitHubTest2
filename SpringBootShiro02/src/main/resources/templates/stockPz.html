@@ -242,6 +242,7 @@
 								     $("#sl").val(" ");
 								     this.Selad();
 								     alert('提交成功！请审核！'); 
+								     location.reload(); 
 								 }
 								}).catch(err=>{
 									console.log("请求失败");
@@ -250,6 +251,7 @@
 					},fanhui(){
 						$("#box1").toggle();
 						$("#box2").toggle();
+						location.reload(); 
 					}
 			}
 				

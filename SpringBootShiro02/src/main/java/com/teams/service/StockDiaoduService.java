@@ -46,6 +46,11 @@ public interface StockDiaoduService {
 
 	void updZb1(String paid_amount, String pay_id);
 	
+	void updKc2(String paid_amount, String product_id);
+
+	int updDiaodu3(String paid_amount, String product_id,String pay_id);
+
+
 	//修改入库表为已调度
 	int updZdiaodu(String attemper,String gather_id);
 
@@ -60,6 +65,8 @@ public interface StockDiaoduService {
 
 	int updDdu1(String attemper, String pay_id);
 	
+	int updDiaodu2(String product_id,String paid_amount,String pay_id);
+	
 	int selectoutStockcount1();
 
 	int selectoutStockcount2();
@@ -67,6 +74,14 @@ public interface StockDiaoduService {
 	int selectoutStockcount3();
 
 	int selectoutStockcount4();
+	
+	int selectoutStockcount5();
+
+	int selectoutStockcount6();
+	
+	int selectoutStockcount7();
+
+	int selectoutStockcount8();
 
 	//查询库存
 	List<s_cell> selectscell();
@@ -78,4 +93,25 @@ public interface StockDiaoduService {
 	int selectscellcount3();
 	
 	int selectscellcount4();
+
+	List<S_gather> selectAlloutStock();
+
+	int selectAlloutStockcount1();
+
+	int selectAlloutStockcount2();
+	
+	int selectAlloutStockcount3();
+
+	int selectAlloutStockcount4();
+
+	//查询所有出库单
+	List<s_pay> selectGetCkd(String reason, String store_tag, String check_tag);
+
+	void updZb2(String paid_amount, String pay_id);
+
+	int updZdiaodu2(String attemper, String pay_id);
+
+	int updZdiaodu3(String attemper, String pay_id);
+
+	List<s_pay> selectAllinStock();
 }

@@ -79,4 +79,38 @@ public interface StockDiaoduMapper {
 	int selectscellcount3();
 	
 	int selectscellcount4();
+
+	List<S_gather> selectAlloutStock();
+
+	int selectAlloutStockcount1();
+
+	int selectAlloutStockcount2();
+	
+	int selectAlloutStockcount3();
+
+	int selectAlloutStockcount4();
+
+	int selectoutStockcount5();
+
+	int selectoutStockcount6();
+	
+	int selectoutStockcount7();
+
+	int selectoutStockcount8();
+	//查询所有出库单
+	List<s_pay> selectGetCkd(String reason, String store_tag, String check_tag);
+
+	int updZb2(String paid_amount, String pay_id);
+
+	int updDiaodu2(String product_id,String paid_amount,String pay_id);
+
+	int updZdiaodu2(String attemper, String pay_id);
+	
+	void updKc2(String paid_amount, String product_id);
+
+	int updDiaodu3(String paid_amount, String product_id,String pay_id);
+
+	int updZdiaodu3(String attemper, String pay_id);
+
+	List<s_pay> selectAllinStock();
 }

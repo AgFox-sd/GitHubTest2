@@ -10,6 +10,13 @@
     select * from s_gather where check_tag='审核通过'  and store_tag ='已登记'
     </select>
     
+    <select id="selectAlloutStock" resultType="S_gather">
+    select * from s_gather 
+    </select>
+    
+    <select id="selectAllinStock" resultType="s_pay">
+    select * from s_pay 
+    </select>
     <!-- 查询所有出库单 -->
     <select id="selectoutStock1" resultType="s_pay">
     select * from s_pay where check_tag='审核通过'  and store_tag ='已登记'
@@ -29,6 +36,37 @@
     
      <select id="selectoutStockcount4" resultType="int">
     select count(1) from s_pay where store_tag ='已调度'
+    </select>
+    
+     <select id="selectoutStockcount5" resultType="int">
+    select count(1) from s_pay where check_tag='等待审核'  and store_tag ='已调度' and reason='生产领料'
+    </select>
+    
+     <select id="selectoutStockcount6" resultType="int">
+    select count(1) from s_pay where paid_amount_sum!=0  and reason='生产领料'
+    </select>
+    
+    <select id="selectoutStockcount7" resultType="int">
+    select count(1) from s_pay where check_tag='等待审核'  and store_tag ='已登记' and reason='生产领料'
+    </select>
+    
+     <select id="selectoutStockcount8" resultType="int">
+    select count(1) from s_pay where check_tag='审核通过'  and store_tag ='已调度' and reason='生产领料'
+    </select>
+     <select id="selectAlloutStockcount1" resultType="int">
+    select count(1) from s_gather 
+    </select>
+    
+    <select id="selectAlloutStockcount2" resultType="int">
+    select count(1) from s_gather where gathered_amount_sum &gt;= amount_sum
+    </select>
+    
+    <select id="selectAlloutStockcount3" resultType="int">
+    select count(1) from s_pay
+    </select>
+    
+    <select id="selectAlloutStockcount4" resultType="int">
+    select count(1) from s_pay where paid_amount_sum !=0
     </select>
     <!-- 查询所有入库单详情 -->
     <select id="selectoutStockXq" resultType="S_gather_details">
@@ -79,7 +117,21 @@
     update s_cell set amount =amount-#{paid_amount} where product_id =#{product_id}
     </update>
     
+     <update id="updKc2">
+    update s_cell set amount =amount-#{paid_amount} where product_id =#{product_id}
+    </update>
+    
     <update id="updDiaodu1">
+     update s_pay_details set paid_amount = #{paid_amount},
+     pay_tag='已调度'  where product_id =#{product_id}  and pay_id = #{pay_id}
+    </update>
+    
+     <update id="updDiaodu2">
+     update s_pay_details set paid_amount = #{product_id},
+     pay_tag='已登记'  where product_id =#{paid_amount}  and pay_id = #{pay_id}
+    </update>
+    
+     <update id="updDiaodu3">
      update s_pay_details set paid_amount = #{paid_amount},
      pay_tag='已调度'  where product_id =#{product_id}  and pay_id = #{pay_id}
     </update>
@@ -89,6 +141,11 @@
     where pay_id = #{pay_id}
     </update>
       
+    <update id="updZb2">
+    update s_pay set paid_amount_sum=paid_amount_sum+#{paid_amount}
+    where pay_id = #{pay_id}
+    </update>
+    
     <!-- 修改入库表为已调度 -->
     <update id="updZdiaodu">
     update s_gather set attemper=#{attemper},attemper_time=sysdate(),store_tag='已调度'
@@ -100,7 +157,16 @@
     update s_pay set attemper=#{attemper},attemper_time=sysdate(),store_tag='已调度'
     where pay_id = #{pay_id}
     </update>
-       
+ 
+    <update id="updZdiaodu2">
+    update s_pay set register=#{attemper},register_time=sysdate(),store_tag='已登记'
+    where pay_id = #{pay_id}
+    </update>
+         
+     <update id="updZdiaodu3">
+    update s_pay set checker=#{attemper},check_time=sysdate(),store_tag='已调度'
+    ,check_tag='审核通过'  where pay_id = #{pay_id}
+    </update>
     <update id="updKcxq">
      update s_gather_details set gather_tag='已调度'
      where gather_id = #{gather_id} and  product_id =#{product_id}  
@@ -143,4 +209,12 @@
     <select id="selectscellcount4" resultType="int">
     select count(1) from s_cell where check_tag='审核通过' and amount &lt; min_amount
     </select>
+    
+    <!-- 查询所有的入库单 -->
+     <select id="selectGetCkd" resultType="s_pay">
+        select * from s_pay 
+        where reason=#{reason}
+        and store_tag=#{store_tag}
+        and check_tag=#{check_tag}
+     </select>
   </mapper>
