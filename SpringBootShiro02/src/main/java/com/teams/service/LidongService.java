@@ -2,8 +2,12 @@ package com.teams.service;
 
 import java.util.List;
 
+
 import com.teams.pojo.D_file;
+import com.teams.pojo.S_gather;
+import com.teams.pojo.S_gather_details;
 import com.teams.pojo.m_apply;
+import com.teams.pojo.stockjh;
 
 public interface LidongService {
 
@@ -41,8 +45,60 @@ public interface LidongService {
 	//查询所有生产计划
 	List<m_apply> selectShjh();
 
+	//查询所有通过审核的产品档案信息
+	List<D_file> selectShtg(String check_tag);
 
+	//添加入库单
+	int addRk(String gather_id, String storer, String reason, Integer amount_sum, Double cost_price_sum, String remark,
+			String register, String check_tag, String store_tag);
+
+	//添加入库单产品明细
+	void addRkmx(String gather_id, String string, String string2, String string3, Integer integer, String string4,
+			Double double1,Double subtotal);
+
+	//查询入库单明细
+	List<S_gather_details> selectRkmx(String gather_id);
+
+	//查询所有等待审核的入库申请单  --不为生产入库
+	List<S_gather> selectRkddsh(String check_tag,String reason);
+
+	//查询所有等待审核的入库申请单总数
+	int selectRkddshsum(String check_tag,String reason);
+
+	//入库申请单审核
+	int updRksqdsh(S_gather s_gather);
+
+	//查询所有的入库申请单  --不为生产入库
+	List<S_gather> selectGetRksqd(String reason);
 
 	
+	/*
+	 * 入库管理
+	 */
+	
+	//查询所有入库单
+	List<S_gather> selectGetRkd(String reason, String store_tag,String check_tag);
+
+	//查询入库单总数
+	int selectGetRkdsum(String check_tag, String reason, String store_tag);
+
+	//查询入库单详细
+	List<stockjh> selectGetRkdxx(String gather_id);
+
+	//入库登记   -修改入库表
+	int updGetRkddj(String gather_id, String store_tag, Integer gathered_amount, String register);
+
+	//入库登记   -修改入库明细表  --入库单复核通过修改明细引用此方法
+	void updGetRkmx(String gather_id, Integer gathered_amount, String store_tag);
+
+	//判断产品是否安全配置
+	int selectGetRkpd(String gather_id);
+
+	//入库单复核通过   --修改入库表
+	int updGetRkdfhtg(String gather_id, String store_tag, Integer gathered_amount, String checker, String check_tag);
+
+	//入库单复核通过   --修改安全库存配置表
+	void updGets_cell(String gather_id, Integer gathered_amount);
+    
 	
 }
