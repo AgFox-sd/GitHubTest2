@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>入库登记</title>
+<link rel="icon" href="favicon.ico" type="image/ico">
+<meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
+<meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="author" content="yinqi">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/materialdesignicons.min.css" rel="stylesheet">
+<link href="css/style.min.css" rel="stylesheet">
+<script type="text/javascript" src="js/axios.min.js"></script>
+<script type="text/javascript"   src="js/vue-2.4.0.js"></script>
+</head>
+  
+<body>
+<div id="app">
+<div class="lyear-layout-web">
+  <div class="lyear-layout-container">
+    
+    <header class="lyear-layout-header" style="margin-left: -18%;">
+      
+      <nav class="navbar navbar-default">
+        <div class="topbar">
+          
+          <div class="topbar-left">
+            <div class="lyear-aside-toggler">
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+            </div>
+            <span class="navbar-page-title">库存管理 -入库管理-入库登记复核</span>
+            <span style="margin-left: 500px;color: red">当前等待复核的入库登记总数:</span>
+            <span style="margin-left: 5px;color: red">{{ddshsum}}</span>
+          </div>
+        </div>
+      </nav>
+      
+    </header>
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12" style="margin-left: -12%;margin-top: 0.5%;">
+            <div class="card">
+              <div class="card-toolbar clearfix">
+                <form class="pull-right search-bar" method="get" action="#!" role="form">
+                  <div class="input-group">
+                    <div class="input-group-btn">
+                      <input type="hidden" name="search_field" id="search-field" value="title">
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="card-body">
+              <!-- box1开始 -->
+              <div class="table-responsive" id="box1">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>入库单编号</th>
+					    <th>入库理由</th>
+						<th>登记时间</th>
+						<th>总件数</th>
+						<th>总金额(元)</th>
+						<th>复核</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+					<tr v-for="(rk,index) in rkdlist" :key="index">
+					    <td>{{rk.gather_id}}</td>
+					    <td>{{rk.reason}}</td>
+					    <td>{{rk.register_time}}</td>
+						<td>{{rk.amount_sum}}</td>
+						<td>{{rk.cost_price_sum | moneyFormat(2)}}</td>
+						<td>
+						  <div class="btn-group">
+                             <button type="button" class="btn btn-primary  btn-xs" @click="godj(rk.gather_id,rk.storer,rk.reason,rk.amount_sum,rk.cost_price_sum,rk.register,rk.register_time)">复核</button>
+                          </div>
+						</td>
+					</tr>
+				</tbody>
+		
+                  </table>
+              </div>
+              <!-- box1结束-->
+              
+              <!-- 登记box2开始 -->
+              <div class="btn-group" id="box2" style="display:none">
+       			    <div class="form-group" style="margin-top: -3%">
+          				<h4 style="margin-left: 450px">入库单</h4>
+       			   </div>
+		           <div class="form-group" style="margin-left: 90px">
+						<label for="message-text" class="control-label">入库单编号:</label>
+					    <span style="margin-left: 10px;">{{gather_id}}</span>
+				   </div>
+				   <div class="form-group" style="margin-left: 90px">
+						<label for="message-text" class="control-label">入库人:</label>
+					    <span style="margin-left: 10px;">{{storer}}</span>
+					    <label for="message-text" class="control-label" style="margin-left: 300px">入库理由:</label>
+					    <span style="margin-left: 10px;">{{reason}}</span>
+					    <input type="hidden" id="checker"  th:value="${session.username}">
+				  </div>
+		          <div style="margin-left: 90px">
+		           <table class="table table-bordered" >
+	                    <thead>
+	                      <tr>
+	                        <th>产品编号</th>
+	                        <th>产品名称</th>
+	                        <th>库房名称</th>
+	                        <th>存放地址</th>
+	                        <th>应入库件数</th>
+	                        <th>已入库件数</th>
+	                        <th>本次入库数量</th>
+	                      </tr>
+	                    </thead>
+	                    <tbody>
+	                      <tr v-for="(rkmx,index) in rkmxlist" :key="index">
+                       			<td>{{rkmx.product_id}}</td>
+                        		<td>{{rkmx.product_name}}</td>
+                       			<td>{{rkmx.stock_name}}</td>
+                       			<td>{{rkmx.address}}</td>
+                       			<td>{{rkmx.amounts}}</td>
+                       			<td>0</td>
+                       			<td>
+                       				 <input type="text" id="gathered_amount" v-model="rkmx.gathered_amount" >
+                       			</td>
+	                      </tr>
+	                    </tbody>
+	                  </table>
+                  </div>
+                  <div class="form-group" style="margin-left: 90px">
+					   <label for="message-text" class="control-label" >应入库总件数:</label>
+					   <span style="margin-left: 8px;">{{amount_sum}}</span>
+					   <label for="message-text" class="control-label" style="margin-left: 270px">应入库总成本(元)</label>
+					   <span style="margin-left: 8px;">{{cost_price_sum}}</span>
+		          </div>
+		          <div class="form-group" style="margin-left: 90px">
+					   <label for="message-text" class="control-label" >已入库总件数:</label>
+					   <span style="margin-left: 8px;">0.0</span>
+					   <label for="message-text" class="control-label" style="margin-left: 260px">已入库总成本:</label>
+					   <span style="margin-left: 8px;">0.00</span>
+		          </div>
+                  <div class="btn-group" style="margin-left: 700px;">
+                     <button class="btn btn-w-xs btn-default" @click="Getfh()">返回</button>	
+                     <button type="button" style="margin-left: 50px" class="btn btn-w-xs btn-primary" @click="Getfhtg()">复核通过</button>
+                  </div>
+              </div> 		
+              <!-- 登记box2结束 -->
+              
+              
+              
+                
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+      
+    </main>
+    <!--End 页面主要内容-->
+  </div>
+</div>
+</div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+
+<script>
+      Vue.filter('moneyFormat',function(money,length){
+	    return money.toFixed(length)
+      })
+      var vm=new Vue({
+    	  el:'#app',
+    	  data:{
+    		  rkdlist:[],  //入库单list
+    		  rkmxlist:[], //入库单明细list
+    		  ddshsum:'', //等待登记总数
+    		  
+    		  gather_id:'', //入库单编号
+    		  storer:'', //入库人
+    		  reason:'',//入库理由
+    		  amount_sum:'',//总件数
+    		  cost_price_sum:'',//总金额
+    		  
+    		  
+    	  },
+    	  mounted(){//页面挂载完成调用查询全部的方法
+				this.load();
+    	        this.load2();
+		  },
+		  methods:{
+			  load:function(){//查询所有等待审核的入库登记单  --为生产入库
+			      var reason="生产入库";
+			      var store_tag="已登记";
+			      var check_tag="等待审核";
+				  axios.get('GetRkd?reason='+reason+'&store_tag='+store_tag+'&check_tag='+check_tag+'').then(res=>{
+							this.rkdlist=res.data;
+				  }).catch(err=>{
+						alert('请求失败')
+				  })
+			  },
+			  load2:function(){  //查询等待审核入库登记总数
+				  var reason="生产入库";
+				  var check_tag="等待审核";
+				  var store_tag="已登记";
+				  axios.get('GetRkdsum?check_tag='+check_tag+'&reason='+reason+'&store_tag='+store_tag+'').then(res=>{
+						this.ddshsum=res.data;
+			      }).catch(err=>{
+					alert('请求失败')
+			      })
+			  },
+			  load3:function(){ //查询入库单详细信息
+				  axios.get('GetRkdxx?gather_id='+this.gather_id+'').then(res=>{
+			    	  this.rkmxlist=res.data;
+			      }).catch(err=>{
+			    	  alert('请求失败')
+			      })
+			  },
+			  godj:function(gather_id,storer,reason,amount_sum,cost_price_sum){ 
+				  this.gather_id=gather_id;this.storer=storer;this.reason=reason;this.amount_sum=amount_sum;this.cost_price_sum=cost_price_sum;
+			      $("#box1").toggle();
+			      $("#box2").toggle();
+			      this.load3();
+			  },
+			  Getfh:function(){
+				  $("#box1").toggle();
+			      $("#box2").toggle();
+			  },
+			  Getfhtg:function(){  //复核
+				  var check_tag="审核通过";
+				  var store_tag="已调度";
+				  var gathered_amount=$("#gathered_amount").val();  //确认入库件数
+				  var checker=$("#checker").val();  //审核人
+				  axios.get('GetRkdfhtg?gather_id='+this.gather_id+'&store_tag='+store_tag+'&gathered_amount='+gathered_amount+'&checker='+checker+'&check_tag='+check_tag+'').then(res=>{
+						if(res.data>0){
+							alert('复核成功,产品已入库')
+							this.load();
+			    	        this.load2();
+							$("#box1").toggle();
+						    $("#box2").toggle();
+						}
+			      }).catch(err=>{
+					alert('请求失败')
+			      })
+
+				  
+			  },
+			  
+			  
+			  
+    	  }
+      
+      }) 
+
+   </script>
+
+</body>
+</html>
