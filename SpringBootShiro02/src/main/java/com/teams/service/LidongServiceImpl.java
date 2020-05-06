@@ -12,6 +12,8 @@ import com.teams.pojo.D_file;
 import com.teams.pojo.S_gather;
 import com.teams.pojo.S_gather_details;
 import com.teams.pojo.m_apply;
+import com.teams.pojo.s_pay;
+import com.teams.pojo.s_pay_details;
 import com.teams.pojo.stockjh;
 
 @Service
@@ -211,6 +213,62 @@ public class LidongServiceImpl implements LidongService{
 	public void updGets_cell(String gather_id, Integer gathered_amount) {
 		// TODO Auto-generated method stub
 		mapper.updGets_cell(gather_id,gathered_amount);
+	}
+
+	
+	
+	
+	/*
+	 * 出库申请管理
+	 */
+	//添加出库申请单
+	@Override
+	public int addCk(String pay_id, String storer, String reason, Integer amount_sum, Double cost_price_sum,
+			String remark, String register, String check_tag, String store_tag) {
+		// TODO Auto-generated method stub
+		return mapper.addCk(pay_id,storer,reason,amount_sum,cost_price_sum,remark,register,check_tag,store_tag);
+	}
+	//添加出库申请明细表
+	@Override
+	public void addCkmx(String pay_id, String string, String string2, String string3, Integer integer, String string4,
+			Double double1, double subtotal) {
+		// TODO Auto-generated method stub
+		mapper.addCkmx(pay_id,string,string2,string3,integer,string4,double1,subtotal);
+	}
+
+	//查询出库申请单明细
+	@Override
+	public List<s_pay_details> selectCkmx(String pay_id) {
+		// TODO Auto-generated method stub
+		return mapper.selectCkmx(pay_id);
+	}
+
+	//查询所有等待审核的出库申请单  --不为生产领料的
+	@Override
+	public List<s_pay> selectCkddsh(String check_tag, String reason) {
+		// TODO Auto-generated method stub
+		return mapper.selectCkddsh(check_tag,reason);
+	}
+
+	//查询所有审核状态的出库申请单总数    --审核状态
+	@Override
+	public int selectCkddshsum(String check_tag, String reason) {
+		// TODO Auto-generated method stub
+		return mapper.selectCkddshsum(check_tag,reason);
+	}
+
+	//出库申请单审核
+	@Override
+	public int updCksqdsh(s_pay s) {
+		// TODO Auto-generated method stub
+		return mapper.updCksqdsh(s);
+	}
+
+	//查询所有的出库申请单  --不为生产领料
+	@Override
+	public List<s_pay> selectGetCksqd(String reason) {
+		// TODO Auto-generated method stub
+		return mapper.selectGetCksqd(reason);
 	}
 
 	

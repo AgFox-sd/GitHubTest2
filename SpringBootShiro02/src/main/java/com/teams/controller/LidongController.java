@@ -16,7 +16,8 @@ import com.teams.pojo.D_file;
 import com.teams.pojo.S_gather;
 import com.teams.pojo.S_gather_details;
 import com.teams.pojo.m_apply;
-import com.teams.pojo.m_apply_mx;
+import com.teams.pojo.s_pay;
+import com.teams.pojo.s_pay_details;
 import com.teams.pojo.stockjh;
 import com.teams.service.LidongService;
 
@@ -209,6 +210,62 @@ public class LidongController {
 		service.updGets_cell(gather_id,gathered_amount);
 		return service.updGetRkdfhtg(gather_id,store_tag,gathered_amount,checker,check_tag);
 	}
+	
+	
+	
+	/*
+	 * 出库申请单
+	 */
+	
+	//添加出库申请单
+	@RequestMapping("/productCk")
+	@ResponseBody
+	public int addCk(@RequestParam("pay_id")String pay_id,@RequestParam("storer")String storer,@RequestParam("reason")String reason,@RequestParam("amount_sum")Integer amount_sum,@RequestParam("cost_price_sum")Double cost_price_sum,@RequestParam("remark")String remark,@RequestParam("register")String register,
+			@RequestParam("check_tag")String check_tag,@RequestParam("store_tag")String store_tag,
+			@RequestParam("product_id")String [] product_id,@RequestParam("product_name")String [] product_name,@RequestParam("product_describe")String [] product_describe,@RequestParam("amount")Integer [] amount,@RequestParam("amount_unit")String [] amount_unit,@RequestParam("cost_price")Double [] cost_price){
+		double subtotal=0;
+		for (int i = 0; i < product_id.length; i++) {
+			subtotal=amount[i]*cost_price[i];
+			service.addCkmx(pay_id,product_id[i],product_name[i],product_describe[i],amount[i],amount_unit[i],cost_price[i],subtotal);
+		}
+		return service.addCk(pay_id,storer,reason,amount_sum,cost_price_sum,remark,register,check_tag,store_tag);
+	}	
+	
+	//查询出库申请单明细
+	@RequestMapping("/productCkmx")
+	@ResponseBody
+	public List<s_pay_details> selectCkmx(@RequestParam("pay_id")String pay_id){
+		return service.selectCkmx(pay_id);
+	}
+	
+	//查询所有等待审核的出库申请单  --不为生产领料的
+	@RequestMapping("/productCkddsh")
+	@ResponseBody
+	public List<s_pay> selectCkddsh(@RequestParam("check_tag")String check_tag,@RequestParam("reason")String reason){
+		return service.selectCkddsh(check_tag,reason);
+	}
+	
+	//查询所有审核状态的出库申请单总数    --审核状态
+	@RequestMapping("/productCkddshsum")
+	@ResponseBody
+	public int selectCkddshsum(@RequestParam("check_tag")String check_tag,@RequestParam("reason")String reason){
+		return service.selectCkddshsum(check_tag,reason);
+	}
+	
+	//出库申请单审核
+	@RequestMapping("/Cksqdsh")
+	@ResponseBody
+	public int updCksqdsh(@RequestBody s_pay s){
+		return service.updCksqdsh(s);
+	}
+	
+	//查询所有的出库申请单  --不为生产领料
+	@RequestMapping("/GetCksqd")
+	@ResponseBody
+	public List<s_pay> selectGetCksqd(@RequestParam("reason")String reason){
+		return service.selectGetCksqd(reason);
+	}
+	
 	
 	
 	

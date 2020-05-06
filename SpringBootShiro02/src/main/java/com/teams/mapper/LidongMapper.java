@@ -8,6 +8,8 @@ import com.teams.pojo.D_file;
 import com.teams.pojo.S_gather;
 import com.teams.pojo.S_gather_details;
 import com.teams.pojo.m_apply;
+import com.teams.pojo.s_pay;
+import com.teams.pojo.s_pay_details;
 import com.teams.pojo.stockjh;
 
 public interface LidongMapper {
@@ -96,6 +98,33 @@ public interface LidongMapper {
 
 	//入库单复核通过   --修改安全库存配置表
 	void updGets_cell(String gather_id, Integer gathered_amount);
+
+	
+	
+	/*
+	 * 出库申请管理
+	 */
+	//添加出库申请
+	int addCk(String pay_id, String storer, String reason, Integer amount_sum, Double cost_price_sum, String remark,
+			String register, String check_tag, String store_tag);
+	//添加出库申请明细表
+	void addCkmx(String pay_id, String product_id, String product_name, String product_describe, Integer amount, String amount_unit,
+			Double cost_price,Double subtotal);
+
+	//查询出库申请单明细
+	List<s_pay_details> selectCkmx(String pay_id);
+
+	//查询所有等待审核的出库申请单  --不为生产领料的
+	List<s_pay> selectCkddsh(String check_tag, String reason);
+
+	//查询所有审核状态的出库申请单总数    --审核状态
+	int selectCkddshsum(String check_tag, String reason);
+
+	//出库申请单审核
+	int updCksqdsh(s_pay s);
+
+	//查询所有的出库申请单  --不为生产领料
+	List<s_pay> selectGetCksqd(String reason);
     
 
 

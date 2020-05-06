@@ -63,7 +63,7 @@
         delete from m_apply_mx where apply_id=#{apply_id}
      </delete>
      
-     <!-- 查询所有生产计划 -->
+     <!-- 查询所有生产计划 --> 
      <select id="selectShjh" resultType="m_apply">
         select * from m_apply
      </select>
@@ -170,6 +170,50 @@
         update s_cell set amount=amount+#{gathered_amount}
         WHERE product_id=(SELECT product_id from s_gather_details WHERE gather_id=#{gather_id})
      </update>
+     
+     
+     
+     <!-- 出库管理-->
+     <!-- 添加出库申请单 -->
+     <insert id="addCk" >
+        insert into s_pay(id,pay_id,storer,reason,amount_sum,cost_price_sum,remark,register,register_time,check_tag,store_tag)
+        values(null,#{pay_id},#{storer},#{reason},#{amount_sum},#{cost_price_sum},#{remark},#{register},now(),#{check_tag},#{store_tag})
+     </insert>
+     
+     <!-- 添加出库申请明细 -->
+     <insert id="addCkmx">
+        insert into s_pay_details(id,pay_id,product_id,product_name,product_describe,amount,amount_unit,cost_price,subtotal,pay_tag)
+        values(null,#{pay_id},#{product_id},#{product_name},#{product_describe},#{amount},#{amount_unit},#{cost_price},#{subtotal},"已登记")
+     </insert>
+     
+     <!-- 查询出库申请单明细 -->
+     <select id="selectCkmx" resultType="s_pay_details">
+        select * from s_pay_details where pay_id=#{pay_id}
+     </select>
+     
+     <!-- 查询所有等待审核的出库申请单 -->
+     <select id="selectCkddsh" resultType="s_pay">
+        select * from s_pay where check_tag=#{check_tag} and reason!=#{reason}
+     </select>
+     
+     <!-- 查询等待审核的出库申请单总数 -->
+     <select id="selectCkddshsum" resultType="int">
+        select count(1) from s_pay where check_tag=#{check_tag} and reason!=#{reason}
+     </select>
+     
+     <!-- 出库申请单审核 -->
+     <update id="updCksqdsh">
+        update s_pay set checker=#{checker},check_time=now(),check_tag=#{check_tag}
+        where pay_id=#{pay_id}
+     </update>
+     
+     <!-- 查询所有的出库申请单 不为生产领料 -->
+     <select id="selectGetCksqd" resultType="s_pay">
+        select * from s_pay where reason!=#{reason}
+     </select>
+     
+     
+     
      
      
      
