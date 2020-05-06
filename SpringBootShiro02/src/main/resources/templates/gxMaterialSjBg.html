@@ -321,7 +321,9 @@
 					},
 					QueRen(){	
 						$("#box1").toggle();
-						$("#box2").toggle()					
+						$("#box2").toggle();
+						alert('变更成功！请审核！');
+						this.Selad();
 					},sheji(gongxu_name){
 						$("#box2").toggle();
 						$("#box4").toggle();
@@ -334,11 +336,17 @@
 					},QueRen2(){
 						$("#box2").toggle();
 						$("#box4").toggle();
+						this.Selad2();
 					},xiugai(product_id,sl,dj,xj){
-						alert(product_id+"A"+sl+"A"+dj+"A"+xj);
-						
-					
-						alert(this.slsl);
+						axios.get("updgxwlbg?product_id="+product_id+"&sl="+sl+"&dj="+dj+"&xj="+xj+"&slsl="+this.slsl+"&design_id="+this.design_id+"&gongxu_name="+this.gongxu_name+"").then(res=>{
+						   if(res.data>0){
+							   alert('修改成功!');
+							   this.module_cost_price_sum = this.module_cost_price_sum+((this.slsl*dj)-xj);
+							   this.slsl='';
+						   }
+							}).catch(err=>{
+							 onsole.log("请求失败");
+						   })
 					}
 			}
 				

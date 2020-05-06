@@ -152,4 +152,20 @@
 	<update id="xgzcb">
 	update d_file set real_cost_price=#{zcb} where product_id=#{product_id}
 	</update>
+	
+	<insert id="addsg">
+	insert into s_gather values(null,#{gather_id},#{storer},#{reason},DEFAULT,#{sc_unit},#{d},0,DEFAULT,#{storer},SYSDATE(),default,default,#{string},DEFAULT,DEFAULT,#{string2})
+	</insert>
+	
+	<insert id="addsgxq">
+	insert into s_gather_details values(null,#{gather_id},#{product_id},#{product_name},DEFAULT,#{sc_unit},default,#{zcb},#{d},0,#{string});
+	</insert>
+	
+	<insert id="addpay">
+	insert into s_pay values(null,#{pay_id},#{storer},#{reason},DEFAULT,#{zjs},#{zcb},0,DEFAULT,#{storer},SYSDATE(),default,default,#{string},DEFAULT,DEFAULT,#{string2})
+	</insert>
+	
+	<insert id="addpayxq">
+	insert into s_pay_details values(null,#{pay_id},#{product_id},#{product_name},DEFAULT,#{i},default,#{d},#{e},0,#{string});
+	</insert>
 </mapper>

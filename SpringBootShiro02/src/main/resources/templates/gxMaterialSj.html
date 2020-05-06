@@ -58,17 +58,17 @@
                   <table class="table table-hover">
                     <thead>
                       <tr>
-                        <th>工序设计单编号</th>
-                        <th>产品编号</th>
-                        <th>产品名称</th>
-                        <th>设计人</th>
-                        <th>登记时间</th>
-                        <th>工时总成本</th>
-                        <th>制定设计单</th>
+                        <th class="text-center">工序设计单编号</th>
+                        <th class="text-center">产品编号</th>
+                        <th class="text-center">产品名称</th>
+                        <th class="text-center">设计人</th>
+                        <th class="text-center">登记时间</th>
+                        <th class="text-center">工时总成本</th>
+                        <th class="text-center">制定设计单</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="gongxu in list" >
+                      <tr v-for="gongxu in list" class="text-center">
                         <td>{{gongxu.design_id}}</td>
                         <td>{{gongxu.product_id}}</td>
                        	<td>{{gongxu.product_name}}</td>

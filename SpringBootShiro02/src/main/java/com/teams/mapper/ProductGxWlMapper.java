@@ -60,4 +60,12 @@ public interface ProductGxWlMapper {
 
 	//查询已设计或已审核的产品
 	public List<M_design_procedure> productGxWlCx();
+
+	void updmpm(int slsl, double d,String product_id, String design_id);
+
+	void updmdp(double djdj, String design_id);
+
+	void updmdpd(double d, String design_id, String gongxu_name);
+
+	int upddmd(int ky, String product_id, String design_id);
 }

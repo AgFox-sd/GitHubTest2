@@ -123,4 +123,24 @@ public class ProductGxWlServiceImpl implements ProductGxWlService {
 	public List<M_design_procedure> productGxWlCx() {
 		return mapper.productGxWlCx();
 	}
+
+	@Override
+	public void updmpm(int slsl, double d,String product_id, String design_id) {
+		mapper.updmpm(slsl, d,product_id, design_id);
+	}
+
+	@Override
+	public void updmdp(double djdj, String design_id) {
+		mapper.updmdp(djdj, design_id);
+	}
+
+	@Override
+	public void updmdpd(double d, String design_id, String gongxu_name) {
+		mapper.updmdpd(d, design_id, gongxu_name);
+	}
+
+	@Override
+	public int upddmd(int ky, String product_id, String design_id) {
+		return mapper.upddmd(ky, product_id, design_id);
+	}
 }

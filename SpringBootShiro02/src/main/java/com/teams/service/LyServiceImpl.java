@@ -180,4 +180,30 @@ public class LyServiceImpl implements LyService {
 		mapper.xgzcb(zcb, product_id);
 	}
 
+	@Override
+	public void addsg(String gather_id, String storer, String reason, int sc_unit, double d, String string,
+			String string2) {
+		mapper.addsg(gather_id, storer, reason, sc_unit, d, string, string2);
+	}
+
+	@Override
+	public void addsgxq(String gather_id, String product_id, String product_name, int sc_unit, double zcb, double d,
+			String string) {
+		// TODO Auto-generated method stub
+		mapper.addsgxq(gather_id, product_id, product_name, sc_unit, zcb, d, string);
+	}
+
+	@Override
+	public void addpayxq(String pay_id, String product_id, String product_name, int i, double d, double e,
+			String string) {
+		mapper.addpayxq(pay_id, product_id, product_name, i, d, e, string);
+	}
+
+	@Override
+	public void addpay(String pay_id, String storer, String reason, double zjs, double zcb, String string,
+			String string2) {
+		// TODO Auto-generated method stub
+		mapper.addpay(pay_id, storer, reason, zjs, zcb, string, string2);
+	}
+
 }

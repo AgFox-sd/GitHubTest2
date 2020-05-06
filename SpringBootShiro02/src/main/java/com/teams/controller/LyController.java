@@ -1,6 +1,10 @@
 package com.teams.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -68,14 +72,20 @@ public class LyController {
 			@RequestParam("sl") int[] sl, @RequestParam("did") String did,
 			@RequestParam("product_id") String[] product_id, @RequestParam("product_name") String[] product_name,
 			@RequestParam("amount") int[] amount, @RequestParam("cost_price") double[] cost_price,
-			@RequestParam("xq_sh") String xq_sh) {
+			@RequestParam("xq_sh") String xq_sh,HttpSession ses) {
 		double zcb = 0;
+		double zjs = 0;
+		String pay_id = Dindan();
+		String storer = (String) ses.getAttribute("username");
+		String reason = "生产领料";
 		for (int i = 0; i < sl.length; i++) {
 			service.add_xq(did, procedure_name, product_id[i], product_name[i], amount[i], cost_price[i],
 					(amount[i] * cost_price[i]), xq_sh);
+			zjs +=amount[i];
 			zcb += amount[i] * cost_price[i];
-			System.out.println(zcb);
+			service.addpayxq(pay_id,product_id[i],product_name[i],amount[i],cost_price[i],amount[i] * cost_price[i],"已登记");
 		}
+		service.addpay(pay_id,storer,reason,zjs,zcb,"审核通过","已登记");
 		service.updsjsysl(zcb, dj_jj, procedure_name,did);
 		service.updm_pg(check_tag, pg_id);
 		return 1;
@@ -137,11 +147,16 @@ public class LyController {
 	@ResponseBody
 	public int sczb(@RequestParam("pg_id") String pg_id, @RequestParam("design_id") String design_id,
 			@RequestParam("did") String did, @RequestParam("product_id") String product_id,
-			@RequestParam("product_name") String product_name, @RequestParam("sc_unit") int sc_unit) {
+			@RequestParam("product_name") String product_name, @RequestParam("sc_unit") int sc_unit,HttpSession ses) {
 
 		double zcb = service.gszcb(design_id) + service.wlzcb(design_id);
 		service.xgzcb(zcb,product_id);
 		service.xgscct(pg_id);
+		String gather_id = Dindan();
+		String storer = (String) ses.getAttribute("username");
+		String reason = "生产入库";
+		service.addsg(gather_id,storer,reason,sc_unit,zcb*sc_unit,"审核通过","已登记");
+		service.addsgxq(gather_id,product_id,product_name,sc_unit,zcb,zcb*sc_unit,"已登记");
 		service.addnbsc(did, pg_id, product_id, product_name, sc_unit, zcb, zcb * sc_unit);
 		return 1;
 	}
@@ -173,4 +188,11 @@ public class LyController {
 		return service.cxpgsc();
 	}
 
+	//生成订单编号
+	public String Dindan() {
+		SimpleDateFormat format=new SimpleDateFormat("yyyyMMdd");
+		String batchno=format.format(new Date());
+		int num=(int)((Math.random()*9+1)*100000);
+		return 100+batchno+num;
+	}
 }

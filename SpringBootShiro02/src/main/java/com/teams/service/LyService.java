@@ -63,4 +63,12 @@ public interface LyService {
 			//查询派工生产
 			List<m_pg> cxpgsc();
 			void xgzcb(double zcb, String product_id);
+			void addsg(String gather_id, String storer, String reason, int sc_unit, double d, String string,
+					String string2);
+			void addsgxq(String gather_id, String product_id, String product_name, int sc_unit, double zcb, double d,
+					String string);
+			void addpayxq(String pay_id, String product_id, String product_name, int i, double d, double e,
+					String string);
+			void addpay(String pay_id, String storer, String reason, double zjs, double zcb, String string,
+					String string2);
 }
