@@ -10,7 +10,7 @@ public class m_apply_mx {
 	private String product_name;//产品名称
 	private String product_describe;// '产品描述',
 	private int amount;  //数量
-	private String personal_unit; //单位
+	private String personal_unit; //计量单位
 	private double real_cost_price; //单价
 	private String manufacture_tag; //派工标志，P001-0: 未派工，P001-1: 已派工
 	
