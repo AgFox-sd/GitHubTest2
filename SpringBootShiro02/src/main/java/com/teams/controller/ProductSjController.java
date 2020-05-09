@@ -200,7 +200,7 @@ public class ProductSjController {
     
     @RequestMapping("/addda")
 	@ResponseBody
-	 public String addda(@RequestBody D_file file ) {
+	 public String addda(@RequestBody D_file file) {
 		 int row =service.addda(file);
 		 return row>0?"成功":"失败";
 	 } 	
