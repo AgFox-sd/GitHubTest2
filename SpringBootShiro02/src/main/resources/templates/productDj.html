@@ -146,7 +146,7 @@
 					            </div>
 					            <div class="col-md-4">
 					            <label for="message-text" class="control-label">登记人:</label>
-					             <span th:text="${session.username}"> </span>
+					             <span th:text="${session.username}" id="djr"> </span>
 					         </div>
 					      
 					          </div>
@@ -248,7 +248,7 @@
 		
 						var num=(Math.random()*9+1)*10000000000000000					
 						this.a=num						
-						var file={product_id:this.a,product_name:this.b,factory_name:this.c,fid:this.fx,tid:this.d,pid:this.e,product_nick:this.f,personal_unit:this.g,personal_value:this.h,provider_group:this.i,warranty:this.j,twin_name:this.k,twin_id:this.l,lifecycle:this.m,list_price:this.n,cost_price:this.o,real_cost_price:this.p,amount_unit:this.q,product_describe:this.r,responsible_person:this.s,register:this.t,checker:this.u,check_tag:this.w,changer:this.x,change_tag:this.z,price_change_tag:this.ct,delete_tag:this.dt,design_module_tag:this.dmt,design_procedure_tag:this.dpt,design_cell_tag:this.dct}
+						var file={product_id:this.a,product_name:this.b,factory_name:this.c,fid:this.fx,tid:this.d,pid:this.e,product_nick:this.f,personal_unit:this.g,personal_value:this.h,provider_group:this.i,warranty:this.j,twin_name:this.k,twin_id:this.l,lifecycle:this.m,list_price:this.n,cost_price:this.o,real_cost_price:this.p,amount_unit:this.q,product_describe:this.r,responsible_person:this.s,register:$("#djr").text(),checker:this.u,check_tag:this.w,changer:this.x,change_tag:this.z,price_change_tag:this.ct,delete_tag:this.dt,design_module_tag:this.dmt,design_procedure_tag:this.dpt,design_cell_tag:this.dct}
 						
 						var product_name={product_name:this.b}
 						if(this.b==""){

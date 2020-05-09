@@ -200,7 +200,7 @@ public class ProductSjController {
     
     @RequestMapping("/addda")
 	@ResponseBody
-	 public String addda(@RequestBody D_file file ) {
+	 public String addda(@RequestBody D_file file) {
 		 int row =service.addda(file);
 		 return row>0?"成功":"失败";
 	 } 	
@@ -245,4 +245,46 @@ public class ProductSjController {
 		System.out.println("11111111");
 		return row;
 	}
+	
+  //变更时删除,修改总价钱
+    @RequestMapping("/delbg")
+    @ResponseBody
+    public int delid(@RequestParam("id")int id,@RequestParam("jq")double jq,
+    		@RequestParam("product_id")String product_id,
+    		@RequestParam("product_name")String product_name) {
+    	service.delid(id);
+    	return service.upzjq(jq, product_id, product_name);
+    }
+    
+    //变更时添加物料
+    @RequestMapping("/selwl")
+    @ResponseBody
+    public List<D_file> selwl() {
+    	List<D_file> list=service.selwl();
+    	return list;
+    }
+    //变更时添加物料
+    	@RequestMapping("/bgxiu")
+    	@ResponseBody
+        public int bgxiu(@RequestParam("design_id") String design_id,@RequestParam("product_id") String[] product_id,
+      		  @RequestParam("product_name") String[] product_name,@RequestParam("amount_unit") String[] amount_unit,
+      		  @RequestParam("amount") int[] amount,@RequestParam("residual_amount") int[] residual_amount,
+      		  @RequestParam("cost_price") double[] cost_price,
+      		  //@RequestParam("d") double d,
+      		  @RequestParam("spid") String spid,@RequestParam("spmc") String spmc) {
+    		int dj=0;
+    		for (int i = 0; i < amount.length; i++) {
+  			service.zjwl(design_id, product_id[i], product_name[i], amount_unit[i], amount[i], residual_amount[i], cost_price[i],amount[i]*cost_price[i]);
+  			dj+=amount[i]*cost_price[i];
+    		}
+    		service.updzje(dj, spid, spmc);
+    		return 1;
+    	}
+      //变更时重新提交
+      @RequestMapping("/upgwsh")
+      @ResponseBody
+      public String upgwsh(String check_tag,String change_tag,String product_id,String product_name) {
+      	int list=service.upgwsh(check_tag, change_tag, product_id, product_name);
+      	return list>0?"成功":"失败";
+      }
 }

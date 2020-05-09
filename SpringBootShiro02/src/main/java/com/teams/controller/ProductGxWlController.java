@@ -126,4 +126,16 @@ public class ProductGxWlController {
 		List<M_design_procedure> list = service.productGxWlSh("已审核");
 		return list;
 	}
+	
+	//变更
+	@RequestMapping("/updgxwlbg")
+	@ResponseBody
+	public int updgxwlbg(String product_id,int sl,double dj,double xj,int slsl,String design_id,String gongxu_name) {
+		int ky = sl-slsl;
+		double djdj = (slsl*dj)-xj;
+		service.updmpm(slsl,slsl*dj,product_id,design_id);
+		service.updmdp(djdj,design_id);
+		service.updmdpd(slsl*dj,design_id,gongxu_name);
+		return service.upddmd(ky,product_id,design_id);
+	}
 }

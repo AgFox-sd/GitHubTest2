@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>生产管理 -内部生产- 生产登记复核</title>
+<link rel="icon" href="favicon.ico" type="image/ico">
+<meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
+<meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="author" content="yinqi">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/materialdesignicons.min.css" rel="stylesheet">
+<link href="css/style.min.css" rel="stylesheet">
+<script type="text/javascript" src="js/axios.min.js"></script>
+<script type="text/javascript"   src="js/vue-2.4.0.js"></script>
+</head>
+  
+<body>
+<div id="app">
+<div class="lyear-layout-web">
+  <div class="lyear-layout-container">
+   
+    <header class="lyear-layout-header" style="margin-left: -18%;">
+      
+      <nav class="navbar navbar-default">
+        <div class="topbar">
+          
+          <div class="topbar-left">
+            <div class="lyear-aside-toggler">
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+            </div>
+            <span class="navbar-page-title"> 生产管理 -内部生产- 生产登记复核</span>
+          </div>
+        </div>
+      </nav>
+      
+    </header>
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-11" style="margin-left: -25%;margin-top: -6%;">
+            <div class="card">
+              <div class="card-toolbar clearfix">
+               <form class="pull-right search-bar" method="get" action="#!" role="form">
+                  <div class="input-group">
+                    <div class="input-group-btn">
+                      <input type="hidden" name="search_field" id="search-field" value="title">
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive" id="box1">
+                <div>
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>派工单编号</th>
+                        <th>产品编号</th>
+                        <th>产品名称</th>
+                        <th>数量</th>
+                        <th>登记时间</th>
+                        <th>登记</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="v in list" >
+                        <td>{{v.pg_id}}</td>
+                        <td>{{v.product_id}}</td>
+                       	<td>{{v.product_name}}</td>
+                        <td>{{v.amount}}</td>
+                        <td>{{v.pg_time}}</td>
+                        <td>
+                          <button type="button"  id="sjbutton" class="btn btn-primary  btn-xs"  data-target=".bs-example-modal-lg" @click="Selidxx(v.pg_id,v.product_id,v.product_name,v.amount,v.pg_time)">审核</button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+              </div>
+
+        </div>
+        <div class="btn-group" id="box2" style="display:none">
+       			    <div>
+          				<p style="margin-left: 340px;font-size: 25px;">生产登记</p>
+       				</div>
+          		 	<div class="form-group" style="margin-left: 200px">
+						<label for="message-text" class="control-label">派工单编号:</label>
+						<span>{{pg_id}}</span>
+						<label for="message-text" class="control-label" style="margin-left: 200px">产品编号:</label>
+				   		<span>{{product_id}}</span>
+		          </div>
+		          <div class="form-group" style="margin-left: 200px">			          	
+						<label for="message-text" class="control-label" >数量:</label>
+						<span>{{amount}}</span>
+						<label for="message-text" class="control-label" style="margin-left: 200px">产品名称:</label>
+						<span>{{product_name}}</span>		
+		          </div>
+		          <div style="margin-left: 7px">
+		           <table class="table table-hover" border="1" style="width:880px">
+                    <thead>
+                      <tr>
+                        <th class="text-center" style="width:150px">工序名称</th>
+                        <th class="text-center" style="width:150px">设计工时数</th>
+                        <th class="text-center" style="width:180px">工时成本（元）</th>
+                        <th class="text-center" style="width:200px">工时成本小计（元）</th>
+                        <th class="text-center" style="width:200px">物料成本小计（元）</th>
+                        <th class="text-center" style="width:120px">工序登记</th>
+                        <th class="text-center" style="width:120px">工序登记</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="wl in zlist" class="text-center">
+                      <td>{{wl.name}}</td>
+                        <td>{{wl.labour_hour_amount}}</td>
+                       	<td>{{wl.cost_price}}</td>
+                        <td>{{wl.subtotal}}</td>
+                        <td>{{wl.subtotal_sj}}</td>
+                        <td>
+                          <div class="btn-group">
+                             <button type="button" class="btn btn-primary  btn-xs" @click="sheji(wl.procedure_id,wl.parent_id,wl.name,wl.did,wl.design_id)">
+                             <span v-if="wl.dj_jj=='已登记'">复核</span>
+                             <span v-if="wl.dj_jj=='已审核'">完成</span>
+                             </button>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="btn-group">
+                             <button type="button" class="btn btn-primary  btn-xs" @click="jiaojie(wl.real_amount,wl.id,wl.procedure_name,wl.name,wl.did)">
+                             <span v-if="wl.dj_sh=='已交接'">待复核</span>
+                             <span v-if="wl.dj_sh=='已复核'">完成</span>
+                             </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  </div>
+		        <button class="btn btn-w-xs btn-primary" style="margin-left: 700px" @click="QueRen()">确认</button>	          
+        </div>
+          		
+        <div class="btn-grop"  id="box3" style="display:none">
+                    <div>
+          				<p style="margin-left: 340px;font-size: 25px;">产品登记</p>
+       				</div>
+       				<div class="form-group" style="margin-left: 200px">
+					    <label for="message-text" class="control-label">工序号:</label>
+					    <span>{{gid}}</span>
+						<label for="message-text" class="control-label" style="margin-left: 100px">工序名称:</label>
+				   		<span>{{procedure_name}}</span>
+		          </div>
+       				<table class="table table-bordered" border="1">
+          		   <thead>
+	                      <tr>
+	                        <th class="text-center">物料名称</th>
+	                        <td class="text-center">物料编号</td>
+	                        <th class="text-center">设计数量</th>
+	                        <th class="text-center">本次数量</th>
+	                      </tr>
+	                    </thead>
+	                    <tbody>
+	                      <tr v-for="(wl,index) in wuliulist" :key="index" class="text-center">
+		                        <td>{{wl.product_name}}</td>
+                       			<td>{{wl.product_id}}</td>
+                        		<td>{{wl.amount}}</td>
+                       			<td>{{wl.sl}}</td>
+	                      </tr>
+	                    </tbody>
+	                  </table>
+	                <button class="btn btn-w-xs btn-primary" style="margin-left: 700px" @click="yulan()">复核通过</button>	            
+        </div>  		
+ 
+         <div class="btn-group" id="box4" style="display:none">
+       			    <div>
+          				<p style="margin-left: 340px;font-size: 25px;">生产登记</p>
+       				</div>
+       				<div class="form-group" style="margin-left: 200px">
+					    <label for="message-text" class="control-label">工序号:</label>
+					    <span>{{gid}}</span>
+						<label for="message-text" class="control-label" style="margin-left: 100px">工序名称:</label>
+				   		<span>{{product_name}}</span>
+		          </div>
+		          <table class="table table-bordered" border="1" style="bordercolor:#FFFFFF">
+          		   <thead>
+	                      <tr v-for="v in dx">
+	                        <th class="text-center">本工序投产数量:  {{v.dj_tcsl}}</th>
+	                        <th class="text-center">本工序合格品数量:  <input type="text" v-model="v.dj_tcsl"/></th>
+	                      </tr>
+	                    </thead>
+	                  </table>
+                 <button class="btn btn-w-xs btn-primary" style="margin-left: 700px" @click="QueRen2()">确认</button>       
+        </div>
+                <!-- 分页开始 -->
+                
+       			<!-- 分页结束 -->
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+      
+    </main>
+    <!--End 页面主要内容-->
+  </div>
+</div>
+</div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+
+
+
+<script>
+			var vm=new Vue({
+				el:'#app',
+				data:{
+					list:[],
+					wuliulist:[],
+					wlsjList:[],
+					zlist:[],
+					dx:[],
+					amount:'',
+					product_name:'',
+					product_id:'',
+					id:'',
+				    check_tag:'审核通过',
+				    amount_num:'',
+				    procedure_name:'',
+				    gid:'',
+				    hgsl:'',
+				    xq_sh:'审核通过',
+				    dj_jj:'已审核',
+				    dj_sh:'交接复核',
+				    pg_id:'',
+				    dj_fh:'已审核',
+				    jjfh:'已复核',
+				    did:''
+				},
+				mounted(){//初始化显示完成调用
+					this.Selad();
+				    this.Selad2();
+				},
+				methods:{
+					Selad(){
+						//发送异步请求，请求后端控制器，获取所有的品牌信息
+						axios.post("scdjwfh").then(res=>{
+							this.list=res.data;
+						}).catch(err=>{
+							console.log("请求失败");
+						})
+						
+					},Selidxx(pg_id,product_id,product_name,amount){
+   						 $("#box1").toggle();
+						 $("#box2").toggle();
+						 var url="scgxfh?product_id="+product_id+"";
+						 axios.post(url).then(res=>{
+								this.zlist=res.data;
+							}).catch(err=>{
+								console.log("请求失败");
+							})
+						 this.pg_id=pg_id;
+						 this.product_id=product_id;
+						 this.product_name=product_name;
+						 this.amount=amount;
+					},
+					yulan:function(){//点击添加
+						var url = "djfh?check_tag="+this.check_tag+"&pg_id="+this.pg_id+"&xq_sh="+this.xq_sh+"&procedure_name="+this.procedure_name+"&dj_jj="+this.dj_jj+"&dj_sh="+this.dj_sh+"&did="+this.did+"";	
+					axios.get(url).then(res=>{
+						    alert("成功")
+					    	$("#box3").toggle();
+							$("#box1").toggle();
+					    	this.Selad();
+					    }).catch(err=>{
+							alert('请求失败')
+						})
+						
+					},
+					QueRen(){	
+						$("#box1").toggle();
+						$("#box2").toggle();
+						 axios.get("updGxWlSj?design_id="+this.design_id+"").then(res=>{
+							 if(res.data>0){
+									this.Selad();
+									alert('设计完成');								 
+							 }
+						 }).catch(err=>{
+									console.log("请求失败");
+								})
+					},sheji(procedure_id,id,procedure_name,did){
+						$("#box2").toggle();
+						$("#box3").toggle();
+						axios.get("scfhwl?procedure_name="+procedure_name+"&did="+did+"").then(res=>{
+							this.wuliulist=res.data;
+							}).catch(err=>{
+								console.log("请求失败");
+							})
+						this.gid=id;
+						this.procedure_name=procedure_name;
+						this.did=did;
+					},
+					jiaojie(real_amount,id,procedure_name,name,did){
+						this.did=did;
+						$("#box2").toggle();
+						$("#box4").toggle();
+						var url="cxgxsl?procedure_name="+name+"&did="+did+"";
+						axios.get(url).then(res=>{
+							this.dx=res.data;
+						})
+						this.real_amount=real_amount;
+						this.gid=id;
+						this.product_name=name;
+						this.sl=dx.dj_tcsl;
+					},
+					QueRen2(){
+						var url="jjyfh?check_tag="+this.check_tag+"&pg_id="+this.pg_id+"&dj_fh="+this.dj_fh+"&procedure_name="+this.product_name+"&dj_sh="+this.jjfh+"&did="+this.did+"";
+						axios.get(url).then(res=>{
+							if(res.data>0){
+						    	alert("成功")
+								$("#box4").toggle();
+								$("#box1").toggle();
+								this.Selad();
+							}
+					    }).catch(err=>{
+							alert('请求失败')
+						})
+					}
+			}
+				
+			})
+			
+		</script>
+
+</body>
+</html>

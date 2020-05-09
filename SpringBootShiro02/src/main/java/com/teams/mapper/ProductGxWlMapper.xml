@@ -111,4 +111,24 @@
     select * from m_design_procedure 
     where check_tag = '审核通过' and design_module_tag != '未设计'
     </select>
+    
+    <update id="updmpm">
+    update m_procedure_module set amount=#{slsl},subtotal=#{d}
+    where product_id =#{product_id}  and design_id =#{design_id}
+    </update>
+    
+    <update id="updmdp">
+    update m_design_procedure set module_cost_price_sum=module_cost_price_sum+#{djdj},
+    design_module_tag = '已设计' where design_id =#{design_id}
+    </update>
+    
+    <update id="updmdpd">
+    update m_design_procedure_details set module_subtotal =#{d}
+    where parent_id=#{design_id} and procedure_id in(select id from m_gonxu where name=#{gongxu_name})
+    </update>
+    
+    <update id="upddmd">
+    update d_module_details set residual_amount =residual_amount+#{ky}
+    where product_id =#{product_id} and design_id in(select design_id from d_module where product_id in(select product_id from m_design_procedure where design_id=#{design_id}))
+    </update>
   </mapper>

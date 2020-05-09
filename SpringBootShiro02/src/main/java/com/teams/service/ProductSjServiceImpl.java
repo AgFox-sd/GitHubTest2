@@ -199,5 +199,42 @@ public class ProductSjServiceImpl implements ProductSjService{
 		return mapper.selectname(file);
 	}
 
+	@Override
+	public int delid(int id) {
+		// TODO Auto-generated method stub
+		return mapper.delid(id);
+	}
+
+	@Override
+	public List<D_file> selwl() {
+		// TODO Auto-generated method stub
+		return mapper.selwl();
+	}
+
+	@Override
+	public int updzje(double d, String spid,String spmc) {
+		// TODO Auto-generated method stub
+		return mapper.updzje(d, spid,spmc);
+	}
+
+	@Override
+	public int upzjq(double jq, String product_id, String product_name) {
+		// TODO Auto-generated method stub
+		return mapper.upzjq(jq, product_id, product_name);
+	}
+
+	@Override
+	public int upgwsh(String check_tag, String change_tag, String product_id, String product_name) {
+		// TODO Auto-generated method stub
+		return mapper.upgwsh(check_tag, change_tag, product_id, product_name);
+	}
+
+	@Override
+	public void zjwl(String design_id, String product_id, String product_name, String amount_unit, int amount,
+			double residual_amount, double cost_price,double subtotal) {
+		// TODO Auto-generated method stub
+		mapper.zjwl(design_id, product_id, product_name, amount_unit, amount, residual_amount, cost_price,subtotal);
+	}
+
 	
 }

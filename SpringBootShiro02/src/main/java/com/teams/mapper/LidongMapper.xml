@@ -17,7 +17,6 @@
      <select id="selectcpxx" resultType="D_file">
         select a.*,c.tname from d_file a,type c
         where a.tid=c.tid and 
-        a.tid=1 and 
         a.product_id=#{product_id}
      </select>
      
@@ -64,10 +63,155 @@
         delete from m_apply_mx where apply_id=#{apply_id}
      </delete>
      
-     <!-- 查询所有生产计划 -->
+     <!-- 查询所有生产计划 --> 
      <select id="selectShjh" resultType="m_apply">
         select * from m_apply
      </select>
+     
+     
+     
+     <!--查询所有通过审核的产品档案信息 -->
+     <select id="selectShtg" resultType="D_file">
+        select a.*,c.tname from d_file a,type c
+        where a.tid=c.tid and
+        a.check_tag=#{check_tag}
+     </select>
+     
+     <!-- 添加入库申请单 -->
+     <insert id="addRk">
+        insert into s_gather(id,gather_id,storer,reason,amount_sum,cost_price_sum,remark,register,register_time,check_tag,store_tag)
+        values(null,#{gather_id},#{storer},#{reason},#{amount_sum},#{cost_price_sum},#{remark},#{register},now(),#{check_tag},#{store_tag})
+     </insert>
+     
+     <!-- 添加入库申请单产品明细 -->
+     <insert id="addRkmx">
+        insert into s_gather_details(id,gather_id,product_id,product_name,product_describe,amount,amount_unit,cost_price,subtotal,gather_tag)
+        values(null,#{gather_id},#{product_id},#{product_name},#{product_describe},#{amount},#{amount_unit},#{cost_price},#{subtotal},"已登记")
+     </insert>
+     
+     <!-- 查询入库申请单明细 -->
+     <select id="selectRkmx" resultType="S_gather_details">
+        select * from s_gather_details where gather_id=#{gather_id}
+     </select>
+     
+     <!-- 查询所有等待审核的入库申请单 -->
+     <select id="selectRkddsh" resultType="S_gather">
+        select * from s_gather where check_tag=#{check_tag} and reason!=#{reason}
+     </select>
+     
+     <!-- 查询等待审核的入库申请单总数 -->
+     <select id="selectRkddshsum" resultType="int">
+        select count(1) from s_gather where check_tag=#{check_tag} and reason!=#{reason}
+     </select>
+     
+     <!-- 入库申请单审核 -->
+     <update id="updRksqdsh">
+        update s_gather set checker=#{checker},check_time=now(),check_tag=#{check_tag}
+        where gather_id=#{gather_id}
+     </update>
+     
+     <!-- 查询所有的入库申请单 -->
+     <select id="selectGetRksqd" resultType="S_gather">
+        select * from s_gather where reason!=#{reason}
+     </select>
+     
+     
+     <!-- 查询所有的入库单 -->
+     <select id="selectGetRkd" resultType="S_gather">
+        select * from s_gather 
+        where reason=#{reason}
+        and store_tag=#{store_tag}
+        and check_tag=#{check_tag}
+     </select>
+     <!-- 查询入库单总数 -->
+     <select id="selectGetRkdsum" resultType="int">
+        select count(1) from s_gather 
+        where reason=#{reason}
+        and check_tag=#{check_tag}
+        and store_tag=#{store_tag}
+     </select>
+     
+     <!-- 查询入库单详细 -->
+     <select id="selectGetRkdxx" resultType="stockjh">
+        select a.*,b.amount as amounts,b.gathered_amount,c.* from s_gather a,s_gather_details b,s_cell c
+        where a.gather_id=b.gather_id
+        and b.product_id=c.product_id
+        and a.gather_id=#{gather_id}
+     </select>
+     
+     <!-- 入库登记 修改入库表 -->
+     <update id="updGetRkddj">
+        update s_gather set gathered_amount_sum=#{gathered_amount_sum},register=#{register},register_time=now(),store_tag=#{store_tag}
+        where gather_id=#{gather_id}
+     </update>
+     
+     <!-- 入库登记 修改入库明细表 -->
+     <update id="updGetRkmx">
+        update s_gather_details set gathered_amount=#{gathered_amount},gather_tag=#{gather_tag}
+        where gather_id=#{gather_id}
+     </update>
+     
+     <!-- 判断产品是否安全配置 -->
+     <select id="selectGetRkpd" resultType="int">
+        select count(1) from s_gather a,s_gather_details b,s_cell c
+        where a.gather_id=b.gather_id
+        and b.product_id=c.product_id
+        and b.product_id in (select product_id from s_gather_details where gather_id =#{gather_id})
+     </select>
+     
+     <!-- 入库单复核通过 修改入库表 -->
+     <update id="updGetRkdfhtg">
+        update s_gather set gathered_amount_sum=#{gathered_amount_sum},checker=#{checker},check_time=now(),check_tag=#{check_tag},store_tag=#{store_tag}
+        where gather_id=#{gather_id}
+     </update>
+     
+     <!-- 入库单复核通过 修改安全库存配置表 -->
+     <update id="updGets_cell">
+        update s_cell set amount=amount+#{gathered_amount}
+        WHERE product_id=(SELECT product_id from s_gather_details WHERE gather_id=#{gather_id})
+     </update>
+     
+     
+     
+     <!-- 出库管理-->
+     <!-- 添加出库申请单 -->
+     <insert id="addCk" >
+        insert into s_pay(id,pay_id,storer,reason,amount_sum,cost_price_sum,remark,register,register_time,check_tag,store_tag)
+        values(null,#{pay_id},#{storer},#{reason},#{amount_sum},#{cost_price_sum},#{remark},#{register},now(),#{check_tag},#{store_tag})
+     </insert>
+     
+     <!-- 添加出库申请明细 -->
+     <insert id="addCkmx">
+        insert into s_pay_details(id,pay_id,product_id,product_name,product_describe,amount,amount_unit,cost_price,subtotal,pay_tag)
+        values(null,#{pay_id},#{product_id},#{product_name},#{product_describe},#{amount},#{amount_unit},#{cost_price},#{subtotal},"已登记")
+     </insert>
+     
+     <!-- 查询出库申请单明细 -->
+     <select id="selectCkmx" resultType="s_pay_details">
+        select * from s_pay_details where pay_id=#{pay_id}
+     </select>
+     
+     <!-- 查询所有等待审核的出库申请单 -->
+     <select id="selectCkddsh" resultType="s_pay">
+        select * from s_pay where check_tag=#{check_tag} and reason!=#{reason}
+     </select>
+     
+     <!-- 查询等待审核的出库申请单总数 -->
+     <select id="selectCkddshsum" resultType="int">
+        select count(1) from s_pay where check_tag=#{check_tag} and reason!=#{reason}
+     </select>
+     
+     <!-- 出库申请单审核 -->
+     <update id="updCksqdsh">
+        update s_pay set checker=#{checker},check_time=now(),check_tag=#{check_tag}
+        where pay_id=#{pay_id}
+     </update>
+     
+     <!-- 查询所有的出库申请单 不为生产领料 -->
+     <select id="selectGetCksqd" resultType="s_pay">
+        select * from s_pay where reason!=#{reason}
+     </select>
+     
      
      
      

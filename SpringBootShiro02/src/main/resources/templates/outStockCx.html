@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>出库申请单查询</title>
+<link rel="icon" href="favicon.ico" type="image/ico">
+<meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
+<meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="author" content="yinqi">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/materialdesignicons.min.css" rel="stylesheet">
+<link href="css/style.min.css" rel="stylesheet">
+<script type="text/javascript" src="js/axios.min.js"></script>
+<script type="text/javascript"   src="js/vue-2.4.0.js"></script>
+</head>
+  
+<body>
+<div id="app">
+<div class="lyear-layout-web">
+  <div class="lyear-layout-container">
+    
+    <header class="lyear-layout-header" style="margin-left: -18%;">
+      
+      <nav class="navbar navbar-default">
+        <div class="topbar">
+          
+          <div class="topbar-left">
+            <div class="lyear-aside-toggler">
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+            </div>
+            <span class="navbar-page-title">库存管理 -出库申请管理-出库申请查询</span>
+            <span style="margin-left: 350px;color: blue;">等待审核出库申请单总数:</span>
+            <span style="margin-left: 5px;color: blue;">{{ddshsum}}</span>
+            <span style="margin-left: 20px;color: red">通过审核出库申请单总数:</span>
+            <span style="margin-left: 5px;color: red">{{tgfynum}}</span>
+            <span style="margin-left: 20px;color: yellow">审核不通过出库申请单总数:</span>
+            <span style="margin-left: 5px;color: yellow">{{shbtgnum}}</span>
+          </div>
+        </div>
+      </nav>
+      
+    </header>
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      
+      <div class="container-fluid">
+        
+        <div class="row">
+          <div class="col-lg-12" style="margin-left: -12%;margin-top: 0.5%;">
+            <div class="card">
+              <div class="card-toolbar clearfix">
+                <form class="pull-right search-bar" method="get" action="#!" role="form">
+                  <div class="input-group">
+                    <div class="input-group-btn">
+                      <input type="hidden" name="search_field" id="search-field" value="title">
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="card-body">
+              <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>申请单编号</th>
+					    <th>出库理由</th>
+						<th>登记时间</th>
+						<th>总件数</th>
+						<th>审核状态</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+					<tr v-for="(cksq,index) in Cksqdlist" :key="index">
+					    <td>
+					       <a style="cursor: pointer;" data-toggle="modal" data-target="#modal1" @click="Getcx(cksq.pay_id,cksq.check_tag,cksq.storer,cksq.reason,cksq.amount_sum,cksq.cost_price_sum,cksq.register,cksq.register_time,cksq.checker,cksq.check_time,cksq.remark)">{{cksq.pay_id}}</a>
+					    </td>
+					    <td>{{cksq.reason}}</td>
+					    <td>{{cksq.register_time}}</td>
+						<td>{{cksq.amount_sum}}</td>
+						<td style="color: red">{{cksq.check_tag}}</td>
+					</tr>
+				</tbody>
+		
+                  </table>
+              </div>
+              
+              <!-- 入库申请单明细模态框开始 -->
+		      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal1">
+                  <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 style="margin-left: 360px" class="modal-title" id="myLargeModalLabel">出库申请单</h4>
+                      </div>
+                      <div class="modal-body">
+                   <form action="#" method="post">
+					 <div class="form-group">
+						  <label for="message-text" class="control-label">出库申请单编号:</label>
+					      <span style="margin-left: 10px;">{{pay_id}}</span>
+					      <label for="message-text" class="control-label" style="margin-left: 200px">审核状态:</label>
+					      <span style="margin-left: 10px;color: blue">{{check_tag}}</span>
+					 </div>
+					 <div class="form-group">
+						  <label for="message-text" class="control-label">出库人:</label>
+					      <span style="margin-left: 10px;">{{storer}}</span>
+					      <label for="message-text" class="control-label" style="margin-left: 370px">出库理由:</label>
+					      <span style="margin-left: 10px;">{{reason}}</span>
+					 </div>
+					 <div class="form-group">
+					   <table class="table table-bordered" >
+	                    <thead>
+	                      <tr>
+	                        <th>序号</th>
+	                        <th>产品编号</th>
+	                        <th>产品名称</th>
+	                        <th>描述</th>
+	                        <th>数量</th>
+	                        <th>单位</th>
+	                        <th>单价(元)</th>
+	                        <th>单位(元)</th>
+	                      </tr>
+	                    </thead>
+	                    <tbody>
+	                      <tr v-for="(cksqmx,index) in Cksqdmxlist" :key="index">
+	                            <td>{{cksqmx.id}}</td>
+                       			<td>{{cksqmx.product_name}}</td>
+                        		<td>{{cksqmx.pay_id}}</td>
+                       			<td>{{cksqmx.product_describe}}</td>
+                       			<td>{{cksqmx.amount}}</td>
+                       			<td>{{cksqmx.amount_unit}}</td>
+                       			<td>{{cksqmx.cost_price | moneyFormat(2)}}</td>
+                       			<td>{{cksqmx.subtotal | moneyFormat(2)}}</td>
+	                      </tr>
+	                    </tbody>
+	                  </table>
+					      </div>
+					          <div class="form-group">
+						         <label for="message-text" class="control-label" >总件数:</label>
+						         <span style="margin-left: 10px;color: red">{{amount_sum}}</span>
+						         <label for="message-text" class="control-label" style="margin-left: 370px">总金额(元):</label>
+						         <span style="margin-left: 10px;color: red">{{cost_price_sum}}</span>
+		                      </div>
+					          <div class="form-group">
+					            <label for="message-text" class="control-label" >登记人:</label>
+					            <span style="margin-left: 10px;">{{register}}</span>		            
+					            <label for="message-text" class="control-label" style="margin-left: 370px">登记时间:</label>
+					            <span style="margin-left: 10px;">{{register_time}}</span>
+					          </div>
+					          <div class="form-group">
+					            <label for="message-text" class="control-label">审核人:</label>
+					            <span style="margin-left: 10px;color: red">{{checker}}</span>		            
+					            <label for="message-text" class="control-label" style="margin-left: 370px">审核时间:</label>
+					            <span style="margin-left: 10px;">{{check_time}}</span>
+					          </div>
+					          <div class="form-group">
+					            <label for="message-text" class="control-label">备注:</label>
+					            <span style="margin-left: 10px;">{{remark}}</span>		            
+					          </div>
+		                </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+		      <!-- 入库申请单明细模态框结束-->
+                
+                
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+      
+    </main>
+    <!--End 页面主要内容-->
+  </div>
+</div>
+</div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+
+<script>
+      Vue.filter('moneyFormat',function(money,length){
+	    return money.toFixed(length)
+      })
+      var vm=new Vue({
+    	  el:'#app',
+    	  data:{
+    		  Cksqdlist:[],  //出库申请单list
+    		  Cksqdmxlist:[], //出库申请单明细list
+    		  ddshsum:0, //等待审核总数
+    		  tgfynum:0, //通过审核总数
+    		  shbtgnum:0, //审核不通过总数
+    		  pay_id:'', //出库申请单编号
+    		  check_tag:'', //审核状态
+    		  storer:'',  //出库人
+    		  reason:'',  //出库理由
+    		  amount_sum:0,//总件数
+    		  cost_price_sum:0,//总金额
+    		  register:'', //登记人
+    		  register_time:'',//登记时间
+    		  checker:'', //审核人
+    		  check_time:'',//审核时间
+    		  remark:''//备注
+    		  
+    	  },
+    	  mounted(){//页面挂载完成调用查询全部的方法
+				this.load();
+    	        this.load2();
+    	        this.load3();
+    	        this.load4();
+		  },
+		  methods:{
+			  load:function(){//查询所有出库申请单  --不为生产领料
+				  var reason="生产领料";
+				  axios.get('GetCksqd?reason='+reason+'').then(res=>{
+							this.Cksqdlist=res.data;
+				  }).catch(err=>{
+						alert('请求失败')
+				  })
+			  },
+			  load2:function(){  //查询所有等待审核的出库申请单总数
+				  var reason="生产领料";
+				  var check_tag="等待审核";
+				  axios.get('productCkddshsum?check_tag='+check_tag+'&reason='+reason+'').then(res=>{
+						this.ddshsum=res.data;
+			  }).catch(err=>{
+					alert('请求失败')
+			  })
+			  },
+			  load3:function(){  //查询所有通过审核的出库申请单总数
+				  var reason="生产领料";
+				  var check_tag="审核通过";
+				  axios.get('productCkddshsum?check_tag='+check_tag+'&reason='+reason+'').then(res=>{
+						this.tgfynum=res.data;
+			  }).catch(err=>{
+					alert('请求失败')
+			  })
+			  },
+			  load4:function(){  //查询所有审核不通过的出库申请单总数
+				  var reason="生产领料";
+				  var check_tag="审核不通过";
+				  axios.get('productCkddshsum?check_tag='+check_tag+'&reason='+reason+'').then(res=>{
+						this.shbtgnum=res.data;
+			  }).catch(err=>{
+					alert('请求失败')
+			  })
+			  },
+			  load5:function(){ //查询出库申请单明细
+				  axios.get('productCkmx?pay_id='+this.pay_id+'').then(res=>{
+			    	  this.Cksqdmxlist=res.data;
+			      }).catch(err=>{
+			    	  alert('请求失败')
+			      })
+			  },
+			  Getcx:function(pay_id,check_tag,storer,reason,amount_sum,cost_price_sum,register,register_time,checker,check_time,remark){ 
+				  this.pay_id=pay_id;this.check_tag=check_tag;this.storer=storer;this.reason=reason;this.amount_sum=amount_sum;this.cost_price_sum=cost_price_sum;this.register=register;this.register_time=register_time;this.checker=checker;this.check_time=check_time;this.remark=remark;
+			      this.load5();
+			  },
+			  
+				  
+				  
+				  
+			  }
+			  
+      
+      }) 
+
+   </script>
+
+</body>
+</html>

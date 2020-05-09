@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.teams.mapper.LyMapper">
+	<select id="scdj" resultType="m_pg">
+		select * from m_pg where
+		check_tag=#{check_tag} and pg_zt=#{pg_zt}
+	</select>
+	<select id="scgx" resultType="M_design_procedure_details">
+		select a.*,b.name,c.did,c.subtotal_sj,c.dj_jj,c.dj_sh from
+		m_design_procedure_details a,m_gonxu b,m_djfh c
+		where
+		a.procedure_id=b.id and a.parent_id in (select design_id from
+		m_design_procedure where product_id=#{product_id}) and a.parent_id =
+		c.design_id
+		and c.procedure_name=b.name
+	</select>
+
+	<!-- 根据工序单编号和名称查询工序物料 -->
+	<select id="selectGxWl" resultType="m_procedure_module">
+		select * from
+		m_procedure_module
+		where design_id=#{parent_id} and procedure_name
+		=#{gongxu_name}
+	</select>
+
+	<select id="selectGongxu_id" resultType="String">
+		select design_id from
+		m_design_procedure where product_id = #{product_id}
+	</select>
+
+	<select id="selectGongxu" resultType="java.lang.String">
+		select name from m_gonxu
+		where id in(select procedure_id from m_design_procedure_details where
+		parent_id = #{gongxu_id})
+	</select>
+
+	<insert id="adddjfh">
+		insert into M_djfh
+		values(null,#{scjh_id},#{gongxu_id},#{string},default,default,default);
+	</insert>
+
+	<select id="selectCount" resultType="int">
+		select count(1) from M_djfh
+		where design_id=#{gongxu_id}
+	</select>
+
+	<!-- 登记 -->
+	<update id="updm_pg">
+		update m_pg set check_tag=#{check_tag} where
+		pg_id=#{pg_id}
+	</update>
+	<update id="updsjsysl">
+		update M_djfh set
+		subtotal_sj=subtotal_sj+#{subtotal_sj},dj_jj=#{dj_jj} where
+		procedure_name=#{procedure_name} and did=#{did}
+	</update>
+	<update id="xgxcct">
+		update m_pg set pg_zt='已生产' where pg_id=#{pg_id}
+	</update>
+	<insert id="add_xq">
+		insert into M_djfh_xq
+		values(null,#{did},#{procedure_name},#{product_id},#{product_name},
+		#{amount},#{cost_price},#{subtotal_cbsj},#{xq_sh})
+	</insert>
+	<select id="scdjwfh" resultType="m_pg">
+		select * from m_pg where
+		check_tag=#{check_tag}
+	</select>
+	<select id="scgxfh" resultType="M_design_procedure_details">
+		select a.*
+		,b.name,c.did,c.subtotal_sj,c.dj_jj,c.dj_sh from
+		m_design_procedure_details a,m_gonxu b,m_djfh c
+		where
+		a.procedure_id=b.id and a.parent_id in
+		(select design_id from
+		m_design_procedure where product_id=1002873732)
+		and a.parent_id =
+		c.design_id and c.procedure_name=b.name
+		and c.dj_jj='已登记'
+		group by
+		procedure_id,subtotal_sj
+	</select>
+	<!-- 根据工序单编号和名称查询工序物料 -->
+	<select id="selectfhwl" resultType="M_djfh_xq">
+		select
+		a.product_name,a.product_id,a.amount,b.amount as 'sl' from
+		m_procedure_module a,M_djfh_xq b where
+		a.procedure_name=b.procedure_name and
+		a.procedure_name=#{procedure_name} and a.design_id in(select design_id from m_djfh where did=#{did}) and b.did=#{did} group by
+		a.product_id
+	</select>
+	<!-- 登记审核 -->
+	<update id="djxq">
+		update M_djfh_xq set xq_sh=#{xq_sh} where
+		procedure_name=#{procedure_name}
+	</update>
+	<update id="djfh">
+		update M_djfh set dj_jj=#{dj_jj},dj_sh=#{dj_sh} where
+		procedure_name=#{procedure_name} and did=#{did}
+	</update>
+
+	<!-- 交接审核 -->
+	<insert id="addsc">
+		insert into M_sc
+		values(null,#{design_id},#{procedure_name},#{did},#{dj_tcsl},#{dj_fh})
+	</insert>
+
+	<insert id="addnbsc">
+		insert into M_nbsc
+		values(null,#{did},#{pg_id},#{product_id},#{product_name},#{sc_unit},#{zcb},#{d})
+	</insert>
+
+	<select id="gszcb" resultType="Double">
+		select cost_price_sum from m_design_procedure where design_id =#{design_id}
+	</select>
+
+	<select id="wlzcb" resultType="Double">
+		select sum(subtotal_sj) from M_djfh where design_id=#{design_id}
+	</select>
+
+	<update id="upsjjfh">
+		update M_djfh set dj_sh=#{dj_sh} where
+		procedure_name=#{procedure_name} and did=#{did}
+	</update>
+	<!--交接已审核 -->
+	<update id="upd_sc">
+		update M_sc set dj_fh=#{dj_fh} where
+		procedure_name=#{procedure_name} and did=#{did}
+	</update>
+	<update id="upsnb">
+		update M_djfh set dj_sh=#{dj_sh} where
+		procedure_name=#{procedure_name} and did=#{did}
+	</update>
+
+
+	<select id="cxgxsl" resultType="M_sc">
+		select * from M_sc where
+		procedure_name=#{procedure_name} and did=#{did}
+			</select>
+
+
+	<select id="cxpgsc" resultType="m_pg">
+		select a.*,b.sc_unit from m_pg
+		a,M_nbsc b where a.pg_id=b.pg_id and a.check_tag='审核通过' and
+		a.pg_zt='已生产'
+
+	</select>
+	
+	<update id="xgzcb">
+	update d_file set real_cost_price=#{zcb} where product_id=#{product_id}
+	</update>
+	
+	<insert id="addsg">
+	insert into s_gather values(null,#{gather_id},#{storer},#{reason},DEFAULT,#{sc_unit},#{d},0,DEFAULT,#{storer},SYSDATE(),default,default,#{string},DEFAULT,DEFAULT,#{string2})
+	</insert>
+	
+	<insert id="addsgxq">
+	insert into s_gather_details values(null,#{gather_id},#{product_id},#{product_name},DEFAULT,#{sc_unit},default,#{zcb},#{d},0,#{string});
+	</insert>
+	
+	<insert id="addpay">
+	insert into s_pay values(null,#{pay_id},#{storer},#{reason},DEFAULT,#{zjs},#{zcb},0,DEFAULT,#{storer},SYSDATE(),default,default,#{string},DEFAULT,DEFAULT,#{string2})
+	</insert>
+	
+	<insert id="addpayxq">
+	insert into s_pay_details values(null,#{pay_id},#{product_id},#{product_name},DEFAULT,#{i},default,#{d},#{e},0,#{string});
+	</insert>
+</mapper>
