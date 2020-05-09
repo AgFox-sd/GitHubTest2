@@ -80,4 +80,17 @@ public interface ProductSjMapper {
   	List<D_module_details> selD_MODULE_DETAILS(String design_id);
   	//查询产品名称是否重复
   	int selectname(D_file file);
+  	//变更
+  	//变更删除
+  	int delid(int id);
+	int upzjq(double jq,String product_id,String product_name);
+  	//变更查询物料
+  	List<D_file> selwl();
+  //修改物料总金额
+  	int updzje(double d,String spid,String spmc);
+  //重新提交
+  	int upgwsh(String check_tag,String change_tag,String product_id,String product_name);
+ // 物料明细单
+ 	void zjwl(String design_id, String product_id, String product_name, String amount_unit,
+ 			int amount, double residual_amount, double cost_price,double subtotal);
 }
