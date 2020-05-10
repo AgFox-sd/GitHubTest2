@@ -7,8 +7,8 @@
   		
   		<!-- 查询已通过审核并未派工的生产计划 -->
   		<select id="SelectApply" resultType="m_apply_mx">
-  			SELECT a.*,b.check_time FROM m_apply_mx a,m_apply b WHERE a.apply_id IN
-           (SELECT apply_id FROM m_apply WHERE check_tag=#{check_tag}) AND manufacture_tag=#{manufacture_tag}
+  			SELECT a.*,b.check_time FROM m_apply_mx a,m_apply b WHERE b.apply_id IN
+           (SELECT apply_id FROM m_apply_mx WHERE manufacture_tag=#{manufacture_tag}) AND manufacture_tag=#{manufacture_tag}
   		</select>
   
   		<!-- 通过产品编号查询工序-->

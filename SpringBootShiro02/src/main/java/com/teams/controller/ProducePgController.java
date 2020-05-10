@@ -2,7 +2,6 @@ package com.teams.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.teams.pojo.D_module;
 import com.teams.pojo.M_design_procedure_details;
 import com.teams.pojo.m_apply;
 import com.teams.pojo.m_pg;
