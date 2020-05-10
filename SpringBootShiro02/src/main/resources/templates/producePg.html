@@ -154,8 +154,10 @@
 						<label for="message-text" class="control-label" >登记人:</label>
 						<span th:text="${session.username}"></span>
 		          </div>
-                 <button class="btn btn-w-xs btn-primary" style="margin-left: 700px" @click="addPg()">提交</button>
-
+		          <div style="margin-left: 700px">
+			         <button class="btn btn-w-xs btn-pink"  @click="Fanhui()">返回</button>
+	                 <button class="btn btn-w-xs btn-primary" @click="addPg()">提交</button>
+				  </div>
 		<!-- 模态框开始 -->
                   <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
                   <div class="modal-dialog modal-lg" role="document">
@@ -348,6 +350,10 @@
 					    }).catch(err=>{
 							alert('请求失败')
 						})
+					},
+					Fanhui(){
+						$("#box1").toggle();
+						$("#box2").toggle();
 					}
 		
 			}
