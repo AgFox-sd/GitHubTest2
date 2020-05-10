@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.teams.mapper.ZpMapper">
+  		
+  		<!-- 查询所有用户信息 -->
+  		<select id="AllUser" resultType="User">
+  			SELECT a.id,a.username,b.rid,c.name FROM USER a LEFT JOIN  user_role  b ON a.id=b.uid
+			LEFT JOIN   roles c ON b.rid=c.id
+  		</select>
+  		
+  		<!-- 新增用户 -->
+  		<insert id="addUser">
+  			insert into user value (null,#{username},#{password},default)
+  		</insert>
+  		
+  		<!-- 查询所有角色 -->
+  		<select id="selectAllrole" resultType="roles">
+  			select * from roles
+  		</select>
+  		
+  		<!-- 给用户赋予角色 -->
+  		<insert id="FuRoles">
+  			insert into user_role values (null,#{uid},#{rid})
+  		</insert>
+  		
+  		<!-- 删除用户 -->
+  		<delete id="deluser">
+  			delete from user where id=#{id}
+  		</delete>
+  		
+  		<!-- 删除用户角色 -->
+  		<delete id="deluserRo">
+  			delete from  user_role where uid=#{id}
+   		</delete>
+  
+  		<!-- 通过id查询用户信息 -->
+  		<select id="Select2" resultType="user">
+  			select * from user where id=#{id}
+  		</select>
+  		
+  		<!-- 查询出这个用户没有的角色 -->
+  		<select id="Sel3" resultType="roles">
+  			SELECT  *  FROM roles WHERE id NOT IN(SELECT rid FROM USER_ROLE WHERE uid=#{uid} )
+  		</select>
+  		
+  		<!-- 修改用户信息 -->
+  		<update id="upduser">
+  			update user set username=#{username} where id=#{id}
+  		</update>
+  		
+  		<!-- 修改用户角色信息 -->
+  		<update id="upduR">
+  			update user_role set rid=#{rid} where uid=#{uid}
+  		</update>
+  		
+  		<!-- 查询所有的角色 -->
+  		<select id="AllRoles" resultType="roles">
+  			SELECT * FROM roles
+  		</select>
+  		
+  		<!-- 增加角色 -->
+  		<insert id="addRoles">
+  			insert into roles values (null,#{name})
+  		</insert>
+  		
+  		<!-- 查询角色没有的权限 -->
+  		<select id="SelQu" resultType="permissions">
+  			SELECT * FROM  permissions WHERE F_ModuleId  NOT IN (SELECT pid FROM permissions_role WHERE rid=#{rid})
+  		</select>
+  		
+  		<!-- 赋予角色权限 -->
+  		<insert id="FuQX">
+  			insert  into permissions_role values (null,#{rid},#{i})
+  		</insert>
+  		
+  		<!-- 删除角色权限通过rid-->
+  		<delete id="delRoQx">
+  			delete  FROM permissions_role where rid=#{id}
+  		</delete>
+  		<!-- 删除角色 -->
+  		<delete id="delRole">
+  			delete FROM roles where id=#{id}
+  		</delete>
+  		<!-- 删除用户角色 -->
+  		<delete id="deluserRo11">
+  			delete from  user_role where rid=#{id}
+   		</delete>
+   		
+   		<!--查询所有的权限 -->
+   		<select id="AllQX" resultType="permissions">
+   			select * from permissions
+   		</select>
+   		
+   		<!-- 增加权限 -->
+   		<insert id="addQX">
+   			insert into permissions values(null,#{f_ModuleId},0,#{f_fullName},#{f_UrlAddress},0)
+   		</insert>
+   		
+   		<!--查询父级菜单 -->
+   		<select id="SelFj" resultType="permissions">
+   			select  * from  permissions where f_ParentId=#{f_ParentId};
+   		</select>
+   		
+   		<!-- 通过id查询权限信息 -->
+   		<select id="SelidQ" resultType="permissions">
+   			select * from permissions where id=#{id}
+   		</select>
+   		<!-- 修改权限信息 -->
+   		<update id="updatePer">
+   			update permissions set f_ModuleId=#{f_ModuleId},f_ParentId=#{f_ParentId},f_fullName=#{f_fullName},f_UrlAddress=#{f_UrlAddress},type=#{type} where id=#{id}
+   		</update>
+   		
+   		<!--查询这个权限有哪些角色是赋予了-->
+   		<select id="SelY22" resultType="permissions_role">
+   			SELECT a.*,b.id,b.name FROM permissions_role a,roles b WHERE a.rid IN(SELECT id FROM roles) AND b.id=a.rid AND pid=#{pid}
+   		</select>
+   		
+   		<!-- 撤销角色权限 -->
+   		<delete id="CxiaoRoleQ">
+   			DELETE FROM permissions_role WHERE rid=#{i} and pid=#{pid}
+   		</delete>
+   		
+   		<!-- 删除权限 -->
+   		<delete id="delQx">
+   			delete  FROM permissions where id=#{pid}
+   		</delete>
+   		
+   		<!-- 删除角色权限通过pid-->
+  		<delete id="delRoQx3">
+  			delete  FROM permissions_role where pid=#{pid}
+  		</delete>
+  		
+  		<!-- 修改角色 -->
+  		<update id="updRoles">
+  			 update roles set name=#{name} where id=#{id}
+  		</update>
+  		
+  		<!--通过id查询角色信息 -->
+  		<select id="selidRole" resultType="roles">
+  			select * from roles where id=#{id}
+  		</select>
+  		
+  		<select id="wmznp" resultType="int">
+  		select rid from user_role where uid in (select id from user where username=#{djr})
+  		</select>
+  </mapper>

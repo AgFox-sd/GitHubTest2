@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>系统管理 -用户管理</title>
+<link rel="icon" href="favicon.ico" type="image/ico">
+<meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
+<meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="author" content="yinqi">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/materialdesignicons.min.css" rel="stylesheet">
+<link href="css/style.min.css" rel="stylesheet">
+<script type="text/javascript" src="js/axios.min.js"></script>
+<script type="text/javascript"   src="js/vue-2.4.0.js"></script>
+<script type="text/javascript"   src="js/qs.min.js"></script>
+</head>
+  
+<body>
+<div id="app">
+<div class="lyear-layout-web">
+  <div class="lyear-layout-container">
+    <!--头部信息-->
+    <header class="lyear-layout-header"  style="margin-left: -14%;">
+      
+      <nav class="navbar navbar-default">
+        <div class="topbar">
+          
+          <div class="topbar-left">
+            <div class="lyear-aside-toggler">
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+            </div>
+            <span class="navbar-page-title"> 系统管理 -用户管理 </span>
+          </div>
+        </div>
+      </nav>
+      
+    </header>
+    <!--End 头部信息-->
+    
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      
+      <div class="container-fluid">
+        
+        <div class="row">
+          <div class="col-lg-10" style="margin-left: -22%;margin-top: -4%;">
+            <div class="card">
+              <div class="card-body">
+                <div class="table-responsive" id="box1">
+                <div class="card-toolbar clearfix">
+                <form class="pull-right search-bar" method="get" action="#!" role="form">
+                  <div class="input-group">
+                    <div class="input-group-btn">
+                      <input type="hidden" name="search_field" id="search-field" value="title">
+                      <button class="btn btn-default dropdown-toggle" id="search-btn" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded="false">
+                     名字<span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li> <a tabindex="-1" href="javascript:void(0)" data-field="title">名字</a> </li>
+                      </ul>
+                    </div>
+                    <input type="text" class="form-control" placeholder="请输入名称"
+						  v-model="keywords" >
+                  </div>
+                </form>
+                <div class="toolbar-btn-action">
+               <button type="button" class="btn btn-primary btn-ms" data-toggle="modal" data-target="#myModal">
+                 		新增用户
+               </button>
+                </div>
+              </div>
+              <table class="table table-hover" style="margin-left: 20px">
+                    <thead>
+                      <tr>
+                        <th>用户编号</th>
+                        <th>用户名称</th>
+                        <th>角色名称</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="user in search()" :key="user.id">
+                        <td>{{user.id}}</td>
+                        <td>{{user.username}}</td>
+                        <td>{{user.name}}</td>
+                        <td>
+	                          <div class="btn-group">
+	                             <button type="button" class="btn btn-primary btn-xs" @click="SC(user.id)" >删除</button>
+	                              <button type="button" class="btn btn-primary btn-xs" @click="UPD(user.id)" data-toggle="modal" 
+	                              	data-target=".bs-example-modal-lg" style="margin-left: 20px">
+	                              	修改
+	                              </button>
+	                             <button type="button" class="btn btn-pink  btn-xs" style="margin-left: 10px" @click="FuYu(user.id)" v-if="user.name==null">赋予角色</button>
+	                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+               </table>
+                  <!-- 增加用户的模态框开始 -->
+       <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">增加用户</h4>
+                      </div>
+                      <div class="modal-body">
+                       		用户名:<input type="text" class="form-control" placeholder="请输入名称" name="username" v-model="username">
+                       		密码:<input type="password" class="form-control" placeholder="请输入密码" name="password" v-model="password">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" @click="addUser()">添加</button>
+                      </div>
+                    </div>
+                  </div>
+      </div>
+ 			<!-- 增加用户的模态框结束 -->
+                </div>
+                <!-- box3开始 -->
+                 <div class="btn-group" id="box3" style="display:none">
+                <div class="form-group" style="margin-left: 200px">
+				 <form action="" method="post">
+		             	 <div class="form-group" style="margin-left:60px">
+				            <label for="message-text" class="control-label">用户编号:</label>
+				              <input type="text" name="id" v-model="updUsers.id" readonly="readonly">
+				          </div><br/>
+				          <div class="form-group" style="margin-left: 60px">
+				            <label for="message-text" class="control-label">用户名称:</label>
+				            <input type="text" name="username" v-model="updUsers.username">
+				          </div><br/>
+		          <div class="form-group" >
+		          <label for="message-text" class="control-label" style="margin-left: 60px">角色:</label>
+					<tr>
+                     		<td class="p-l-40">
+	                          <label class="lyear-checkbox checkbox-primary checkbox-inline" v-for="(je,index) in NoRole">
+	                            <input name="" type="checkbox" class="xz" dataid="id-1-6-24" :value="je.id" >
+	                            <span>{{je.name}}</span>
+	                          </label>
+	                        </td>
+                     </tr>
+		         </div>
+		        </form>
+		          </div>
+                 <button type="button" class="btn btn-primary"  @click="BaoCun()" style="margin-left: 300px">点击保存</button>
+        </div>
+              <!--box3结束 -->
+                <!-- box2开始 -->
+                <div class="btn-group" id="box2" style="display:none">
+                <div class="form-group" style="margin-left: 200px">
+				 <form action="" method="post">
+		           <div class="form-group">
+		            <label for="message-text" class="control-label">用户编号:</label>
+		             <span style="color:red ">{{id}}</span>
+		          </div><br/>
+		          <div class="form-group" >
+		          <label for="message-text" class="control-label" style="margin-left: 30px">角色:</label>
+					<tr>
+                        <td class="p-l-40">
+                          <label class="lyear-checkbox checkbox-primary checkbox-inline" v-for="(checkOne,index) in checkList">
+                            <input name="" type="checkbox" class="xz" dataid="id-1-6-24" :value="checkOne.id" >
+                            <span>{{checkOne.name}}</span>
+                          </label>
+                        </td>
+                     </tr>
+		         </div>
+		        </form>
+		          </div>
+                 <button class="btn btn-w-xs btn-primary" style="margin-left: 700px" @click="QueRen()">确认</button>
+        </div>
+                <!-- box2结束 -->
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+      
+    </main>
+    <!--End 页面主要内容-->
+  </div>
+</div>
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+<!--  <script type="text/javascript">
+$(function(){
+    $('.search-bar .dropdown-menu a').click(function() {
+        var field = $(this).data('field') || '';
+        $('#search-field').val(field);
+        $('#search-btn').html($(this).text() + ' <span class="caret"></span>');
+    });
+});
+</script>-->
+<script>
+			var vm=new Vue({
+				el:'#app',
+				data:{
+					list:[],
+					keywords:'',
+					password:'',
+					username:'',
+					id:'',
+					checkList:'',//查询的角色
+					updUsers:[],
+					NoRole:[]
+				},
+				mounted(){//初始化显示完成调用
+					this.AllUser();
+				},
+				methods:{
+					//查询所有用户
+					AllUser(){
+						axios.post("AllUser").then(res=>{
+							this.list=res.data;
+						}).catch(err=>{
+							console.log("请求失败");
+						});
+						
+					},
+					search(){
+						//遍历list数组,如果品牌名称包含keywords中的内容,
+						//将品牌添加到新的list中
+						var newList=[];
+						this.list.forEach(user=>{
+							if(user.username.includes(this.keywords)){
+								newList.push(user)
+							}
+						})
+						return newList;
+					},
+					addUser:function(){
+						//提交参数
+						var param={username:this.username,password:this.password};
+						axios.post('addUser',param).then(res=>{
+							if(res.data=="成功"){
+								alert('增加成功')
+								this.list=res.data;
+								this.username=this.password=''
+								this.AllUser();
+							}
+						}).catch(err=>{
+							alert('请求失败')
+						});
+					},
+					FuYu(id){//点击赋予角色
+						 $("#box1").toggle();
+						 $("#box2").toggle();
+						 this.id=id;
+						 //查询所有角色selectAllrole
+						 axios.post("selectAllrole").then(res=>{
+							this.checkList=res.data;
+						 }).catch(err=>{
+							console.log("请求失败");
+						});
+						 
+					},
+					QueRen(){//点击确认的时候
+						
+						var len=$("input[type=checkbox]:checked()");
+						if(len.length<=0){
+							alert("请选择需要赋予的角色!");
+						}else if(len.length>=2){
+							alert("一个用户只能赋予一个角色!");
+						}else{
+							var role='';//角色
+							//获得选择的信息
+							$(".xz:checked").each(function(){
+								role=($(this).val());
+								$(this).prop("checked",false);
+							});
+							//发送请求赋予角色
+							var param={uid:this.id,rid:role};
+							axios.post('FuRoles',param).then(res=>{
+								if(res.data=="成功"){
+									alert('赋予角色成功')
+									$("#box1").toggle();
+									$("#box2").toggle();	
+									this.AllUser();
+								}
+							}).catch(err=>{
+								alert('请求失败')
+							});
+						}
+						
+					},
+					SC:function(id,index){//删除
+						if(confirm('确认要删除吗?')){
+							var url='delUser?id='+id+'';
+							axios.post(url).then(res=>{
+								if(res.data=="成功"){
+									alert('删除成功')
+									this.list.splice(index,1)
+									this.AllUser();
+								}
+							}).catch(err=>{
+								alert('请求失败')
+							})
+						}
+					
+					},
+					UPD(id){
+						$("#box1").toggle();
+						$("#box3").toggle();
+						//点击修改时,查用户信息
+						axios.post('Select2?id='+id+'').then(res=>{
+							this.updUsers=res.data;
+						});
+						//点击修改时,查用户角色信息
+						axios.post('Sel3?id='+id+'').then(res=>{
+							this.NoRole=res.data;
+						});
+						
+					},
+					BaoCun:function(){//保存修改内容
+						//获取用户编号，名称，角色
+						var len=$("input[type=checkbox]:checked()");
+						if(len.length<=0){
+							alert("请选择需要赋予的角色!");
+						}else if(len.length>=2){
+							alert("一个用户只能赋予一个角色!");
+						}else{
+							var role='';//角色
+							//获得选择的信息
+							$(".xz:checked").each(function(){
+								role=($(this).val());
+								$(this).prop("checked",false);
+							});
+							//发送请求修改用户
+							axios.get('updateUser?uid='+this.updUsers.id+'&username='+this.updUsers.username+'&rid='+role+'').then(res=>{
+								if(res.data=="成功"){
+									alert('修改成功')
+									$("#box1").toggle();
+									$("#box3").toggle();
+									this.AllUser();
+								}
+							}).catch(err=>{
+								alert('请求失败')
+							});
+							
+						}
+					},
+			
+			}
+				
+			})
+			
+</script>
+</body>
+</html>
