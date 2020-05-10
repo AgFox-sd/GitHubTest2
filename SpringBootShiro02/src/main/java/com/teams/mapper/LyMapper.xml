@@ -9,7 +9,8 @@
 		check_tag=#{check_tag} and pg_zt=#{pg_zt}
 	</select>
 	<select id="scgx" resultType="M_design_procedure_details">
-		select a.*,b.name,c.did,c.subtotal_sj,c.dj_jj,c.dj_sh from
+		select
+		a.*,b.name,c.did,c.subtotal_sj,c.dj_jj,c.dj_sh from
 		m_design_procedure_details a,m_gonxu b,m_djfh c
 		where
 		a.procedure_id=b.id and a.parent_id in (select design_id from
@@ -89,7 +90,8 @@
 		a.product_name,a.product_id,a.amount,b.amount as 'sl' from
 		m_procedure_module a,M_djfh_xq b where
 		a.procedure_name=b.procedure_name and
-		a.procedure_name=#{procedure_name} and a.design_id in(select design_id from m_djfh where did=#{did}) and b.did=#{did} group by
+		a.procedure_name=#{procedure_name} and a.design_id in(select design_id
+		from m_djfh where did=#{did}) and b.did=#{did} group by
 		a.product_id
 	</select>
 	<!-- 登记审核 -->
@@ -114,11 +116,13 @@
 	</insert>
 
 	<select id="gszcb" resultType="Double">
-		select cost_price_sum from m_design_procedure where design_id =#{design_id}
+		select cost_price_sum from
+		m_design_procedure where design_id =#{design_id}
 	</select>
 
 	<select id="wlzcb" resultType="Double">
-		select sum(subtotal_sj) from M_djfh where design_id=#{design_id}
+		select sum(subtotal_sj) from
+		M_djfh where design_id=#{design_id}
 	</select>
 
 	<update id="upsjjfh">
@@ -139,7 +143,7 @@
 	<select id="cxgxsl" resultType="M_sc">
 		select * from M_sc where
 		procedure_name=#{procedure_name} and did=#{did}
-			</select>
+	</select>
 
 
 	<select id="cxpgsc" resultType="m_pg">
@@ -148,24 +152,34 @@
 		a.pg_zt='已生产'
 
 	</select>
-	
+
 	<update id="xgzcb">
-	update d_file set real_cost_price=#{zcb} where product_id=#{product_id}
+		update d_file set real_cost_price=#{zcb} where product_id=#{product_id}
 	</update>
-	
+
 	<insert id="addsg">
-	insert into s_gather values(null,#{gather_id},#{storer},#{reason},DEFAULT,#{sc_unit},#{d},0,DEFAULT,#{storer},SYSDATE(),default,default,#{string},DEFAULT,DEFAULT,#{string2})
+		insert into s_gather
+		values(null,#{gather_id},#{storer},#{reason},DEFAULT,#{sc_unit},#{d},0,DEFAULT,#{storer},SYSDATE(),default,default,#{string},DEFAULT,DEFAULT,#{string2})
 	</insert>
-	
+
 	<insert id="addsgxq">
-	insert into s_gather_details values(null,#{gather_id},#{product_id},#{product_name},DEFAULT,#{sc_unit},default,#{zcb},#{d},0,#{string});
+		insert into s_gather_details
+		values(null,#{gather_id},#{product_id},#{product_name},DEFAULT,#{sc_unit},default,#{zcb},#{d},0,#{string});
 	</insert>
-	
+
 	<insert id="addpay">
-	insert into s_pay values(null,#{pay_id},#{storer},#{reason},DEFAULT,#{zjs},#{zcb},0,DEFAULT,#{storer},SYSDATE(),default,default,#{string},DEFAULT,DEFAULT,#{string2})
+		insert into s_pay
+		values(null,#{pay_id},#{storer},#{reason},DEFAULT,#{zjs},#{zcb},0,DEFAULT,#{storer},SYSDATE(),default,default,#{string},DEFAULT,DEFAULT,#{string2})
 	</insert>
-	
+
 	<insert id="addpayxq">
-	insert into s_pay_details values(null,#{pay_id},#{product_id},#{product_name},DEFAULT,#{i},default,#{d},#{e},0,#{string});
+		insert into s_pay_details
+		values(null,#{pay_id},#{product_id},#{product_name},DEFAULT,#{i},default,#{d},#{e},0,#{string});
 	</insert>
+
+	<!-- 查询生产详情 -->
+	<select id="scxqsl" resultType="M_nbsc">
+		select * from M_nbsc where
+		pg_id=#{pg_id} 
+	</select>
 </mapper>

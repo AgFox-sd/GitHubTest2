@@ -2,92 +2,155 @@
 <html lang="zh">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>生产管理 -内部生产- 生产登记查询</title>
 <link rel="icon" href="favicon.ico" type="image/ico">
 <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
-<meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="description"
+	content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
 <meta name="author" content="yinqi">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/materialdesignicons.min.css" rel="stylesheet">
 <link href="css/style.min.css" rel="stylesheet">
 <script type="text/javascript" src="js/axios.min.js"></script>
-<script type="text/javascript"   src="js/vue-2.4.0.js"></script>
+<script type="text/javascript" src="js/vue-2.4.0.js"></script>
 </head>
-  
+
 <body>
-<div id="app">
-<div class="lyear-layout-web">
-  <div class="lyear-layout-container">
-    <!--头部信息-->
-    <header class="lyear-layout-header">
-      
-      <nav class="navbar navbar-default">
-        <div class="topbar">
-          
-          <div class="topbar-left">
-            <div class="lyear-aside-toggler">
-              <span class="lyear-toggler-bar"></span>
-              <span class="lyear-toggler-bar"></span>
-              <span class="lyear-toggler-bar"></span>
-            </div>
-            <span class="navbar-page-title"> 示例页面 - 产品档案查询</span>
-          </div>
-        </div>
-      </nav>
-      
-    </header>
-    <!--End 头部信息-->
-    
-    <!--页面主要内容-->
-    <main class="lyear-layout-content">
-      
-      <div class="container-fluid">
-        
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="card">
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th>派工单编号</th>
-                        <th>产品编号</th>
-                        <th>产品名称</th>
-                        <th>生产数量</th>
-                        <th>生产状态</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="file in list" >
-                        <td>{{file.pg_id}}</td>
-                        <td>{{file.product_id}}</td>
-                        <td>{{file.product_name}}</td>
-                        <td>{{file.sc_unit}}</td>
-                       	<td>{{file.pg_zt}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-        </div>
-        
-      </div>
-      
-    </main>
-    <!--End 页面主要内容-->
-  </div>
-</div>
-</div>
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
-<script type="text/javascript" src="js/main.min.js"></script>
-<script type="text/javascript">
+	<div id="app">
+		<div class="lyear-layout-web">
+			<div class="lyear-layout-container">
+				<!--头部信息-->
+				<header class="lyear-layout-header">
+
+					<nav class="navbar navbar-default">
+						<div class="topbar">
+
+							<div class="topbar-left">
+								<div class="lyear-aside-toggler">
+									<span class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span>
+								</div>
+								<span class="navbar-page-title"> 示例页面 - 产品档案查询</span>
+							</div>
+						</div>
+					</nav>
+
+				</header>
+				<!--End 头部信息-->
+
+				<!--页面主要内容-->
+				<main class="lyear-layout-content">
+
+				<div class="container-fluid">
+
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="table table-hover">
+											<thead>
+												<tr>
+													<th>派工单编号</th>
+													<th>产品编号</th>
+													<th>产品名称</th>
+													<th>生产数量</th>
+													<th>生产状态</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr v-for="file in list">
+													<td style="color: red" data-toggle="modal"
+														data-target="#modal1"
+														@click="gofh(file.pg_id,file.product_id,file.product_name,file.pg_ren)">{{file.pg_id}}</td>
+													<td>{{file.product_id}}</td>
+													<td>{{file.product_name}}</td>
+													<td>{{file.sc_unit}}</td>
+													<td>{{file.pg_zt}}</td>
+												</tr>
+											</tbody>
+										</table>
+										<div class="modal fade bs-example-modal-lg" tabindex="-1"
+											role="dialog" aria-labelledby="myLargeModalLabel" id="modal1">
+											<div class="modal-dialog modal-lg" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<span aria-hidden="true">×</span>
+														</button>
+														<h4 class="modal-title" id="myLargeModalLabel">产品生产详情</h4>
+													</div>
+													<div class="modal-body">
+														<form action="#" method="post">
+															<div class="form-group">
+																<label for="message-text" class="control-label">派工单编号:</label>
+																<span style="margin-left: 10px; color: red">{{pg_id}}</span>
+																<label for="message-text" class="control-label">产品编号:</label>
+																<span style="margin-left: 10px; color: red">{{product_id}}</span>
+															</div>
+															<div class="form-group">
+																<label for="message-text" class="control-label">产品名称:</label>
+																<span style="margin-left: 10px; color: red">{{product_name}}</span>
+																<label for="message-text" class="control-label">工单制定人:</label>
+																<span style="margin-left: 10px; color: red">{{pg_ren}}</span>
+															</div>
+															<div class="form-group">
+																<table class="table table-bordered" border="1">
+																	<thead>
+																	<tr>
+																		<td>生产编号</td>
+																		<td>产品编号</td>
+																		<td>产品名称</td>
+																		<td>生产数量</td>
+																		<td>生产单价</td>
+																		<td>生产总额</td>
+																	</tr>
+																	</thead>
+																	<tbody>
+																	<tr v-for="v in slist" class="text-center">
+																		<td>{{v.did}}</td>
+																		<td>{{v.product_id}}</td>
+																		<td>{{v.product_name}}</td>
+																		<td>{{v.sc_unit}}</td>
+																		<td>{{v.sc_dj}}</td>
+																		<td>{{v.sc_zj}}</td>
+																	</tr>
+																	</tbody>
+																</table>
+															</div>
+														</form>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-default"
+															data-dismiss="modal">确认</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- 模态框结束 -->
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+				</main>
+				<!--End 页面主要内容-->
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+	<script type="text/javascript" src="js/main.min.js"></script>
+	<script type="text/javascript">
 $(function(){
     $('.search-bar .dropdown-menu a').click(function() {
         var field = $(this).data('field') || '';
@@ -96,11 +159,16 @@ $(function(){
     });
 });
 </script>
-<script>
+	<script>
 			var vm=new Vue({
 				el:'#app',
 				data:{
 					list:[],
+					pg_id:'',
+					product_id:'',
+					product_name:'',
+					pg_ren:'',
+					slist:[]
 				},
 				mounted(){//初始化显示完成调用
 					this.selectId();
@@ -115,6 +183,26 @@ $(function(){
 						})
 						
 					},
+					gofh:function(pg_id,product_id,product_name,pg_ren){ 
+						  this.pg_id=pg_id;this.product_id=product_id;this.product_name=product_name;
+						  this.pg_ren=pg_ren;
+						  
+						  var url="scxqsl?pg_id="+pg_id+"";
+						   axios.post(url).then(res=>{
+								this.slist=res.data;
+							}).catch(err=>{
+								console.log("请求失败");
+							})  
+				   },
+				   scslcx(){
+					   alert(this.pg_id);
+					  /* var url="scxqsl?pg_id="+this.pg_id+"";
+					   axios.post(url).then(res=>{
+							this.slist=res.data;
+						}).catch(err=>{
+							console.log("请求失败");
+						})  */
+				   }
 			}
 				
 			})

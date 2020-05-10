@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.teams.pojo.M_design_procedure_details;
 import com.teams.pojo.M_djfh_xq;
+import com.teams.pojo.M_nbsc;
 import com.teams.pojo.m_pg;
 import com.teams.pojo.M_sc;
 import com.teams.pojo.m_procedure_module;
@@ -71,4 +72,6 @@ public interface LyService {
 					String string);
 			void addpay(String pay_id, String storer, String reason, double zjs, double zcb, String string,
 					String string2);
+			//查询生产详情
+			List<M_nbsc> scxqsl(String pg_id);
 }

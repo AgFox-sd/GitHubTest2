@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.teams.pojo.M_design_procedure_details;
 import com.teams.pojo.M_djfh_xq;
+import com.teams.pojo.M_nbsc;
 import com.teams.pojo.m_pg;
 import com.teams.pojo.M_sc;
 import com.teams.pojo.m_procedure_module;
@@ -202,4 +203,10 @@ public class LyController {
 		int num=(int)((Math.random()*9+1)*100000);
 		return 402+batchno+num;
 	}
+	//查询生产详情
+		@RequestMapping("/scxqsl")
+		@ResponseBody
+		public List<M_nbsc> scxqsl(String pg_id) {
+			return service.scxqsl(pg_id);
+		}
 }
