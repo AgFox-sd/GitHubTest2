@@ -2,174 +2,180 @@
 <html lang="zh">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-<title>文档列表 - 产品档案更变</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>文档列表 - 新增产品档案</title>
 <link rel="icon" href="favicon.ico" type="image/ico">
 <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
-<meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="description"
+	content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
 <meta name="author" content="yinqi">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/materialdesignicons.min.css" rel="stylesheet">
 <link href="css/style.min.css" rel="stylesheet">
 <script type="text/javascript" src="js/axios.min.js"></script>
-<script type="text/javascript"   src="js/vue-2.4.0.js"></script>
+<script type="text/javascript" src="js/vue-2.4.0.js"></script>
 <script src="js/qs.min.js"></script>
 </head>
-  
-<body>
-<div id="app">
-                
-                        <h4 class="modal-title text-center h1"  style="margin-top: 30px">新增产品档案</h4>
-                      
-                      <div class="modal-body text-center" style="margin-left: -100px">
-                    	 <form action="#" method="post" style="margin-top: 30px">
-							  <div class="form-group">
-							  <div class="row">
-							  
-					            <div class="col-md-4">
-					            <label for="message-text" class="control-label ">*产品名称:</label>
-					            <input type="text" name="factory_name" v-model="b">
-					            </div>
-					            <div class="col-md-4">
-					             <label for="message-text" class="control-label">制造商:</label>
-					             <input type="text" name="factory_name" v-model="c">
-					             </div>
-					             
-					            <div class="col-md-4">
-					            <label for="message-text" class="control-label ">*风险级别:</label>
-					            <select id="fab" style="width: 200px"   v-model="fx">
-						   <option value="">请选择</option>
-							<option :value="i.fid" v-for="i in listss" :key="i.fid">{{i.fname}}</option>
-						   </select>
-					            </div>
-					            
-					             </div>
-					          </div>
-					          
-					          <div class="form-group">
-					          <div class="row">
-					          <div class="col-md-4">
-					            <label>*用途类型:</label>
-						   <select id="fab" style="width: 200px"   v-model="d">
-						   <option value="">请选择</option>
-							<option :value="i.tid" v-for="i in list" :key="i.tid">{{i.tname}}</option>
-						   </select>					  
-					  
-								</div>
-								<div class="col-md-4">
-								<label for="message-text" >*档次级别:</label>
-					           <select id="fab" style="width: 200px"    v-model="e">
-						   <option value="">请选择</option>
-							<option :value="i.pid" v-for="i in lists" :key="i.pid">{{i.pname}}</option>
-						   </select>
-								</div>
-								<div class="col-md-4">
-								<label for="message-text" class="control-label">产品简称:</label>
-					             <input type="text" name="product_nick" v-model="f">
-					          </div>
-					          </div>
-					          </div>
-					          
-					           <div class="form-group">
-					           <div class="row">
-					           
-				                <div class="col-md-4">
-					            <label for="message-text" class="control-label">计量单位:</label>
-					             <input type="text" name="personal_unit" v-model="g"> 
-					             </div>
-					             <div class="col-md-4">
-					            <label for="message-text" class="control-label">计量值:</label>
-					             <input type="text" name="personal_value" v-model="h">
-					             </div> 
-					             <div class="col-md-4">
-					             <label for="message-text" class="control-label">供应商集合:</label>
-					             <input type="text" name="provider_group" v-model="i">
-					          </div>
-					          </div>
-					          </div>
-					          
-					          <div class="form-group">
-					            <div class="row"></div>
-					            <div class="col-md-4">
-					            <label for="message-text" class="control-label">保修期:</label>
-					             <input type="text" name="warranty" v-model="j">
-					             </div>
-					             <div class="col-md-4">
-					            <label for="message-text" class="control-label">代替者名称:</label>
-					             <input type="text" name="twin_name" v-model="k">
-					             </div>
-					             <div class="col-md-4">
-					              <label for="message-text" class="control-label">替代品编号:</label>
-					             <input type="text" name="twin_id" v-model="l">
-					          </div>
-					          </div>
-					          
-					          <div class="form-group">
-					          <div class="row">
-					          
-					          <div class="col-md-4">
-					            <label for="message-text" class="control-label">生命周期:</label>
-					             <input type="text" name="lifecycle" v-model="m">
-					            </div>
-					            <div class="col-md-4">
-					            <label for="message-text" class="control-label">*市场单价:</label>   
-					             <input type="text" name="factory_name" v-model="n">
-					          </div>
-					          <div class="col-md-4">
-					          <label for="message-text" class="control-label">*计划成本单价:</label>
-					             <input type="text" name="factory_name" v-model="o">
-					          </div>
-					          </div>
-					          </div>
-					          
-					          <div class="form-group">
-					            <div class="row">
-					            <div class="col-md-4">
-					            <label for="message-text" class="control-label">成本单价:</label>
-					            <input type="text" name="factory_name" v-model="p">
-					            </div>
-					            <div class="col-md-4">
-					            <label for="message-text" class="control-label">单位:</label>
-					             <input type="text" name="amount_unit" v-model="q">
-					             </div>
-					             <div class="col-md-4">
-					             <label for="message-text" class="control-label">产品描述:</label>
-					             <input type="text" name="product_describe" v-model="r">
-					          </div>
-					          </div>
-					          </div>
-					          <div class="form-group">
-					            <div class="row">
-					            <div class="col-md-4">
-					            <label for="message-text" class="control-label">产品经理:</label>
-					             <input type="text" name="responsible_person" v-model="s">
-					            </div>
-					            <div class="col-md-4">
-					            <label for="message-text" class="control-label">登记人:</label>
-					             <span th:text="${session.username}" id="djr"> </span>
-					         </div>
-					      
-					          </div>
-					         </div>
-		        </form>                    
-                    
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" @click="add">点击保存</button>
-                      </div>
-                    </div>
-		
-        
-        
-        
-        
 
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
-<script type="text/javascript" src="js/main.min.js"></script>
-<script>
+<body>
+	<div id="app">
+
+		<h4 class="modal-title text-center h1" style="margin-top: 30px">新增产品档案</h4>
+
+		<div class="modal-body text-center" style="margin-left: -100px">
+			<form action="#" method="post" style="margin-top: 30px">
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-4">
+							<label for="message-text" class="control-label ">*产品名称:</label> <input
+								type="text" name="factory_name" v-model="b">
+						</div>
+						<div class="col-md-4">
+							<label for="message-text" class="control-label">制造商:</label> <input
+								type="text" name="factory_name" v-model="c">
+						</div>
+
+						<div class="col-md-4">
+							<label for="message-text" class="control-label ">*风险级别:</label> <select
+								id="fab" style="width: 200px" v-model="fx">
+								<option value="">请选择</option>
+								<option :value="i.fid" v-for="i in listss" :key="i.fid">{{i.fname}}</option>
+							</select>
+						</div>
+
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="row">
+					<div class="col-md-4">
+							<label for="message-text" class="control-label">产品简称:</label> <input
+								type="text" name="product_nick" v-model="f">
+					</div>
+					<div class="col-md-3" style="margin-left: 54px">
+							<label for="message-text" class="control-label">产品描述:</label> <input
+								type="text" name="product_describe" v-model="r">
+					</div>
+					<div class="col-md-4" style="margin-left: 65px">
+							<label>*用途类型:</label> <select id="fab" style="width: 200px"
+								v-model="d">
+								<option value="">请选择</option>
+								<option :value="i.tid" v-for="i in list" :key="i.tid">{{i.tname}}</option>
+							</select>
+
+					</div>
+					
+				</div>
+			</div>
+			<div class="form-group">
+					<div class="row">
+						<div class="col-md-4">
+							<label for="message-text" class="control-label">计量单位:</label> <input
+								type="text" name="personal_unit" v-model="g">
+						</div>
+						<div class="col-md-3" style="margin-left:68px">
+							<label for="message-text" class="control-label">单位:</label> <input
+								type="text" name="amount_unit" v-model="q">
+						</div>
+						<div class="col-md-4" style="margin-left:51px">
+								<label for="message-text">*档次级别:</label> <select id="fab"
+									style="width: 200px" v-model="e">
+									<option value="">请选择</option>
+									<option :value="i.pid" v-for="i in lists" :key="i.pid">{{i.pname}}</option>
+								</select>
+						</div>
+					</div>
+				</div>	
+				
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-4">
+						<label for="message-text" class="control-label">*市场单价:</label> <input
+								type="text" name="factory_name" v-model="n">
+						</div>
+						<div class="col-md-3" style="margin-left: 53px">
+							<label for="message-text" class="control-label">成本单价:</label> <input
+								type="text" name="factory_name" v-model="p">
+						</div>
+						<div class="col-md-4" style="margin-left: 35px">
+							<label for="message-text" class="control-label">*计划成本单价:</label>
+							<input type="text" name="factory_name" v-model="o">
+						</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="row">
+
+						<div class="col-md-4">
+							<label for="message-text" class="control-label">生命周期:</label> <input
+								type="text" name="lifecycle" v-model="m">
+						</div>
+						<div class="col-md-3" style="margin-left: 48px">
+						<label for="message-text" class="control-label">代替者名称:</label> <input
+							type="text" name="twin_name" v-model="k">
+						</div>
+						<div class="col-md-4" style="margin-left: 53px">
+							<label for="message-text" class="control-label">替代品编号:</label> <input
+								type="text" name="twin_id" v-model="l">
+						</div>
+						
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-3" style="margin-left: 68px">
+						<label for="message-text" class="control-label">保修期:</label> <input
+							type="text" name="warranty" v-model="j">
+						</div>
+						<div class="col-md-4" style="margin-left: 56px">
+							<label for="message-text" class="control-label">计量值:</label> <input
+								type="text" name="personal_value" v-model="h">
+						</div>
+						<div class="col-md-3" style="margin-left: 38px">
+							<label for="message-text" class="control-label">供应商集合:</label> <input
+								type="text" name="provider_group" v-model="i">
+						</div>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-4">
+							<label for="message-text" class="control-label">产品经理:</label> <input
+								type="text" name="responsible_person" v-model="s">
+						</div>
+						<div class="col-md-3" style="margin-left: 43px">
+							
+						</div>
+						<div class="col-md-4" >
+							<label for="message-text" class="control-label">登记人:</label> <span
+								th:text="${session.username}" id="djr"> </span>
+						</div>
+					</div>
+				</div>
+				
+				
+			</form>
+
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			<button type="button" class="btn btn-primary" @click="add">点击保存</button>
+		</div>
+	</div>
+
+
+
+
+
+
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+	<script type="text/javascript" src="js/main.min.js"></script>
+	<script>
 			var vm=new Vue({
 				el:'#app',
 				data:{
