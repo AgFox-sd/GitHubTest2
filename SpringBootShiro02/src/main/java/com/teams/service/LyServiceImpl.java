@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.teams.mapper.LyMapper;
 import com.teams.pojo.M_design_procedure_details;
 import com.teams.pojo.M_djfh_xq;
+import com.teams.pojo.M_nbsc;
 import com.teams.pojo.m_pg;
 import com.teams.pojo.M_sc;
 import com.teams.pojo.m_procedure_module;
@@ -204,6 +205,12 @@ public class LyServiceImpl implements LyService {
 			String string2) {
 		// TODO Auto-generated method stub
 		mapper.addpay(pay_id, storer, reason, zjs, zcb, string, string2);
+	}
+
+	@Override
+	public List<M_nbsc> scxqsl(String pg_id) {
+		// TODO Auto-generated method stub
+		return mapper.scxqsl(pg_id);
 	}
 
 }

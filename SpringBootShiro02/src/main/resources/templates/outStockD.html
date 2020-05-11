@@ -370,12 +370,18 @@
 								})
 						}else{
 							var attemper = $("#djr").text();
-							axios.get("updDdu?product_id="+product_id+"&attemper="+attemper+"&gather_id="+this.gather_id+"").then(res=>{
+							axios.get("selectKdd?product_id="+product_id+"").then(res=>{
 								if(res.data>0){
-									alert('调度成功！');
-									$("#box2").toggle();
-									$("#box1").toggle();
-									this.Selad();
+									axios.get("updDdu?product_id="+product_id+"&attemper="+attemper+"&gather_id="+this.gather_id+"").then(res=>{
+										if(res.data>0){
+											alert('调度成功！');
+											$("#box2").toggle();
+											$("#box1").toggle();
+											this.Selad();
+										}
+									})
+								}else{
+									alert('没有可调度的安全库存配置！');
 								}
 							})
 						}					
