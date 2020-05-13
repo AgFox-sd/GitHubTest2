@@ -332,8 +332,6 @@
 						})
 					},
 					QueRen(){	
-						alert(this.did2);
-						alert(this.pid3);
 						var url="sczb?pg_id="+this.pg_id+"&design_id="+this.pid3+"&did="+this.did2+"&product_id="+this.product_id+"&product_name="+this.product_name+"&sc_unit="+this.amount+"";
 						 axios.get(url).then(res=>{
 							 if(res.data>0){

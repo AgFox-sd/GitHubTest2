@@ -30,7 +30,6 @@ public class LyController {
 	@ResponseBody
 	public List<m_pg> scdj() {
 		List<m_pg> list = service.scdj("审核通过", "未生产");
-		System.out.println(list);
 		return list;
 	}
 
@@ -79,7 +78,7 @@ public class LyController {
 		String pay_id = Dindan1();
 		String storer = (String) ses.getAttribute("username");
 		String reason = "生产领料";
-		for (int i = 0; i < sl.length; i++) {
+	    for (int i = 0; i < sl.length; i++) {
 			service.add_xq(did, procedure_name, product_id[i], product_name[i], amount[i], cost_price[i],
 					(amount[i] * cost_price[i]), xq_sh);
 			zjs +=amount[i];

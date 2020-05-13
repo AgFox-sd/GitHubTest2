@@ -265,9 +265,5 @@ public class LidongController {
 	public List<s_pay> selectGetCksqd(@RequestParam("reason")String reason){
 		return service.selectGetCksqd(reason);
 	}
-	
-	
-	
-	
-	
+		
 }

@@ -11,10 +11,54 @@
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/materialdesignicons.min.css" rel="stylesheet">
 <link href="css/style.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="css/jquery.step.css" />
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery.step.min.js"></script>
 <script type="text/javascript" src="js/axios.min.js"></script>
 <script type="text/javascript"   src="js/vue-2.4.0.js"></script>
+<style type="text/css">
+button {
+	display: inline-block;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.42857143;
+	text-align: center;
+	cursor: pointer;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	color: #fff;
+	background-color: #5bc0de;
+}
+
+.main {
+	width: 1000px;
+	margin: 100px auto;
+}
+
+#step {
+	margin-bottom: 60px;
+}
+
+.btns {
+	float: left;
+}
+
+.info {
+	float: left;
+	height: 34px;
+	line-height: 34px;
+	margin-left: 40px;
+	font-size: 28px;
+	font-weight: bold;
+	color: #928787;
+}
+
+.info span {
+	color: red;
+}
+
+</style>
 </head>
-  
 <body>
 <div id="app">
 <div class="lyear-layout-web">
@@ -40,7 +84,7 @@
     <!--End 头部信息-->
     
     <!--页面主要内容-->
-    <main class="lyear-layout-content">
+    <main class="lyear-layout-content" id="box1">
       
       <div class="container-fluid">
         
@@ -59,6 +103,7 @@
                         <th>产品档次</th>
                         <th>市场单价</th>
                         <th>审核状态</th>
+                        <th>进度</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -70,6 +115,13 @@
                         <td>{{file.pname}}</td>
                        	<td>{{file.list_price}}</td>
                        	<td>{{file.check_tag}}</td>
+                       	<td>
+                       	<div class="btn-group" v-if="file.tname=='商品'">
+                             <button type="button" class="btn btn-primary  btn-xs"  @click="ckjd(file.design_module_tag,file.design_procedure_tag,file.design_cell_tag)">
+                             <span >查看</span>
+                             </button>
+                          </div>
+                       	</td>
                       </tr>
                     </tbody>
                   </table>
@@ -148,12 +200,13 @@
 		        </form>		         
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">确认</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
 、                      </div>
                 </div>
               </div>
             </div>
             <!-- 模态框结束 -->
+            
           </div>
           
         </div>
@@ -161,22 +214,19 @@
       </div>
       
     </main>
+    <div class="modal-footer main" style="display:none" id="box2">
+	<div id="step"></div>
+	 <button type="button" class="btn btn-primary" @click="fanhui()">返回</button>
+</div>
     <!--End 页面主要内容-->
   </div>
 </div>
 </div>
-<script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="js/main.min.js"></script>
 <script type="text/javascript">
-$(function(){
-    $('.search-bar .dropdown-menu a').click(function() {
-        var field = $(this).data('field') || '';
-        $('#search-field').val(field);
-        $('#search-btn').html($(this).text() + ' <span class="caret"></span>');
-    });
-});
+
 </script>
 <script>
 			var vm=new Vue({
@@ -235,11 +285,32 @@ $(function(){
 						  }).catch(err=>{
 								alert('请求失败')
 						  })
-					  },
-			}
-				
-			})
-			
+					  },ckjd(wlzc,gxzc,kcfp){
+						  $("#box1").toggle();
+						  $("#box2").toggle();
+						  var $step = $("#step");
+						  var $index = $("#index");
+						  $step.step({
+						  	index: -1,
+						  	time: 500,
+						  	title: ["物料组成", "工序组成", "工序物料", "库存分配", "预约完成"]
+						  });
+						  if(wlzc=="已设计"){
+							  $step.toStep(0);
+						  }
+						  if(gxzc=="已设计"){
+							  $step.toStep(2);
+						  }
+						  if(kcfp=="已设计"){
+							  $step.toStep(3);
+						  }
+					  },fanhui(){
+						  $("#box1").toggle();
+						  $("#box2").toggle();
+						  location.reload(); 
+					  }
+			}				
+			})			
 		</script>
 
 </body>
