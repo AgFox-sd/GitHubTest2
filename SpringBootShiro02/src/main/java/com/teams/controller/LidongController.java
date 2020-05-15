@@ -27,7 +27,7 @@ public class LidongController {
 	@Autowired
 	LidongService service;
 	
-	
+	//添加
 	//添加产品  --查询符合条件的产品
 	@RequestMapping("/productSccx")
 	@ResponseBody
