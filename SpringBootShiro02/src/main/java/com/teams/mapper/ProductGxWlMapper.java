@@ -68,4 +68,6 @@ public interface ProductGxWlMapper {
 	void updmdpd(double d, String design_id, String gongxu_name);
 
 	int upddmd(int ky, String product_id, String design_id);
+
+	public List<M_design_procedure> productGxWlSh2();
 }

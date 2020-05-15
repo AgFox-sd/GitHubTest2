@@ -79,7 +79,7 @@ public class ProductGxWlController {
 	@RequestMapping("/productGxWlSh")
 	@ResponseBody
 	public List<M_design_procedure> productGxWlSh(){
-		List<M_design_procedure> list = service.productGxWlSh("已设计");
+		List<M_design_procedure> list = service.productGxWlSh("变更等待审核");
 		return list;
 	}
 	
@@ -104,11 +104,10 @@ public class ProductGxWlController {
 	public  int updateSySj(String design_id,int[] sl,String[] wlbh,String product_id) {
 	service.updWlZcb2(design_id);
 	service.updCpGx2(design_id);
-	service.delete(design_id);
 		for (int i = 0; i < wlbh.length; i++) {
 			service.updWlMx2(sl[i],wlbh[i] ,product_id);
 		}		
-	return service.updGxWlSj("未设计",design_id);
+	return service.updGxWlSj("审核不通过",design_id);
 	}
 	
 	
@@ -123,7 +122,7 @@ public class ProductGxWlController {
 	@RequestMapping("/productGxWlSh2")
 	@ResponseBody
 	public List<M_design_procedure> productGxWlSh2(){
-		List<M_design_procedure> list = service.productGxWlSh("已审核");
+		List<M_design_procedure> list = service.productGxWlSh2();
 		return list;
 	}
 	
@@ -133,6 +132,7 @@ public class ProductGxWlController {
 	public int updgxwlbg(String product_id,int sl,double dj,double xj,int slsl,String design_id,String gongxu_name) {
 		int ky = sl-slsl;
 		double djdj = (slsl*dj)-xj;
+		System.out.println(djdj);
 		service.updmpm(slsl,slsl*dj,product_id,design_id);
 		service.updmdp(djdj,design_id);
 		service.updmdpd(slsl*dj,design_id,gongxu_name);

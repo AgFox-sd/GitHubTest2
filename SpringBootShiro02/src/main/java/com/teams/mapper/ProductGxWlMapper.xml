@@ -32,7 +32,7 @@
     
      <!-- 修改产品工序的设计字段2 -->
     <update id="updCpGx2">
-    update m_design_procedure_details set module_subtotal=0,design_module_tag='未设计' 
+    update m_design_procedure_details set design_module_tag='已设计' 
     where parent_id =#{design_id} 
     </update>
     
@@ -70,7 +70,7 @@
     
      <!-- 修改物料总成本2 -->
     <update id="updWlZcb2">
-    update m_design_procedure set module_cost_price_sum=0
+    update m_design_procedure set module_cost_price_sum=module_cost_price_sum
     where design_id	 =#{design_id} 
     </update>
     <!-- 修改产品工序表设计字段 -->
@@ -88,18 +88,23 @@
     <!-- 查询已设计完物料工序的产品 -->
      <select id="productGxWlSh" resultType="M_design_procedure">
     select * from m_design_procedure 
-    where check_tag = '审核通过' and design_module_tag = #{design_module_tag}
+    where check_tag = '审核通过' and design_module_tag = #{design_module_tag} or design_module_tag='已设计'
     </select>
     
+    
+    <select id="productGxWlSh2" resultType="M_design_procedure">
+    select * from m_design_procedure 
+    where check_tag = '审核通过' and design_module_tag !='变更等待审核' or design_module_tag='未设计'
+    </select>
     <!-- 修改产品工序为已审核 -->
     <update id="updateGxWlSh">
      update   m_design_procedure  set design_module_tag='已审核'  where design_id = #{design_id}
     </update>
     
     <!-- //删除工序物料表 -->
-    <delete id="delete">
-    delete from m_procedure_module where design_id = #{design_id}
-    </delete>
+    <update id="delete">
+       update   m_design_procedure  set design_module_tag='审核不通过'  where design_id = #{design_id} 
+   </update>
     
     <!-- 查询所有工序 -->
     <select id="cxsygx" resultType="M_procedure_module">
@@ -109,7 +114,7 @@
     <!-- 查询已审核或已设计的产品 -->
      <select id="productGxWlCx" resultType="M_design_procedure">
     select * from m_design_procedure 
-    where check_tag = '审核通过' and design_module_tag != '未设计'
+    where check_tag = '审核通过' 
     </select>
     
     <update id="updmpm">
@@ -119,7 +124,7 @@
     
     <update id="updmdp">
     update m_design_procedure set module_cost_price_sum=module_cost_price_sum+#{djdj},
-    design_module_tag = '已设计' where design_id =#{design_id}
+    design_module_tag = '变更等待审核' where design_id =#{design_id}
     </update>
     
     <update id="updmdpd">
