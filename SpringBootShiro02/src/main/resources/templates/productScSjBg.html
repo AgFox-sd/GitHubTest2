@@ -64,6 +64,7 @@
 					    <th>设计人</th>
 						<th>登记时间</th>
 						<th>工时总成本</th>
+						<th>审核状态</th>
 						<th>查看详情</th>
                       </tr>
                     </thead>
@@ -75,6 +76,7 @@
 						<td>{{wuzc.designer}}</td>
 						<td>{{wuzc.register_time}}</td>
 						<td>{{wuzc.cost_price_sum | moneyFormat(2,'$')}}</td>
+						<td>{{wuzc.check_tag}}</td>
 						<td>
 						 <div class="btn-group">
                              <button type="button"  id="sjbutton" class="btn btn-primary  btn-xs"  data-target=".bs-example-modal-lg"
@@ -240,7 +242,7 @@
 				methods:{
 					Selad(){
 						//发送异步请求，请求后端控制器，获取所有的品牌信息
-						axios.get('selectcpgxs').then(res=>{
+						axios.get('selectcpgxss').then(res=>{
 							this.list=res.data;
 				  }).catch(err=>{
 						alert('请求失败')
@@ -290,7 +292,6 @@
 						var djr=$("#djr").text()
                          //alert(product_id)//产品编号
                          //alert(product_name)//产品名称
-                         alert(sjdh)//设计单编号
                          //alert(sjr)//设计人
                          //alert(djr)//登记人
                          
@@ -305,7 +306,7 @@
 						$("#box1").toggle();
 						$("#box2").toggle();
 						this.Selad();
-						alert('设计完成');
+						alert('变更完成');
 					},
 					fz(){
 						$(".xz:checked").each(function(){

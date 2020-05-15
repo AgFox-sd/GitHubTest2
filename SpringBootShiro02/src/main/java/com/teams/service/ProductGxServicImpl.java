@@ -88,6 +88,11 @@ public class ProductGxServicImpl implements ProductGxService{
 	public int updGx(String design_procedure_tag,String design_id) {
 	  return  mapper.updGx(design_procedure_tag,design_id);
 	}
+	@Override
+	public List<M_design_procedure> selectcpgxss() {
+		// TODO Auto-generated method stub
+		return mapper.selectcpgxss();
+	}
 
 
 }

@@ -85,9 +85,7 @@ public class ProductGxController {
 	    @RequestMapping("/delgxsj")
 	    @ResponseBody
 	    public int delgxsj(@RequestParam("design_id")String design_id) {
-	    	service.updGx("未设计",design_id);
 	    	int row=service.delgxsj(design_id);
-	    	service.delgxsjs(design_id);
 	    	return row;
 	    } 
 	    
@@ -98,6 +96,13 @@ public class ProductGxController {
 	    	return list;
 	    }
 	    
+	    
+	    @RequestMapping("/selectcpgxss")
+	    @ResponseBody
+	    public List<M_design_procedure> selectcpgxss(){
+	    	List<M_design_procedure> list =service.selectcpgxss();
+	    	return list;
+	    }
 	  //添加产品物料组成设计单和物料组成明细单
 	  		@RequestMapping("/productgxbg")
 	  		@ResponseBody

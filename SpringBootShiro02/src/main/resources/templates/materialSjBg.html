@@ -251,7 +251,7 @@
 					designer:'',
 					cost_price_sum:'',
 					register_time:'',
-					check_tag:'等待审核',
+					check_tag:'变更等待审核',
 					change_tag:'已变更'
 					
 				},
@@ -261,7 +261,7 @@
 				methods:{
 					Selad(){
 						//发送异步请求，请求后端控制器，获取所有的品牌信息
-						axios.get('selD_module').then(res=>{
+						axios.get('selD_moduleS').then(res=>{
 							this.list=res.data;
 				  }).catch(err=>{
 						alert('请求失败')
@@ -297,6 +297,7 @@
 						this.Selad();
 						var url="upgwsh?check_tag="+this.check_tag+"&change_tag="+this.change_tag+"&product_id="+this.product_id+"&product_name="+this.product_name+"";
 						axios.get(url).then(res=>{
+							alert("变更成功！");
 							this.list=res.data;
 							this.Selad();
 						    }).catch(err=>{
@@ -339,9 +340,9 @@
 							   "&spid="+this.product_id+"&spmc="+this.product_name+"";
 					    axios.get(url).then(res=>{
 					    	if(res.data>0){
+						    	alert('成功');
 								 this.Selad3();
 					    	}
-					    	alert('成功');
 					    }).catch(err=>{
 							alert('请求失败')
 						})
