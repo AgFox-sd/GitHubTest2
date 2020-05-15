@@ -65,6 +65,7 @@
 					    <th>设计人</th>
 						<th>登记时间</th>
 						<th>工时总成本</th>
+						<th>审核状态</th>
 						<th>查看详情</th>
                       </tr>
                     </thead>
@@ -76,6 +77,7 @@
 						<td>{{wuzc.designer}}</td>
 						<td>{{wuzc.register_time}}</td>
 						<td>{{wuzc.cost_price_sum | moneyFormat(2,'$')}}</td>
+						<td>{{wuzc.check_tag}}</td>
 						<td>
 						  <div class="btn-group">
                              <button type="button" class="btn btn-primary  btn-xs" data-toggle="modal" data-target="#modal1" @click="gosh(wuzc.design_id,wuzc.designer,wuzc.product_id,wuzc.product_name,wuzc.cost_price_sum,wuzc.module_describe)">查看详情</button>

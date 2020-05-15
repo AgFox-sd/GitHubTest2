@@ -37,4 +37,5 @@ public interface ProductGxService {
 
 	    int delgxbg(@Param("parent_id")String parent_id);
 		int updGx(String design_procedure_tag,String design_id);
+		List<M_design_procedure> selectcpgxss();
 }

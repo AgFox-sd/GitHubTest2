@@ -23,7 +23,7 @@ INSERT INTO m_design_procedure_details VALUES(NULL,#{parent_id},#{procedure_id},
 	</insert>
 	<!-- 查询产品工序表中等待审核的 -->
 	<select id="selectcpgx" resultType="M_design_procedure">
-	select *from m_design_procedure where check_tag=#{check_tag}
+	select * from m_design_procedure where check_tag=#{check_tag} or check_tag='变更等待审核'
 	</select>
 	<!-- 修改d_file表中的工序步骤 -->
 	<update id="updsj">
@@ -33,7 +33,7 @@ INSERT INTO m_design_procedure_details VALUES(NULL,#{parent_id},#{procedure_id},
 	<!-- 查询所有 -->
 	<select id="selectcpmxb" resultType="M_design_procedure_details">
 	SELECT s.id ,s.parent_id ,s.labour_hour_amount,s.amount_unit,s.cost_price,s.subtotal,u.name as'name'
- FROM  m_design_procedure_details s left JOIN m_gonxu u  ON s.procedure_id=u.id WHERE s.parent_id=#{parent_id}
+ FROM  m_design_procedure_details s left JOIN m_gonxu u  ON s.procedure_id=u.id WHERE s.parent_id=#{parent_id} 
 	</select>
 	<!-- 审核通过修改 -->
 	<update id="updsjd">
@@ -41,9 +41,9 @@ INSERT INTO m_design_procedure_details VALUES(NULL,#{parent_id},#{procedure_id},
             where design_id =#{design_id}
 	</update>
 	<!-- 审核不通过删除工序表 -->
-	<delete id="delgxsj">
-	delete from M_design_procedure where design_id =#{design_id}
-	</delete>
+	<update id="delgxsj">
+	update M_design_procedure set check_tag='审核不通过' where design_id =#{design_id}
+	</update>
 	<!-- 审核不通过删除工序明细表 -->
 	<delete id="delgxsjs">
 		delete from M_design_procedure_details where parent_id =#{parent_id}
@@ -55,12 +55,15 @@ INSERT INTO m_design_procedure_details VALUES(NULL,#{parent_id},#{procedure_id},
 	</update>
 	 <!-- 查询产品工序表中审核通过的 -->
 	 <select id="selectcpgxs" resultType="M_design_procedure">
-	 	select *from m_design_procedure where check_tag='审核通过'
+	 	select *from m_design_procedure 
 	 </select>
-	 
+
+	 <select id="selectcpgxss" resultType="M_design_procedure">
+	 	select *from m_design_procedure  where check_tag!='变更等待审核'
+	 </select>	 
 	 <!-- 工序变更 -->
 	 <update id="updbg">
-	 UPDATE m_design_procedure SET cost_price_sum=#{cost_price_sum},check_tag='等待审核',change_time=NOW(),change_tag='已变更' WHERE design_id=#{design_id}
+	 UPDATE m_design_procedure SET cost_price_sum=#{cost_price_sum},check_tag='变更等待审核',change_time=NOW(),change_tag='已变更' WHERE design_id=#{design_id}
 	 </update>
 	 <!-- 工序明细变更 -->
 	 <delete id="delgxbg">
