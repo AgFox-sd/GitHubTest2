@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-<title>采购管理 - 采购调度管理 - 制定采购执行单</title>
+<title>采购管理 - 采购调度管理 - 采购执行单查询</title>
 <link rel="icon" href="favicon.ico" type="image/ico">
 <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
 <meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
@@ -31,9 +31,11 @@
               <span class="lyear-toggler-bar"></span>
               <span class="lyear-toggler-bar"></span>
             </div>
-            <span class="navbar-page-title" > 采购管理 - 采购调度管理 - 制定采购执行单</span>
-            <span class="navbar-page-title" style="color: red;"> 当前等待执行的配采购计划总数：{{count1}}例</span>
-            <span class="navbar-page-title" style="color: yellow;"> 当前等待执行的配采购计划明细总数：{{count2}}例</span>
+            <span class="navbar-page-title" > 采购管理 - 采购调度管理 - 采购执行单查询</span>
+            <span class="navbar-page-title" style="color: red;"> 符合条件的采购执行单总数：{{count1}}例</span>
+            <span class="navbar-page-title" style="color: blue;"> 其中等待执行的采购执行单总数：{{count2}}例</span>
+            <span class="navbar-page-title" style="color: yellow;"> 其中正在执行的采购执行单总数：{{count3}}例</span>
+            <span class="navbar-page-title" style="color: pink;"> 其中完成的采购执行单总数：{{count4}}例</span>
           </div>
         </div>
       </nav>
@@ -43,7 +45,7 @@
     <main class="lyear-layout-content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-lg-12" style="margin-left: -22%;margin-top: -6%;">
+          <div class="col-lg-12" style="margin-left: -22%;margin-top: -3%;">
             <div class="card">
               <div class="card-toolbar clearfix">
                <form class="pull-right search-bar" method="get" action="#!" role="form">
@@ -56,40 +58,44 @@
               </div>
               <div class="card-body">
                 <div class="table-responsive" id="box1">
-                <div>
-                
-                  <a type="button" class="btn btn-pink   btn-xs" id="sjbutton"  @click="SelPg()"  
-                  	style="margin-left:800px;margin-bottom: 10px;margin-top: 10px">
-                  		生成执行单
-                  </a>
-                  
+                <div>      
                   <table class="table table-hover">
                     <thead>
                       <tr>
-                     	<th class="text-center">点选</th>
-                     	<th class="text-center">计划单编号</th>
+                     	<th class="text-center">执行单编号</th>
                         <th class="text-center">产品编号</th>
                         <th class="text-center">产品名称</th>
-                        <th class="text-center">描述</th>
-                        <th class="text-center">数量</th>
-                        <th class="text-center">出库单编号集合</th>
-                        <th class="text-center">审核时间</th>
+                        <th class="text-center">执行单状态</th>
+                        <th class="text-center">审核状态</th>
+                        <th class="text-center">入库状态</th>
+                        <th class="text-center">查看详情</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="pg in list" class="text-center">
-                        <td>
-		                    <label class="lyear-checkbox checkbox-pink m-t-7">
-		                        <input type="checkbox"  class="xz" name="xz"><span  class="xz"></span>
-		                    </label>
-		                </td>
-		                <td>{{pg.cgPlanId}}</td>
+		                <td>{{pg.cgDiaoduId}}</td>
 		                <td>{{pg.product_id}}</td>
 		                <td>{{pg.product_name}}</td>
-		                <td></td>
-		                <td>{{pg.amount}}</td>
-		                <td></td>
-		                <td>{{pg.check_time}}</td>
+		                <td>
+		                <span v-if="pg.check_tag=='等待审核'">等待</span>
+                         <span v-if="pg.check_tag=='审核通过'">执行</span>
+                         <span v-if="pg.check_tag=='审核不通过'">未执行</span>
+		                </td>
+		                <td>
+		                 <span v-if="pg.check_tag=='等待审核'">等待</span>
+                         <span v-if="pg.check_tag=='审核通过'">通过</span>
+                         <span v-if="pg.check_tag=='审核不通过'">不通过</span>
+		                </td>
+		                <td>
+		                <span v-if="pg.onstock_tag=='未入库'&&pg.check_tag=='审核通过'">等待</span>
+                        <span v-if="pg.onstock_tag=='未入库'&&pg.check_tag=='审核不通过'">未完成</span>
+		                <span v-if="pg.onstock_tag=='已入库'&&pg.check_tag=='审核通过'">完成</span>
+		                </td>
+		                <td>
+		                <a type="button" class="btn btn-pink   btn-xs" id="sjbutton"  @click="SelPg(pg.cgDiaoduId,pg.product_id,pg.product_name,pg.amount_sum,pg.price_sun,pg.register,pg.register_time,pg.checker,pg.check_time)">
+                  		查看详情
+                        </a>
+		                </td>
                       </tr>
                     </tbody>
                   </table>
@@ -100,47 +106,44 @@
         <!-- box2开始 -->
         <div class="btn-group" id="box2" style="display:none">
        			    <div>
-          				<p style="margin-left: 450px;margin-top: 15px;font-size: 25px;">采购执行单</p>
+          				<p style="margin-left: 470px;margin-top: 15px;font-size: 25px;">采购执行单</p>
        				</div>
-		          <div class="form-group" style="margin-left: 200px">
-			          	
+		           <div class="form-group" style="margin-left: 200px">	          	
+						<label for="message-text" class="control-label" >执行单编号:</label>
+						<span name="product_id">{{cgDiaoduId}}</span>
+						<label for="message-text" class="control-label" style="margin-left: 281px">出库单编号集合:</label>
+						<span name="product_name" ></span>
+		          </div>
+		          <div class="form-group" style="margin-left: 200px">	          	
 						<label for="message-text" class="control-label" >产品编号:</label>
 						<span name="product_id">{{product_id}}</span>
-						<label for="message-text" class="control-label" style="margin-left: 281px">产品名称:</label>
+						<label for="message-text" class="control-label" style="margin-left: 301px">产品名称:</label>
 						<span name="product_name" >{{product_name}}</span>
 		          </div>
-		          <div style="margin-left:10px">
+		          <div style="margin-left:40px">
 		           <table class="table table-hover" >
                     <thead>
                       <tr>
-                        <th class="text-center">点选</th>
+                        <th class="text-center">序号</th>
                         <th class="text-center">供应商名称</th>
                         <th class="text-center">供应商编号</th>
+                        <th class="text-center">联系人</th>
+                        <th class="text-center">电话</th>
                         <th class="text-center">数量</th>
                         <th class="text-center">单价（元）</th>
                         <th class="text-center">小计（元）</th>
-                        <th class="text-center">联系人</th>
-                        <th class="text-center">电话</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for=" gx in gxlist" class="text-center">
-                       	 <td>
-		                    <label class="lyear-checkbox checkbox-pink m-t-7">
-		                        <input type="checkbox"  class="xz1" name="xz1" @click="xz()"><span  class="xz1"></span>
-		                    </label>
-		                </td>
+                       	<td>{{gx.id}}</td>
                         <td>{{gx.providerName}}</td>
                        	<td>{{gx.providerId}}</td>
-                        <td>
-		                        <input type="text"  class="sl" name="sl"/>
-		                </td>
-                        <td>
-		                        <input type="text"  class="dj" name="dj"/>
-                        </td>
-                        <td></td>
-                        <td>{{gx.linkman}}</td>
-                        <td>{{gx.providerPhone}}</td>
+                        <td>{{gx.linkman}}</tlinkmand>
+                        <td>{{gx.providerPhone}} </td>
+                        <td>{{gx.amount}}</td>
+                        <td>{{gx.price}}</td>
+                        <td>{{gx.subtotal}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -148,18 +151,23 @@
                     <div class="form-group" style="margin-left: 200px">
 						<label for="message-text" class="control-label" >采购总数量:</label>
 						<span>{{amount}}</span>
-						<label for="message-text" class="control-label" style="margin-left:411px">描述:</label>
-						<span>采购</span>
+						<label for="message-text" class="control-label" style="margin-left:381px">采购总价格:</label>
+						<span>{{zj}}</span>
 		          </div>
                   <div class="form-group" style="margin-left: 200px">
 						<label for="message-text" class="control-label" >登记人:</label>
-						<span th:text="${session.username}" id="pg_ren"></span>
+						<span>{{djr}}</span>
 						<label for="message-text" class="control-label" style="margin-left:400px" >登记时间:</label>
 						<span>{{djsj}}</span>
 		          </div>
+		           <div class="form-group" style="margin-left: 200px">
+						<label for="message-text" class="control-label" >审核人:</label>
+						<span>{{shr}}</span>
+						<label for="message-text" class="control-label" style="margin-left:400px" >审核时间:</label>
+						<span>{{shsj}}</span>
+		          </div>
 		          <div style="margin-left: 700px">
 			         <button class="btn btn-w-xs btn-pink"  @click="Fanhui()">返回</button>
-	                 <button class="btn btn-w-xs btn-primary" @click="addPg()">提交</button>
 				  </div>
 		<!-- 模态框开始 -->
                   <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -246,162 +254,80 @@
 				el:'#app',
 				data:{
 					list:[],
+					cgDiaoduId:'',
 					product_id:'',
 					product_name:'',
-					product_describe:'',
 					amount:'',
-					gxlist:[],//工序list
-					sjdbh:'',
-					gxmc:'',
-					wllist:[],//工序物料
-					procedure_name:'',
-					xgdbh:'',
-					pg_ren:'',
-					apply_id:'',//工单制定人
-					pg_id:'',
+					zj:'',
+					djr:'',
 					djsj:'',
-					zsl:'',
+					shr:'',
+					shsj:'',
+					gxlist:[],//工序lis
 					count1:'',
-					count2:''
+					count2:'',
+					count3:'',
+					count4:''
 				},
 				mounted(){//初始化显示完成调用
-					this.SelectApply();
-				    this.scbh();
-				  
+					this.SelectApply();				  
 				},
 				methods:{
 					SelectApply(){
 						//发送异步请求，请求后端控制器，获取所有的品牌信息
-						axios.post("selectcgPlanXq").then(res=>{
+						axios.post("selectcgDiaodu").then(res=>{
 							this.list=res.data;
 						}).catch(err=>{
 							console.log("请求失败");
 						});
 						
-						axios.post("selectAllCgCount1").then(res=>{
+						axios.post("selectAllCgCount5").then(res=>{
 							this.count1=res.data;
 						}).catch(err=>{
 							console.log("请求失败");
 						})
 						
-						axios.post("selectAllCgCount2").then(res=>{
+						axios.post("selectAllCgCount6").then(res=>{
 							this.count2=res.data;
 						}).catch(err=>{
 							console.log("请求失败");
 						})
-					},
-					scbh(){
-						//生成  300+当前日期+6位随机数组成的流水号 --开始
-						var myDate =new Date();
-					    var a=myDate.getFullYear()+"0"+(myDate.getMonth()+1)+""+myDate.getDate();
-						var time="";
-						for(var i=0;i<6;i++){
-							time+=Math.floor(Math.random()*10)
-						}
-						var dingdan="050500"+a+time;  //生成流水号结束
 						
-						this.pg_id=dingdan;  //生产计划编号  --流水号赋给apply_id
+						axios.post("selectAllCgCount7").then(res=>{
+							this.count3=res.data;
+						}).catch(err=>{
+							console.log("请求失败");
+						})
+						
+						axios.post("selectAllCgCount8").then(res=>{
+							this.count4=res.data;
+						}).catch(err=>{
+							console.log("请求失败");
+						})
 					},
-					SelPg:function(){	
-						var myDate =new Date();
-						var a=myDate.getFullYear()+"-0"+(myDate.getMonth()+1)+"-"+myDate.getDate()+" "+myDate.getHours()+":"+myDate.getMinutes()+":"+myDate.getSeconds();
-                        this.djsj=a;
-						//如果复选框未选中提示请选择
-						var len=$("input[type=checkbox]:checked()");
-						if(len.length<=0){
-							alert("请选择需要执行的采购计划");
-						}else{
-						var bh='';//产品编号
-						var mc='';//名称
-						var ms='';//描述
-						var sl='';//数量
-						var jhdbh='';//计划单编号
-						//获得选择的信息
-						$(".xz:checked").each(function(){
-							jhdbh=$(this).parent().parent().next().html();
-							bh=$(this).parent().parent().next().next().html();
-							mc=$(this).parent().parent().next().next().next().html();
-							ms=$(this).parent().parent().next().next().next().next().html();
-							sl=$(this).parent().parent().next().next().next().next().next().html();
-						});						
-						this.product_id=bh;
-						this.product_name=mc;
-						this.product_describe=ms;
-						this.amount=sl;
-						this.apply_id=jhdbh;
-						axios.get("selectCgGys?product_id="+this.product_id+"").then(res=>{
-							if(res.data!=""){
+					SelPg:function(cgDiaoduId,product_id,product_name,amount,zj,djr,djsj,shr,shsj){				
+						this.cgDiaoduId=cgDiaoduId;
+						this.product_id=product_id;
+						this.product_name=product_name;
+						this.zj=zj;
+						this.amount=amount;
+						this.djr=djr;
+						this.djsj=djsj;
+						this.shr=shr;
+						this.shsj=shsj;
+						axios.get("selectcgDiaoduXq?cgDiaoduId="+this.cgDiaoduId+"").then(res=>{
 								this.gxlist=res.data;
 								//盒子切换
 								$("#box1").toggle();
 								$("#box2").toggle();
-							}else{
-							    alert("该产品没有推荐供应商！");	
-								$(".xz").prop("checked",false);
-							}	
 						}).catch(err=>{
 							console.log("请求失败");
 						});
-						}
-					},
-					addPg(){
-						var len=$(".xz1:checked()");
-						if(len.length<=0){
-							alert("请选择要提交的采购信息！");
-						}else{
-							if($(".dj").val()==""||$(".sl").val()==""){
-								alert("数量或单价不能为空！");
-								$(".xz1").prop("checked",false);
-							}else{
-								if(this.zsl>this.amount){
-									alert("总数量不能大于采购总数量！");
-									$(".xz1").prop("checked",false);
-								}else{
-								var mc=[];//名称
-								var bh=[];//编号
-								var sl=[];//数量
-								var dj=[];//单价
-								var lxr=[];//联系人
-								var dh=[];//电话
-								//获得选择的信息
-								$(".xz1:checked").each(function(){
-									mc.push($(this).parent().parent().next().html());
-									bh.push($(this).parent().parent().next().next().html());
-									sl.push($(this).parent().parent().next().next().next().children().val());
-									dj.push($(this).parent().parent().next().next().next().next().children().val());
-									$(this).parent().parent().next().next().next().next().next().text($(this).parent().parent().next().next().next().children().val()*$(this).parent().parent().next().next().next().next().children().val());
-									lxr.push($(this).parent().parent().next().next().next().next().next().next().text());
-									dh.push($(this).parent().parent().next().next().next().next().next().next().next().text());
-								});	
-								var pg_ren=$("#pg_ren").text();
-								var url="addCgZx?cgDiaoduId="+this.pg_id+"&cgPlanId="+this.apply_id+"&product_id="+this.product_id+"&product_name="+this.product_name+"&register="+pg_ren+"&bh="+bh+"&mc="+mc+"&dh="+dh+"&lxr="+lxr+"&sl="+sl+"&dj="+dj+"";
-							    axios.get(url).then(res=>{
-							    	 if(res.data>0){
-										  alert("采购成功！请审核！");
-										  this.SelectApply();
-										  $(".xz").prop("checked",false);
-										  $("#box1").toggle();
-										  $("#box2").toggle();
-							    	 }
-							    }).catch(err=>{
-									alert('请求失败')
-								})
-								}
-							}
-						}				
 					},
 					Fanhui(){
 						$("#box1").toggle();
 						$("#box2").toggle();
-					},xz(){
-						var  zsl=0;
-						$(".xz1:checked").each(function(){
-							$(this).parent().parent().next().next().next().next().next().text($(this).parent().parent().next().next().next().children().val()*$(this).parent().parent().next().next().next().next().children().val());
-						    zsl+=parseInt($(this).parent().parent().next().next().next().children().val());
-						});	
-						this.zsl=zsl;
 					}
-		
 			}
 				
 			});
