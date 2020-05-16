@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>采购管理</title>
+<link rel="icon" href="favicon.ico" type="image/ico">
+<meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
+<meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="author" content="yinqi">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/materialdesignicons.min.css" rel="stylesheet">
+<link href="css/style.min.css" rel="stylesheet">
+<script type="text/javascript" src="js/axios.min.js"></script>
+<script type="text/javascript"   src="js/vue-2.4.0.js"></script>
+</head>
+  
+<body>
+<div id="app">
+<div class="lyear-layout-web">
+  <div class="lyear-layout-container">
+   
+    <header class="lyear-layout-header" style="margin-left: -18%">
+      <nav class="navbar navbar-default">
+        <div class="topbar">
+          
+          <div class="topbar-left">
+            <div class="lyear-aside-toggler">
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+            </div>
+            <span class="navbar-page-title">采购管理 -采购计划管理-新发生采购计划登记</span>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-10" style="margin-left: -15%;margin-top: 0.5%;">
+            <div class="card">
+              <div class="card-toolbar clearfix">
+               <form class="pull-right search-bar" method="get" action="#!" role="form">
+                  <div class="input-group">
+                    <div class="input-group-btn">
+                      <input type="hidden" name="search_field" id="search-field" value="title">
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="card-body">
+              
+              </div>
+        
+        <!-- box1开始 -->
+         <div class="btn-group" id="box1">
+             <div class="form-group">
+                  <button class="btn btn-xs btn-pink" style="margin-left: 700px;margin-top: -12%;" @click="Getcp()" data-toggle="modal" data-target=".bs-example-modal-lg">添加产品</button>
+          		          <button class="btn btn-xs btn-primary" @click="Getyl()" style="margin-left: 10px;margin-top: -12%;">预览</button>
+       		       </div>
+       			   <div class="form-group" style="margin-top: -8%">
+          				<h4 style="margin-left: 370px">采购计划单</h4>
+       			   </div>
+		           <div class="form-group" style="margin-left: 100px;margin-top: 20px">
+						<label for="message-text" class="control-label" >采购理由:</label>
+						<span style="margin-left: 8px">新发生</span>
+						<label for="message-text" class="control-label" style="margin-left: 300px">登记人:</label>
+						<span  id="djr" th:text="${session.username}" style="margin-left: 8px"></span>
+		          </div>
+		          <div style="margin-left: 70px">
+		           <table class="table table-bordered" >
+	                    <thead>
+	                      <tr>
+	                        <th>点选</th>
+	                        <th>产品名称</th>
+	                        <th>产品编号</th>
+	                        <th>描述</th>
+	                        <th>数量</th>
+	                        <th>单位</th>
+	                        <th>单价(元)</th>
+	                      </tr>
+	                    </thead>
+	                    <tbody>
+	                      <tr v-for="(cpmx,index) in cpmxList" :key="index">
+			                    <td>
+		                          <label class="lyear-checkbox checkbox-primary">
+		                            <input type="checkbox" value="{{cpmx.product_id}}"  class="ld"><span  class="ld"></span>
+		                          </label>
+		                        </td>
+		                        <td>{{cpmx.product_name}}</td>
+                       			<td>{{cpmx.product_id}}</td>
+                        		<td>{{cpmx.product_describe}}</td>
+                       			<td>
+                       				 <input type="text" name="sl" value="1">
+                       			</td>
+                       			<td>{{cpmx.personal_unit}}</td>
+                       			<td>{{cpmx.real_cost_price | moneyFormat(2)}}</td>
+	                      </tr>
+	                    </tbody>
+	                  </table>
+                  </div>
+                  <div class="form-group">
+          			  <label for="message-text" class="control-label" style="margin-left: 3%">备注:</label>
+          			  <textarea rows="2" cols="100" style="margin-left: 10px" v-model="remark"></textarea>
+       			  </div>
+           </div> 		
+           <!-- box1结束 -->
+           
+           <!-- 模态框开始 -->
+           <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                  <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" id="myLargeModalLabel">
+                                                                        添加产品
+                           <span style="margin-left: 50%;color: blue;">符合条件的产品档案总数:</span>
+                           <span style="margin-left: 10px;color: blue;">{{productsum}}</span>                                               
+                        </h4>
+                      </div>
+                      <div class="modal-body">
+                    	<form action="#" method="post">
+					   <div style="margin-left: 20px">
+			           <table class="table table-bordered" >
+	                    <thead>
+	                      <tr>
+	                        <th>选择</th>
+	                        <th>产品编号</th>
+	                        <th>产品名称</th>
+	                        <th>用途类型</th>
+	                        <th>单位</th>
+	                        <th>单价(元)</th>
+	                      </tr>
+	                    </thead>
+	                    <tbody>
+	                      <tr v-for="(cp,index) in cplist" :key="index">
+			                    <td>
+		                          <label class="lyear-checkbox checkbox-primary">
+		                            <input type="checkbox" value="{{cp.product_id}}"  class="xz"><span  class="xz"></span>
+		                          </label>
+		                        </td>
+		                        <td>{{cp.product_id}}</td>
+                       			<td>{{cp.product_name}}</td>
+                        		<td>{{cp.tname}}</td>
+                       			<td>{{cp.personal_unit}}</td>
+                       			<td>{{cp.real_cost_price | moneyFormat(2)}}</td>
+	                      </tr>
+	                    </tbody>
+	                  </table>
+	                  </div>  
+		        		</form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" @click="Getaddcp()" data-dissmiss="modal" data-dismiss="modal">点击添加</button>
+                      </div>
+                    </div>
+                  </div>
+                </div> 
+           <!-- 模态框结束 -->
+        
+        
+        
+         <!-- 预览开始 -->
+         <div class="btn-group" id="box2" style="display:none">
+       			    <div class="form-group" style="margin-top: -8%">
+          				<h4 style="margin-left: 370px">采购计划单</h4>
+       				</div>
+       				<div class="form-group" style="margin-left: 70px;">
+						<label for="message-text" class="control-label" >采购理由:</label>
+						<span style="margin-left: 8px">新发生</span>
+						<label for="message-text" class="control-label" style="margin-left: 44%" >采购计划单编号:</label>
+						<span style="margin-left: 8px">{{cgPlanId}}</span>
+		            </div>
+		          <div style="margin-left: 70px">
+		           <table class="table table-bordered" >
+	                    <thead>
+	                      <tr>
+	                        <th>产品名称</th>
+	                        <th>产品编号</th>
+	                        <th>数量</th>
+	                        <th>单位</th>
+	                        <th>单价(元)</th>
+	                        <th>小计(元)</th>
+	                      </tr>
+	                    </thead>
+	                    <tbody>
+	                      <tr v-for="(cgmx,index) in cgmxlist" :key="index">
+		                        <td>{{cgmx.product_name}}</td>
+                       			<td>{{cgmx.product_id}}</td>
+                       			<td>{{cgmx.amount}}</td>
+                       			<td>{{cgmx.amount_unit}}</td>
+                       			<td>{{cgmx.cost_price | moneyFormat(2)}}</td>
+                       			<td>{{cgmx.amount*cgmx.cost_price | moneyFormat(2)}}</td>
+	                      </tr>
+	                    </tbody>
+	                  </table>
+                  </div>
+                  <div class="form-group" style="margin-left: 70px;">
+                        <label for="message-text" class="control-label" >总件数:</label>
+						<span style="margin-left: 8px">{{jsum}}</span>
+						<label for="message-text" class="control-label" style="margin-left: 51%">总金额(元):</label>
+          			    <span>{{sum}}</span>
+		          </div>
+		          <div class="form-group">
+          			  <label for="message-text" class="control-label" style="margin-left:9%">备注:</label>
+          			  <textarea rows="2" cols="97" style="margin-left: 9%" v-model="remark"></textarea>
+       			  </div>
+                  <div class="btn-group">
+                     <button class="btn btn-w-xs btn-primary" style="margin-left: 700px;margin-bottom: 10px" @click="QueRen()">确认</button>	
+                  </div>
+        </div> 		
+         <!-- 预览结束 -->
+        
+        
+        
+        
+        </div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+      
+    </main>
+    <!--End 页面主要内容-->
+  </div>
+</div>
+</div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+
+
+
+<script>
+Vue.filter('moneyFormat',function(money,length){
+    return money.toFixed(length)
+  })
+			var vm=new Vue({
+				el:'#app',
+				data:{
+					cplist:[],  //符合条件的产品
+					productsum:0, //符合条件的产品档案总数
+					product_id:[], //产品编号
+					cpmxList:[],   //点击添加产品查询
+					jsum:'',       //采购总件数
+					sum:'',        //合计总金额
+					cgmxlist:[], //采购计划明细
+					cgPlanId:'' ,  //采购计划编号
+					
+				},
+				methods:{
+					Getcp:function(){//查询符合条件的产品信息
+						this.GetProductsum();
+						var check_tag="审核通过";
+						axios.get('productCp?check_tag='+check_tag+'').then(res=>{
+							this.cplist=res.data;
+						}).catch(err=>{
+							console.log("请求失败");
+						})
+					},
+					GetProductsum:function(){//符合条件的产品档案总数
+						var check_tag="审核通过";
+						axios.get('productCpsum?check_tag='+check_tag+'').then(res=>{
+							this.productsum=res.data;
+						}).catch(err=>{
+							console.log("请求失败");
+						})
+					},
+					Getaddcp:function(){  //点击添加
+						var bh=[];//编号
+						//获得选择的产品编号
+						$(".xz:checked").each(function(){
+							bh.push($(this).parent().parent().next().html());
+						});
+						this.product_id=bh;
+						this.load();
+						$(".xz").prop("checked",false);
+					},
+					load:function(){ //点击添加  查询选中的产品信息
+						axios.get('productCgcpxx?product_id='+this.product_id+'').then(res=>{
+							this.cpmxList=res.data;
+						}).catch(err=>{
+							console.log("请求失败");
+						})
+					},
+					Getyl:function(){  //预览 --增加采购计划			
+						if(this.cpmxList==""){  //判断是否为空
+							alert('请添加产品');
+						}else{
+							if($('.ld').prop('checked')==false){ //判断是否为选中产品
+								alert('请选择需要采购的产品')
+							}else{
+								//盒子切换
+								$("#box1").toggle();
+								$("#box2").toggle();
+								
+								var bh=[];//产品编号
+								var mc=[];//产品名称
+								var sl=[];//数量
+								var dw=[];//单位
+								var dj=[];//单价
+								//获得选择的信息
+								$(".ld:checked").each(function(){
+									bh.push($(this).parent().parent().next().next().html());
+									mc.push($(this).parent().parent().next().html());
+									sl.push($(this).parent().parent().next().next().next().next().children().val());
+									dw.push($(this).parent().parent().next().next().next().next().next().html());
+									dj.push($(this).parent().parent().next().next().next().next().next().next().html());
+								});
+								
+								//生成  050800+当前日期+6位随机数组成的流水号 --开始
+								var myDate =new Date();
+							    var a=myDate.getFullYear()+"0"+(myDate.getMonth()+1)+""+myDate.getDate();
+								var time="";
+								for(var i=0;i<6;i++){
+									time+=Math.floor(Math.random()*10);
+								}
+								var dingdan='050800'+a+time;  //生成流水号结束
+								this.cgPlanId=dingdan;  //采购计划编号赋给cgPlanId
+								
+								
+								var register=$("#djr").text();  //登记人
+								var sum=0;
+								var jsum=0;
+								$(".ld:checked").each(function(){
+									var dj = $(this).parent().parent().next().next().next().next().next().next().html();
+							    	var sl = $(this).parent().parent().next().next().next().next().children().val();
+							    	sum=sum+parseFloat((dj*sl));
+							    	jsum=jsum+parseInt(sl);
+								});
+								var subtotal=sum;   //总金额
+								this.sum=subtotal;
+								
+								this.jsum=jsum;   //总件数
+								
+								
+								var check_tag="等待审核";    //审核标志
+								var execute_tag="未执行";  //执行标志
+								
+								var url="productCg?cgPlanId="+this.cgPlanId+"&remark="+this.remark+
+										"&register="+register+"&check_tag="+check_tag+
+										"&product_id="+bh+"&product_name="+mc+
+										"&amount="+sl+"&amount_unit="+dw+"&cost_price="+dj+"&execute_tag="+execute_tag+"";
+							    
+								axios.get(url).then(res=>{
+							    	if(res.data>0){
+							    		this.load2();
+							    	}
+							    }).catch(err=>{
+							    	console.log('请求失败');
+							    });
+							}
+							
+						}
+						
+					},
+					load2:function(){  //点击预览查看
+						axios.get('productCgmx?cgPlanId='+this.cgPlanId+'').then(res=>{
+							this.cgmxlist=res.data;
+						}).catch(err=>{
+							consle.log('请求失败')
+						})
+					},
+					QueRen:function(){ //点击预览确定
+						alert('添加采购计划成功');
+						this.cpmxList="";
+						this.cgmxlist="";
+						this.remark="";
+						//盒子切换
+						$("#box1").toggle();
+						$("#box2").toggle();
+					}
+					
+					
+			}
+				
+			})
+			
+		</script>
+
+</body>
+</html>

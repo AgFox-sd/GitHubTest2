@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.teams.mapper.ProductCgMapper">
+     
+     <!-- 查询符合条件的产品档案 -->
+     <select id="selectCp" resultType="D_file">
+        select a.*,c.tname from d_file a,type c
+        where a.tid=c.tid and a.tid=2 and 
+        a.check_tag=#{check_tag}
+     </select>
+        
+     <!-- 查询符合条件的产品档案总数 -->
+     <select id="selectCpsum" resultType="int">
+        select count(1) from d_file a,type c
+        where a.tid=c.tid and a.tid=2 and 
+        a.check_tag=#{check_tag}
+     </select>
+     
+     <!-- 点击添加查询选中的产品信息 -->
+     <select id="selectCgcpxx" resultType="D_file">
+        select * from d_file where product_id=#{product_id}
+     </select>
+     
+     <!-- 添加采购计划 -->
+     <insert id="addproductCg">
+        insert into cgPlan(id,cgPlanId,remark,register,register_time,check_tag)
+        values(null,#{cgPlanId},#{remark},#{register},now(),#{check_tag})
+     </insert>
+     
+     <!-- 添加采购详情计划 -->
+     <insert id="addcgPlanXq">
+        insert into cgPlanXq(id,cgPlanId,product_id,product_name,amount,amount_unit,cost_price,execute_tag)
+        values(null,#{cgPlanId},#{product_id},#{product_name},#{amount},#{amount_unit},#{cost_price},#{execute_tag})
+     </insert>
+     
+     <!-- 查询采购明细 -->
+     <select id="selectCgmx" resultType="cgPlanXq">
+        select * from cgPlanXq where cgPlanId=#{cgPlanId}
+     </select>
+     
+     <!-- 查询所有等待审核的采购计划单 -->
+     <select id="selectCgddsh" resultType="cgPlan">
+        select * from cgPlan where check_tag=#{check_tag}
+     </select>
+     
+     <!-- 查询审核状态的采购计划单总数 -->
+     <select id="selectCgddshsum" resultType="int">
+        select count(1) from cgPlan where check_tag=#{check_tag}
+     </select>
+     
+     <!-- 采购计划审核 -->
+     <update id="updCgshtg">
+        update cgPlan set checker=#{checker},check_tag=#{check_tag},check_time=now() where cgPlanId=#{cgPlanId}
+     </update>
+     
+     <!-- 查询所有的采购计划单 -->
+     <select id="selectGetCg" resultType="cgPlan">
+        select * from cgPlan
+     </select>
+     
+     <!-- 查询所有的采购计划单总数 -->
+     <select id="selectGetCgsum" resultType="int">
+        select count(1) from cgPlan
+     </select>
+     
+     <!-- 查询不在采购计划的产品档案信息,修改采购计划 -->
+     <select id="selectXgCgcpda" resultType="D_file">
+        select a.*,c.tname from d_file a,type c
+        where a.tid=c.tid and a.tid=2 and 
+        a.check_tag="审核通过" 
+        and a.product_id NOT in(select product_id from cgPlanXq WHERE cgPlanId =(select cgPlanId from cgPlan where cgPlanId=#{cgPlanId}))
+     </select>
+     
+     <!-- 查询不在采购计划的产品档案信息总数-->
+     <select id="selectXgCgcpdasum" resultType="int">
+        select count(1) from d_file a,type c
+        where a.tid=c.tid and a.tid=2 and 
+        a.check_tag="审核通过" 
+        and a.product_id NOT in(select product_id from cgPlanXq WHERE cgPlanId =(select cgPlanId from cgPlan where cgPlanId=#{cgPlanId}))
+     </select>
+     
+     <!-- 追加采购明细表产品 -->
+     <insert id="addcgjxmx">
+        insert into cgPlanXq(id,cgPlanId,product_id,product_name,amount,amount_unit,cost_price,execute_tag)
+        values(null,#{cgPlanId},#{product_id},#{product_name},1,#{amount_unit},#{cost_price},#{execute_tag})
+     </insert>
+     
+     <!-- 点击删除采购计划详情产品 -->
+     <delete id="delcgjxmx">
+        delete from cgPlanXq where cgPlanId=#{cgPlanId} and product_id=#{product_id}
+     </delete>
+     
+     <!-- 修改采购计划 -->
+     <update id="updcgjh">
+         update cgPlan set check_tag=#{check_tag},remark=#{remark} where cgPlanId=#{cgPlanId}
+     </update>
+     
+     <!-- 修改采购计划明细表 -->
+     <update id="updcgjhmx">
+        update cgPlanXq set amount=#{amount} where cgPlanId=#{cgPlanId} and product_id=#{product_id}
+     </update>
+     
+     
+     
+     
+  
+  </mapper>
