@@ -60,11 +60,34 @@ public class ProviderController {
 		return list;
 	 }
 	//供应商审核通过
-	//@RequestMapping("/AllGYSFu")
-	//@ResponseBody
-	//public int AllGYSFuS(){
-		//int upd=service.AllGYSFuS("");
-	//	return upd;
-	//}	
-	 
+	@RequestMapping("/updGYSFuS")
+	@ResponseBody
+	public String updGYSFuS(@RequestParam("providerId") String providerId,@RequestParam("checker") String checker){
+		int upd=service.updGYSFuS("审核通过","未变更", providerId,checker);
+		return upd>0?"成功":"失败";
+	}	
+	
+	//供应商删除
+	@RequestMapping("/delGYS")
+	@ResponseBody
+	public String delGYS(@RequestParam("providerId") String providerId) {
+		int del=service.delGYS(providerId);
+		return del>0?"成功":"失败";
+	}
+	
+	//查询未变更的供应商
+	@RequestMapping("/selWBG")
+	@ResponseBody 
+	public List<provider> selWBG(){
+		List<provider> list=service.selWBG("未变更");
+		return list;
+	}
+	
+	//提交变更(修改)
+	@RequestMapping("/updGYSBG")
+	@ResponseBody
+	public String updGYSBG(@RequestBody provider pro) {
+			 int upd=service.updGYSBG(pro);
+			 return upd>0?"成功":"失败";
+	 }
 }

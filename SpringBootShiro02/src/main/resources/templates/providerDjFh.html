@@ -89,42 +89,31 @@
 										</table>
 									</div>
 								   <div class="btn-group" id="box2" style="display:none">
-							          <div style="margin-left: 70px">
-							          	<table   class="table table-hover" id="box2">
-											<thead>
-												<tr>
-													<th>产品类型名称</th>
-													<th>登记人</th>
-													<th>登记时间</th>
-													<th>审核人</th>
-													<th>审核时间</th>
-													<th>审核标志</th>
-													<th>变更人</th>
-													<th>变更时间</th>
-													<th>变更标志</th>
-													<th>删除标志</th>
-													
-												</tr>
-											</thead>
-											<tbody>
-												<tr >
-													<td>{{lists.fname}}</td>
-													<td>{{lists.register}}</td>
-													<td>{{lists.register_time}}</td>
-													<td>{{lists.checker}}</td>
-													<td>{{lists.check_time}}</td>
-													<td>{{lists.check_tag}}</td>
-													<td>{{lists.changer}}</td>
-													<td>{{lists.change_time}}</td>
-													<td>{{lists.change_tag}}</td>
-													<td>{{lists.delete_tag}}</td>
-												</tr>
-											</table>
-					                  </div>
-					                 <div style="margin-left: 700px">
-					                 <button class="btn btn-w-xs btn-primary"  @click="Tongg()">复核通过</button>
-					                 <button class="btn btn-w-xs btn-pink"  @click="Fanhui()">返回</button>
-					                 </div>
+							      		<div style="background-color: #46B8DA">
+          									<p style="font-size: 25px;">供应商详情</p>
+       									</div>
+       									<div class="form-group" style="margin-left: 50px;margin-top: 30px">
+										  <label for="message-text" class="control-label">产品类型名称:</label>
+									      <span style="margin-left: 10px;">{{lists.fname}}</span>
+									      <label for="message-text" class="control-label" style="margin-left: 400px">登记人:</label>
+					      				  <span style="margin-left: 10px;">{{lists.register}}</span>
+										</div>
+										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
+										  <label for="message-text" class="control-label">登记时间:</label>
+									      <span style="margin-left: 10px;">{{lists.register_time}}</span>
+									      <label for="message-text" class="control-label" style="margin-left: 400px">审核人:</label>
+					      				  <span style="margin-left: 10px;" th:text="${session.username}" id="shr"></span>
+										</div>
+										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
+										  <label for="message-text" class="control-label">审核时间:</label>
+									      <span style="margin-left: 10px;">{{lists.check_time}}</span>
+									      <label for="message-text" class="control-label" style="margin-left: 480px">审核标志:</label>
+					      				  <span style="margin-left: 10px;">{{lists.check_tag}}</span>
+										</div>
+						                 <div style="margin-left: 700px">
+						                 <button class="btn btn-w-xs btn-primary"  @click="Tongg()">复核通过</button>
+						                 <button class="btn btn-w-xs btn-pink"  @click="Fanhui()">返回</button>
+						                 </div>
        							 </div>
 								</div>
 							</div>
@@ -151,8 +140,7 @@
     	  data:{
     			list:[],
     			lists:[],
-    			providerId:'',
-    		  
+    			providerId:''
     	  },
     	  mounted(){//页面挂载完成调用查询全部的方法
 				this.AllGYS();
@@ -166,16 +154,28 @@
 				  })
 			  },
 			  SelXX(providerId){
+				  this.providerId=providerId;
 				  $("#box1").toggle();
 				  $("#box2").toggle();
 				  axios.post('Selxx?providerId='+providerId+'').then(res=>{
 						this.lists=res.data;
 				 });	
 			  },
-			 Fanhui(){//点击返回从box2，回到box1
+			  Fanhui(){//点击返回从box2，回到box1
 					$("#box1").toggle();
 					$("#box2").toggle();
-				}
+				},
+				Tongg(){
+					var url='updGYSFuS?providerId='+this.providerId+'&checker='+$("#shr").text()+''
+					axios.get(url).then(res=>{
+						if(res.data=="成功"){
+								alert('复核通过！');
+								this.AllGYS();
+								 $("#box1").toggle();
+								 $("#box2").toggle();
+						}
+						});
+				},
 			    
 				  
 			  }

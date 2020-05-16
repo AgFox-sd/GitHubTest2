@@ -1,10 +1,334 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>供应商档案变更</title>
+<link rel="icon" href="favicon.ico" type="image/ico">
+<meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
+<meta name="description"
+	content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="author" content="yinqi">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/materialdesignicons.min.css" rel="stylesheet">
+<link href="css/style.min.css" rel="stylesheet">
+<script type="text/javascript" src="js/axios.min.js"></script>
+<script type="text/javascript" src="js/vue-2.4.0.js"></script>
 </head>
+
 <body>
-<h1>供应商档案变更</h1>
+	<div id="app">
+		<div class="lyear-layout-web">
+			<div class="lyear-layout-container">
+
+				<header class="lyear-layout-header" style="margin-left: -18%;">
+
+					<nav class="navbar navbar-default">
+						<div class="topbar">
+
+							<div class="topbar-left">
+								<div class="lyear-aside-toggler">
+									<span class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span>
+								</div>
+								<span class="navbar-page-title">采购管理 -供应商档案管理-供应商档案变更</span>
+							</div>
+						</div>
+					</nav>
+
+				</header>
+				<!--页面主要内容-->
+				<main class="lyear-layout-content">
+
+				<div class="container-fluid">
+
+					<div class="row">
+						<div class="col-lg-12"
+							style="margin-left: -12%; margin-top: 0.5%;">
+							<div class="card">
+								<div class="card-toolbar clearfix">
+									<form class="pull-right search-bar" method="get" action="#!"
+										role="form">
+										<div class="input-group">
+											<div class="input-group-btn">
+												<input type="hidden" name="search_field" id="search-field"
+													value="title">
+											</div>
+										</div>
+									</form>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive" id="box1">
+										<table class="table table-hover" >
+											<thead>
+												<tr>
+													<th>供应商编号</th>
+													<th>供应商名字</th>
+													<th>供应商电话</th>
+													<th>供应商地址</th>
+													<th>联系人</th>
+													<th>操作</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr v-for="(gys,index) in list" :key="index">
+													<td style="color:red;"  @click="gosh(gys.providerId)">{{gys.providerId}}</td>
+													<td>{{gys.providerName}}</td>
+													<td>{{gys.providerPhone}}</td>
+													<td>{{gys.providerAddress}}</td>
+													<td>{{gys.linkman}}</td>
+													<td>
+														<button type="button" class="btn btn-primary  btn-xs"
+															data-target=".bs-example-modal-lg" @click="updBG(gys.providerId)">档案变更</button>
+													</td>
+												</tr>
+											</tbody>
+
+										</table>
+									</div>
+									<!-- box2开始 -->
+									<div id="box2">
+										<div style="background-color: #46B8DA">
+          									<p style="font-size: 25px;">供应商详情</p>
+       									</div>
+       									<div class="form-group" style="margin-left: 50px;margin-top: 30px">
+										  <label for="message-text" class="control-label">供应商名字:</label>
+									      <span style="margin-left: 10px;">{{lists.providerName}}</span>
+									      <label for="message-text" class="control-label" style="margin-left: 400px">供应商电话:</label>
+					      				  <span style="margin-left: 10px;">{{lists.providerPhone}}</span>
+										</div>
+										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
+										  <label for="message-text" class="control-label">供应商地址:</label>
+									      <span style="margin-left: 10px;">{{lists.providerAddress}}</span>
+									      <label for="message-text" class="control-label" style="margin-left: 380px">联系人:</label>
+					      				  <span style="margin-left: 10px;">{{lists.linkman}}</span>
+										</div>
+										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
+										  <label for="message-text" class="control-label">产品类型名称:</label>
+									      <span style="margin-left: 10px;">{{lists.fname}}</span>
+									      <label for="message-text" class="control-label" style="margin-left: 400px">登记人:</label>
+					      				  <span style="margin-left: 10px;">{{lists.register}}</span>
+										</div>
+										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
+										  <label for="message-text" class="control-label">登记时间:</label>
+									      <span style="margin-left: 10px;">{{lists.register_time}}</span>
+									      <label for="message-text" class="control-label" style="margin-left: 410px">审核人:</label>
+					      				  <span style="margin-left: 10px;">{{lists.checker}}</span>
+										</div>
+										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
+										  <label for="message-text" class="control-label">审核时间:</label>
+									      <span style="margin-left: 10px;">{{lists.check_time}}</span>
+									      <label for="message-text" class="control-label" style="margin-left: 340px">审核标志:</label>
+					      				  <span style="margin-left: 10px;">{{lists.check_tag}}</span>
+										</div>
+										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
+										  <label for="message-text" class="control-label">变更人:</label>
+									      <span style="margin-left: 10px;">{{lists.changer}}</span>
+									      <label for="message-text" class="control-label" style="margin-left: 510px">变更时间:</label>
+					      				  <span style="margin-left: 10px;">{{lists.change_time}}</span>
+										</div>
+										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
+										  <label for="message-text" class="control-label">变更标志:</label>
+									      <span style="margin-left: 10px;">{{lists.change_tag}}</span>
+									      <label for="message-text" class="control-label" style="margin-left: 450px">删除标志:</label>
+					      				  <span style="margin-left: 10px;">{{lists.delete_tag}}</span>
+										</div>
+										<div style="margin-left: 700px">
+					                		 <button class="btn btn-w-xs btn-pink"  @click="Fanhui()">返回</button>
+					                    </div>
+									</div>
+									<!-- box2结束 -->
+									<!-- box3开始 -->
+									<div id="box3">
+										<div style="background-color: #46B8DA">
+          									<p style="font-size: 25px;">供应商档案变更</p>
+       									</div>
+       									<div class="row" style="margin-top: 20px">
+							                  <div class="form-group col-md-1 "></div>
+							                  <div class="form-group col-md-5 ">
+								                    <label for="title"><span style="color: red">*</span>供应商编号：</label>
+								                    <input type="text" class="form-control"  v-model="listssss.providerId" disabled="disabled"/>
+								              </div>
+								              <div class="form-group col-md-1 "></div>
+							                  <div class="form-group col-md-5">
+							                    <label for="type"><span style="color: red">*</span>供应商名字：</label>
+							                    <input type="text" class="form-control" v-model="listssss.providerName"  />
+							                  </div>
+							            </div>
+							            <div class="row">
+							                  <div class="form-group col-md-1 "></div>
+							                 <div class="form-group col-md-5">
+							                    <label for="type"><span style="color: red">*</span>产品类型:</label>
+							                    <div class="form-controls">
+							                      <select name="type" class="form-control" v-model="listssss.fid">
+							                        <option value="">请选择</option>
+													<option :value="i.fid" v-for="i in listfenlei" :key="i.fid">{{i.fname}}</option>
+							                      </select>
+							                    </div>
+							                  </div>
+							                  <div class="form-group col-md-1 "></div>
+							                  <div class="form-group col-md-5 ">
+							                    <label for="title"><span style="color: red">*</span>供应商地址：</label>
+							                    <input type="text" class="form-control"  v-model="listssss.providerAddress"/>
+							                  </div>
+							                </div>
+										     <div class="row">
+								                 <div class="form-group col-md-1 "></div>
+								                 <div class="form-group col-md-5 ">
+								                    <label for="title"><span style="color: red">*</span>联系人：</label>
+								                    <input type="text" class="form-control"  v-model="listssss.linkman"/>
+								                  </div>
+								                  <div class="form-group col-md-1 "></div>
+								                   <div class="form-group col-md-5 ">
+								                    <label for="title"><span style="color: red">*</span>电话：</label>
+								                    <input type="text" class="form-control"   v-model="listssss.providerPhone" />
+							                     </div>
+								                </div>
+								                <div class="row">
+								                 <div class="form-group col-md-1 "></div>
+								                <div class="form-group col-md-5 ">
+								                    <label for="title"><span style="color: red">*</span>登记人：</label>
+								                    <input type="text" class="form-control"  v-model="listssss.register" id="djr" />
+								                </div>
+								                <div class="form-group col-md-1 "></div>
+								                 <div class="form-group col-md-5 ">
+								                    <label for="title"><span style="color: red">*</span>登记时间：</label>
+								                    <input type="text" class="form-control"  v-model="listssss.register_time"/>
+								                 </div>
+								                </div>
+								                <div class="row">
+								                 <div class="form-group col-md-1 "></div>
+								                  <div class="form-group col-md-5 ">
+								                    <label for="title"><span style="color: red">*</span>审核人：</label>
+								                    <input type="text" class="form-control"  v-model="listssss.checker"/>
+								                  </div>
+								                  <div class="form-group col-md-1 "></div>
+								                  <div class="form-group col-md-5 ">
+								                    <label for="title"><span style="color: red">*</span>变更人：</label>
+								                    <input type="text" class="form-control"  th:value="${session.username}" id="bgr" />
+								                  </div>
+								                  
+								                  
+								                </div>
+								                <div class="row">
+								                 <div class="form-group col-md-1 "></div>
+								                 <div class="form-group col-md-5 ">
+								                    <label for="title"><span style="color: red">*</span>审核时间：</label>
+								                    <input type="text" class="form-control" v-model="listssss.check_time"/>
+								                  </div>
+								                  <div class="form-group col-md-6"></div>
+								                 </div>
+												<div style="margin-left: 700px">
+							                		 <button class="btn btn-w-xs btn-pink"  @click="Queren()">确认变更</button>
+							                    </div>
+									</div>
+									<!-- box3结束 -->
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+				</main>
+				<!--End 页面主要内容-->
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+	<script type="text/javascript" src="js/main.min.js"></script>
+
+	<script>
+    
+      var vm=new Vue({
+    	  el:'#app',
+    	  data:{
+    			list:[],
+    			providerId:'',
+    			lists:[],
+    			listfenlei:[],
+    			listssss:[]
+    			
+    	  },
+    	  mounted(){//页面挂载完成调用查询全部的方法
+				this.AllGYS();
+    	  		this.getAllfenfei();
+		  },
+		  methods:{
+				getAllfenfei(){
+					//查询所有分类
+					axios.get("selectfeilei").then(res=>{
+						this.listfenlei=res.data
+					}).catch(err=>{
+						console.log("请求失败")
+					})
+				},
+			  AllGYS:function(){
+				  $("#box2").toggle();
+				  $("#box3").toggle();
+				  axios.get('selWBG').then(res=>{
+							this.list=res.data;
+				  }).catch(err=>{
+						alert('请求失败')
+				  })
+			  },
+			  Fanhui(){//点击返回从box2，回到box1
+					$("#box1").toggle();
+					$("#box2").toggle();
+			  },
+			  gosh(providerId){
+				  $("#box1").toggle();
+				  $("#box2").toggle();
+				  
+				  //查详情
+				  axios.post('Selxx?providerId='+providerId+'').then(res=>{
+						this.lists=res.data;
+				 });
+				  
+			  },
+			  updBG(providerId){
+				  $("#box1").toggle();
+				  $("#box3").toggle();
+				  //查详情
+				  axios.post('Selxx?providerId='+providerId+'').then(res=>{
+						this.listssss=res.data;
+				 });
+			  },
+			  Queren(){
+				  var check_tag = '等待审核';
+				  var change_tag='已变更';
+				  var changer=$("#bgr").val();
+				  var url={providerId:this.listssss.providerId,providerName:this.listssss.providerName,
+						  fid:this.listssss.fid,providerAddress:this.listssss.providerAddress,linkman:this.listssss.linkman,
+						  providerPhone:this.listssss.providerPhone,register:this.listssss.register,
+						  register_time:this.listssss.register_time,check_time:this.listssss.check_time,
+						  check_tag:check_tag,changer:changer,checker:this.listssss.checker,
+						  change_tag:change_tag
+						  }
+				  
+					axios.post('updGYSBG',url).then(res=>{
+						if(res.data=="成功"){
+								alert('修改成功');
+								 $("#box1").toggle();
+								 $("#box2").toggle();
+								this.AllGYS();
+						}
+						});
+				  
+				  
+			  }
+			  
+			  }
+			  
+      
+      });
+
+   </script>
+
 </body>
 </html>
