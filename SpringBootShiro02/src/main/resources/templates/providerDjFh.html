@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>供应商档案登记复核</title>
+<link rel="icon" href="favicon.ico" type="image/ico">
+<meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
+<meta name="description"
+	content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="author" content="yinqi">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/materialdesignicons.min.css" rel="stylesheet">
+<link href="css/style.min.css" rel="stylesheet">
+<script type="text/javascript" src="js/axios.min.js"></script>
+<script type="text/javascript" src="js/vue-2.4.0.js"></script>
+</head>
+
+<body>
+	<div id="app">
+		<div class="lyear-layout-web">
+			<div class="lyear-layout-container">
+
+				<header class="lyear-layout-header" style="margin-left: -18%;">
+
+					<nav class="navbar navbar-default">
+						<div class="topbar">
+
+							<div class="topbar-left">
+								<div class="lyear-aside-toggler">
+									<span class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span>
+								</div>
+								<span class="navbar-page-title">采购管理 -供应商档案管理-供应商档案登记复核</span>
+							</div>
+						</div>
+					</nav>
+
+				</header>
+				<!--页面主要内容-->
+				<main class="lyear-layout-content">
+
+				<div class="container-fluid">
+
+					<div class="row">
+						<div class="col-lg-12"
+							style="margin-left: -12%; margin-top: 0.5%;">
+							<div class="card">
+								<div class="card-toolbar clearfix">
+									<form class="pull-right search-bar" method="get" action="#!"
+										role="form">
+										<div class="input-group">
+											<div class="input-group-btn">
+												<input type="hidden" name="search_field" id="search-field"
+													value="title">
+											</div>
+										</div>
+									</form>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive" id="box1">
+										<table class="table table-hover" >
+											<thead>
+												<tr>
+													<th>供应商编号</th>
+													<th>供应商名字</th>
+													<th>供应商电话</th>
+													<th>供应商地址</th>
+													<th>联系人</th>
+													<th>操作</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr v-for="(gys,index) in list" :key="index">
+													<td>{{gys.providerId}}</td>
+													<td>{{gys.providerName}}</td>
+													<td>{{gys.providerPhone}}</td>
+													<td>{{gys.providerAddress}}</td>
+													<td>{{gys.linkman}}</td>
+													<td>
+														<button type="button" class="btn btn-primary  btn-xs"
+															data-target=".bs-example-modal-lg" @click="SelXX(gys.providerId)">复核</button>
+													</td>
+												</tr>
+											</tbody>
+
+										</table>
+									</div>
+								   <div class="btn-group" id="box2" style="display:none">
+							      		<div style="background-color: #46B8DA">
+          									<p style="font-size: 25px;">供应商详情</p>
+       									</div>
+       									<div class="form-group" style="margin-left: 50px;margin-top: 30px">
+										  <label for="message-text" class="control-label">产品类型名称:</label>
+									      <span style="margin-left: 10px;">{{lists.fname}}</span>
+									      <label for="message-text" class="control-label" style="margin-left: 400px">登记人:</label>
+					      				  <span style="margin-left: 10px;">{{lists.register}}</span>
+										</div>
+										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
+										  <label for="message-text" class="control-label">登记时间:</label>
+									      <span style="margin-left: 10px;">{{lists.register_time}}</span>
+									      <label for="message-text" class="control-label" style="margin-left: 400px">审核人:</label>
+					      				  <span style="margin-left: 10px;" th:text="${session.username}" id="shr"></span>
+										</div>
+										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
+										  <label for="message-text" class="control-label">审核时间:</label>
+									      <span style="margin-left: 10px;">{{lists.check_time}}</span>
+									      <label for="message-text" class="control-label" style="margin-left: 480px">审核标志:</label>
+					      				  <span style="margin-left: 10px;">{{lists.check_tag}}</span>
+										</div>
+						                 <div style="margin-left: 700px">
+						                 <button class="btn btn-w-xs btn-primary"  @click="Tongg()">复核通过</button>
+						                 <button class="btn btn-w-xs btn-pink"  @click="Fanhui()">返回</button>
+						                 </div>
+       							 </div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+				</main>
+				<!--End 页面主要内容-->
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+	<script type="text/javascript" src="js/main.min.js"></script>
+
+	<script>
+    
+      var vm=new Vue({
+    	  el:'#app',
+    	  data:{
+    			list:[],
+    			lists:[],
+    			providerId:''
+    	  },
+    	  mounted(){//页面挂载完成调用查询全部的方法
+				this.AllGYS();
+		  },
+		  methods:{
+			  AllGYS:function(){
+				  axios.get('AllGYSFu').then(res=>{
+							this.list=res.data;
+				  }).catch(err=>{
+						alert('请求失败')
+				  })
+			  },
+			  SelXX(providerId){
+				  this.providerId=providerId;
+				  $("#box1").toggle();
+				  $("#box2").toggle();
+				  axios.post('Selxx?providerId='+providerId+'').then(res=>{
+						this.lists=res.data;
+				 });	
+			  },
+			  Fanhui(){//点击返回从box2，回到box1
+					$("#box1").toggle();
+					$("#box2").toggle();
+				},
+				Tongg(){
+					var url='updGYSFuS?providerId='+this.providerId+'&checker='+$("#shr").text()+''
+					axios.get(url).then(res=>{
+						if(res.data=="成功"){
+								alert('复核通过！');
+								this.AllGYS();
+								 $("#box1").toggle();
+								 $("#box2").toggle();
+						}
+						});
+				},
+			    
+				  
+			  }
+			  
+      
+      });
+
+   </script>
+
+</body>
+</html>
