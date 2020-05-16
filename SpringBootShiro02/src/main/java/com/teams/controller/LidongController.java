@@ -92,7 +92,6 @@ public class LidongController {
 	@RequestMapping("/Scjhshbtg")
 	@ResponseBody
 	public int delShjh(@RequestParam("apply_id")String apply_id){
-		service.delShjhmx(apply_id);
 		return service.delShjh(apply_id);
 	}
 	

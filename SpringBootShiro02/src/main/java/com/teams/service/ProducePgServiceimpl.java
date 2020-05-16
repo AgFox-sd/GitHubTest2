@@ -78,9 +78,9 @@ public class ProducePgServiceimpl implements ProducePgService{
 	}
 
 	@Override
-	public List<m_pg> SelectPG2(String check_tag) {
+	public List<m_pg> SelectPG2() {
 		// TODO Auto-generated method stub
-		return mapper.SelectPG2(check_tag);
+		return mapper.SelectPG2();
 	}
 
 	@Override

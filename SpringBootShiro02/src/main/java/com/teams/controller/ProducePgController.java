@@ -102,14 +102,14 @@ public class ProducePgController {
 	@ResponseBody  
 	public int delpg(String product_id,String apply_id,String manufacture_tag,String pg_id) {
 		service.updPgbz(manufacture_tag,product_id,apply_id);
-	    return service.delPgd(pg_id);
+		return service.updPgtg("审核不通过",pg_id);
 	}
 	
 	//生产派工单查询
 	@RequestMapping("/SelectPG2")
 	@ResponseBody  
 	public List<m_pg> SelectPG2() {
-		List<m_pg> list=service.SelectPG2("审核通过");
+		List<m_pg> list=service.SelectPG2();
 		return list;
 	}
 	
