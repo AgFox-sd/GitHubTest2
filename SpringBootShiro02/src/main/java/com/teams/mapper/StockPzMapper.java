@@ -26,7 +26,7 @@ public interface StockPzMapper {
 	public int updKc(s_cell s_cell);
 
 	//查询所有未审核的库存配置信息
-	public List<s_cell> selectAll(String check_tag);
+	public List<s_cell> selectAll(String check_tag,String check_tags);
 
 	//审核库存配置信息
 	public int updfh(s_cell s_cell);

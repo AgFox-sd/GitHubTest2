@@ -47,7 +47,7 @@
     
     <!-- 查询所有未审核的库存配置信息 -->
     <select id="selectAll" resultType="s_cell">
-    select * from s_cell where check_tag=#{check_tag}
+    select * from s_cell where check_tag=#{check_tag} or check_tag=#{check_tags}
     </select>
     
     <!-- 查询可变更的配置单总数-->

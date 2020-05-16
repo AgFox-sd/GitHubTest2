@@ -55,8 +55,8 @@ public class StockPzServiceImpl implements StockPzService{
 
 	//查询所有未审核的库存配置信息
 	@Override
-	public List<s_cell> selectAll(String check_tag) {
-		return mapper.selectAll(check_tag);
+	public List<s_cell> selectAll(String check_tag,String check_tags) {
+		return mapper.selectAll(check_tag,check_tags);
 	}
 
 	//审核库存配置信息
