@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>采购管理 -产品供应商推荐管理-产品供应商推荐查询</title>
+<link rel="icon" href="favicon.ico" type="image/ico">
+<meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
+<meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="author" content="yinqi">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/materialdesignicons.min.css" rel="stylesheet">
+<link href="css/style.min.css" rel="stylesheet">
+<script type="text/javascript" src="js/axios.min.js"></script>
+<script type="text/javascript"   src="js/vue-2.4.0.js"></script>
+</head>
+  
+<body>
+<div id="app">
+<div class="lyear-layout-web">
+  <div class="lyear-layout-container">
+    
+    <header class="lyear-layout-header" style="margin-left: -10%;">
+      
+      <nav class="navbar navbar-default">
+        <div class="topbar">
+          
+          <div class="topbar-left">
+            <div class="lyear-aside-toggler">
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+            </div>
+            <span class="navbar-page-title">采购管理 -产品供应商推荐管理-产品供应商推荐查询</span>
+          </div>
+        </div>
+      </nav>
+      
+    </header>
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+     
+      <div class="container-fluid">
+        
+        <div class="row">
+          <div class="col-lg-12" style="margin-left: -12%;margin-top: -6%;">
+            <div class="card">
+              <div class="card-toolbar clearfix">
+                <form class="pull-right search-bar" method="get" action="#!" role="form">
+                  <div class="input-group">
+                    <div class="input-group-btn">
+                      <input type="hidden" name="search_field" id="search-field" value="title">
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="card-body">
+              <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>推荐单编号</th>
+					    <th>产品编号</th>
+					    <th>产品名称</th>
+					    <th>推荐单状态</th>
+						<th>审核状态</th>
+						<th>查看详情</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+					<tr v-for="(wuzc,index) in list" :key="index">
+					    <td>{{wuzc.recommendId}}</td>
+					    <td>{{wuzc.product_id}}</td>
+					    <td>{{wuzc.product_name}}</td>
+						<td>{{wuzc.recommend_tag}}</td>
+						<td>{{wuzc.check_tag}}</td>
+						<td>
+						  <div class="btn-group">
+                             <button type="button" class="btn btn-primary  btn-xs" data-toggle="modal" data-target="#modal1" @click="gosh(wuzc.recommendId,wuzc.product_id,wuzc.product_name)">查看详情</button>
+                          </div>
+						</td>
+					</tr>
+				</tbody>
+		
+                  </table>
+              </div>
+              
+              <!-- 审核模态框开始 -->
+		      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal1">
+                  <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 style="margin-left: 360px" class="modal-title" id="myLargeModalLabel">产品供应商推荐详细
+                        <span style="margin-left: 150px">
+               
+                        </span>
+                        </h4>
+                      </div>
+                      <div class="modal-body">
+                    	 <form action="#" method="post">
+							  <div class="form-group">
+							    <label for="message-text" class="control-label">推荐单编号:</label>
+					            <span style="margin-left: 10px;color: red">{{recommendId}}</span>
+					            <label for="message-text" class="control-label" style="margin-left: 340px">推荐人:</label>
+					            <span style="margin-left: 10px;color: red" th:text="${session.username}"></span>
+					          </div>
+					          <div class="form-group">
+					            <label for="message-text" class="control-label" style="margin-left: 15px">产品编号:</label>
+					            <span style="margin-left: 10px;color: red">{{product_id}}</span>
+					            <label for="message-text" class="control-label" style="margin-left: 325px">产品名称:</label>
+					            <span style="margin-left: 10px;color: red">{{product_name}}</span>
+					          </div>
+					          <div class="form-group">
+					   <table class="table table-bordered" >
+	                    <thead>
+	                      <tr>
+	                        <th>序号</th>
+	                        <th>供应商编号</th>
+	                        <th>供应商名称</th>
+	                        <th>所在区域</th>
+	                        <th>优质级别</th>
+
+	                      </tr>
+	                    </thead>
+	                    <tbody>
+	                      <tr v-for="(wl,index) in xxlist" :key="index">
+		                        <td>{{wl.id}}</td>
+                       			<td>{{wl.providerId}}</td>
+                        		<td>{{wl.providerName}}</td>
+                       			<td>中国</td>
+                       			<td>一般</td>
+	                      </tr>
+	                    </tbody>
+	                  </table>
+					             
+					      </div>
+					      
+					          <div class="form-group" style="margin-top: 20px">		            
+					            <label for="message-text" class="control-label" style="margin-left: 450px">审核人:</label>
+					            <span id="shr" style="margin-left: 10px;color: red" th:text="${session.username}"></span>
+					          </div>
+					          <div class="form-group" style="margin-top: 10px">
+					            <label for="message-text" class="control-label" style="margin-left: 18px;">推荐要求:</label>
+					            <div>
+					            <textarea rows="3" cols="100" style="margin-left: 18px" v-model="module_describe"></textarea>		            
+					            </div>
+					          </div>
+		                </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+                        <button type="button" class="btn btn-primary" @click="sh()" data-dismiss="modal">确定</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+		      <!-- 审核模态框结束 -->
+                
+                
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+      
+    </main>
+    <!--End 页面主要内容-->
+  </div>
+</div>
+</div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+
+<script>
+      Vue.filter('moneyFormat',function(money,length,sign){
+	    return sign+money.toFixed(length)
+      })
+      var vm=new Vue({
+    	  el:'#app',
+    	  data:{
+    		  list:[],  //产品物料设计单list
+    		  xxlist:[], //产品物料组成明细list
+    		  
+    		  ddshsum:'', //等待审核总数
+    		  
+    		  recommendId:'',  //推荐单编号
+    		  designer:'',  //设计人
+    		  product_id:'', //产品编号
+    		  product_name:'', //产品名称
+    		  cost_price_sum:'', //物料总成本
+    	      module_describe:'',//设计要求
+    	  },
+    	  mounted(){//页面挂载完成调用查询全部的方法
+				this.load();
+		  },
+		  methods:{
+			  load:function(){//查询所有等待审核的物料设计单
+				  //var check_tag="等待审核";
+				  axios.get('selectreco').then(res=>{
+							this.list=res.data;
+				  }).catch(err=>{
+						alert('请求失败')
+				  })
+			  },
+			  load3:function(){ //查询物料明细
+				  axios.get('selectgymx?recommendId='+this.recommendId+'').then(res=>{
+			    	  this.xxlist=res.data;
+			      }).catch(err=>{
+			    	  alert('请求失败')
+			      })
+			  },
+			  gosh:function(recommendId,product_id,product_name){ 
+				  this.recommendId=recommendId
+				  this.product_id=product_id;this.product_name=product_name;
+			      this.load3();
+			  },
+			  sh:function(){
+					 
+							  this.load();
+				  
+			  },
+			  
+			  
+			  
+    	  }
+      
+      }) 
+
+   </script>
+
+</body>
+</html>
