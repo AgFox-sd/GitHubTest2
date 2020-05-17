@@ -13,7 +13,7 @@ public interface ProviderSqDjMapper {
 	List<provider> selprovider();
 
 	// 查询商品
-	List<D_file> selD_file();
+	List<D_file> selD_file(String providerId);
 	
 	List<providerSqXq> selproviderSqXq(String providerId);
 	

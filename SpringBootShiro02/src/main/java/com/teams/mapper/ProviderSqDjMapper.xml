@@ -11,7 +11,8 @@
 
 	<select id="selD_file" resultType="D_file">
 		<!-- select * from d_file where product_id not in (select product_id from providerSqXq) and  tid=2 -->
-select * from d_file where   tid=2
+         select * from d_file where product_name not in(select product_name from 
+         providersqxq where providerSqId in(select providerSqId from providersq where providerId=#{providerSqId})) and tid=2
 	</select>
 
 	<insert id="addproviderSq">
@@ -27,7 +28,7 @@ select * from d_file where   tid=2
 	
 	<select id="selproviderSqXq" resultType="providerSqXq">
 		select a.* from providerSqXq a,providerSq b,provider c 
-		where a.providerSqId=b.providerSqId and b.providerId=#{providerId}
+		where a.providerSqId=b.providerSqId and b.providerId=#{providerId} group by a.id
 	</select>
 	
 	<update id="updproviderSqXq">
