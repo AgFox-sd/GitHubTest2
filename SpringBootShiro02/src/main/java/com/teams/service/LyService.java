@@ -71,7 +71,7 @@ public interface LyService {
 			void addpayxq(String pay_id, String product_id, String product_name, int i, double d, double e,
 					String string);
 			void addpay(String pay_id, String storer, String reason, double zjs, double zcb, String string,
-					String string2);
+					String string2,String pg_id);
 			//查询生产详情
 			List<M_nbsc> scxqsl(String pg_id);
 }

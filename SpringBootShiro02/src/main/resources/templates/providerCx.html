@@ -46,7 +46,7 @@
 
 					<div class="row">
 						<div class="col-lg-12"
-							style="margin-left: -12%; margin-top: 0.5%;">
+							style="margin-left: -25%; margin-top: -6%;">
 							<div class="card">
 								<div class="card-toolbar clearfix">
 									<form class="pull-right search-bar" method="get" action="#!"
@@ -64,16 +64,16 @@
 										<table class="table table-hover" >
 											<thead>
 												<tr>
-													<th>供应商编号</th>
-													<th>供应商名字</th>
-													<th>供应商电话</th>
-													<th>供应商地址</th>
-													<th>联系人</th>
-													<th>操作</th>
+													<th class="text-center">供应商编号</th>
+													<th class="text-center">供应商名字</th>
+													<th class="text-center">供应商电话</th>
+													<th class="text-center">供应商地址</th>
+													<th class="text-center">联系人</th>
+													<th class="text-center">操作</th>
 												</tr>
 											</thead>
 											<tbody>
-												<tr v-for="(gys,index) in list" :key="index">
+												<tr v-for="(gys,index) in list" :key="index" class="text-center">
 													<td>{{gys.providerId}}</td>
 													<td>{{gys.providerName}}</td>
 													<td>{{gys.providerPhone}}</td>

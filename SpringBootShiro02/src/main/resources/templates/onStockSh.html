@@ -79,7 +79,7 @@
                         <td>{{diaodu.cost_price_sum}}</td>
                         <td>
                           <div class="btn-group">
-                            <button type="button"  id="sjbutton" class="btn btn-primary  btn-xs"  data-target=".bs-example-modal-lg" @click="Selidxx(diaodu.pay_id,diaodu.reason,diaodu.amount_sum,diaodu.cost_price_sum,diaodu.paid_amount_sum)">出库审核</button>
+                            <button type="button"  id="sjbutton" class="btn btn-primary  btn-xs"  data-target=".bs-example-modal-lg" @click="Selidxx(diaodu.pay_id,diaodu.reason,diaodu.amount_sum,diaodu.cost_price_sum,diaodu.paid_amount_sum,diaodu.sjbh)">出库审核</button>
                           </div>
                         </td>
                       </tr>
@@ -276,7 +276,8 @@
 					gathered_amount_sum:0,
 					yrkzcb:0,
 					count1:'',
-					count2:''
+					count2:'',
+					pg_id:''
 				},
 				mounted(){//初始化显示完成调用
 					this.Selad();
@@ -305,7 +306,7 @@
 							console.log("请求失败");
 						})
 						
-					},Selidxx(pay_id,reason,amount_sum,cost_price_sum,gathered_amount_sum){
+					},Selidxx(pay_id,reason,amount_sum,cost_price_sum,gathered_amount_sum,pg_id){
    						 $("#box1").toggle();
 						 $("#box2").toggle();
 						 this.pay_id=pay_id;
@@ -313,6 +314,7 @@
 						 this.cost_price_sum=cost_price_sum;
 						 this.amount_sum=amount_sum;
 						 this.gathered_amount_sum=gathered_amount_sum;
+						 this.pg_id =  pg_id;
 						 this.Selad2();
 					},
 					Selad2(){
@@ -360,7 +362,7 @@
 						$("#box2").toggle();
 					},tijiao(){
 						var attemper = $("#djr").text();
-								axios.get("updZdiaodu3?attemper="+attemper+"&pay_id="+this.pay_id+"").then(res=>{
+								axios.get("updZdiaodu3?attemper="+attemper+"&pay_id="+this.pay_id+"&pg_id="+this.pg_id+"").then(res=>{
 									if(res.data>0){
 										alert('审核成功！');
 										$("#box2").toggle();

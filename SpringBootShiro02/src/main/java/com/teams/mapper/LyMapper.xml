@@ -6,7 +6,7 @@
 <mapper namespace="com.teams.mapper.LyMapper">
 	<select id="scdj" resultType="m_pg">
 		select * from m_pg where
-		check_tag=#{check_tag} and pg_zt=#{pg_zt}
+		check_tag=#{check_tag} and pg_zt=#{pg_zt} and scly='已领料'
 	</select>
 	<select id="scgx" resultType="M_design_procedure_details">
 		select
@@ -169,7 +169,7 @@
 
 	<insert id="addpay">
 		insert into s_pay
-		values(null,#{pay_id},#{storer},#{reason},DEFAULT,#{zjs},#{zcb},0,DEFAULT,#{storer},SYSDATE(),default,default,#{string},DEFAULT,DEFAULT,#{string2})
+		values(null,#{pay_id},#{storer},#{reason},DEFAULT,#{zjs},#{zcb},0,DEFAULT,#{storer},SYSDATE(),default,default,#{string},DEFAULT,DEFAULT,#{string2},#{pg_id})
 	</insert>
 
 	<insert id="addpayxq">

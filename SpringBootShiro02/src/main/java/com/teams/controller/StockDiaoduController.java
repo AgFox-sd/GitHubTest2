@@ -208,7 +208,8 @@ public class StockDiaoduController {
 	
 	@RequestMapping("updZdiaodu3")
 	@ResponseBody
-	public int updZdiaodu3(String attemper,String pay_id) {
+	public int updZdiaodu3(String attemper,String pay_id,String pg_id) {
+		service.updpg(pg_id);
 		return service.updZdiaodu3(attemper,pay_id);
 	}
 	

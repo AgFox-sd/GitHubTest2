@@ -206,9 +206,9 @@ public class ProductSjServiceImpl implements ProductSjService{
 	}
 
 	@Override
-	public List<D_file> selwl() {
+	public List<D_file> selwl(String design_id) {
 		// TODO Auto-generated method stub
-		return mapper.selwl();
+		return mapper.selwl(design_id);
 	}
 
 	@Override

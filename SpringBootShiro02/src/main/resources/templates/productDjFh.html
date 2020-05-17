@@ -20,7 +20,7 @@
 <div class="lyear-layout-web">
   <div class="lyear-layout-container">
     
-    <header class="lyear-layout-header" style="margin-left: -10%;">
+    <header class="lyear-layout-header" style="margin-left: -18%;">
       
       <nav class="navbar navbar-default">
         <div class="topbar">
@@ -47,7 +47,7 @@
       <div class="container-fluid">
         
         <div class="row">
-          <div class="col-lg-12" style="margin-left: -12%;margin-top: -6%;">
+          <div class="col-lg-12" style="margin-left: -25%;margin-top: -6%;">
             <div class="card">
               <div class="card-toolbar clearfix">
                 <form class="pull-right search-bar" method="get" action="#!" role="form">
@@ -63,16 +63,16 @@
                   <table class="table table-hover">
                     <thead>
                       <tr>
-                        <th>产品编号</th>
-					    <th>产品名称</th>
-					    <th>产品分类</th>
-					    <th>用途类型</th>
-						<th>产品档次</th>
-						<th>复核</th>
+                        <th class="text-center">产品编号</th>
+					    <th class="text-center">产品名称</th>
+					    <th class="text-center">产品分类</th>
+					    <th class="text-center">用途类型</th>
+						<th class="text-center">产品档次</th>
+						<th class="text-center">复核</th>
                       </tr>
                     </thead>
                     <tbody>
-					<tr v-for="(products,index) in list" :key="index">
+					<tr v-for="(products,index) in list" :key="index" class="text-center">
 					    <td>{{products.product_id}}</td>
 					    <td>{{products.product_name}}</td>
 					    <td>{{products.fname}}</td>

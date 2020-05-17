@@ -20,7 +20,7 @@
 <div class="lyear-layout-web">
   <div class="lyear-layout-container">
    			 
-    <header class="lyear-layout-header" style="margin-left: -10%;">
+    <header class="lyear-layout-header" style="margin-left: -18%;">
       
       <nav class="navbar navbar-default">
         <div class="topbar">
@@ -43,7 +43,7 @@
       <div class="container-fluid">
         
         <div class="row">
-          <div class="col-lg-12" style="margin-left: -12%;margin-top: -6%;">
+          <div class="col-lg-12" style="margin-left: -25%;margin-top: -6%;">
             <div class="card">
               <div class="card-toolbar clearfix">
                 <form class="pull-right search-bar" method="get" action="#!" role="form">
@@ -63,17 +63,17 @@
                   <table class="table table-hover">
                     <thead>
                       <tr>
-                        <th>生产派工单编号</th>
-					    <th>产品编号</th>
-					    <th>产品名称</th>
-					    <th>数量</th>
-						<th>出库单编号集合</th>
-						<th>登记时间</th>
-						<th>审核</th>
+                        <th class="text-center">生产派工单编号</th>
+					    <th class="text-center">产品编号</th>
+					    <th class="text-center">产品名称</th>
+					    <th class="text-center">数量</th>
+						<th class="text-center">出库单编号集合</th>
+						<th class="text-center">登记时间</th>
+						<th class="text-center">审核</th>
                       </tr>
                     </thead>
                     <tbody>
-					<tr v-for="sh in list">
+					<tr v-for="sh in list" class="text-center">
 					    <td>{{sh.pg_id}}</td>
 					    <td>{{sh.product_id}}</td>
 					    <td>{{sh.product_name}}</td>
@@ -133,18 +133,18 @@
 						  <table class="table table-hover" >
 				                  <thead>
 				                     <tr>
-				                        <th>序号</th>
-				                        <th>工序名称</th>
-				                        <th>工序编号</th>
-				                        <th>工序描述</th>
-				                        <th>工时数(小时)</th>
-				                        <th>工时成本小计(元)</th>
-				                        <th>物料成本小计</th>
-				                        <th>审核物料</th>
+				                        <th class="text-center">序号</th>
+				                        <th class="text-center">工序名称</th>
+				                        <th class="text-center">工序编号</th>
+				                        <th class="text-center">工序描述</th>
+				                        <th class="text-center">工时数(小时)</th>
+				                        <th class="text-center">工时成本小计(元)</th>
+				                        <th class="text-center">物料成本小计</th>
+				                        <th class="text-center">审核物料</th>
 				                      </tr>
 				                    </thead>
 				                    <tbody>
-				                    <tr v-for="gx in gxlist">
+				                    <tr v-for="gx in gxlist" class="text-center">
 					                    <td>{{gx.id}}</td>
 				                        <td>{{gx.name}}</td>
 				                       	<td>{{gx.procedure_id}}</td>
@@ -192,26 +192,26 @@
 			           <table class="table table-hover" >
 	                    <thead>
 	                      <tr>
-	                        <th>序号</th>
-	                        <th>物料名称</th>
-	                        <th>物料编号</th>
-	                        <th>描述</th>
-	                        <th>本工序数量</th>
-	                        <th>单位</th>
-	                        <th>单价(元)</th>
-	                        <th>小计(元)</th>
+	                        <th class="text-center">序号</th>
+	                        <th class="text-center">物料名称</th>
+	                        <th class="text-center">物料编号</th>
+	                        <th class="text-center">描述</th>
+	                        <th class="text-center">本工序数量</th>
+	                        <th class="text-center">单位</th>
+	                        <th class="text-center">单价(元)</th>
+	                        <th class="text-center">小计(元)</th>
 	                      </tr>
 	                    </thead>
 	                    <tbody>
-	                      <tr v-for="wl in wllist">
-			            	<th>{{wl.id}}</th>
-	                        <th>{{wl.product_name}}</th>
-	                        <th>{{wl.product_id}}</th>
-	                        <th>{{wl.product_describe}}</th>
-	                        <th>{{wl.amount}}</th>
-	                        <th>{{wl.amount_unit}}</th>
-	                        <th>{{wl.cost_price}}</th>
-	                        <th>{{wl.subtotal}}</th>
+	                      <tr v-for="wl in wllist" class="text-center">
+			            	<td class="shtg">{{wl.id}}</td>
+	                        <td>{{wl.product_name}}</td>
+	                        <td>{{wl.product_id}}</td>
+	                        <td>{{wl.product_describe}}</td>
+	                        <td>{{wl.amount}}</td>
+	                        <td>{{wl.amount_unit}}</td>
+	                        <td>{{wl.cost_price}}</td>
+	                        <td>{{wl.subtotal}}</td>
 	                      </tr>
 	                    </tbody>
 	                  </table>
@@ -219,7 +219,7 @@
 		        		</form>
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" @click="shtg()">审核</button>
                       </div>
                     </div>
                   </div>
@@ -357,6 +357,31 @@
 				Fanhui(){
 					$("#box1").toggle();
 				    $("#box2").toggle();
+				},shtg(){
+					var an=$("input[name=hh]:checked").val();
+					if(an=="通过"){
+						var mc =[];
+						var bh =[];
+						var sl =[];
+						var dj =[];
+						$(".shtg").each(function(){
+							mc.push($(this).next().text());
+							bh.push($(this).next().next().text());
+							sl.push($(this).next().next().next().next().text());
+							dj.push($(this).next().next().next().next().next().next().next().text());
+						})
+					     var url="scly?mc="+mc+"&bh="+bh+"&sl="+sl+"&dj="+dj+"&pg_id="+this.pg_id+"&amount="+this.amount+"";
+						 axios.get(url).then(res=>{
+						 if(res.data>0){
+								alert('审核通过！')
+						 }
+						 }).catch(err=>{
+							  alert('请求失败')
+						  })
+					}else{
+						alert("审核不通过！");
+					}
+					
 				}
     	  }
       

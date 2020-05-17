@@ -74,18 +74,12 @@ public class LyController {
 			@RequestParam("amount") int[] amount, @RequestParam("cost_price") double[] cost_price,
 			@RequestParam("xq_sh") String xq_sh,HttpSession ses) {
 		double zcb = 0;
-		double zjs = 0;
-		String pay_id = Dindan1();
-		String storer = (String) ses.getAttribute("username");
-		String reason = "生产领料";
+
 	    for (int i = 0; i < sl.length; i++) {
 			service.add_xq(did, procedure_name, product_id[i], product_name[i], amount[i], cost_price[i],
 					(amount[i] * cost_price[i]), xq_sh);
-			zjs +=amount[i];
 			zcb += amount[i] * cost_price[i];
-			service.addpayxq(pay_id,product_id[i],product_name[i],amount[i],cost_price[i],amount[i] * cost_price[i],"已登记");
-		}
-		service.addpay(pay_id,storer,reason,zjs,zcb,"审核通过","已登记");
+		}	
 		service.updsjsysl(zcb, dj_jj, procedure_name,did);
 		service.updm_pg(check_tag, pg_id);
 		return 1;

@@ -20,7 +20,7 @@
 <div class="lyear-layout-web">
   <div class="lyear-layout-container">
     
-    <header class="lyear-layout-header" style="margin-left: -10%;">
+    <header class="lyear-layout-header" style="margin-left: -18%;">
       
       <nav class="navbar navbar-default">
         <div class="topbar">
@@ -43,7 +43,7 @@
       <div class="container-fluid">
         
         <div class="row">
-          <div class="col-lg-12" style="margin-left: -12%;margin-top: -6%;">
+          <div class="col-lg-12" style="margin-left: -25%;margin-top: -6%;">
             <div class="card">
               <div class="card-toolbar clearfix">
                 <form class="pull-right search-bar" method="get" action="#!" role="form">
@@ -59,17 +59,17 @@
                   <table class="table table-hover">
                     <thead>
                       <tr>
-                        <th>设计单编号</th>
-					    <th>产品编号</th>
-					    <th>产品名称</th>
-					    <th>设计人</th>
-						<th>登记时间</th>
-						<th>工时总成本</th>
-						<th>审核</th>
+                        <th class="text-center">设计单编号</th>
+					    <th class="text-center">产品编号</th>
+					    <th class="text-center">产品名称</th>
+					    <th class="text-center">设计人</th>
+						<th class="text-center">登记时间</th>
+						<th class="text-center">工时总成本</th>
+						<th class="text-center">审核</th>
                       </tr>
                     </thead>
                     <tbody>
-					<tr v-for="(wuzc,index) in list" :key="index">
+					<tr v-for="(wuzc,index) in list" :key="index" class="text-center">
 					    <td>{{wuzc.design_id}}</td>
 					    <td>{{wuzc.product_id}}</td>
 					    <td>{{wuzc.product_name}}</td>
@@ -118,18 +118,18 @@
 					   <table class="table table-bordered" >
 	                    <thead>
 	                      <tr>
-	                        <th>序号</th>
-	                        <th>工序单编号</th>
-	                        <th>工序编号</th>
-	                        <th>描述</th>
-	                        <th>工序名称</th>
-	                        <th>单位</th>
-	                        <th>单价</th>
-	                        <th>小计(元)</th>
+	                        <th class="text-center">序号</th>
+	                        <th class="text-center">工序单编号</th>
+	                        <th class="text-center">工序编号</th>
+	                        <th class="text-center">描述</th>
+	                        <th class="text-center">工序名称</th>
+	                        <th class="text-center">单位</th>
+	                        <th class="text-center">单价</th>
+	                        <th class="text-center">小计(元)</th>
 	                      </tr>
 	                    </thead>
 	                    <tbody>
-	                      <tr v-for="(wl,index) in xxlist" :key="index">
+	                      <tr v-for="(wl,index) in xxlist" :key="index" class="text-center">
 		                        <td>{{wl.id}}</td>
                        			<td>{{wl.parent_id}}</td>
                         		<td>{{wl.labour_hour_amount}}</td>

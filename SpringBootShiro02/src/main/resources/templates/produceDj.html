@@ -58,16 +58,16 @@
                     <table class="table table-hover">
                     <thead>
                       <tr>
-                        <th>派工单编号</th>
-                        <th>产品编号</th>
-                        <th>产品名称</th>
-                        <th>数量</th>
-                        <th>登记时间</th>
-                        <th>登记</th>
+                        <th class="text-center">派工单编号</th>
+                        <th class="text-center">产品编号</th>
+                        <th class="text-center">产品名称</th>
+                        <th class="text-center">数量</th>
+                        <th class="text-center">登记时间</th>
+                        <th class="text-center">登记</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="v in list" >
+                      <tr v-for="v in list" class="text-center">
                         <td>{{v.pg_id}}</td>
                         <td>{{v.product_id}}</td>
                        	<td>{{v.product_name}}</td>
@@ -175,7 +175,7 @@
 		                        </td>
 		                        <td>{{wl.product_name}}</td>
                        			<td>{{wl.product_id}}</td>
-                        		<td>{{wl.amount}}</td>
+                        		<td>{{wl.amount*amount}}</td>
                         		<td>{{wl.cost_price}}</td>
                        			<td>
                        				 <input type="text" name="sl">

@@ -264,9 +264,8 @@
 	</delete>
 	<!-- 变更查询物料 -->
 	<select id="selwl" resultType="D_file">
-		select * from D_file where product_name 
-		not  in (select product_name from D_module_details) and tid=2
-
+		SELECT * FROM D_file WHERE product_name 
+		NOT  IN (SELECT product_name FROM D_module_details WHERE design_id=#{design_id}) AND tid=2
 	</select>
 
 	<update id="updzje">

@@ -28,7 +28,7 @@ GROUP BY a.id
   		
   		<!-- 提交派工单 -->
   		<insert id="addPg">
-  			insert into  m_pg value(null,#{jhdbh},#{pg_id},#{product_id},#{product_name},#{pg_ren},DEFAULT,#{amount},default,now(),DEFAULT)
+  			insert into  m_pg value(null,#{jhdbh},#{pg_id},#{product_id},#{product_name},#{pg_ren},DEFAULT,#{amount},default,now(),DEFAULT,default)
   		</insert>
   		
   		<!-- 修改生产计划表字段已派工 -->

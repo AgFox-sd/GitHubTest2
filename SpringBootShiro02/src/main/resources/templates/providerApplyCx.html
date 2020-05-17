@@ -22,7 +22,7 @@
 		<div class="lyear-layout-web">
 			<div class="lyear-layout-container">
 
-				<header class="lyear-layout-header" style="margin-left: -10%;">
+				<header class="lyear-layout-header" style="margin-left: -18%;">
 
 					<nav class="navbar navbar-default">
 						<div class="topbar">
@@ -45,7 +45,7 @@
 				<div class="container-fluid">
 
 					<div class="row">
-						<div class="col-lg-12" style="margin-left: -12%; margin-top: -6%;">
+						<div class="col-lg-12" style="margin-left: -25%; margin-top: -6%;">
 							<div class="card">
 								<div class="card-toolbar clearfix">
 									<form class="pull-right search-bar" method="get" action="#!"
@@ -63,13 +63,13 @@
 										<table class="table table-hover">
 											<thead>
 												<tr>
-													<th>申请编号</th>
-													<th>供应商名称</th>
-													<th>审核状态</th>
+													<th class="text-center">申请编号</th>
+													<th class="text-center">供应商名称</th>
+													<th class="text-center">审核状态</th>
 												</tr>
 											</thead>
 											<tbody>
-												<tr v-for="v in list">
+												<tr v-for="v in list" class="text-center">
 													<td style="color: red" data-toggle="modal"
 														data-target="#modal1"
 														@click="xq(v.providerSqId,v.providerName,v.check_tag,v.providerId,v.register,v.register_time,v.providerPhone,v.supply_time)">{{v.providerSqId}}</td>
@@ -123,17 +123,17 @@
 															<table class="table table-bordered">
 																<thead>
 																	<tr>
-																		<th>序号</th>
-																		<th>商品编号</th>
-																		<th>商品名称</th>
-																		<th>数量</th>
-																		<th>单位</th>
-																		<th>单价</th>
-																		<th>小计(元)</th>
+																		<th class="text-center">序号</th>
+																		<th class="text-center">商品编号</th>
+																		<th class="text-center">商品名称</th>
+																		<th class="text-center">数量</th>
+																		<th class="text-center">单位</th>
+																		<th class="text-center">单价</th>
+																		<th class="text-center">小计(元)</th>
 																	</tr>
 																</thead>
 																<tbody>
-																	<tr v-for="v in slist">
+																	<tr v-for="v in slist" class="text-center">
 																		<td>{{v.id}}</td>
 																		<td>{{v.product_id}}</td>
 																		<td>{{v.product_name}}</td>

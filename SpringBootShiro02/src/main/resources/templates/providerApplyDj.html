@@ -22,7 +22,7 @@
 		<div class="lyear-layout-web">
 			<div class="lyear-layout-container">
 
-				<header class="lyear-layout-header" style="margin-left: -15%;">
+				<header class="lyear-layout-header" style="margin-left: -18%;">
 
 					<nav class="navbar navbar-default">
 						<div class="topbar">
@@ -43,7 +43,7 @@
 				<main class="lyear-layout-content">
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-lg-10" style="margin-left: -22%; margin-top: -6%;">
+						<div class="col-lg-10" style="margin-left: -25%; margin-top: -6%;">
 							<div class="card">
 								<div class="card-toolbar clearfix">
 									<form class="pull-right search-bar" method="get" action="#!"
@@ -62,15 +62,15 @@
 											<table class="table table-hover">
 												<thead>
 													<tr>
-														<th>供应商编号</th>
-														<th>供应商名称</th>
-														<th>供应商地址</th>
-														<th>电话</th>
-														<th>登记</th>
+														<th class="text-center">供应商编号</th>
+														<th class="text-center">供应商名称</th>
+														<th class="text-center">供应商地址</th>
+														<th class="text-center">电话</th>
+														<th class="text-center">登记</th>
 													</tr>
 												</thead>
 												<tbody>
-													<tr v-for="v in list" :key="index">
+													<tr v-for="v in list" :key="index" class="text-center">
 														<td>{{v.providerId}}</td>
 														<td>{{v.providerName}}</td>
 														<td>{{v.providerAddress}}</td>
@@ -111,18 +111,18 @@
 											<table class="table table-hover">
 												<thead>
 													<tr>
-														<th>点选</th>
-														<th>商品编号</th>
-														<th>商品名称</th>
-														<th>数量</th>
-														<th>单位</th>
-														<th>单价</th>
-														<th>小计</th>
-														<th>操作</th>
+														<th class="text-center">点选</th>
+														<th class="text-center">商品编号</th>
+														<th class="text-center">商品名称</th>
+														<th class="text-center">数量</th>
+														<th class="text-center">单位</th>
+														<th class="text-center">单价</th>
+														<th class="text-center">小计</th>
+														<th class="text-center">操作</th>
 													</tr>
 												</thead>
 												<tbody>
-													<tr v-for="wl in cus">
+													<tr v-for="wl in cus" class="text-center">
 														<td><label class="lyear-checkbox checkbox-primary">
 																<input type="checkbox" value="{{wl.product_id}}"
 																class="xz1" @click="xz()"><span class="xz1"></span>
@@ -165,15 +165,15 @@
 																<table class="table table-bordered">
 																	<thead>
 																		<tr>
-																			<th>选择</th>
-																			<th>商品编号</th>
-																			<th>商品名称</th>
-																			<th>单位</th>
-																			<th>市场单价</th>
+																			<th class="text-center">选择</th>
+																			<th class="text-center">商品编号</th>
+																			<th class="text-center">商品名称</th>
+																			<th class="text-center">单位</th>
+																			<th class="text-center">市场单价</th>
 																		</tr>
 																	</thead>
 																	<tbody>
-																		<tr v-for="(wl,index) in wllist" :key="index">
+																		<tr v-for="(wl,index) in wllist" :key="index" class="text-center">
 																			<td><label
 																				class="lyear-checkbox checkbox-primary"> <input
 																					type="checkbox" value="{{wl.product_id}}"
@@ -317,7 +317,7 @@
 						for(var i=0;i<6;i++){
 							time+=Math.floor(Math.random()*10)
 						}
-						var dingdan="050200"+a+time;  //生成流水号结束
+						var dingdan="0502"+a+time;  //生成流水号结束
 						var providerSqId=dingdan;  
 						//生成供应商申请详情
 						var c=Math.random().toString(8).substring(2);

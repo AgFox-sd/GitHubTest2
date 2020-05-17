@@ -1,5 +1,7 @@
 package com.teams.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -14,6 +16,7 @@ import com.teams.pojo.M_design_procedure_details;
 import com.teams.pojo.m_apply;
 import com.teams.pojo.m_pg;
 import com.teams.pojo.m_procedure_module;
+import com.teams.service.LyService;
 import com.teams.service.ProducePgService;
 
 /*
@@ -25,7 +28,8 @@ public class ProducePgController {
 
 	@Autowired
 	ProducePgService service;
-	
+	@Autowired
+	LyService services;
 	
 	//查询已通过审核并未派工的生产计划
 	@RequestMapping("/SelectApply")
@@ -73,7 +77,7 @@ public class ProducePgController {
 	@RequestMapping("/SelectPg")
 	@ResponseBody
 	public List<m_pg> SelectPg(HttpSession session){
-		List<m_pg> list=service.SelectPg("未审核");
+		List<m_pg> list=service.SelectPg("等待审核");
 		String zdr="";
 		for (int i = 0; i < list.size(); i++) {
 			zdr=list.get(i).getPg_ren();
@@ -120,4 +124,28 @@ public class ProducePgController {
 		return service.SelSum("审核通过");
 	}
 		
+	//生产领料
+	@RequestMapping("/scly")
+	@ResponseBody
+	public int scly(String[] mc,String[] bh,int[] sl,double[] dj,String pg_id,int amount,HttpSession ses ) {
+		double zcb = 0;
+		double zjs = 0;
+		String pay_id = Dindan1();
+		String storer = (String) ses.getAttribute("username");
+		String reason = "生产领料";
+		for (int i = 0; i < dj.length; i++) {
+			zjs +=sl[i]*amount;
+			zcb +=sl[i]*amount*dj[i];
+			services.addpayxq(pay_id,bh[i],mc[i],sl[i]*amount,dj[i],sl[i] * dj[i]*amount,"已登记");
+		}
+		services.addpay(pay_id,storer,reason,zjs,zcb,"审核通过","已登记",pg_id);
+		return 1;
+	}
+	
+	public String Dindan1() {
+		SimpleDateFormat format=new SimpleDateFormat("yyyyMMdd");
+		String batchno=format.format(new Date());
+		int num=(int)((Math.random()*9+1)*100000);
+		return 402+batchno+num;
+	}
 }

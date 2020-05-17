@@ -176,8 +176,8 @@
      <!-- 出库管理-->
      <!-- 添加出库申请单 -->
      <insert id="addCk" >
-        insert into s_pay(id,pay_id,storer,reason,amount_sum,cost_price_sum,remark,register,register_time,check_tag,store_tag)
-        values(null,#{pay_id},#{storer},#{reason},#{amount_sum},#{cost_price_sum},#{remark},#{register},now(),#{check_tag},#{store_tag})
+        insert into s_pay(id,pay_id,storer,reason,amount_sum,cost_price_sum,remark,register,register_time,check_tag,store_tag,sjbh)
+        values(null,#{pay_id},#{storer},#{reason},#{amount_sum},#{cost_price_sum},#{remark},#{register},now(),#{check_tag},#{store_tag},default)
      </insert>
      
      <!-- 添加出库申请明细 -->

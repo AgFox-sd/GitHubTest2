@@ -217,4 +217,8 @@
         and store_tag=#{store_tag}
         and check_tag=#{check_tag}
      </select>
+     
+     <update id="updpg">
+     update m_pg set scly='已领料' where pg_id=#{pg_id}
+     </update>
   </mapper>

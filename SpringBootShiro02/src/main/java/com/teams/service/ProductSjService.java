@@ -91,7 +91,7 @@ public interface ProductSjService {
 	int upzjq(double jq, String product_id, String product_name);
 
 	// 变更查询物料
-	List<D_file> selwl();
+	List<D_file> selwl(String design_id);
 
 	// 修改物料总金额
 	int updzje(double d, String spid, String spmc);

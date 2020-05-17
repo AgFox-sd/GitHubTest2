@@ -260,8 +260,8 @@ public class ProductSjController {
     //变更时添加物料
     @RequestMapping("/selwl")
     @ResponseBody
-    public List<D_file> selwl() {
-    	List<D_file> list=service.selwl();
+    public List<D_file> selwl(String design_id) {
+    	List<D_file> list=service.selwl(design_id);
     	return list;
     }
     //变更时添加物料

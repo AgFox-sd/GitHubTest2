@@ -51,7 +51,7 @@
       <div class="container-fluid">
         
         <div class="row">
-          <div class="col-lg-11" style="margin-left: -12%;margin-top: 0.5%;">
+          <div class="col-lg-11" style="margin-left: -25%;margin-top: -3%;">
             <div class="card">    
               <div class="card-body">
 
@@ -60,17 +60,17 @@
                   <table class="table table-hover">
                     <thead>
                       <tr>
-                        <th>生产计划编号</th>
-                        <th>计划制定人</th>
-					    <th>登记人</th>
-						<th>登记时间</th>
-						<th>备注</th>
-						<th>计划单状态</th>
-						<th>操作</th>
+                        <th class="text-center">生产计划编号</th>
+                        <th class="text-center">计划制定人</th>
+					    <th class="text-center" >登记人</th>
+						<th class="text-center">登记时间</th>
+						<th class="text-center">备注</th>
+						<th class="text-center">计划单状态</th>
+						<th class="text-center">操作</th>
                       </tr>
                     </thead>
                     <tbody>
-					<tr v-for="(cg,index) in cglist" :key="index">
+					<tr v-for="(cg,index) in cglist" :key="index" class="text-center">
 					    <td>
 					       <a style="cursor: pointer;" data-toggle="modal" data-target="#modal1" @click="ck(cg.cgPlanId,cg.register,cg.register_time,cg.checker,cg.check_tag,cg.check_time,cg.remark)">{{cg.cgPlanId}}</a>
 					    </td>
@@ -112,15 +112,15 @@
 					   <table class="table table-bordered" >
 	                    <thead>
 	                      <tr>
-	                        <th>序号</th>
-	                        <th>产品编号</th>
-	                        <th>产品名称</th>
-	                        <th>数量</th>
-	                        <th>出库单编号集合</th>
+	                        <th class="text-center">序号</th>
+	                        <th class="text-center">产品编号</th>
+	                        <th class="text-center">产品名称</th>
+	                        <th class="text-center">数量</th>
+	                        <th class="text-center">出库单编号集合</th>
 	                      </tr>
 	                    </thead>
 	                    <tbody>
-	                      <tr v-for="(cgmx,index) in cgmxlist" :key="index">
+	                      <tr v-for="(cgmx,index) in cgmxlist" :key="index" class="text-center">
 	                            <td>{{cgmx.id}}</td>
                        			<td>{{cgmx.product_id}}</td>
                         		<td>{{cgmx.product_name}}</td>

@@ -113,4 +113,6 @@ public interface StockDiaoduMapper {
 	int updZdiaodu3(String attemper, String pay_id);
 
 	List<s_pay> selectAllinStock();
+
+	void updpg(String pg_id);
 }

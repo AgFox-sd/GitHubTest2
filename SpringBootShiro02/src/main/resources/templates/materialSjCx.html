@@ -31,7 +31,7 @@ $(function(){
 				<!--头部信息-->
 				<header class="lyear-layout-header">
 
-					<nav class="navbar navbar-default">
+					<nav class="navbar navbar-default" style="margin-left: -22%;">
 						<div class="topbar">
 
 							<div class="topbar-left">
@@ -54,23 +54,23 @@ $(function(){
 				<div class="container-fluid">
 
 					<div class="row">
-						<div class="col-lg-12">
+						<div class="col-lg-12" style="margin-left: -25%;margin-top: -2%;">
 							<div class="card">
 								<div class="card-body">
 									<div class="table-responsive">
 										<table class="table table-hover">
 											<thead>
 												<tr>
-													<th>设计单编号</th>
-													<th>产品编号</th>
-													<th>产品名称</th>
-													<th>设计人</th>
-													<th>审核状态</th>
-													<th>装配树</th>
+													<th class="text-center">设计单编号</th>
+													<th class="text-center">产品编号</th>
+													<th class="text-center">产品名称</th>
+													<th class="text-center">设计人</th>
+													<th class="text-center">审核状态</th>
+													<th class="text-center">装配树</th>
 												</tr>
 											</thead>
 											<tbody>
-												<tr v-for="v in list">
+												<tr v-for="v in list" class="text-center">
 													<td>{{v.design_id}}</td>
 													<td>{{v.product_id}}</td>
 													<td>{{v.product_name}}</td>
@@ -90,19 +90,19 @@ $(function(){
 											<div class="modal-content">
 												<div class="modal-body">
 												<table class="table table-hover">
-											<table class="table table-hover">
+											<table class="table table-hover" >
 											<thead>
 												<tr>
-													<th>物料编号</th>
-													<th>物料名称</th>
-													<th>描述</th>
-													<th>数量</th>
-													<th>单价</th>
-													<th>小计</th>
+													<th class="text-center">物料编号</th>
+													<th class="text-center">物料名称</th>
+													<th class="text-center">描述</th>
+													<th class="text-center">数量</th>
+													<th class="text-center">单价</th>
+													<th class="text-center">小计</th>
 												</tr>
 											</thead>
 											<tbody>
-												<tr v-for="v in cus">
+												<tr v-for="v in cus" class="text-center">
 													<td>{{v.product_id}}</td>
 													<td>{{v.product_name}}</td>
 													<td>{{v.product_describe}}</td>

@@ -22,7 +22,7 @@
 		<div class="lyear-layout-web">
 			<div class="lyear-layout-container">
 
-				<header class="lyear-layout-header" style="margin-left: -15%;">
+				<header class="lyear-layout-header" style="margin-left: -18%;">
 
 					<nav class="navbar navbar-default">
 						<div class="topbar">
@@ -42,7 +42,7 @@
 				<main class="lyear-layout-content">
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-lg-10" style="margin-left: -22%; margin-top: -6%;">
+						<div class="col-lg-10" style="margin-left: -25%; margin-top: -6%;">
 							<div class="card">
 								<div class="card-toolbar clearfix">
 									<form class="pull-right search-bar" method="get" action="#!"
@@ -61,15 +61,15 @@
 											<table class="table table-hover">
 												<thead>
 													<tr>
-														<th>报价单编号</th>
-														<th>供应商编号</th>
-														<th>供应商名称</th>
-														<th>电话</th>
-														<th>登记</th>
+														<th class="text-center">报价单编号</th>
+														<th class="text-center">供应商编号</th>
+														<th class="text-center">供应商名称</th>
+														<th class="text-center">电话</th>
+														<th class="text-center">登记</th>
 													</tr>
 												</thead>
 												<tbody>
-													<tr v-for="v in list" :key="index">
+													<tr v-for="v in list" :key="index" class="text-center">
 														<td>{{v.providerSqId}}</td>
 														<td>{{v.providerId}}</td>
 														<td>{{v.providerName}}</td>
@@ -115,22 +115,22 @@
 												<label for="message-text" class="control-label"
 												style="margin-left: 300px">供货时间:</label> <span>{{supply_time}}</span>
 										</div>
-										<div style="margin-left: 70px">
+										<div style="margin-left: 10px">
 											<table class="table table-hover">
 												<thead>
 													<tr>
-														<th>点选</th>
-														<th>商品编号</th>
-														<th>商品名称</th>
-														<th>数量</th>
-														<th>单位</th>
-														<th>单价</th>
-														<th>小计</th>
-														<th>操作</th>
+														<th class="text-center">点选</th>
+														<th class="text-center">商品编号</th>
+														<th class="text-center">商品名称</th>
+														<th class="text-center">数量</th>
+														<th class="text-center">单位</th>
+														<th class="text-center">单价</th>
+														<th class="text-center">小计</th>
+														<th class="text-center">操作</th>
 													</tr>
 												</thead>
 												<tbody>
-													<tr v-for="wl in cus">
+													<tr v-for="wl in cus" class="text-center">
 														<td><label class="lyear-checkbox checkbox-primary">
 																<input type="checkbox" value="{{wl.product_id}}"
 																class="xz1" @click="xz()"><span class="xz1"></span>
@@ -155,7 +155,7 @@
 												</div>
 											</div>
 										</div>
-											<button class="btn btn-xs btn-primary" style="margin-left: 0px" @click="gb()">关闭</button>
+											<button class="btn btn-xs btn-primary" style="margin-left: 10px" @click="gb()">关闭</button>
 										<!-- 模态框开始 -->
 										<div class="modal fade bs-example-modal-lg" tabindex="-1"
 											role="dialog" aria-labelledby="myLargeModalLabel">
@@ -174,15 +174,15 @@
 																<table class="table table-bordered">
 																	<thead>
 																		<tr>
-																			<th>选择</th>
-																			<th>商品编号</th>
-																			<th>商品名称</th>
-																			<th>单位</th>
-																			<th>市场单价</th>
+																			<th class="text-center">选择</th>
+																			<th class="text-center">商品编号</th>
+																			<th class="text-center">商品名称</th>
+																			<th class="text-center">单位</th>
+																			<th class="text-center">市场单价</th>
 																		</tr>
 																	</thead>
 																	<tbody>
-																		<tr v-for="(wl,index) in wllist" :key="index">
+																		<tr v-for="(wl,index) in wllist" :key="index" class="text-center">
 																			<td><label
 																				class="lyear-checkbox checkbox-primary"> <input
 																					type="checkbox" value="{{wl.product_id}}"
@@ -223,20 +223,19 @@
 											<label for="message-text" class="control-label"
 												style="margin-left: 70px">供应商电话:</label> <span>{{providerPhone}}</span>
 										</div>
-										<div style="margin-left: 70px">
 											<table class="table table-hover">
 												<thead>
 													<tr>
-														<th>商品编号</th>
-														<th>商品名称</th>
-														<th>数量</th>
-														<th>单位</th>
-														<th>单价</th>
-														<th>小计</th>
+														<th class="text-center">商品编号</th>
+														<th class="text-center">商品名称</th>
+														<th class="text-center">数量</th>
+														<th class="text-center">单位</th>
+														<th class="text-center">单价</th>
+														<th class="text-center">小计</th>
 													</tr>
 												</thead>
 												<tbody>
-													<tr v-for="v in slist">
+													<tr v-for="v in slist" class="text-center">
 														<td>{{v.product_id}}</td>
 														<td>{{v.product_name}}</td>
 														<td>{{v.amount}}</td>
@@ -331,7 +330,6 @@ $(function(){
 					})
 					},
 					Selad2(){//查询商品信息
-						alert(this.providerSqId);
 						var url="selspbg?providerSqId="+this.providerSqId+"";
 						axios.post(url).then(res=>{
 							this.wllist=res.data;

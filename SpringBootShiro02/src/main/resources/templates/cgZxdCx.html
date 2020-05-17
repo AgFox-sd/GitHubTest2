@@ -20,7 +20,7 @@
 <div class="lyear-layout-web">
   <div class="lyear-layout-container">
    
-    <header class="lyear-layout-header" style="margin-left: -20%;">
+    <header class="lyear-layout-header" style="margin-left: -22%;">
       
       <nav class="navbar navbar-default">
         <div class="topbar">
@@ -45,7 +45,7 @@
     <main class="lyear-layout-content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-lg-12" style="margin-left: -22%;margin-top: -3%;">
+          <div class="col-lg-12" style="margin-left: -25%;margin-top: -3%;">
             <div class="card">
               <div class="card-toolbar clearfix">
                <form class="pull-right search-bar" method="get" action="#!" role="form">
@@ -189,26 +189,26 @@
 			           <table class="table table-bordered" >
 	                    <thead>
 	                      <tr>
-	                        <th>序号</th>
-	                        <th>物料名称</th>
-	                        <th>物料编号</th>
-	                        <th>描述</th>
-	                        <th>本工序数量</th>
-	                        <th>单位</th>
-	                        <th>单价(元)</th>
-	                        <th>小计(元)</th>
+	                        <th class="text-center">序号</th>
+	                        <th class="text-center">物料名称</th>
+	                        <th class="text-center">物料编号</th>
+	                        <th class="text-center">描述</th>
+	                        <th class="text-center" >本工序数量</th>
+	                        <th class="text-center">单位</th>
+	                        <th class="text-center">单价(元)</th>
+	                        <th class="text-center">小计(元)</th>
 	                      </tr>
 	                    </thead>
 	                    <tbody>
 	                      <tr v-for="wl in wllist">
-			            	<th>{{wl.id}}</th>
-	                        <th>{{wl.product_name}}</th>
-	                        <th>{{wl.product_id}}</th>
-	                        <th>{{wl.product_describe}}</th>
-	                        <th>{{wl.amount}}</th>
-	                        <th>{{wl.amount_unit}}</th>
-	                        <th>{{wl.cost_price}}</th>
-	                        <th>{{wl.subtotal}}</th>
+			            	<td class="text-center">{{wl.id}}</th>
+	                        <td class="text-center">{{wl.product_name}}</th>
+	                        <td class="text-center">{{wl.product_id}}</th>
+	                        <td class="text-center">{{wl.product_describe}}</th>
+	                        <td class="text-center">{{wl.amount}}</th>
+	                        <td class="text-center">{{wl.amount_unit}}</th>
+	                        <td class="text-center">{{wl.cost_price}}</th>
+	                        <td class="text-center">{{wl.subtotal}}</th>
 	                      </tr>
 	                    </tbody>
 	                  </table>
