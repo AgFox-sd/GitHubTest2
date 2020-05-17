@@ -7,8 +7,9 @@
   		
   		<!-- 查询已通过审核并未派工的生产计划 -->
   		<select id="SelectApply" resultType="m_apply_mx">
-  			SELECT a.*,b.check_time FROM m_apply_mx a,m_apply b WHERE b.apply_id IN
-           (SELECT apply_id FROM m_apply_mx WHERE manufacture_tag=#{manufacture_tag}) AND manufacture_tag=#{manufacture_tag}
+  			SELECT a.*,b.check_time,b.`check_tag` FROM m_apply_mx a,m_apply b  WHERE
+a.`apply_id` IN(SELECT apply_id FROM m_apply WHERE check_tag=#{check_tag}) AND a.manufacture_tag=#{manufacture_tag} AND b.`check_tag`='审核通过'
+GROUP BY a.id
   		</select>
   
   		<!-- 通过产品编号查询工序-->
@@ -27,7 +28,7 @@
   		
   		<!-- 提交派工单 -->
   		<insert id="addPg">
-  			insert into  m_pg value(null,#{jhdbh},#{pg_id},#{product_id},#{product_name},#{pg_ren},DEFAULT,#{amount},now(),DEFAULT)
+  			insert into  m_pg value(null,#{jhdbh},#{pg_id},#{product_id},#{product_name},#{pg_ren},DEFAULT,#{amount},default,now(),DEFAULT,default)
   		</insert>
   		
   		<!-- 修改生产计划表字段已派工 -->
@@ -64,7 +65,7 @@
        
        <!-- 生产派工单查询-->
 	   <select id="SelectPG2" resultType="m_pg">
-			select * from m_pg where check_tag=#{check_tag}
+			select * from m_pg 
 	   </select>
 	   
 	   <!-- 查询符合条件的生产派工单总数-->

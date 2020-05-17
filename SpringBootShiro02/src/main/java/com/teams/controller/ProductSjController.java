@@ -131,8 +131,6 @@ public class ProductSjController {
 	@RequestMapping("/delwlsj")
 	@ResponseBody  
 	public int delwlsj(@RequestParam("design_id") String design_id,@RequestParam("product_id") String product_id,@RequestParam("design_module_tag") String design_module_tag) {
-		service.delwlsjmx(design_id);
-		service.updcpdnwlsj(product_id,design_module_tag);
 		return service.delwlsj(design_id);
 	}
 	
@@ -225,10 +223,15 @@ public class ProductSjController {
 	@ResponseBody
 	public  List<D_module> selD_module() {
 		List<D_module> list=service.selD_module();
-		System.out.println(list);
 		return list;
 	}
 	
+	@RequestMapping("/selD_moduleS")
+	@ResponseBody
+	public  List<D_module> selD_moduleS() {
+		List<D_module> list=service.selD_moduleS();
+		return list;
+	}
 	//物料查询详情
 	@RequestMapping("/selD_module_details")
 	@ResponseBody
@@ -241,8 +244,6 @@ public class ProductSjController {
 	@ResponseBody
 	public int selectname(@RequestBody D_file file) {
 		int row =service.selectname(file);
-		System.out.println(file.getProduct_name());
-		System.out.println("11111111");
 		return row;
 	}
 	
@@ -259,8 +260,8 @@ public class ProductSjController {
     //变更时添加物料
     @RequestMapping("/selwl")
     @ResponseBody
-    public List<D_file> selwl() {
-    	List<D_file> list=service.selwl();
+    public List<D_file> selwl(String design_id) {
+    	List<D_file> list=service.selwl(design_id);
     	return list;
     }
     //变更时添加物料

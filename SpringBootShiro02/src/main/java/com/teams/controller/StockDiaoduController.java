@@ -158,7 +158,8 @@ public class StockDiaoduController {
 	//修改库存
 	@RequestMapping("updDiaodu")
 	@ResponseBody
-	public int updDiaodu(String product_id,String gathered_amount,String gather_id) {
+	public int updDiaodu(String product_id,String gathered_amount,String gather_id,String zsdbh) {
+		service.updzsd(zsdbh);
 		service.updKc(gathered_amount,product_id);
 		service.updZb(gathered_amount,gather_id);
 		return service.updDiaodu(gathered_amount,product_id,gather_id);
@@ -208,7 +209,8 @@ public class StockDiaoduController {
 	
 	@RequestMapping("updZdiaodu3")
 	@ResponseBody
-	public int updZdiaodu3(String attemper,String pay_id) {
+	public int updZdiaodu3(String attemper,String pay_id,String pg_id) {
+		service.updpg(pg_id);
 		return service.updZdiaodu3(attemper,pay_id);
 	}
 	

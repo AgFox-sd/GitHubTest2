@@ -20,7 +20,7 @@
 <div class="lyear-layout-web">
   <div class="lyear-layout-container">
    
-    <header class="lyear-layout-header" style="margin-left: -14%;">
+    <header class="lyear-layout-header" style="margin-left: -18%;">
       
       <nav class="navbar navbar-default">
         <div class="topbar">
@@ -43,7 +43,7 @@
       <div class="container-fluid">
         
         <div class="row">
-          <div class="col-lg-10" style="margin-left: -20%;margin-top: -6%;">
+          <div class="col-lg-10" style="margin-left: -25%;margin-top: -6%;">
             <div class="card">
               <div class="card-toolbar clearfix">
                <form class="pull-right search-bar" method="get" action="#!" role="form">
@@ -59,18 +59,18 @@
                   <table class="table table-hover">
                     <thead>
                       <tr>
-                        <th>产品编号</th>
-                        <th>产品名称</th>
-                        <th>用途类型</th>
-                        <th>供应商</th>
-                        <th>单位</th>
-                        <th>产品档次</th>
-                        <th>市场单价</th>
-                        <th>档案变更</th>
+                        <th class="text-center">产品编号</th>
+                        <th class="text-center">产品名称</th>
+                        <th class="text-center">用途类型</th>
+                        <th class="text-center">供应商</th>
+                        <th class="text-center">单位</th>
+                        <th class="text-center">产品档次</th>
+                        <th class="text-center">市场单价</th>
+                        <th class="text-center">档案变更</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="file in list" >
+                      <tr v-for="file in list" class="text-center">
                         <td>{{file.product_id}}</td>
                         <td>{{file.product_name}}</td>
                         <td>{{file.tname}}</td>

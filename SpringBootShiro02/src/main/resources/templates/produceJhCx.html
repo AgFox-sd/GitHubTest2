@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-<title>生产计划单审核</title>
+<title>生产计划查询</title>
 <link rel="icon" href="favicon.ico" type="image/ico">
 <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
 <meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
@@ -47,7 +47,7 @@
       <div class="container-fluid">
         
         <div class="row">
-          <div class="col-lg-12" style="margin-left: -12%;margin-top: 0.5%;">
+          <div class="col-lg-12" style="margin-left: -25%;margin-top: -6%;">
             <div class="card">
               <div class="card-toolbar clearfix">
                 <form class="pull-right search-bar" method="get" action="#!" role="form">
@@ -63,16 +63,16 @@
                   <table class="table table-hover">
                     <thead>
                       <tr>
-                        <th>生产计划编号</th>
-					    <th>登记人</th>
-						<th>登记时间</th>
-						<th>审核人</th>
-						<th>审核时间</th>
-						<th>计划单状态</th>
+                        <th class="text-center">生产计划编号</th>
+					    <th class="text-center">登记人</th>
+						<th class="text-center">登记时间</th>
+						<th class="text-center">审核人</th>
+						<th class="text-center">审核时间</th>
+						<th class="text-center">计划单状态</th>
                       </tr>
                     </thead>
                     <tbody>
-					<tr v-for="(scjh,index) in scjhlist" :key="index">
+					<tr v-for="(scjh,index) in scjhlist" :key="index" class="text-center"> 
 					    <td>
 					       <a style="cursor: pointer;" data-toggle="modal" data-target="#modal1" @click="ck(scjh.apply_id,scjh.register,scjh.checker,scjh.check_time,scjh.subtotal)">{{scjh.apply_id}}</a>
 					    </td>
@@ -107,17 +107,17 @@
 					   <table class="table table-bordered" >
 	                    <thead>
 	                      <tr>
-	                        <th>产品编号</th>
-	                        <th>产品名称</th>
-	                        <th>描述</th>
-	                        <th>数量</th>
-	                        <th>单位</th>
-	                        <th>单价(元)</th>
-	                        <th>单位(元)</th>
+	                        <th class="text-center">产品编号</th>
+	                        <th class="text-center">产品名称</th>
+	                        <th class="text-center">描述</th>
+	                        <th class="text-center">数量</th>
+	                        <th class="text-center">单位</th>
+	                        <th class="text-center">单价(元)</th>
+	                        <th class="text-center">单位(元)</th>
 	                      </tr>
 	                    </thead>
 	                    <tbody>
-	                      <tr v-for="(scjhmx,index) in scjhmxlist" :key="index">
+	                      <tr v-for="(scjhmx,index) in scjhmxlist" :key="index" class="text-center">
                        			<td>{{scjhmx.product_id}}</td>
                         		<td>{{scjhmx.product_name}}</td>
                        			<td>{{scjhmx.product_describe}}</td>

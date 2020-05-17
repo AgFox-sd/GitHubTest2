@@ -183,8 +183,8 @@ public class LyServiceImpl implements LyService {
 
 	@Override
 	public void addsg(String gather_id, String storer, String reason, int sc_unit, double d, String string,
-			String string2) {
-		mapper.addsg(gather_id, storer, reason, sc_unit, d, string, string2);
+			String string2,String cgDiaoduId) {
+		mapper.addsg(gather_id, storer, reason, sc_unit, d, string, string2,cgDiaoduId);
 	}
 
 	@Override
@@ -202,9 +202,9 @@ public class LyServiceImpl implements LyService {
 
 	@Override
 	public void addpay(String pay_id, String storer, String reason, double zjs, double zcb, String string,
-			String string2) {
+			String string2,String pg_id) {
 		// TODO Auto-generated method stub
-		mapper.addpay(pay_id, storer, reason, zjs, zcb, string, string2);
+		mapper.addpay(pay_id, storer, reason, zjs, zcb, string, string2,pg_id);
 	}
 
 	@Override

@@ -20,7 +20,7 @@
 <div class="lyear-layout-web">
   <div class="lyear-layout-container">
     
-    <header class="lyear-layout-header" style="margin-left: -10%;">
+    <header class="lyear-layout-header" style="margin-left: -18%;">
       
       <nav class="navbar navbar-default">
         <div class="topbar">
@@ -46,7 +46,7 @@
       <div class="container-fluid">
         
         <div class="row">
-          <div class="col-lg-12" style="margin-left: -12%;margin-top: -6%;">
+          <div class="col-lg-12" style="margin-left: -25%;margin-top: -6%;">
             <div class="card">
               <div class="card-toolbar clearfix">
                 <form class="pull-right search-bar" method="get" action="#!" role="form">
@@ -62,26 +62,32 @@
                   <table class="table table-hover">
                     <thead>
                       <tr>
-                        <th>派工单编号</th>
-					    <th>产品编号</th>
-					    <th>产品名称</th>
-					    <th>投产数量</th>
-						<th>合格数量</th>
-						<th>派工单状态</th>
-						<th>审核状态</th>
-						<th>生产状态</th>
+                        <th class="text-center">派工单编号</th>
+					    <th class="text-center">产品编号</th>
+					    <th class="text-center">产品名称</th>
+					    <th class="text-center">投产数量</th>
+						<th class="text-center">合格数量</th>
+						<th class="text-center">派工单状态</th>
+						<th class="text-center">审核状态</th>
+						<th class="text-center">生产状态</th>
                       </tr>
                     </thead>
                     <tbody>
-					<tr v-for="(sh,index) in list" :key="index">
+					<tr v-for="(sh,index) in list" :key="index" class="text-center">
 					    <td style="color:red;" @click="gosh(sh.pg_id,sh.product_id,sh.product_name,sh.amount,sh.pg_time,sh.jhdbh,sh.pg_ren)">{{sh.pg_id}}</td>
 					    <td>{{sh.product_id}}</td>
 					    <td>{{sh.product_name}}</td>
 						<td>{{sh.amount}}</td>
-						<td>生产中</td>
+						<td>
+						<span v-if="sh.hgsl>0">{{sh.hgsl}}</span>
+                        <span v-if="sh.hgsl==0">等待</span>
+						</td>
 						<td>执行</td>
 						<td>{{sh.check_tag}}</td>
-						<td>等待</td>
+						<td>
+						<span v-if="sh.pg_zt=='已生产'">已生产</span>
+                        <span v-if="sh.pg_zt=='未生产'">等待</span>
+						</td>
 					</tr>
 				</tbody>
 		
@@ -115,18 +121,18 @@
 						  <table class="table table-hover" >
 				                  <thead>
 				                     <tr>
-				                        <th>序号</th>
-				                        <th>工序名称</th>
-				                        <th>工序编号</th>
-				                        <th>工序描述</th>
-				                        <th>工时数(小时)</th>
-				                        <th>工时成本小计(元)</th>
-				                        <th>物料成本小计</th>
-				                        <th>查看物料</th>
+				                        <th class="text-center">序号</th>
+				                        <th class="text-center">工序名称</th>
+				                        <th class="text-center">工序编号</th>
+				                        <th class="text-center">工序描述</th>
+				                        <th class="text-center">工时数(小时)</th>
+				                        <th class="text-center">工时成本小计(元)</th>
+				                        <th class="text-center">物料成本小计</th>
+				                        <th class="text-center">查看物料</th>
 				                      </tr>
 				                    </thead>
 				                    <tbody>
-				                    <tr v-for="gx in gxlist">
+				                    <tr v-for="gx in gxlist" class="text-center">
 					                    <td>{{gx.id}}</td>
 				                        <td>{{gx.name}}</td>
 				                       	<td>{{gx.procedure_id}}</td>
@@ -181,26 +187,26 @@
 			           <table class="table table-hover" >
 	                    <thead>
 	                      <tr>
-	                        <th>序号</th>
-	                        <th>物料名称</th>
-	                        <th>物料编号</th>
-	                        <th>描述</th>
-	                        <th>本工序数量</th>
-	                        <th>单位</th>
-	                        <th>单价(元)</th>
-	                        <th>小计(元)</th>
+	                        <th class="text-center">序号</th>
+	                        <th class="text-center">物料名称</th>
+	                        <th class="text-center">物料编号</th>
+	                        <th class="text-center">描述</th>
+	                        <th class="text-center">本工序数量</th>
+	                        <th class="text-center">单位</th>
+	                        <th class="text-center">单价(元)</th>
+	                        <th class="text-center">小计(元)</th>
 	                      </tr>
 	                    </thead>
 	                    <tbody>
-	                      <tr v-for="wl in wllist">
-			            	<th>{{wl.id}}</th>
-	                        <th>{{wl.product_name}}</th>
-	                        <th>{{wl.product_id}}</th>
-	                        <th>{{wl.product_describe}}</th>
-	                        <th>{{wl.amount}}</th>
-	                        <th>{{wl.amount_unit}}</th>
-	                        <th>{{wl.cost_price}}</th>
-	                        <th>{{wl.subtotal}}</th>
+	                      <tr v-for="wl in wllist" class="text-center">
+			            	<td>{{wl.id}}</th>
+	                        <td>{{wl.product_name}}</th>
+	                        <td>{{wl.product_id}}</th>
+	                        <td>{{wl.product_describe}}</th>
+	                        <td>{{wl.amount}}</th>
+	                        <td>{{wl.amount_unit}}</th>
+	                        <td>{{wl.cost_price}}</th>
+	                        <td>{{wl.subtotal}}</th>
 	                      </tr>
 	                    </tbody>
 	                  </table>

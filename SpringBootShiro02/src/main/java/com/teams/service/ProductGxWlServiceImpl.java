@@ -84,6 +84,11 @@ public class ProductGxWlServiceImpl implements ProductGxWlService {
 		return mapper.productGxWlSh(design_module_tag);
 	}
 
+	@Override
+	public List<M_design_procedure> productGxWlSh2() {
+		return mapper.productGxWlSh2();
+	}
+
 	//修改产品工序表为已审核
 	@Override
 	public int updateGxWlSh(String design_id) {

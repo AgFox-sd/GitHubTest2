@@ -79,7 +79,7 @@
                         <td>{{diaodu.cost_price_sum}}</td>
                         <td>
                           <div class="btn-group">
-                            <button type="button"  id="sjbutton" class="btn btn-primary  btn-xs"  data-target=".bs-example-modal-lg" @click="Selidxx(diaodu.gather_id,diaodu.reason,diaodu.amount_sum,diaodu.cost_price_sum,diaodu.gathered_amount_sum)">入库调度</button>
+                            <button type="button"  id="sjbutton" class="btn btn-primary  btn-xs"  data-target=".bs-example-modal-lg" @click="Selidxx(diaodu.gather_id,diaodu.reason,diaodu.amount_sum,diaodu.cost_price_sum,diaodu.gathered_amount_sum,diaodu.zsdbh)">入库调度</button>
                           </div>
                         </td>
                       </tr>
@@ -300,7 +300,8 @@
 					gathered_amount_sum:0,
 					yrkzcb:0,
 					count1:'',
-					count2:''
+					count2:'',
+					zsdbh:''
 				},
 				mounted(){//初始化显示完成调用
 					this.Selad();
@@ -326,9 +327,10 @@
 							console.log("请求失败");
 						})
 						
-					},Selidxx(gather_id,reason,amount_sum,cost_price_sum,gathered_amount_sum){
+					},Selidxx(gather_id,reason,amount_sum,cost_price_sum,gathered_amount_sum,zsdbh){
    						 $("#box1").toggle();
 						 $("#box2").toggle();
+						 this.zsdbh=zsdbh;
 						 this.gather_id=gather_id;
 						 this.reason=reason
 						 this.cost_price_sum=cost_price_sum;
@@ -414,7 +416,7 @@
 					},tijiao2(){
 						this.gathered_amount_sum=this.gathered_amount_sum+(1*this.bcsl);
 						this.yrkzcb=this.yrkzcb+(this.bcsl*this.cost_price)
-						axios.get("updDiaodu?product_id="+this.product_id+"&gathered_amount="+this.bcsl+"&gather_id="+this.gather_id+"").then(res=>{
+						axios.get("updDiaodu?product_id="+this.product_id+"&gathered_amount="+this.bcsl+"&gather_id="+this.gather_id+"&zsdbh="+this.zsdbh+"").then(res=>{
 							if(res.data>0){
 								alert('调度成功！');
 								$("#box3").toggle();

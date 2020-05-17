@@ -85,7 +85,7 @@ public interface ProductSjMapper {
   	int delid(int id);
 	int upzjq(double jq,String product_id,String product_name);
   	//变更查询物料
-  	List<D_file> selwl();
+  	List<D_file> selwl(String design_id);
   //修改物料总金额
   	int updzje(double d,String spid,String spmc);
   //重新提交
@@ -93,4 +93,6 @@ public interface ProductSjMapper {
  // 物料明细单
  	void zjwl(String design_id, String product_id, String product_name, String amount_unit,
  			int amount, double residual_amount, double cost_price,double subtotal);
+
+	List<D_module> selD_moduleS();
 }

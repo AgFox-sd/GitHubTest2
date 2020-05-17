@@ -45,7 +45,7 @@
       <div class="container-fluid">
         
         <div class="row">
-          <div class="col-lg-12" style="margin-left: -12%;margin-top: 0.5%;">
+          <div class="col-lg-12" style="margin-left: -25%;margin-top: -6%;">
             <div class="card">
               <div class="card-toolbar clearfix">
                 <form class="pull-right search-bar" method="get" action="#!" role="form">
@@ -61,19 +61,19 @@
                   <table class="table table-hover">
                     <thead>
                       <tr>
-                        <th>生产计划编号</th>
-					    <th>登记人</th>
-						<th>登记时间</th>
-						<th>备注</th>
-						<th>审核</th>
+                        <th class="text-center">生产计划编号</th>
+					    <th class="text-center">登记人</th>
+						<th class="text-center">登记时间</th>
+						<th class="text-center">备注</th>
+						<th class="text-center">审核</th>
                       </tr>
                     </thead>
                     <tbody>
-					<tr v-for="(scjh,index) in scjhlist" :key="index">
+					<tr v-for="(scjh,index) in scjhlist" :key="index" class="text-center">
 					    <td>{{scjh.apply_id}}</td>
 					    <td>{{scjh.register}}</td>
 					    <td>{{scjh.register_time}}</td>
-						<td>{{scjh.remark}}</td>
+						<td>生产计划</td>
 						<td>
 						  <div class="btn-group">
                              <button type="button" class="btn btn-primary  btn-xs" data-toggle="modal" data-target="#modal1" @click="gosh(scjh.apply_id,scjh.register,scjh.register_time)">审核</button>
@@ -110,15 +110,15 @@
 					   <table class="table table-bordered" >
 	                    <thead>
 	                      <tr>
-	                        <th>序号</th>
-	                        <th>产品编号</th>
-	                        <th>产品名称</th>
-	                        <th>描述</th>
-	                        <th>数量</th>
+	                        <th class="text-center">序号</th>
+	                        <th class="text-center">产品编号</th>
+	                        <th class="text-center">产品名称</th>
+	                        <th class="text-center">描述</th>
+	                        <th class="text-center">数量</th>
 	                      </tr>
 	                    </thead>
 	                    <tbody>
-	                      <tr v-for="(scjhmx,index) in scjhmxlist" :key="index">
+	                      <tr v-for="(scjhmx,index) in scjhmxlist" :key="index" class="text-center">
 		                        <td>{{scjhmx.id}}</td>
                        			<td>{{scjhmx.product_id}}</td>
                         		<td>{{scjhmx.product_name}}</td>
@@ -236,8 +236,9 @@
 						 alert('请求失败')
 					 })
 				  }else{
-					  var url="Scjhshbtg?apply_id="+this.apply_id+"";
-					  axios.get(url).then(res=>{
+					  var check_tag="审核不通过";
+						 var param={apply_id:this.apply_id,checker:checker,check_suggestion:this.check_suggestion,check_tag:check_tag};
+						 axios.post('Scjhshtg',param).then(res=>{
 						  if(res.data>0){
 							  alert('审核不通过,请重新制定生产计划')
 							  this.load();

@@ -21,7 +21,7 @@
 <div class="lyear-layout-web">
   <div class="lyear-layout-container">
     <!--头部信息-->
-    <header class="lyear-layout-header"  style="margin-left: -14%;">
+    <header class="lyear-layout-header"  style="margin-left: -18%;">
       
       <nav class="navbar navbar-default">
         <div class="topbar">
@@ -46,7 +46,7 @@
       <div class="container-fluid">
         
         <div class="row">
-          <div class="col-lg-10" style="margin-left: -22%;margin-top: -4%;">
+          <div class="col-lg-10" style="margin-left: -25%;margin-top: -4%;">
             <div class="card">
               <div class="card-body">
                 <div class="table-responsive" id="box1">
@@ -78,13 +78,13 @@
               <table class="table table-hover" style="margin-left: 20px">
                     <thead>
                       <tr>
-                        <th>角色编号</th>
-                        <th>角色名称</th>
-                        <th class="cz">操作</th>
+                        <th class="text-center">角色编号</th>
+                        <th class="text-center">角色名称</th>
+                        <th class="text-center cz">操作</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="role in search()" :key="role.id">
+                      <tr v-for="role in search()" :key="role.id" class="text-center">
                         <td>{{role.id}}</td>
                         <td>{{role.name}}</td>
                         <td class="cz">

@@ -39,7 +39,7 @@
     <main class="lyear-layout-content">
       <div class="container-fluid">
         <div class="row">    
-          <div class="col-lg-10" style="margin-left: -20%;margin-top: 0.5%;">
+          <div class="col-lg-10" style="margin-left: -25%;margin-top: -1.5%;">
             <div class="card">
               <div class="card-toolbar clearfix">
                <form class="pull-right search-bar" method="get" action="#!" role="form">
@@ -65,7 +65,7 @@
        			   </div>
 		           <div class="form-group" style="margin-left: 100px;margin-top: 20px">
 						<label for="message-text" class="control-label" >入库人:</label>
-						<input type="hidden" id="rkr" th:value="${session.username}">
+						<input  id="rkr" th:value="${session.username}">
 						<label for="message-text" class="control-label" style="margin-left: 300px">入库理由:</label>
 						<select v-model="reason" style="width: 200px;height: 30px">
 					       <option value="库存初始" >库存初始</option>
@@ -78,17 +78,17 @@
 		           <table class="table table-bordered" >
 	                    <thead>
 	                      <tr>
-	                        <th>点选</th>
-	                        <th>产品名称</th>
-	                        <th>产品编号</th>
-	                        <th>描述</th>
-	                        <th>数量</th>
-	                        <th>单位</th>
-	                        <th>成本单价(元)</th>
+	                        <th class="text-center">点选</th>
+	                        <th class="text-center">产品名称</th>
+	                        <th class="text-center">产品编号</th>
+	                        <th class="text-center">描述</th>
+	                        <th class="text-center">数量</th>
+	                        <th class="text-center">单位</th>
+	                        <th class="text-center">成本单价(元)</th>
 	                      </tr>
 	                    </thead>
 	                    <tbody>
-	                      <tr v-for="(cpmx,index) in cpmxList" :key="index">
+	                      <tr v-for="(cpmx,index) in cpmxList" :key="index" class="text-center">
 			                    <td>
 		                          <label class="lyear-checkbox checkbox-primary">
 		                            <input type="checkbox" value="{{cpmx.product_id}}"  class="ld"><span  class="ld"></span>
@@ -127,16 +127,16 @@
 			           <table class="table table-bordered" >
 	                    <thead>
 	                      <tr>
-	                        <th>选择</th>
-	                        <th>产品编号</th>
-	                        <th>产品名称</th>
-	                        <th>用途类型</th>
-	                        <th>单位</th>
-	                        <th>单价(元)</th>
+	                        <th class="text-center">选择</th>
+	                        <th class="text-center">产品编号</th>
+	                        <th class="text-center">产品名称</th>
+	                        <th class="text-center">用途类型</th>
+	                        <th class="text-center">单位</th>
+	                        <th class="text-center">单价(元)</th>
 	                      </tr>
 	                    </thead>
 	                    <tbody>
-	                      <tr v-for="(cp,index) in cplist" :key="index">
+	                      <tr v-for="(cp,index) in cplist" :key="index" class="text-center">
 			                    <td>
 		                          <label class="lyear-checkbox checkbox-primary">
 		                            <input type="checkbox" value="{{cp.product_id}}"  class="xz"><span  class="xz"></span>

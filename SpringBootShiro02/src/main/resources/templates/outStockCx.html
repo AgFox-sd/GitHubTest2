@@ -49,7 +49,7 @@
       <div class="container-fluid">
         
         <div class="row">
-          <div class="col-lg-12" style="margin-left: -12%;margin-top: 0.5%;">
+          <div class="col-lg-12" style="margin-left: -25%;margin-top: -6%;">
             <div class="card">
               <div class="card-toolbar clearfix">
                 <form class="pull-right search-bar" method="get" action="#!" role="form">
@@ -65,15 +65,15 @@
                   <table class="table table-hover">
                     <thead>
                       <tr>
-                        <th>申请单编号</th>
-					    <th>出库理由</th>
-						<th>登记时间</th>
-						<th>总件数</th>
-						<th>审核状态</th>
+                        <th class="text-center">申请单编号</th>
+					    <th class="text-center">出库理由</th>
+						<th class="text-center">登记时间</th>
+						<th class="text-center">总件数</th>
+						<th class="text-center">审核状态</th>
                       </tr>
                     </thead>
                     <tbody>
-					<tr v-for="(cksq,index) in Cksqdlist" :key="index">
+					<tr v-for="(cksq,index) in Cksqdlist" :key="index" class="text-center">
 					    <td>
 					       <a style="cursor: pointer;" data-toggle="modal" data-target="#modal1" @click="Getcx(cksq.pay_id,cksq.check_tag,cksq.storer,cksq.reason,cksq.amount_sum,cksq.cost_price_sum,cksq.register,cksq.register_time,cksq.checker,cksq.check_time,cksq.remark)">{{cksq.pay_id}}</a>
 					    </td>
@@ -113,18 +113,18 @@
 					   <table class="table table-bordered" >
 	                    <thead>
 	                      <tr>
-	                        <th>序号</th>
-	                        <th>产品编号</th>
-	                        <th>产品名称</th>
-	                        <th>描述</th>
-	                        <th>数量</th>
-	                        <th>单位</th>
-	                        <th>单价(元)</th>
-	                        <th>单位(元)</th>
+	                        <th class="text-center">序号</th>
+	                        <th class="text-center">产品编号</th>
+	                        <th class="text-center">产品名称</th>
+	                        <th class="text-center">描述</th>
+	                        <th class="text-center">数量</th>
+	                        <th class="text-center">单位</th>
+	                        <th class="text-center">单价(元)</th>
+	                        <th class="text-center">单位(元)</th>
 	                      </tr>
 	                    </thead>
 	                    <tbody>
-	                      <tr v-for="(cksqmx,index) in Cksqdmxlist" :key="index">
+	                      <tr v-for="(cksqmx,index) in Cksqdmxlist" :key="index" class="text-center">
 	                            <td>{{cksqmx.id}}</td>
                        			<td>{{cksqmx.product_name}}</td>
                         		<td>{{cksqmx.pay_id}}</td>

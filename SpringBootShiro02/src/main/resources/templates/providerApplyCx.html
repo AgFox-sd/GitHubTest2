@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>采购管理 - 供应商申请审批管理 - 申请审核</title>
+<link rel="icon" href="favicon.ico" type="image/ico">
+<meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
+<meta name="description"
+	content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="author" content="yinqi">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/materialdesignicons.min.css" rel="stylesheet">
+<link href="css/style.min.css" rel="stylesheet">
+<script type="text/javascript" src="js/axios.min.js"></script>
+<script type="text/javascript" src="js/vue-2.4.0.js"></script>
+</head>
+
+<body>
+	<div id="app">
+		<div class="lyear-layout-web">
+			<div class="lyear-layout-container">
+
+				<header class="lyear-layout-header" style="margin-left: -18%;">
+
+					<nav class="navbar navbar-default">
+						<div class="topbar">
+
+							<div class="topbar-left">
+								<div class="lyear-aside-toggler">
+									<span class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span>
+								</div>
+								<span class="navbar-page-title">采购管理 - 供应商申请审批管理 - 申请审核</span> 
+							</div>
+						</div>
+					</nav>
+
+				</header>
+				<!--页面主要内容-->
+				<main class="lyear-layout-content">
+
+				<div class="container-fluid">
+
+					<div class="row">
+						<div class="col-lg-12" style="margin-left: -25%; margin-top: -6%;">
+							<div class="card">
+								<div class="card-toolbar clearfix">
+									<form class="pull-right search-bar" method="get" action="#!"
+										role="form">
+										<div class="input-group">
+											<div class="input-group-btn">
+												<input type="hidden" name="search_field" id="search-field"
+													value="title">
+											</div>
+										</div>
+									</form>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="table table-hover">
+											<thead>
+												<tr>
+													<th class="text-center">申请编号</th>
+													<th class="text-center">供应商名称</th>
+													<th class="text-center">审核状态</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr v-for="v in list" class="text-center">
+													<td style="color: red" data-toggle="modal"
+														data-target="#modal1"
+														@click="xq(v.providerSqId,v.providerName,v.check_tag,v.providerId,v.register,v.register_time,v.providerPhone,v.supply_time)">{{v.providerSqId}}</td>
+													<td>{{v.providerName}}</td>
+													<td>{{v.check_tag}}</td>
+												</tr>
+											</tbody>
+
+										</table>
+									</div>
+
+									<!-- 审核模态框开始 -->
+									<div class="modal fade bs-example-modal-lg" tabindex="-1"
+										role="dialog" aria-labelledby="myLargeModalLabel" id="modal1">
+										<div class="modal-dialog modal-lg" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal"
+														aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button>
+													<h4 style="margin-left: 360px" class="modal-title"
+														id="myLargeModalLabel">
+														供应商报价单
+													</h4>
+													 <span >
+															报价单编号:<a style="color:red">{{providerSqId}}</a>其中审核状态:<a style="color:blue">{{check_tag}}</a>
+														</span>
+												</div>
+												<div class="modal-body">
+													<form action="#" method="post">
+														<div class="form-group">
+															<div>
+																<label for="message-text" class="control-label"
+																	style="margin-left: 70px">供应商名称:</label> <span>{{providerName}}</span>
+																<label for="message-text" class="control-label"
+																	style="margin-left: 200px">供应商编号:</label> <span
+																	id="sjdh">{{providerId}}</span>
+															</div>
+														</div>
+														<div class="form-group">
+															<div>
+																<label for="message-text" class="control-label"
+																	style="margin-left: 70px">供应商电话:</label> <span
+																	id="sjdh">{{providerPhone}}</span> <label
+																	for="message-text" class="control-label"
+																	style="margin-left: 150px">供应时间:</label> <span>{{supply_time}}</span>
+															</div>
+														</div>
+														<div class="form-group">
+															<table class="table table-bordered">
+																<thead>
+																	<tr>
+																		<th class="text-center">序号</th>
+																		<th class="text-center">商品编号</th>
+																		<th class="text-center">商品名称</th>
+																		<th class="text-center">数量</th>
+																		<th class="text-center">单位</th>
+																		<th class="text-center">单价</th>
+																		<th class="text-center">小计(元)</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr v-for="v in slist" class="text-center">
+																		<td>{{v.id}}</td>
+																		<td>{{v.product_id}}</td>
+																		<td>{{v.product_name}}</td>
+																		<td>{{v.amount}}</td>
+																		<td>{{v.unit}}</td>
+																		<td>{{v.price}}</td>
+																		<td>{{v.subtotal}}</td>
+																	</tr>
+																</tbody>
+															</table>
+
+														</div>
+                                                        <div class="form-group">
+															<div>
+																<label for="message-text" class="control-label"
+																	style="margin-left: 70px">登记人:</label> <span
+																	id="sjdh">{{register}}</span> <label
+																	for="message-text" class="control-label"
+																	style="margin-left: 300px">登记时间:</label> <span>{{register_time}}</span>
+															</div>
+														</div>
+													</form>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-default"
+														data-dismiss="modal">确定</button>
+													
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 审核模态框结束 -->
+
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+				</main>
+				<!--End 页面主要内容-->
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+	<script type="text/javascript" src="js/main.min.js"></script>
+
+	<script>
+      var vm=new Vue({
+    	  el:'#app',
+    	  data:{
+    		  list:[],  
+    		  slist:[], 
+    		  ddshsum:'', 
+    		  providerSqId:'',  
+    		  providerId:'',  
+    		  providerName:'', 
+    		  providerPhone:'', 
+    		  register_time:'',
+    		  register:'',
+    		  check_tag:'',
+    		  supply_time:''
+    	  },
+    	  mounted(){//页面挂载完成调用查询全部的方法
+				this.selAll();
+		  },
+		  methods:{
+			  selAll(){
+				  axios.get("seldjsy").then(res=>{
+					this.list=res.data;
+				  }).catch(err=>{
+						alert('请求失败')
+				  })
+			  },
+			  xq(providerSqId,providerName,check_tag,providerId,register,register_time,providerPhone,supply_time){
+				  this.providerSqId=providerSqId;
+				  this.providerId=providerId;
+				  this.providerName=providerName;
+				  this.providerPhone=providerPhone;
+				  this.register_time=register_time;
+				  this.register=register;
+				  this.check_tag=check_tag;
+				  this.supply_time=supply_time;
+				  var url="selshxq?providerSqId="+this.providerSqId+"";
+				  axios.get(url).then(res=>{
+						this.slist=res.data;
+					  }).catch(err=>{
+							alert('请求失败')
+					  })
+			  }
+    	  }
+      }) 
+   </script>
+</body>
+</html>

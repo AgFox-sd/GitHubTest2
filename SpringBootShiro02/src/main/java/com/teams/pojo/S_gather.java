@@ -21,13 +21,15 @@ public class S_gather {
 	 private String attemper; //调度人
 	 private String attemper_time; //调度时间
 	 private String store_tag; //库存标志：K002-1: 已登记，K002-2: 已调度
+	 
+	 private String zsdbh;
 	public S_gather() {
 		super();
 	}
 	public S_gather(int id, String gather_id, String storer, String reason, String reasonexact, double amount_sum,
 			double cost_price_sum, double gathered_amount_sum, String remark, String register, String register_time,
 			String checker, String check_time, String check_tag, String attemper, String attemper_time,
-			String store_tag) {
+			String store_tag,String zsdbh) {
 		super();
 		this.id = id;
 		this.gather_id = gather_id;
@@ -46,6 +48,7 @@ public class S_gather {
 		this.attemper = attemper;
 		this.attemper_time = attemper_time;
 		this.store_tag = store_tag;
+		this.zsdbh = zsdbh;
 	}
 	public int getId() {
 		return id;
@@ -149,8 +152,11 @@ public class S_gather {
 	public void setStore_tag(String store_tag) {
 		this.store_tag = store_tag;
 	}
-	
-	 
-	 
+	public String getZsdbh() {
+		return zsdbh;
+	}
+	public void setZsdbh(String zsdbh) {
+		this.zsdbh = zsdbh;
+	}
 	
 }

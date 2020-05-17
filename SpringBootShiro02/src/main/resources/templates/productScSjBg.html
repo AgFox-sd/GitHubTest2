@@ -20,7 +20,7 @@
 <div class="lyear-layout-web">
   <div class="lyear-layout-container">
    
-    <header class="lyear-layout-header" style="margin-left: -20%;">
+    <header class="lyear-layout-header" style="margin-left: -18%;">
       
       <nav class="navbar navbar-default">
         <div class="topbar">
@@ -41,7 +41,7 @@
     <main class="lyear-layout-content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-lg-10" style="margin-left: -29%;margin-top: -6%;">
+          <div class="col-lg-12" style="margin-left: -25%;margin-top: -6%;">
             <div class="card">
               <div class="card-toolbar clearfix">
                <form class="pull-right search-bar" method="get" action="#!" role="form">
@@ -58,23 +58,25 @@
                    <table class="table table-hover">
                     <thead>
                       <tr>
-                        <th>设计单编号</th>
-					    <th>产品编号</th>
-					    <th>产品名称</th>
-					    <th>设计人</th>
-						<th>登记时间</th>
-						<th>工时总成本</th>
-						<th>查看详情</th>
+                        <th class="text-center">设计单编号</th>
+					    <th class="text-center">产品编号</th>
+					    <th class="text-center">产品名称</th>
+					    <th class="text-center">设计人</th>
+						<th class="text-center">登记时间</th>
+						<th class="text-center">工时总成本</th>
+						<th class="text-center">审核状态</th>
+						<th class="text-center">查看详情</th>
                       </tr>
                     </thead>
                     <tbody>
-					<tr v-for="(wuzc,index) in list" :key="index">
+					<tr v-for="(wuzc,index) in list" :key="index" class="text-center">
 					    <td>{{wuzc.design_id}}</td>
 					    <td>{{wuzc.product_id}}</td>
 					    <td>{{wuzc.product_name}}</td>
 						<td>{{wuzc.designer}}</td>
 						<td>{{wuzc.register_time}}</td>
 						<td>{{wuzc.cost_price_sum | moneyFormat(2,'$')}}</td>
+						<td>{{wuzc.check_tag}}</td>
 						<td>
 						 <div class="btn-group">
                              <button type="button"  id="sjbutton" class="btn btn-primary  btn-xs"  data-target=".bs-example-modal-lg"
@@ -116,17 +118,16 @@
 		           <table class="table table-hover" >
                     <thead>
                       <tr>
-                        <th>工序编号</th>
-                        <th>工序名称</th>
-                        <th>工时</th>
-                        <th>单位</th>
-                        <th>工时成本</th>
-
-                        <th>小计</th>
+                        <th class="text-center">工序编号</th>
+                        <th class="text-center">工序名称</th>
+                        <th class="text-center">工时</th>
+                        <th class="text-center">单位</th>
+                        <th class="text-center">工时成本</th>
+                        <th class="text-center">小计</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="wl in wlmxList">
+                      <tr v-for="wl in wlmxList" class="text-center">
                        <td>{{wl.bh}}</td>
                         <td>{{wl.mc}}</td>
                        	<td>{{wl.lx}}</td>
@@ -152,17 +153,17 @@
 			           <table class="table table-bordered" >
 	                    <thead>
 	                      <tr>
-	                        <th>选择</th>
-	                        <th>工序编号</th>
-	                        <th>工序名称</th>
-	                        <th>工时</th>
-	                        <th>工时单位</th>
-	                        <th>工时成本</th>	                        
-	                        <th>计划成本</th>
+	                        <th class="text-center">选择</th>
+	                        <th class="text-center">工序编号</th>
+	                        <th class="text-center">工序名称</th>
+	                        <th class="text-center">工时</th>
+	                        <th class="text-center">工时单位</th>
+	                        <th class="text-center">工时成本</th>	                        
+	                        <th class="text-center">计划成本</th>
 	                      </tr>
 	                    </thead>
 	                    <tbody>
-	                      <tr v-for="(wl,index) in wllist" :key="index">
+	                      <tr v-for="(wl,index) in wllist" :key="index" class="text-center">
 			                    <td>
 		                          <label class="lyear-checkbox checkbox-primary">
 		                            <input type="checkbox" value="{{wl.id}}"  class="xz" @click="fz()"><span  class="xz"></span>
@@ -240,7 +241,7 @@
 				methods:{
 					Selad(){
 						//发送异步请求，请求后端控制器，获取所有的品牌信息
-						axios.get('selectcpgxs').then(res=>{
+						axios.get('selectcpgxss').then(res=>{
 							this.list=res.data;
 				  }).catch(err=>{
 						alert('请求失败')
@@ -290,7 +291,6 @@
 						var djr=$("#djr").text()
                          //alert(product_id)//产品编号
                          //alert(product_name)//产品名称
-                         alert(sjdh)//设计单编号
                          //alert(sjr)//设计人
                          //alert(djr)//登记人
                          
@@ -305,7 +305,7 @@
 						$("#box1").toggle();
 						$("#box2").toggle();
 						this.Selad();
-						alert('设计完成');
+						alert('变更完成');
 					},
 					fz(){
 						$(".xz:checked").each(function(){

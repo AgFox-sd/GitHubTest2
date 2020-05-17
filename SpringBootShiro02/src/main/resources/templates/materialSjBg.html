@@ -22,7 +22,7 @@
 		<div class="lyear-layout-web">
 			<div class="lyear-layout-container">
 
-				<header class="lyear-layout-header" style="margin-left: -15%;">
+				<header class="lyear-layout-header" style="margin-left: -18%;">
 
 					<nav class="navbar navbar-default">
 						<div class="topbar">
@@ -43,7 +43,7 @@
 				<main class="lyear-layout-content">
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-lg-10" style="margin-left: -22%; margin-top: -6%;">
+						<div class="col-lg-10" style="margin-left: -25%; margin-top: -6%;">
 							<div class="card">
 								<div class="card-toolbar clearfix">
 									<form class="pull-right search-bar" method="get" action="#!"
@@ -62,17 +62,17 @@
 											<table class="table table-hover">
 												<thead>
 													<tr>
-														<th>设计单编号</th>
-														<th>产品编号</th>
-														<th>产品名称</th>
-														<th>设计人</th>
-														<th>登记时间</th>
-														<th>物料总成本</th>
-														<th>变更</th>
+														<th class="text-center">设计单编号</th>
+														<th class="text-center">产品编号</th>
+														<th class="text-center">产品名称</th>
+														<th class="text-center">设计人</th>
+														<th class="text-center">登记时间</th>
+														<th class="text-center">物料总成本</th>
+														<th class="text-center">变更</th>
 													</tr>
 												</thead>
 												<tbody>
-													<tr v-for="v in list" :key="index">
+													<tr v-for="v in list" :key="index" class="text-center">
 														<td>{{v.design_id}}</td>
 														<td>{{v.product_id}}</td>
 														<td>{{v.product_name}}</td>
@@ -100,7 +100,7 @@
 												data-toggle="modal" data-target=".bs-example-modal-lg">添加物料</a>
 										</div>
 										<div>
-											<p style="margin-left: 390px">物料组成设计</p>
+											<p style="margin-left: 390px;font-size: 25px;">物料组成设计</p>
 											<label for="message-text" class="control-label"
 												style="margin-left: 200px">设计单编号:</label> <span id="sjdh">{{design_id}}</span>
 											<label for="message-text" class="control-label">设计人:</label>
@@ -116,18 +116,18 @@
 											<table class="table table-hover">
 												<thead>
 													<tr>
-														<th>序号</th>
-														<th>物料编号</th>
-														<th>物料名称</th>
-														<th>数量</th>
-														<th>单位</th>
-														<th>单价</th>
-														<th>小计</th>
-														<th>操作</th>
+														<th class="text-center">序号</th>
+														<th class="text-center">物料编号</th>
+														<th class="text-center">物料名称</th>
+														<th class="text-center">数量</th>
+														<th class="text-center">单位</th>
+														<th class="text-center">单价</th>
+														<th class="text-center">小计</th>
+														<th class="text-center">操作</th>
 													</tr>
 												</thead>
 												<tbody>
-													<tr v-for="wl in cus">
+													<tr v-for="wl in cus" class="text-center">
 														<td>{{wl.id}}</td>
 														<td>{{wl.product_id}}</td>
 														<td>{{wl.product_name}}</td>
@@ -168,18 +168,18 @@
 																<table class="table table-bordered">
 																	<thead>
 																		<tr>
-																			<th>选择</th>
-																			<th>物料编号</th>
-																			<th>物料名称</th>
-																			<th>用途类型</th>
-																			<th>产品档次</th>
-																			<th>数量</th>
-																			<th>单位</th>
-																			<th>计划成本单价</th>
+																			<th class="text-center">选择</th>
+																			<th class="text-center">物料编号</th>
+																			<th class="text-center">物料名称</th>
+																			<th class="text-center">用途类型</th>
+																			<th class="text-center">产品档次</th>
+																			<th class="text-center">数量</th>
+																			<th class="text-center">单位</th>
+																			<th class="text-center">计划成本单价</th>
 																		</tr>
 																	</thead>
 																	<tbody>
-																		<tr v-for="(wl,index) in wllist" :key="index">
+																		<tr v-for="(wl,index) in wllist" :key="index" class="text-center">
 																			<td><label
 																				class="lyear-checkbox checkbox-primary"> <input
 																					type="checkbox" value="{{wl.product_id}}"
@@ -251,7 +251,7 @@
 					designer:'',
 					cost_price_sum:'',
 					register_time:'',
-					check_tag:'等待审核',
+					check_tag:'变更等待审核',
 					change_tag:'已变更'
 					
 				},
@@ -261,7 +261,7 @@
 				methods:{
 					Selad(){
 						//发送异步请求，请求后端控制器，获取所有的品牌信息
-						axios.get('selD_module').then(res=>{
+						axios.get('selD_moduleS').then(res=>{
 							this.list=res.data;
 				  }).catch(err=>{
 						alert('请求失败')
@@ -280,7 +280,7 @@
 						 this.designer=designer;
 					},
 					Selad2(){//查询物料信息
-						axios.post("selwl").then(res=>{
+						axios.get("selwl?design_id="+this.design_id+"").then(res=>{
 							this.wllist=res.data;
 						}).catch(err=>{
 							console.log("请求失败");
@@ -297,6 +297,7 @@
 						this.Selad();
 						var url="upgwsh?check_tag="+this.check_tag+"&change_tag="+this.change_tag+"&product_id="+this.product_id+"&product_name="+this.product_name+"";
 						axios.get(url).then(res=>{
+							alert("变更成功！");
 							this.list=res.data;
 							this.Selad();
 						    }).catch(err=>{
@@ -339,9 +340,9 @@
 							   "&spid="+this.product_id+"&spmc="+this.product_name+"";
 					    axios.get(url).then(res=>{
 					    	if(res.data>0){
+						    	alert('成功');
 								 this.Selad3();
 					    	}
-					    	alert('成功');
 					    }).catch(err=>{
 							alert('请求失败')
 						})

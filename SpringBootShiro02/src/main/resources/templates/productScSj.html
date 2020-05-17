@@ -20,7 +20,7 @@
 <div class="lyear-layout-web">
   <div class="lyear-layout-container">
    
-    <header class="lyear-layout-header" style="margin-left: -16%;">
+    <header class="lyear-layout-header" style="margin-left: -18%;">
       
       <nav class="navbar navbar-default">
         <div class="topbar">
@@ -41,7 +41,7 @@
     <main class="lyear-layout-content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-lg-10" style="margin-left: -22%;margin-top: -6%;">
+          <div class="col-lg-10" style="margin-left: -25%;margin-top: -6%;">
             <div class="card">
               <div class="card-toolbar clearfix">
                <form class="pull-right search-bar" method="get" action="#!" role="form">
@@ -58,17 +58,17 @@
                   <table class="table table-hover">
                     <thead>
                       <tr>
-                        <th>产品编号</th>
-                        <th>产品名称</th>
-                        <th>供应商</th>
-                        <th>用途类型</th>
-                        <th>单位</th>
-                        <th>产品档次</th>
-                        <th>制定设计单</th>
+                        <th class="text-center">产品编号</th>
+                        <th class="text-center">产品名称</th>
+                        <th class="text-center">供应商</th>
+                        <th class="text-center">用途类型</th>
+                        <th class="text-center">单位</th>
+                        <th class="text-center">产品档次</th>
+                        <th class="text-center">制定设计单</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="mod in list" >
+                      <tr v-for="mod in list" class="text-center">
                         <td>{{mod.product_id}}</td>
                         <td>{{mod.product_name}}</td>
                        	<td>{{mod.factory_name}}</td>
@@ -89,9 +89,9 @@
         </div>
         <div class="btn-group" id="box2" style="display:none">
        			    <div>
-          				<p style="margin-left: 390px">产品生产工序设计单</p>
+          				<p style="margin-left: 390px;font-size: 25px;">产品生产工序设计单</p>
           				<label for="message-text" class="control-label" style="margin-left:200px">设计单编号:</label>
-					    <span id="sjdh" th:text="${#httpServletRequest.getAttribute('sjdh')}"></span>
+					    <span>{{sjdh}}</span>
           	 			<a type="button" class="btn btn-pink  btn-xs" @click="Selad2()" style="margin-left:700px"  data-toggle="modal" data-target=".bs-example-modal-lg">添加工序</a>
        				</div>
           		 	<div class="form-group" style="margin-left: 200px">
@@ -114,17 +114,16 @@
 		           <table class="table table-hover" >
                     <thead>
                       <tr>
-                        <th>工序编号</th>
-                        <th>工序名称</th>
-                        <th>工时</th>
-                        <th>单位</th>
-                        <th>工时成本</th>
-
-                        <th>小计</th>
+                        <th class="text-center">工序编号</th>
+                        <th class="text-center">工序名称</th>
+                        <th class="text-center">工时</th>
+                        <th class="text-center">单位</th>
+                        <th class="text-center">工时成本</th>
+                        <th class="text-center">小计</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="wl in wlmxList">
+                      <tr v-for="wl in wlmxList" class="text-center">
                        <td>{{wl.bh}}</td>
                         <td>{{wl.mc}}</td>
                        	<td>{{wl.lx}}</td>
@@ -135,7 +134,8 @@
                     </tbody>
                   </table>
                   </div>
-                 <button class="btn btn-w-xs btn-primary" style="margin-left: 700px" @click="QueRen()">确认</button>
+                 <button class="btn btn-w-xs btn-primary" style="margin-left: 600px" @click="QueRen()">确认</button>
+                 <button class="btn btn-w-xs btn-pink" style="margin-left: 700px;margin-top: -37px;" @click="fanhui()">返回</button>
                 <!-- 模态框开始 -->
                   <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
                   <div class="modal-dialog modal-lg" role="document">
@@ -150,17 +150,17 @@
 			           <table class="table table-bordered" >
 	                    <thead>
 	                      <tr>
-	                        <th>选择</th>
-	                        <th>工序编号</th>
-	                        <th>工序名称</th>
-	                        <th>工时</th>
-	                        <th>工时单位</th>
-	                        <th>工时成本</th>	                        
-	                        <th>计划成本</th>
+	                        <th class="text-center">选择</th>
+	                        <th class="text-center">工序编号</th>
+	                        <th class="text-center">工序名称</th>
+	                        <th class="text-center">工时</th>
+	                        <th class="text-center">工时单位</th>
+	                        <th class="text-center">工时成本</th>	                        
+	                        <th class="text-center">计划成本</th>
 	                      </tr>
 	                    </thead>
 	                    <tbody>
-	                      <tr v-for="(wl,index) in wllist" :key="index">
+	                      <tr v-for="(wl,index) in wllist" :key="index" class="text-center">
 			                    <td>
 		                          <label class="lyear-checkbox checkbox-primary">
 		                            <input type="checkbox" value="{{wl.id}}"  class="xz" @click="fz()"><span  class="xz"></span>
@@ -229,7 +229,8 @@
 				    four:'',
 				    five:'',
 				    six:'',
-					product_id:''
+					product_id:'',
+					sjdh:''
 				},
 				mounted(){//初始化显示完成调用
 					this.Selad();
@@ -242,7 +243,13 @@
 						}).catch(err=>{
 							console.log("请求失败");
 						})
-						
+						var myDate =new Date();
+					    var a=myDate.getFullYear()+"0"+(myDate.getMonth()+1)+""+myDate.getDate();
+						var time="";
+						for(var i=0;i<6;i++){
+							time+=Math.floor(Math.random()*10)
+						}
+						this.sjdh="201"+a+time;  //生成流水号结束
 					},Selidxx(product_id,product_name){
 						 $("#box1").toggle();
 						 $("#box2").toggle();
@@ -276,12 +283,10 @@
 						});
 						 $.each(dw, function(i,val){        
 							// alert(val)
-						  });
-						 
-						 
+						  });		 
 						var product_id=this.product_id;
 						var product_name=this.product_name;
-						var sjdh = $("#sjdh").text();
+						var sjdh = this.sjdh;
 						var sjr  = $("#sjr").text();
 						var djr=$("#djr").text()
                          //alert(product_id)//产品编号
@@ -309,6 +314,9 @@
 						$(this).parent().parent().next().next().next().next().next().next().children().val(a*b); 
 						})
 					
+					},fanhui(){
+						$("#box1").toggle();
+						$("#box2").toggle();
 					}
 			}
 				

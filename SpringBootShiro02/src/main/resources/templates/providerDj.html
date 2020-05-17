@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>供应商档案登记</title>
+<link rel="icon" href="favicon.ico" type="image/ico">
+<meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
+<meta name="description"
+	content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="author" content="yinqi">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/materialdesignicons.min.css" rel="stylesheet">
+<link href="css/style.min.css" rel="stylesheet">
+<script type="text/javascript" src="js/axios.min.js"></script>
+<script type="text/javascript" src="js/vue-2.4.0.js"></script>
+<script src="js/qs.min.js"></script>
+</head>
+
+<body>
+<div id="app">
+<div class="lyear-layout-web">
+  <div class="lyear-layout-container">
+    <!--头部信息-->
+    <header class="lyear-layout-header" style="margin-left: -18%;">
+      
+      <nav class="navbar navbar-default">
+        <div class="topbar">
+          
+          <div class="topbar-left">
+            <div class="lyear-aside-toggler">
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+            </div>
+            <span class="navbar-page-title"> 采购管理 -供应商档案管理-供应商档案登记</span>
+          </div>
+          
+        </div>
+      </nav>
+      
+    </header>
+    <!--End 头部信息-->
+    
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      
+      <div class="container-fluid">
+        
+        <div class="row">
+          <div class="col-lg-12" style="margin-left: -25%; margin-top: -3%;">
+            <div class="card">
+              <div class="card-body">
+                
+                  <div class="form-group col-md-12">
+                    <h2 style="margin-left: 400px">供应商档案登记</h2>
+                  </div>
+                <div class="row">
+                  <div class="form-group col-md-1 "></div>
+                  <div class="form-group col-md-5">
+                    <label for="type"><span style="color: red">*</span>供应商名字：</label>
+                    <input type="text" class="form-control" name="providerName" v-model="providerName" placeholder="请输入供应商名字" />
+                  </div>
+                  <div class="form-group col-md-1 "></div>
+                  <div class="form-group col-md-5 ">
+                    <label for="title"><span style="color: red">*</span>电话：</label>
+                    <input type="text" class="form-control"  name="providerPhone" v-model="providerPhone" placeholder="请输入电话" />
+                  </div>
+                </div>
+                
+                
+                <div class="row">
+                  <div class="form-group col-md-1 "></div>
+                 <div class="form-group col-md-5">
+                    <label for="type"><span style="color: red">*</span>产品类型:</label>
+                    <div class="form-controls">
+                      <select name="type" class="form-control" v-model="fid">
+                        <option value="">请选择</option>
+						<option :value="i.fid" v-for="i in listfenlei" :key="i.fid">{{i.fname}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-1 "></div>
+                  <div class="form-group col-md-5 ">
+                    <label for="title"><span style="color: red">*</span>供应商地址：</label>
+                    <input type="text" class="form-control"  name="providerAddress" v-model="providerAddress" placeholder="请输入地址" />
+                  </div>
+                </div>
+                <div class="row">
+                 <div class="form-group col-md-1 "></div>
+                 <div class="form-group col-md-5 ">
+                    <label for="title"><span style="color: red">*</span>联系人：</label>
+                    <input type="text" class="form-control"  name="linkman" v-model="linkman" placeholder="请输入联系人" />
+                  </div>
+                  <div class="form-group col-md-1 "></div>
+                  <div class="form-group col-md-5 ">
+                    <label for="title"><span style="color: red">*</span>登记人：</label>
+                    <input type="text" class="form-control"  th:value="${session.username}" id="djr" />
+                  </div>
+                </div>
+                <div class="row">
+                 <div class="form-group col-md-6 " style="margin-top: 50px"></div>
+                  <div class="form-group col-md-6">
+                    <button class="btn btn-primary" @click="Add()">登 记</button>
+                  </div>
+                </div>
+       
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+      
+    </main>
+    <!--End 页面主要内容-->
+  </div>
+</div>
+</div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+<script>
+			var vm=new Vue({
+				el:'#app',
+				data:{
+					listfenlei:[],
+					providerName:'',
+					providerAddress:'',
+					linkman:'',
+					providerPhone:'',
+					register:'',
+					fid:''
+				},
+				mounted(){//初始化显示完成调用
+					this.getAllfenfei();
+				},
+				methods:{
+					getAllfenfei(){
+						//查询所有分类
+						axios.get("selectfeilei").then(res=>{
+							this.listfenlei=res.data
+						}).catch(err=>{
+							console.log("请求失败")
+						})
+					},
+					Add(){
+						//（格式：050100+当前年月日+6位随机数）
+						var myDate =new Date();
+					    var a=myDate.getFullYear()+"0"+(myDate.getMonth()+1)+""+myDate.getDate();
+						var time="";
+						for(var i=0;i<6;i++){
+							time+=Math.floor(Math.random()*10)
+						}
+						var providerId="0501"+a+time;  //生成流水号结束
+						var name={providerName:this.providerName}
+						//判断
+						if(this.providerName==""){
+							alert("供应商名字不能为空！")
+						}else if(this.providerAddress==""){
+							alert("供应商地址不能为空！")
+						}else if(this.linkman==""){
+							alert("联系人不能为空！")
+						}else if(this.providerPhone==""){
+							alert("供应商电话不能为空！")
+						}else if($("#djr").val()==""){
+							alert("登记人不能为空！")
+						}else if(this.fid==""){
+							alert("产品类型不能为空！")
+						}else{//查名字是否重复
+							axios.post("selectgysname",name).then(res=>{
+								if(res.data>0){
+									alert("供应商名称不能重复！");									
+								}else{//增加供应商	
+									alert("增加成功！");
+									var gys='addGYS?providerId='+providerId+'&providerName='+this.providerName+'&providerPhone='+this.providerPhone+'&fid='+this.fid+'&providerAddress='+this.providerAddress+'&linkman='+this.linkman+'&register='+$("#djr").val()+''
+									axios.get(gys).then(res=>{
+										this.providerName=this.providerAddress=this.linkman
+										=this.providerPhone=this.fid='';
+									}).catch(err=>{   
+										alert("操作失败")
+									});
+								}
+							}).catch(err=>{   
+								alert("操作失败")
+							}) 		
+							
+						}	
+					}
+
+			}
+				
+			});
+			
+		</script>
+</body>
+</html>

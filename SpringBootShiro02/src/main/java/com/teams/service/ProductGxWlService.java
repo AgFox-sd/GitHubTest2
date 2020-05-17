@@ -69,4 +69,6 @@ public interface ProductGxWlService {
 
 	int upddmd(int ky, String product_id, String design_id);
 
+	List<M_design_procedure> productGxWlSh2();
+
 }

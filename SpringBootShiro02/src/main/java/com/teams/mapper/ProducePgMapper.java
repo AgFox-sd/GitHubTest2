@@ -32,7 +32,7 @@ public interface ProducePgMapper {
 	int delPgd(String pg_id);
 	
 	//生产派工单查询
-	List<m_pg> SelectPG2(String check_tag);
+	List<m_pg> SelectPG2();
 	
 	//查询符合条件的生产派工单总数
 	int SelSum2(String check_tag);

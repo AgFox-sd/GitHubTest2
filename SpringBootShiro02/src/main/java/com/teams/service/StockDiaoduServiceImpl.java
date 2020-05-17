@@ -256,4 +256,14 @@ public class StockDiaoduServiceImpl implements StockDiaoduService {
 		return mapper.selectAllinStock();
 	}
 
+	@Override
+	public void updpg(String pg_id) {
+		mapper.updpg(pg_id);
+	}
+
+	@Override
+	public void updzsd(String zsdbh) {
+		mapper.updzsd(zsdbh);
+	}
+
 }
