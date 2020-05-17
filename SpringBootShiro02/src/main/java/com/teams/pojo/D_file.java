@@ -42,6 +42,7 @@ public class D_file{
 		  private String fname; //产品分类名称
 		  private String tname;//产品类型名称
 		  private String pname;//产品档次名称
+		  
 		public D_file() {
 			super();
 		}
@@ -338,4 +339,5 @@ public class D_file{
 					+ ", design_cell_tag=" + design_cell_tag + ", fname=" + fname + ", tname=" + tname + ", pname="
 					+ pname + "]";
 		}
+	
 }
