@@ -78,10 +78,16 @@
 					    <td>{{sh.product_id}}</td>
 					    <td>{{sh.product_name}}</td>
 						<td>{{sh.amount}}</td>
-						<td>生产中</td>
+						<td>
+						<span v-if="sh.hgsl>0">{{sh.hgsl}}</span>
+                        <span v-if="sh.hgsl==0">等待</span>
+						</td>
 						<td>执行</td>
 						<td>{{sh.check_tag}}</td>
-						<td>等待</td>
+						<td>
+						<span v-if="sh.pg_zt=='已生产'">已生产</span>
+                        <span v-if="sh.pg_zt=='未生产'">等待</span>
+						</td>
 					</tr>
 				</tbody>
 		

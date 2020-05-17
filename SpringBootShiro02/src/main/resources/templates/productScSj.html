@@ -91,7 +91,7 @@
        			    <div>
           				<p style="margin-left: 390px">产品生产工序设计单</p>
           				<label for="message-text" class="control-label" style="margin-left:200px">设计单编号:</label>
-					    <span id="sjdh" th:text="${#httpServletRequest.getAttribute('sjdh')}"></span>
+					    <span>{{sjdh}}</span>
           	 			<a type="button" class="btn btn-pink  btn-xs" @click="Selad2()" style="margin-left:700px"  data-toggle="modal" data-target=".bs-example-modal-lg">添加工序</a>
        				</div>
           		 	<div class="form-group" style="margin-left: 200px">
@@ -228,7 +228,8 @@
 				    four:'',
 				    five:'',
 				    six:'',
-					product_id:''
+					product_id:'',
+					sjdh:''
 				},
 				mounted(){//初始化显示完成调用
 					this.Selad();
@@ -241,7 +242,13 @@
 						}).catch(err=>{
 							console.log("请求失败");
 						})
-						
+						var myDate =new Date();
+					    var a=myDate.getFullYear()+"0"+(myDate.getMonth()+1)+""+myDate.getDate();
+						var time="";
+						for(var i=0;i<6;i++){
+							time+=Math.floor(Math.random()*10)
+						}
+						this.sjdh="201"+a+time;  //生成流水号结束
 					},Selidxx(product_id,product_name){
 						 $("#box1").toggle();
 						 $("#box2").toggle();
@@ -275,12 +282,10 @@
 						});
 						 $.each(dw, function(i,val){        
 							// alert(val)
-						  });
-						 
-						 
+						  });		 
 						var product_id=this.product_id;
 						var product_name=this.product_name;
-						var sjdh = $("#sjdh").text();
+						var sjdh = this.sjdh;
 						var sjr  = $("#sjr").text();
 						var djr=$("#djr").text()
                          //alert(product_id)//产品编号

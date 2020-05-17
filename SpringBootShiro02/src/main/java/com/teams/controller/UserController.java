@@ -43,7 +43,7 @@ public class UserController {
 		SimpleDateFormat format=new SimpleDateFormat("yyyyMMdd");
 		String batchno=format.format(new Date());
 		int num=(int)((Math.random()*9+1)*100000);
-		return 100+batchno+num;
+		return 200+batchno+num;
 	}
 	
 	
