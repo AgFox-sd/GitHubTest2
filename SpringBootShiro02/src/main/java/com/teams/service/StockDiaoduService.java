@@ -116,4 +116,6 @@ public interface StockDiaoduService {
 	List<s_pay> selectAllinStock();
 
 	void updpg(String pg_id);
+
+	void updzsd(String zsdbh);
 }

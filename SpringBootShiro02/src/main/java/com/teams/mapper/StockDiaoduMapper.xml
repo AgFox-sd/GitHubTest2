@@ -221,4 +221,8 @@
      <update id="updpg">
      update m_pg set scly='已领料' where pg_id=#{pg_id}
      </update>
+     
+     <update id="updzsd">
+     update cgdiaodu set onstock_tag='已入库' where cgDiaoduId=#{zsdbh}
+     </update>
   </mapper>

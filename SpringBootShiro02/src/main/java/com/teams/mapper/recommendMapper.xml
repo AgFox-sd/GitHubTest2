@@ -10,7 +10,7 @@ SELECT a.*,b.tname,c.fname,d.pname from d_file a,type b,feilei c,pclass d WHERE 
   
   <!-- 查询所有供应商 -->
   <select id="selectgys" resultType="provider">
-SELECT a.*,b.fname FROM provider a,feilei b WHERE a.fid=b.fid
+		SELECT a.*,b.fname FROM provider a,feilei b WHERE a.fid=b.fid AND a.providerId NOT IN(SELECT providerId FROM recommendxq WHERE recommendId=#{recommendId})
   </select>
   
   <!-- 增加产品供应商推荐管理表 -->
@@ -37,7 +37,7 @@ SELECT a.*,b.fname FROM provider a,feilei b WHERE a.fid=b.fid
   
   <!-- 审核通过修改字段 -->
   <update id="updsh">
- UPDATE recommend SET check_tag="审核通过" WHERE recommendId=#{recommendId}
+ UPDATE recommend SET check_tag="审核通过",change_tag='未变更',recommend_tag='已推荐' WHERE recommendId=#{recommendId}
   </update>
   
   <!-- 审核未通过修改字段 -->

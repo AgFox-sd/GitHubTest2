@@ -22,9 +22,9 @@ public class recommendServiceImpl implements recommendService{
 	}
 
 	@Override
-	public List<provider> selectgys() {
+	public List<provider> selectgys(String recommendId) {
 		// TODO Auto-generated method stub
-		return mapper.selectgys();
+		return mapper.selectgys(recommendId);
 	}
 
 	@Override

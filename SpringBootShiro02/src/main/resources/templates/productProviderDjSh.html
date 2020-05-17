@@ -44,7 +44,7 @@
       <div class="container-fluid">
         
         <div class="row">
-          <div class="col-lg-12" style="margin-left: -12%;margin-top: 0.5%;">
+          <div class="col-lg-12" style="margin-left: -25%;margin-top: -6%;">
             <div class="card">
               <div class="card-toolbar clearfix">
                 <form class="pull-right search-bar" method="get" action="#!" role="form">
@@ -60,16 +60,16 @@
                   <table class="table table-hover">
                     <thead>
                       <tr>
-                        <th>推荐单编号</th>
-					    <th>产品编号</th>
-						<th>产品名称</th>
-						<th>风险级别</th>
-						<th>登记时间</th>
-						<th>审核</th>
+                        <th class="text-center">推荐单编号</th>
+					    <th class="text-center">产品编号</th>
+						<th class="text-center">产品名称</th>
+						<th class="text-center">风险级别</th>
+						<th class="text-center">登记时间</th>
+						<th class="text-center">审核</th>
                       </tr>
                     </thead>
                     <tbody>
-					<tr v-for="(scjh,index) in scjhlist" :key="index">
+					<tr v-for="(scjh,index) in scjhlist" :key="index" class="text-center">
 					    <td>{{scjh.recommendId}}</td>
 					    <td>{{scjh.product_id}}</td>
 					    <td>{{scjh.product_name}}</td>
@@ -92,7 +92,7 @@
                     <div class="modal-content">
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                        <h4 style="margin-left: 360px" class="modal-title" id="myLargeModalLabel">生产计划单
+                        <h4 style="margin-left: 360px" class="modal-title" id="myLargeModalLabel">供应商推荐单
                         <span style="margin-left: 150px">
                            <input type="radio" checked="checked" name="hh" value="未通过">未通过
                            <input style="margin-left: 15px" type="radio" name="hh" value="通过">通过
@@ -111,15 +111,15 @@
 					   <table class="table table-bordered" >
 	                    <thead>
 	                      <tr>
-	                        <th>序号</th>
-	                        <th>推荐单编号</th>
-	                        <th>供应商编号</th>
-	                        <th>供应商名称</th>
+	                        <th class="text-center">序号</th>
+	                        <th class="text-center">推荐单编号</th>
+	                        <th class="text-center">供应商编号</th>
+	                        <th class="text-center">供应商名称</th>
 	                 
 	                      </tr>
 	                    </thead>
 	                    <tbody>
-	                      <tr v-for="(scjhmx,index) in scjhmxlist" :key="index">
+	                      <tr v-for="(scjhmx,index) in scjhmxlist" :key="index" class="text-center">
 		                        <td>{{scjhmx.id}}</td>
                        			<td>{{scjhmx.recommendId}}</td>
                         		<td>{{scjhmx.providerId}}</td>

@@ -19,7 +19,7 @@ public class provider {
 	private String change_tag ;//变更标志
 	private String delete_tag ;//删除标志
 	
-	
+	private String fname;
 	public provider() {
 		super();
 	}
@@ -27,7 +27,7 @@ public class provider {
 	
 	public provider(int id, String providerId, String providerName, String providerAddress, String linkman, int fid,
 			String providerPhone, String register, String register_time, String checker, String check_tag,
-			String check_time, String changer, String change_time, String change_tag, String delete_tag) {
+			String check_time, String changer, String change_time, String change_tag, String delete_tag,String fname) {
 		super();
 		this.id = id;
 		this.providerId = providerId;
@@ -45,6 +45,7 @@ public class provider {
 		this.change_time = change_time;
 		this.change_tag = change_tag;
 		this.delete_tag = delete_tag;
+		this.fname = fname;
 	}
 
 
@@ -143,6 +144,16 @@ public class provider {
 	}
 	public void setDelete_tag(String delete_tag) {
 		this.delete_tag = delete_tag;
+	}
+
+
+	public String getFname() {
+		return fname;
+	}
+
+
+	public void setFname(String fname) {
+		this.fname = fname;
 	}
 	
 	

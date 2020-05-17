@@ -1,21 +1,19 @@
 package com.teams.controller;
 
 import java.lang.annotation.Retention;
-import java.rmi.server.Skeleton;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.HttpClientErrorException.Forbidden;
 
-import com.teams.pojo.D_gonxus;
 import com.teams.pojo.m_gys;
 import com.teams.pojo.provider;
-import com.teams.pojo.r_ys;
 import com.teams.pojo.recommend;
 import com.teams.pojo.recommendXq;
 import com.teams.service.recommendService;
@@ -34,19 +32,19 @@ public class recommendController {
     
     @RequestMapping("/selectgys")
     @ResponseBody
-    public List<provider> selectgys(){
-    	List<provider> list =service.selectgys();
+    public List<provider> selectgys(String recommendId){
+    	List<provider> list =service.selectgys(recommendId);
     	return list;
     }
     
     @RequestMapping("/gyszc")
     @ResponseBody
-    public List<r_ys> gyszc(@RequestParam("bh")String bh[],@RequestParam("gbh")String gbh[],@RequestParam("gmc")String gmc[],@RequestParam("yz")String yz[],@RequestParam("fx")String fx[],@RequestParam("qy")String qy[],@RequestParam("sjdh")String sjdh,@RequestParam("product_id")String product_id,@RequestParam("product_name")String product_name,@RequestParam("tjr")String tjr){
+    public List<m_gys> gyszc(@RequestParam("bh")String bh[],@RequestParam("gbh")String gbh[],@RequestParam("gmc")String gmc[],@RequestParam("yz")String yz[],@RequestParam("fx")String fx[],@RequestParam("qy")String qy[],@RequestParam("sjdh")String sjdh,@RequestParam("product_id")String product_id,@RequestParam("product_name")String product_name,@RequestParam("tjr")String tjr){
         service.addgys(sjdh, product_id, product_name, tjr);
-    	List<r_ys> list =new ArrayList<r_ys>();
+    	List<m_gys> list =new ArrayList<m_gys>();
     	for (int i = 0; i <bh.length; i++) {
     		service.addgysmx(sjdh, gbh[i], gmc[i]);
-			r_ys dmd = new r_ys(bh[i],gbh[i],gmc[i],yz[i],fx[i],qy[i]);
+    		m_gys dmd = new m_gys(bh[i],gbh[i],gmc[i],yz[i],fx[i],qy[i]);
 			list.add(dmd);
 		}
     	service.updtj(product_id);
@@ -64,7 +62,6 @@ public class recommendController {
     @ResponseBody
     public List<recommendXq> selectmxb(@RequestParam("recommendId")String recommendId){
     	List<recommendXq> list =service.selectmxb(recommendId);
-    	System.out.println("111111111");
     	System.out.println(recommendId);
     	return list;
     }
@@ -94,7 +91,6 @@ public class recommendController {
     @ResponseBody
     public List<recommendXq>selectgymx(@RequestParam("recommendId")String recommendId){
     	List<recommendXq> list=service.selectgymx(recommendId);
-    	System.out.println("11111111");
     	return list;
     }
     
@@ -115,8 +111,9 @@ public class recommendController {
     @RequestMapping("/bgxius")
     @ResponseBody
     public List<m_gys> bgxius(@RequestParam("bh")String bh[],@RequestParam("mc")String mc[],@RequestParam("lx")String lx[],@RequestParam("dc")String dc,@RequestParam("sl")String sl[],@RequestParam("dw")String dw[]){
-     	List<m_gys> list =new ArrayList<m_gys>();
-     	for (int i = 0; i <bh.length; i++) {
+    	List<m_gys> list =new ArrayList<m_gys>();
+    	for (int i = 0; i <bh.length; i++) {
+    		service.addgysmx(dc, mc[i], lx[i]);
      		m_gys dmd = new m_gys(bh[i],mc[i],lx[i],dc,sl[i],dw[i]);
  			list.add(dmd);
  		}
@@ -126,7 +123,6 @@ public class recommendController {
     @RequestMapping("/updbgs")
     @ResponseBody
     public int updbgs(@RequestParam("recommendId") String recommendId) {
-    	
     	int row =service.updbgs(recommendId);
     	return row;
     }

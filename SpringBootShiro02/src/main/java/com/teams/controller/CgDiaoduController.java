@@ -144,7 +144,7 @@ public class CgDiaoduController {
 		String reason = "采购入库";
 		for (int i = 0; i < dj.length; i++) {
 			String gather_id = Dindan();
-			Service1.addsg(gather_id,storer,reason,sl[i],xj[i],"审核通过","已登记");
+			Service1.addsg(gather_id,storer,reason,sl[i],xj[i],"审核通过","已登记",cgDiaoduId);
 			Service1.addsgxq(gather_id,product_id,product_name,sl[i],dj[i],xj[i],"已登记");
 		}
     	return service.updDiaoduSh(checker,cgDiaoduId);

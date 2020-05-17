@@ -10,7 +10,7 @@ import com.teams.pojo.recommendXq;
 
 public interface recommendService {
 	List<recommend> selectrec();
-	List<provider> selectgys();
+	List<provider> selectgys(String recommendId);
 	int addgys(@Param("recommendId")String recommendId,@Param("product_id")String product_id,@Param("product_name")String product_name,@Param("recommender")String recommender);
 	int addgysmx(@Param("recommendId")String recommendId,@Param("providerId")String providerId,@Param("providerName")String providerName);
 	int updtj(@Param("product_id")String product_id);

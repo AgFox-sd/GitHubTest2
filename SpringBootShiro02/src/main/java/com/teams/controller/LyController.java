@@ -149,7 +149,7 @@ public class LyController {
 		String gather_id = Dindan();
 		String storer = (String) ses.getAttribute("username");
 		String reason = "生产入库";
-		service.addsg(gather_id,storer,reason,sc_unit,zcb*sc_unit,"审核通过","已登记");
+		service.addsg(gather_id,storer,reason,sc_unit,zcb*sc_unit,"审核通过","已登记","无");
 		service.addsgxq(gather_id,product_id,product_name,sc_unit,zcb,zcb*sc_unit,"已登记");
 		service.addnbsc(did, pg_id, product_id, product_name, sc_unit, zcb, zcb * sc_unit);
 		return 1;

@@ -22,7 +22,7 @@
 		<div class="lyear-layout-web">
 			<div class="lyear-layout-container">
 
-				<header class="lyear-layout-header" style="margin-left: -15%;">
+				<header class="lyear-layout-header" style="margin-left: -18%;">
 
 					<nav class="navbar navbar-default">
 						<div class="topbar">
@@ -43,7 +43,7 @@
 				<main class="lyear-layout-content">
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-lg-10" style="margin-left: -22%; margin-top: -6%;">
+						<div class="col-lg-10" style="margin-left: -25%; margin-top: -6%;">
 							<div class="card">
 								<div class="card-toolbar clearfix">
 									<form class="pull-right search-bar" method="get" action="#!"
@@ -62,16 +62,16 @@
 											<table class="table table-hover">
 												<thead>
 													<tr>
-														<th>推荐单编号</th>
-														<th>产品编号</th>
-														<th>产品名称</th>
-														<th>风险级别</th>
-														<th>登记时间</th>
-														<th>变更</th>
+														<th class="text-center">推荐单编号</th>
+														<th class="text-center">产品编号</th>
+														<th class="text-center">产品名称</th>
+														<th class="text-center">风险级别</th>
+														<th class="text-center">登记时间</th>
+														<th class="text-center">变更</th>
 													</tr>
 												</thead>
 												<tbody>
-													<tr v-for="v in list" :key="index">
+													<tr v-for="v in list" :key="index" class="text-center">
 														<td>{{v.recommendId}}</td>
 					                                    <td>{{v.product_id}}</td>
 					                                    <td>{{v.product_name}}</td>
@@ -98,7 +98,7 @@
 												data-toggle="modal" data-target=".bs-example-modal-lg">添加供应商</a>
 										</div>
 										<div>
-										<p style="text-align: center;color: red">供应商推荐变更</p>
+										<p style="text-align: center;font-size: 25px;">供应商推荐变更</p>
 											<div class="form-group">
 							    <label for="message-text" class="control-label">推荐单编号:</label>
 					            <span style="margin-left: 10px;color: red">{{recommendId}}</span>
@@ -115,15 +115,15 @@
 											<table class="table table-hover">
 												<thead>
 													<tr>
-														<th>序号</th>
-														<th>推荐单编号</th>
-														<th>供应商编号</th>
-														<th>供应商名称</th>
-														<th>操作</th>
+														<th class="text-center">序号</th>
+														<th class="text-center">推荐单编号</th>
+														<th class="text-center">供应商编号</th>
+														<th class="text-center">供应商名称</th>
+														<th class="text-center">操作</th>
 													</tr>
 												</thead>
 												<tbody>
-													<tr v-for="wl in cus">
+													<tr v-for="wl in cus" class="text-center">
 														 <td>{{wl.id}}</td>
                        			                         <td>{{wl.recommendId}}</td>
                         		                         <td>{{wl.providerId}}</td>
@@ -131,7 +131,7 @@
 														<td><a href="#" @click="delid(wl.id,wl.recommendId,wl.providerId,wl.providerName)">删除</a></td>
 													</tr>
 													<tr>
-													<tr v-for="wl in listss">
+													<tr v-for="wl in listss" class="text-center">
 														 <td>{{wl.bh}}</td>
                        			                         <td>{{wl.dc}}</td>
                         		                         <td>{{wl.mc}}</td>
@@ -165,17 +165,17 @@
 																<table class="table table-bordered">
 																	<thead>
 																		<tr>
-																			<th>选择</th>
-																			<th>物料编号</th>
-																			<th>物料名称</th>
-																			<th>用途类型</th>
-																			<th>产品档次</th>
-																			<th>数量</th>
-																			<th>单位</th>
+																			<th class="text-center">选择</th>
+																			<th class="text-center">物料编号</th>
+																			<th class="text-center">物料名称</th>
+																			<th class="text-center">用途类型</th>
+																			<th class="text-center">产品档次</th>
+																			<th class="text-center">数量</th>
+																			<th class="text-center">单位</th>
 																		</tr>
 																	</thead>
 																	<tbody>
-																		<tr v-for="(wl,index) in wllist" :key="index">
+																		<tr v-for="(wl,index) in wllist" :key="index" class="text-center">
 																			<td><label
 																				class="lyear-checkbox checkbox-primary"> <input
 																					type="checkbox" value="{{wl.product_id}}"
@@ -276,7 +276,7 @@
 						 this.Selad3();
 					},
 					Selad2(){//查询物料信息
-						axios.post("selectgys").then(res=>{
+						axios.post("selectgys?recommendId="+this.recommendId+"").then(res=>{
 							this.wllist=res.data;
 						}).catch(err=>{
 							console.log("请求失败");

@@ -20,7 +20,7 @@
 <div class="lyear-layout-web">
   <div class="lyear-layout-container">
     
-    <header class="lyear-layout-header" style="margin-left: -10%;">
+    <header class="lyear-layout-header" style="margin-left: -18%;">
       
       <nav class="navbar navbar-default">
         <div class="topbar">
@@ -43,7 +43,7 @@
       <div class="container-fluid">
         
         <div class="row">
-          <div class="col-lg-12" style="margin-left: -12%;margin-top: -6%;">
+          <div class="col-lg-12" style="margin-left: -25%;margin-top: -6%;">
             <div class="card">
               <div class="card-toolbar clearfix">
                 <form class="pull-right search-bar" method="get" action="#!" role="form">
@@ -59,16 +59,16 @@
                   <table class="table table-hover">
                     <thead>
                       <tr>
-                        <th>推荐单编号</th>
-					    <th>产品编号</th>
-					    <th>产品名称</th>
-					    <th>推荐单状态</th>
-						<th>审核状态</th>
-						<th>查看详情</th>
+                        <th class="text-center">推荐单编号</th>
+					    <th class="text-center">产品编号</th>
+					    <th class="text-center">产品名称</th>
+					    <th class="text-center">推荐单状态</th>
+						<th class="text-center">审核状态</th>
+						<th class="text-center">查看详情</th>
                       </tr>
                     </thead>
                     <tbody>
-					<tr v-for="(wuzc,index) in list" :key="index">
+					<tr v-for="(wuzc,index) in list" :key="index" class="text-center">
 					    <td>{{wuzc.recommendId}}</td>
 					    <td>{{wuzc.product_id}}</td>
 					    <td>{{wuzc.product_name}}</td>
@@ -115,16 +115,16 @@
 					   <table class="table table-bordered" >
 	                    <thead>
 	                      <tr>
-	                        <th>序号</th>
-	                        <th>供应商编号</th>
-	                        <th>供应商名称</th>
-	                        <th>所在区域</th>
-	                        <th>优质级别</th>
+	                        <th class="text-center">序号</th>
+	                        <th class="text-center">供应商编号</th>
+	                        <th class="text-center">供应商名称</th>
+	                        <th class="text-center">所在区域</th>
+	                        <th class="text-center">优质级别</th>
 
 	                      </tr>
 	                    </thead>
 	                    <tbody>
-	                      <tr v-for="(wl,index) in xxlist" :key="index">
+	                      <tr v-for="(wl,index) in xxlist" :key="index" class="text-center">
 		                        <td>{{wl.id}}</td>
                        			<td>{{wl.providerId}}</td>
                         		<td>{{wl.providerName}}</td>

@@ -159,7 +159,7 @@
 
 	<insert id="addsg">
 		insert into s_gather
-		values(null,#{gather_id},#{storer},#{reason},DEFAULT,#{sc_unit},#{d},0,DEFAULT,#{storer},SYSDATE(),default,default,#{string},DEFAULT,DEFAULT,#{string2})
+		values(null,#{gather_id},#{storer},#{reason},DEFAULT,#{sc_unit},#{d},0,DEFAULT,#{storer},SYSDATE(),default,default,#{string},DEFAULT,DEFAULT,#{string2},#{cgDiaoduId})
 	</insert>
 
 	<insert id="addsgxq">
