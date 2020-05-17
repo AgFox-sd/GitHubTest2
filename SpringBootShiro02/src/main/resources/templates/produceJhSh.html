@@ -73,7 +73,7 @@
 					    <td>{{scjh.apply_id}}</td>
 					    <td>{{scjh.register}}</td>
 					    <td>{{scjh.register_time}}</td>
-						<td>{{scjh.remark}}</td>
+						<td>生产计划</td>
 						<td>
 						  <div class="btn-group">
                              <button type="button" class="btn btn-primary  btn-xs" data-toggle="modal" data-target="#modal1" @click="gosh(scjh.apply_id,scjh.register,scjh.register_time)">审核</button>
@@ -236,8 +236,9 @@
 						 alert('请求失败')
 					 })
 				  }else{
-					  var url="Scjhshbtg?apply_id="+this.apply_id+"";
-					  axios.get(url).then(res=>{
+					  var check_tag="审核不通过";
+						 var param={apply_id:this.apply_id,checker:checker,check_suggestion:this.check_suggestion,check_tag:check_tag};
+						 axios.post('Scjhshtg',param).then(res=>{
 						  if(res.data>0){
 							  alert('审核不通过,请重新制定生产计划')
 							  this.load();

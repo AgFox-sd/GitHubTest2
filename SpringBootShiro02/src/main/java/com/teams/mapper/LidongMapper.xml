@@ -54,9 +54,9 @@
      </update>
      
      <!-- 生产计划审核不通过 -->
-     <delete id="delShjh">
-        delete from m_apply where apply_id=#{apply_id}
-     </delete>
+     <update id="delShjh">
+        update m_apply set check_tag='审核不通过'  where apply_id=#{apply_id}
+     </update>
      
      <!-- 生产计划审核不通过 -->
      <delete id="delShjhmx">

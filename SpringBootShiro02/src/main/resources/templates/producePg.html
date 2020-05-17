@@ -280,7 +280,7 @@
 						for(var i=0;i<6;i++){
 							time+=Math.floor(Math.random()*10)
 						}
-						var dingdan=300+a+time;  //生成流水号结束
+						var dingdan=301+a+time;  //生成流水号结束
 						
 						this.pg_id=dingdan;  //生产计划编号  --流水号赋给apply_id
 					},
@@ -344,6 +344,7 @@
 					    	 if(res.data=="成功"){
 								  alert("派工成功");
 								  this.SelectApply();
+								  $(".xz").prop("checked",false);
 								  $("#box1").toggle();
 								  $("#box2").toggle();
 					    	 }

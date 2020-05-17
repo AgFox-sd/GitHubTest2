@@ -26,7 +26,7 @@ public interface StockPzService {
 	int updKc(s_cell s_cell);
 
 	//查询所有未审核的库存配置信息
-	List<s_cell> selectAll(String check_tag);
+	List<s_cell> selectAll(String check_tag,String check_tags);
 
 	//审核库存配置信息
 	int updfh(s_cell s_cell);

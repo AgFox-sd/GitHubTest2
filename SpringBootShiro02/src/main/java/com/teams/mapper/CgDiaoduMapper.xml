@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.teams.mapper.CgDiaoduMapper">
+  <!-- //查询采购计划明细 -->
+  <select id="selectcgPlanXq" resultType="cgPlanXq">
+  select *,check_time from cgplanXq  left join cgplan  on cgplanXq.cgPlanId = cgplan.cgPlanId where execute_tag='未执行' 
+  and cgplanXq.cgPlanId in(select cgPlanId from cgplan where check_tag='审核通过')
+  </select>
+  
+  <!-- //查询产品推荐的供应商信息 -->
+  <select id="selectCgGys" resultType="provider">
+  select * from provider where providerId in(select providerId
+  from recommendXq where recommendId in (select recommendId from
+  recommend where product_Id=#{product_id} and recommend_tag='已推荐'))
+  </select>
+  
+  
+  <!-- 添加采购信息 -->
+  <insert id="addCgZx">
+  insert into cgDiaodu values(null,#{cgDiaoduId},#{cgPlanId},#{product_id},#{product_name},#{zsl},#{zje},#{register},sysdate(),default,default,default,default);
+  </insert>
+  
+  <insert id="addCgZxXq">
+  insert into cgDiaoduXq values(null,#{cgDiaoduId},#{string},#{string2},#{string3},#{string4},#{i},#{d},#{e},default);
+  </insert>
+  
+  <update id="updCgJhXq">
+  update cgplanxq set execute_tag='已执行'  where cgPlanId=#{cgPlanId} and product_id =#{product_id}
+  </update>
+  
+  <!-- //查询数量 -->
+  <select id="selectAllCgCount1" resultType="int">
+  select count(1) from cgplan   where check_tag='审核通过' and cgPlanId in(select cgPlanId from cgplanXq where execute_tag='未执行')
+  </select>
+  
+  <select id="selectAllCgCount2" resultType="int">
+  select count(1) from cgplanXq   where execute_tag='未执行' and cgPlanId in(select cgPlanId from cgplan where check_tag='审核通过')
+  </select>
+ 
+  <select id="selectAllCgCount3" resultType="int">
+  select count(1) from cgDiaodu   where check_tag='等待审核' 
+  </select>
+  
+  <select id="selectAllCgCount4" resultType="int">
+  select count(1) from cgDiaodu   where check_tag!='等待审核' 
+  </select> 
+  
+  <select id="selectAllCgCount5" resultType="int">
+  select count(1) from cgDiaodu   
+  </select>
+  
+  <select id="selectAllCgCount6" resultType="int">
+  select count(1) from cgDiaodu   where check_tag='等待审核' 
+  </select> 
+  
+  <select id="selectAllCgCount7" resultType="int">
+  select count(1) from cgDiaodu   where check_tag='审核通过' 
+  </select>
+  
+  <select id="selectAllCgCount8" resultType="int">
+  select count(1) from cgDiaodu   where onstock_tag='已入库' 
+  </select> 
+  
+  <!-- //查询所有采购调度单 -->
+  <select id="selectcgDiaodu" resultType="cgDiaodu">
+  select * from cgDiaodu
+  </select>
+  
+  <!-- //根据编号查询采购调度单详情 -->
+  <select id="selectcgDiaoduXq" resultType="cgDiaoduXq">
+  select * from cgDiaoduXq where cgDiaoduId = #{cgDiaoduId}
+  </select>
+  
+  <!-- //查询等待审核的采购调度单 -->
+  <select id="selectcgDiaoduDdsh" resultType="cgDiaodu">
+  select * from cgDiaodu where check_tag = '等待审核'
+  </select>
+  
+  <!-- //修改采购调度单为未审核 修改 采购计划单为未执行 -->
+  <update id="updCgJhXq1">
+  update cgplanxq set execute_tag='未执行'  where cgPlanId=#{cgPlanId} and product_id =#{product_id}
+  </update>
+  
+  <update id="updateDiaodu">
+  update  set checker=#{checker},check_time=sysdate(),check_tag='审核不通过' where cgDiaoduId = #{cgDiaoduId}
+  </update>
+  
+  	<!--//修改采购调度单为审核通过 -->
+  <update id="updDiaoduSh">
+  update cgDiaodu set checker=#{checker},check_time=sysdate(),check_tag='审核通过' where cgDiaoduId = #{cgDiaoduId}
+  </update>
+  </mapper>

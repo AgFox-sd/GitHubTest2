@@ -1,6 +1,7 @@
 package com.teams.pojo;
-
+/*供应商表*/
 public class provider {
+
 	private int id;//序号
 	private String providerId;//供应商编号（格式：050100+当前年月日+6位随机数）
 	private String providerName;//供应商名字
@@ -17,9 +18,13 @@ public class provider {
 	private String change_time;//变更时间
 	private String change_tag ;//变更标志
 	private String delete_tag ;//删除标志
+	
+	
 	public provider() {
 		super();
 	}
+	
+	
 	public provider(int id, String providerId, String providerName, String providerAddress, String linkman, int fid,
 			String providerPhone, String register, String register_time, String checker, String check_tag,
 			String check_time, String changer, String change_time, String change_tag, String delete_tag) {
@@ -41,6 +46,8 @@ public class provider {
 		this.change_tag = change_tag;
 		this.delete_tag = delete_tag;
 	}
+
+
 	public int getId() {
 		return id;
 	}
@@ -137,13 +144,6 @@ public class provider {
 	public void setDelete_tag(String delete_tag) {
 		this.delete_tag = delete_tag;
 	}
-	@Override
-	public String toString() {
-		return "provider [id=" + id + ", providerId=" + providerId + ", providerName=" + providerName
-				+ ", providerAddress=" + providerAddress + ", linkman=" + linkman + ", fid=" + fid + ", providerPhone="
-				+ providerPhone + ", register=" + register + ", register_time=" + register_time + ", checker=" + checker
-				+ ", check_tag=" + check_tag + ", check_time=" + check_time + ", changer=" + changer + ", change_time="
-				+ change_time + ", change_tag=" + change_tag + ", delete_tag=" + delete_tag + "]";
-	}
+	
 	
 }

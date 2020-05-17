@@ -54,8 +54,8 @@ public class StockPzController {
 	//查询所有未审核的库存配置信息
 	@RequestMapping("selectAll")
 	@ResponseBody
-	public List<s_cell> selectAll(String check_tag){
-		return service.selectAll(check_tag);
+	public List<s_cell> selectAll(String check_tag,String check_tags){
+		return service.selectAll(check_tag,check_tags);
 	}
 	
 	//查询可变更的配置单总数

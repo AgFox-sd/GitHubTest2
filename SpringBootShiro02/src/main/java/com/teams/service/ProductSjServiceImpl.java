@@ -236,5 +236,11 @@ public class ProductSjServiceImpl implements ProductSjService{
 		mapper.zjwl(design_id, product_id, product_name, amount_unit, amount, residual_amount, cost_price,subtotal);
 	}
 
+	@Override
+	public List<D_module> selD_moduleS() {
+		// TODO Auto-generated method stub
+		return mapper.selD_moduleS();
+	}
+
 	
 }

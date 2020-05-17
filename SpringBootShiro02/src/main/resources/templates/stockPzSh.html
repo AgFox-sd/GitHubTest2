@@ -184,7 +184,8 @@
 					Selad(){
 						//发送异步请求，请求后端控制器，获取所有的品牌信息
 						var check_tag="未审核";
-						axios.post("selectAll?check_tag="+check_tag+"").then(res=>{
+						var check_tags="变更等待审核";
+						axios.post("selectAll?check_tag="+check_tag+"&check_tags="+check_tags+"").then(res=>{
 							this.list=res.data;
 						}).catch(err=>{
 							console.log("请求失败");

@@ -73,7 +73,8 @@
                         <td>完成</td>
                         <td>
                         <span v-if="gongxu.design_module_tag=='已审核'">通过</span>
-                        <span v-if="gongxu.design_module_tag=='已设计'">等待审核</span>
+                        <span v-if="gongxu.design_module_tag=='已设计'||gongxu.design_module_tag=='变更等待审核'">等待审核</span>
+                        <span v-if="gongxu.design_module_tag=='审核不通过'">不通过</span>
                         </td>
                       </tr>
                     </tbody>

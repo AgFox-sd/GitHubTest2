@@ -93,4 +93,6 @@ public interface ProductSjMapper {
  // 物料明细单
  	void zjwl(String design_id, String product_id, String product_name, String amount_unit,
  			int amount, double residual_amount, double cost_price,double subtotal);
+
+	List<D_module> selD_moduleS();
 }

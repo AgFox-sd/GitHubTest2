@@ -66,7 +66,7 @@
 
 	<!-- 产品物料设计单审核查询 -->
 	<select id="selectwusjsh" resultType="D_module">
-		select * from D_module where check_tag=#{check_tag}
+		select * from D_module where check_tag=#{check_tag} or check_tag='变更等待审核'
 	</select>
 
 	<!-- 查询产品物料设计单等待审核总数 -->
@@ -98,9 +98,9 @@
 	</update>
 
 	<!-- 物料组成设计不通过 -->
-	<delete id="delwlsj">
-		delete from D_module where design_id=#{design_id}
-	</delete>
+	<update id="delwlsj">
+			update  D_module set check_tag='审核不通过'  where design_id=#{design_id}
+	</update>
 
 	<!-- 查询显示的信息为所有已通过复核的产品档案 -->
 	<select id="selectId2" resultType="D_file">
@@ -242,10 +242,12 @@
 
 	<!-- 物料设计单查询 -->
 	<select id="selD_module" resultType="D_module">
-		select * from D_module where
-		check_tag='审核通过'
+		select * from D_module
 	</select>
 
+    <select id="selD_moduleS" resultType="D_module">
+		select * from D_module where check_tag!='变更等待审核'
+	</select>
 	<!-- 物料查询详情 -->
 	<select id="selD_MODULE_DETAILS" resultType="D_module_details">
 		select * from

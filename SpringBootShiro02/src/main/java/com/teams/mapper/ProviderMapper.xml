@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+  <mapper namespace="com.teams.mapper.ProviderMapper">
+  
+  		<!-- 查询所有供应商 -->
+  		<select id="AllGYS" resultType="provider">
+  			select * from provider
+  		</select>
+  		
+  		<!--查询供应商详情 -->
+  		<select id="Selxx" resultType="provider">
+  			select a.*,b.fid,b.fname from provider a,feilei b where providerId=#{providerId}
+  			and a.fid = b.fid
+  		</select>
+  
+  		<!-- 增加供应商 -->
+  		<insert id="addGYS">
+  			insert into provider value(NULL,#{providerId},#{providerName},#{providerAddress},#{linkman},#{fid},#{providerPhone},#{register},sysdate(),DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT)
+  		</insert>
+  		
+  		<!-- 供应商名称是否重复 -->
+  		<select id="selectgysname" resultType="int">
+			select count(providerName) from provider where providerName=#{providerName}
+		</select>
+		
+		<!-- 查询等待审核的供应商信息 -->
+		<select id="AllGYSFu" resultType="provider">
+  			select * from provider where check_tag=#{check_tag}
+  		</select>
+  		
+  		<!-- 供应商审核通过,审核通过后把变更标志改为未变更 -->
+  		<update id="updGYSFuS"> 
+  			update provider set check_tag=#{string},change_tag=#{string2},check_time=sysdate(),checker=#{checker} where providerId=#{providerId}
+  		</update>
+  		
+  		<!--供应商删除 -->
+  		<delete id="delGYS">
+  			delete from provider where providerId=#{providerId}
+  		</delete>
+  		
+  		<!--查询未变更的供应商 -->
+  		<select id="selWBG" resultType="provider">
+  			SELECT * FROM  provider WHERE change_tag=#{string}
+  		</select>
+  		
+  		<!-- 提交变更 -->
+  		<update id="updGYSBG">
+  			UPDATE  provider SET providerName=#{providerName},providerAddress=#{providerAddress},linkman=#{linkman},fid=#{fid},providerPhone=#{providerPhone},
+			register=#{register},register_time=#{register_time},checker=#{checker},check_tag=#{check_tag},check_time=#{check_time},changer=#{changer},
+			change_time=sysdate(),change_tag=#{change_tag} where providerId=#{providerId}
+  		</update>
+  </mapper>

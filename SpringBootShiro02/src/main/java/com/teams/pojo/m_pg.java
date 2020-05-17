@@ -9,6 +9,7 @@ public class m_pg {
     private String pg_ren;
     private String check_tag;
     private int amount;
+    private int hgsl;
     private String pg_time;
     private String pg_zt;
     
@@ -22,7 +23,7 @@ public class m_pg {
 
 
 	public m_pg(int id, String jhdbh, String pg_id, String product_id, String product_name, String pg_ren,
-			String check_tag, int amount, String pg_time, String pg_zt, int sc_unit) {
+			String check_tag, int amount, int hgsl,String pg_time, String pg_zt, int sc_unit) {
 		super();
 		this.id = id;
 		this.jhdbh = jhdbh;
@@ -32,6 +33,7 @@ public class m_pg {
 		this.pg_ren = pg_ren;
 		this.check_tag = check_tag;
 		this.amount = amount;
+		this.hgsl=hgsl;
 		this.pg_time = pg_time;
 		this.pg_zt = pg_zt;
 		this.sc_unit = sc_unit;
@@ -145,6 +147,16 @@ public class m_pg {
 
 	public void setSc_unit(int sc_unit) {
 		this.sc_unit = sc_unit;
+	}
+
+
+	public int getHgsl() {
+		return hgsl;
+	}
+
+
+	public void setHgsl(int hgsl) {
+		this.hgsl = hgsl;
 	}
 
 
