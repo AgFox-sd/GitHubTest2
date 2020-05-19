@@ -115,7 +115,7 @@ public class ProductSjController {
 	
 	 //查询产品设计单物料明细
 	@RequestMapping("/wlmx")
-	@ResponseBody   
+	@ResponseBody  
 	public List<D_module_details> selectwlmx(@RequestParam("design_id") String design_id){
 		return service.selectwlmx(design_id);
 	}
