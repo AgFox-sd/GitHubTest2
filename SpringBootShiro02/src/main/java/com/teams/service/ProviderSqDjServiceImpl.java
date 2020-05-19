@@ -27,9 +27,9 @@ public class ProviderSqDjServiceImpl implements ProviderSqDjService{
 	}
 
 	@Override
-	public List<D_file> selD_file(String providerSqId) {
-		// TODO Auto-generated method stub
-		return mapper.selD_file(providerSqId);
+
+	public List<D_file> selD_file(String providerId) {
+		return mapper.selD_file(providerId);
 	}
 	
 	@Override

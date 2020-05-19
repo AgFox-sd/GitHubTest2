@@ -31,8 +31,8 @@ public class ProviderSqDj {
 
 	@RequestMapping("/selcp")
 	@ResponseBody
-	public List<D_file> selD_file(String providerSqId) {
-		List<D_file> list = service.selD_file(providerSqId);
+	public List<D_file> selD_file(String providerId) {
+		List<D_file> list = service.selD_file(providerId);
 		return list;
 	}
 

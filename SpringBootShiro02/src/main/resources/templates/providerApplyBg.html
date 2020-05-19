@@ -407,12 +407,16 @@ $(function(){
 					qd(){
 						 $("#box1").toggle();
 						 $("#box3").toggle();
+<<<<<<< HEAD
 						 location.reload();
 						var url="updybg?changer="+this.register+"&change_tag="+this.change_tag+"&check_tag="+this.check_tag+"&bgbz="+this.bgbz+"&providerSqId="+this.providerSqId+"&providerId="+this.providerId+"";
+=======
+						var url="updybg?changer="+this.register+"&change_tag="+this.change_tag+"&check_tag="+this.check_tag+"&providerSqId="+this.providerSqId+"&providerId="+this.providerId+"";
+>>>>>>> branch 'master' of https://github.com/AgFox-sd/GitHubTest2.git
 							axios.get(url).then(res=>{
-								 location.reload();
-					    	alert('成功');
-					    }).catch(err=>{
+						    	alert('变更成功');
+						        this.Selad();
+							}).catch(err=>{
 							alert('请求失败')
 						})
 					},

@@ -13,7 +13,6 @@ public interface ProviderSqDjService {
 
 	// 查询商品
 	List<D_file> selD_file(String providerSqId);
-	
 	//List<providerSqXq> selproviderSqXq(String providerId);
 	List<providerSqXq> selproviderSqXq(String providerSqId);
 	
