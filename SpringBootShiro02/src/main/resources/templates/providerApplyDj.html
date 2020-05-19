@@ -91,13 +91,14 @@
 									</div>
 									<div class="btn-group" id="box2" style="display: none">
 										<div>
+										<!-- data-toggle="modal" data-target=".bs-example-modal-lg" -->
 											<button type="button" class="btn btn-pink  btn-xs"
 												@click="Selad2()" style="margin-left: 700px"
-												data-toggle="modal" data-target=".bs-example-modal-lg">添加商品</button>
+												>添加商品</button>
 											<button class="btn btn-xs btn-primary" @click="QueRen()">预览</button>
 										</div>
 										<div>
-											<h3 style="margin-left: 390px">供应商报价单</h3>
+											<h1 style="margin-left: 390px">供应商报价单</h1>
 											<label for="message-text" class="control-label"
 												style="margin-left: 70px">供应商编号:</label> <span>{{providerId}}</span>
 											<label for="message-text" class="control-label"
@@ -114,10 +115,8 @@
 														<th class="text-center">点选</th>
 														<th class="text-center">商品编号</th>
 														<th class="text-center">商品名称</th>
-														<th class="text-center">数量</th>
 														<th class="text-center">单位</th>
 														<th class="text-center">单价</th>
-														<th class="text-center">小计</th>
 														<th class="text-center">操作</th>
 													</tr>
 												</thead>
@@ -129,10 +128,8 @@
 														</label></td>
 														<td>{{wl.product_id}}</td>
 														<td>{{wl.product_name}}</td>
-														<td><input type="test" v-model="wl.amount" /></td>
 														<td>{{wl.unit}}</td>
 														<td><input type="test" v-model="wl.price" /></td>
-														<td>{{wl.subtotal}}</td>
 														<td><a href="#"
 															@click="delid(wl.id,wl.subtotal,wl.product_id,wl.product_name)">删除</a></td>
 													</tr>
@@ -149,8 +146,8 @@
 										</div>
 										<!-- 模态框开始 -->
 										<div class="modal fade bs-example-modal-lg" tabindex="-1"
-											role="dialog" aria-labelledby="myLargeModalLabel">
-											<div class="modal-dialog modal-lg" role="document">
+											role="dialog" aria-labelledby="myLargeModalLabel" id="mtk" :class="{'mtk':flag}">
+											<div class="modal-dialog modal-lg" role="document" >
 												<div class="modal-content">
 													<div class="modal-header">
 														<button type="button" class="close" data-dismiss="modal"
@@ -193,8 +190,8 @@
 														<button type="button" class="btn btn-default"
 															data-dismiss="modal">关闭</button>
 														<button type="button" class="btn btn-primary"
-															@click="tianjia()" data-dissmiss="modal"
-															data-dismiss="modal">报价</button>
+															@click="tianjia()" 
+															>报价</button>
 													</div>
 												</div>
 											</div>
@@ -276,7 +273,8 @@
 					providerName:'',
 					providerPhone:'',
 					providerSqXqId:'',
-					slist:[]
+					slist:[],
+					flag:false
 				},
 				mounted(){//初始化显示完成调用
 					this.Selad();
@@ -291,27 +289,52 @@
 				  })
 					},
 					Selidxx(providerId,providerName,providerPhone){
-						 this.providerId = providerId;
-						 this.providerName = providerName;
-						 this.providerPhone=providerPhone;
-						 $("#box1").toggle();
-						 $("#box2").toggle();	
+						axios.get("selectCount?providerId="+providerId+"").then(res=>{
+							if(res.data>0){
+								//生成 050200+当前日期+6位随机数组成的流水号 --开始
+								var myDate =new Date();
+							    var a=myDate.getFullYear()+"0"+(myDate.getMonth()+1)+""+myDate.getDate();
+								var time="";
+								for(var i=0;i<6;i++){
+									time+=Math.floor(Math.random()*10)
+								}
+								var dingdan="0502"+a+time;  //生成流水号结束
+								var providerSqId=dingdan;  
+								//生成供应商申请详情
+								var c=Math.random().toString(8).substring(2);
+								this.providerSqXqId=c;
+								this.providerSqId=providerSqId; 
+								 this.providerId = providerId;
+								 this.providerName = providerName;
+								 this.providerPhone=providerPhone;
+								 $("#box1").toggle();
+								 $("#box2").toggle();	
+							}else{
+								alert("该供应商已全部报价完！");
+							}
+						}).catch(err=>{
+							console.log("请求失败");
+						})
+						
 					},
 					Selad2(){//查询商品信息
-						axios.post("selcp").then(res=>{
+						$("#mtk").modal('show');
+					var url="selcp?providerSqId="+this.providerId+"";
+						axios.post(url).then(res=>{
 							this.wllist=res.data;
 						}).catch(err=>{
 							console.log("请求失败");
 						})
 					},
 					Selad3(){
-						axios.get("selproviderSqXq?providerId="+this.providerId).then(res=>{
+						var url="selshxq?providerSqId="+this.providerSqId+"";
+						axios.get(url).then(res=>{
 							this.cus=res.data;
-							})
+						});
 					},
 					tianjia:function(){//点击添加
 						//生成 050200+当前日期+6位随机数组成的流水号 --开始
-						var myDate =new Date();
+						/*var myDate =new Date();
 					    var a=myDate.getFullYear()+"0"+(myDate.getMonth()+1)+""+myDate.getDate();
 						var time="";
 						for(var i=0;i<6;i++){
@@ -322,7 +345,13 @@
 						//生成供应商申请详情
 						var c=Math.random().toString(8).substring(2);
 						this.providerSqXqId=c;
-						this.providerSqId=providerSqId;  
+						this.providerSqId=providerSqId;  */
+						var len=$("input[type=checkbox]:checked()");
+						$("#mtk").modal('show');
+						if(len.length<=0){
+							alert("没有选中");
+						}else{
+							$("#mtk").modal('hide');
 						var bh=[];//编号
 						var mc=[];//名称
 						var dw=[];//单位
@@ -341,32 +370,30 @@
 					    }).catch(err=>{
 							alert('请求失败')
 						})
-					},xz(){
+						}
+					},/*xz(){
 						$(".xz1:checked").each(function(){
 							$(this).parent().parent().next().next().next().next().next().next().text($(this).parent().parent().next().next().next().children().val()*$(this).parent().parent().next().next().next().next().next().children().val());
 						});
-					},QueRen(){
+					},*/QueRen(){
 						var len=$("input[type=checkbox]:checked()");
 						if(len.length<=0){
 							alert("没有选中");
 						}else{
 						 $("#box2").toggle();
 						 $("#box3").toggle();
-						var sl=[];
 						var dj=[];
 						var xj=[];
 						var bh=[];
 						var mc=[];
 						$(".xz1:checked").each(function(){
-							sl.push($(this).parent().parent().next().next().next().children().val());
-							dj.push($(this).parent().parent().next().next().next().next().next().children().val());
-							xj.push($(this).parent().parent().next().next().next().next().next().next().html());
+							dj.push($(this).parent().parent().next().next().next().next().children().val());
 							bh.push($(this).parent().parent().next().html());
 							mc.push($(this).parent().parent().next().next().html());
 						});
-						var url="updbjd?amount="+sl+"&price="+dj+"&subtotal="+xj+"&product_id="+bh+"&product_name="+mc+"";
+						var url="updbjd?price="+dj+"&product_id="+bh+"&product_name="+mc+"";
 					    axios.get(url).then(res=>{
-					    	var url="selproviderSqXq?providerId="+this.providerId+"";
+					    	var url="selshxq?providerSqId="+this.providerSqId+"";
 							axios.get(url).then(res=>{
 								this.slist=res.data;
 							});
@@ -387,6 +414,13 @@
 			})
 			
 		</script>
-
+		<style>
+			.mtk{
+				display:inline;
+			}
+			.modal-dialog modal-lg{
+				display:block;
+			}
+		</style>
 </body>
 </html>

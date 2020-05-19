@@ -15,6 +15,8 @@ public class providerSq {
     private String changer;//变更人
     private String change_time;//变更时间
     private String change_tag;//变更标志
+    private String shbz;//审核原因
+    private String bgbz;//变更原因
     
     private String providerSqXqId;
     
@@ -24,7 +26,8 @@ public class providerSq {
 
 	public providerSq(int id, String providerSqId, String providerId, String providerName, String providerPhone,
 			String supply_time, String register, String register_time, String checker, String check_tag,
-			String check_time, String changer, String change_time, String change_tag, String providerSqXqId) {
+			String check_time, String changer, String change_time, String change_tag, String shbz, String bgbz,
+			String providerSqXqId) {
 		super();
 		this.id = id;
 		this.providerSqId = providerSqId;
@@ -40,6 +43,8 @@ public class providerSq {
 		this.changer = changer;
 		this.change_time = change_time;
 		this.change_tag = change_tag;
+		this.shbz = shbz;
+		this.bgbz = bgbz;
 		this.providerSqXqId = providerSqXqId;
 	}
 
@@ -155,6 +160,22 @@ public class providerSq {
 		this.change_tag = change_tag;
 	}
 
+	public String getShbz() {
+		return shbz;
+	}
+
+	public void setShbz(String shbz) {
+		this.shbz = shbz;
+	}
+
+	public String getBgbz() {
+		return bgbz;
+	}
+
+	public void setBgbz(String bgbz) {
+		this.bgbz = bgbz;
+	}
+
 	public String getProviderSqXqId() {
 		return providerSqXqId;
 	}
@@ -169,7 +190,9 @@ public class providerSq {
 				+ ", providerName=" + providerName + ", providerPhone=" + providerPhone + ", supply_time=" + supply_time
 				+ ", register=" + register + ", register_time=" + register_time + ", checker=" + checker
 				+ ", check_tag=" + check_tag + ", check_time=" + check_time + ", changer=" + changer + ", change_time="
-				+ change_time + ", change_tag=" + change_tag + ", providerSqXqId=" + providerSqXqId + "]";
+				+ change_time + ", change_tag=" + change_tag + ", shbz=" + shbz + ", bgbz=" + bgbz + ", providerSqXqId="
+				+ providerSqXqId + "]";
 	}
+
 	
 }

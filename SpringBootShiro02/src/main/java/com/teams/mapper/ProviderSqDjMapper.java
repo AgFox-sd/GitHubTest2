@@ -13,9 +13,10 @@ public interface ProviderSqDjMapper {
 	List<provider> selprovider();
 
 	// 查询商品
-	List<D_file> selD_file();
+	List<D_file> selD_file(String providerSqId);
 	
-	List<providerSqXq> selproviderSqXq(String providerId);
+	//List<providerSqXq> selproviderSqXq(String providerId);
+	List<providerSqXq> selproviderSqXq(String providerSqId);
 	
 	List<providerSqXq> selXq(String product_id,String product_name);
 
@@ -27,7 +28,7 @@ public interface ProviderSqDjMapper {
 			String unit,double price,double subtotal);
 	
 	//修改
-    int updproviderSqXq(int amount,double price,double subtotal,String product_id,String product_name);
+    int updproviderSqXq(double price,String product_id,String product_name);
 
    //审核
     //查询等待审核
@@ -37,7 +38,7 @@ public interface ProviderSqDjMapper {
     List<providerSqXq> selcxxq(String providerSqId);
     
   //修改审核状态
-    int updshzt(String check_tag,String checker,String change_tag,String providerSqId,String providerName);
+    int updshzt(String check_tag,String checker,String change_tag,String shbz,String providerSqId,String providerName);
     
   //查询
     //登记查询所有
@@ -53,7 +54,9 @@ public interface ProviderSqDjMapper {
     int delid(int id,String product_id,String product_name);
     
   //修改为已变更
-    int updybg(String changer,String change_tag,String check_tag,String providerSqId,String providerId);
+    int updybg(String changer,String change_tag,String check_tag,String bgbz,String providerSqId,String providerId);
+
+	int selectCount(String providerId);
 }
 
 
