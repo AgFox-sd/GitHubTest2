@@ -8,6 +8,7 @@ import com.teams.pojo.D_module_details;
 import com.teams.pojo.Feilei;
 import com.teams.pojo.Pclass;
 import com.teams.pojo.Type;
+import com.teams.utils.Params;
 
 public interface ProductSjMapper {
 	
@@ -71,7 +72,7 @@ public interface ProductSjMapper {
 	int addda(D_file file);
 	
 	//产品档案查询
-    List<D_file> selecId();
+    List<D_file> selecId(Params params);
     
     //物料查询
     List<D_module> selD_module();

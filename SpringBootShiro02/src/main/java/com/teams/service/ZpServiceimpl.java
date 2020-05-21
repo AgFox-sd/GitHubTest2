@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.teams.mapper.ZpMapper;
 import com.teams.pojo.Roles;
@@ -21,9 +22,10 @@ public class ZpServiceimpl implements ZpService{
 	ZpMapper mapper;
 	
 	@Override
-	public List<User> AllUser() {
+	public PageInfo<User> AllUser(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.AllUser();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.AllUser(params));
 	}
 
 	@Override
@@ -80,9 +82,10 @@ public class ZpServiceimpl implements ZpService{
 	}
 
 	@Override
-	public List<User> AllRoles() {
+	public PageInfo<User> AllRoles(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.AllRoles();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.AllRoles(params));
 	}
 
 	@Override
@@ -124,7 +127,8 @@ public class ZpServiceimpl implements ZpService{
 	@Override
 	public PageInfo<permissions> AllQX(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.AllQX(params);
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.AllQX(params));
 	}
 
 	@Override

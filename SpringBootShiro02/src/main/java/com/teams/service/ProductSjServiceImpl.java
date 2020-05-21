@@ -15,6 +15,9 @@ import com.teams.pojo.D_module_details;
 import com.teams.pojo.Feilei;
 import com.teams.pojo.Pclass;
 import com.teams.pojo.Type;
+import com.teams.utils.Params;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.teams.mapper.ProductSjMapper;
 
 @Transactional
@@ -176,9 +179,10 @@ public class ProductSjServiceImpl implements ProductSjService{
 	}
 	
 	@Override
-	public List<D_file> selecId() {
+	public PageInfo<D_file> selecId(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.selecId();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selecId(params));
 	}
 
 	@Override

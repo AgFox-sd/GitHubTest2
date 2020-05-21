@@ -13,7 +13,7 @@ import com.teams.utils.Params;
 public interface ZpMapper {
 
 	//查询所有用户
-	List<User> AllUser();
+	List<User> AllUser(Params params);
 	//新增用户
 	int addUser(User us);
 	//查询所有角色
@@ -33,7 +33,7 @@ public interface ZpMapper {
 	//修改用户角色信息
 	int upduR(user_role ur);
 	//查询所有角色
-	List<User> AllRoles();
+	List<User> AllRoles(Params params);
 	//增加角色
 	int addRoles(Roles ro);
 	//查询角色没有的权限
@@ -47,7 +47,7 @@ public interface ZpMapper {
 	//删除用户角色
 	int deluserRo11(int id);
 	//查询所有的权限
-	PageInfo<permissions> AllQX(Params params);
+	List<permissions> AllQX(Params params);
 	//增加权限
 	int addQX(permissions per);
 	//查询父级菜单

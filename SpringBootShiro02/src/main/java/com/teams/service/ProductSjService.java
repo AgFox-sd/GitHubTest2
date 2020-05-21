@@ -2,12 +2,14 @@ package com.teams.service;
 
 import java.util.List;
 
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.D_file;
 import com.teams.pojo.D_module;
 import com.teams.pojo.D_module_details;
 import com.teams.pojo.Feilei;
 import com.teams.pojo.Pclass;
 import com.teams.pojo.Type;
+import com.teams.utils.Params;
 
 public interface ProductSjService {
 
@@ -74,7 +76,7 @@ public interface ProductSjService {
 	void updWlSj(String product_id, String design_module_tag);
 
 	// 产品档案查询
-	List<D_file> selecId();
+	PageInfo<D_file> selecId(Params params);
 
 	// 物料查询
 	List<D_module> selD_module();

@@ -53,17 +53,16 @@
                 <div class="card-toolbar clearfix">
                 <form class="pull-right search-bar" method="get" action="#!" role="form">
                   <div class="input-group">
+                     <input type="text" class="form-control" placeholder="请输入名称或者编号"
+						  v-model="keywords" >
                     <div class="input-group-btn">
                       <input type="hidden" name="search_field" id="search-field" value="title">
-                      <button class="btn btn-default dropdown-toggle" id="search-btn" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded="false">
-                     名字<span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li> <a tabindex="-1" href="javascript:void(0)" data-field="title">名字</a> </li>
-                      </ul>
-                    </div>
-                    <input type="text" class="form-control" placeholder="请输入名称"
-						  v-model="keywords" >
+                         <button type="button" class="btn btn-primary btn-ms" @click="AllQX()">
+                 		查询
+                        </button>
+                     </div>
+                 
+				 
                   </div>
                 </form>
                 <div class="toolbar-btn-action">
@@ -101,14 +100,31 @@
                       </tr>
                     </tbody>
                </table>
-                  <center>
+                   <center>
                   <ul class="pagination pagination-lg">
-					<ul class="pagination pagination-sm">
-   						 <li><a href="#" @click="searchid(plcassPage.firstPage)">&laquo;</a></li>
+					<ul class="pagination pagination-lg">
+   						 <li><a href="#" @click.prevent="searchid(plcassPage.firstPage)">首页</a></li>
+   						 <li><a href="#" @click.prevent="searchid(plcassPage.prePage)">上一页</a></li>
   					 		<template v-for="pageNum in plcassPage.navigatepageNums">
   					 		 <li><a href="#" @click.prevent="searchid(pageNum)">{{pageNum}}</a></li>
   					 		</template>
-  			             <li><a href="#" @click="searchid(plcassPage.lastPage)">&raquo;</a></li>
+  					 		 <li><a href="#" @click.prevent="searchid(plcassPage.nextPage)">下一页</a></li>
+  			             <li><a href="#" @click.prevent="searchid(plcassPage.lastPage)">末页</a></li>
+  			             <li><a>{{plcassPage.pageNum}}/{{plcassPage.pages}}</a></li>
+  			             <li>
+  			             <a><input type="text" v-model="size" style="width:40px;height: 35px;" value="1"/></a>
+  			             </li>
+  			             <li><a href="#" @click.prevent="AllQX()">go</a></li>
+  			             <li>
+  			             <select style="height: 37px;" id="page"  @change="AllQX()">
+  			             <option value="5">5条/页</option>
+  			             <option value="10">10条/页</option>
+  			             <option value="15">15条/页</option>
+  			             <option value="20">20条/页</option>
+  			             <option value="25">25条/页</option>
+  			             <option value="30">30条/页</option>
+  			             </select>
+  			             </li>
 					</ul>
 				  </ul>	
                   </center>
@@ -240,6 +256,7 @@ $(function(){
 					id:'',
 					Roleslist:[],
 					pid:'',
+					size:1,
 					params:{
 		    			  pageNum:1,
 		    			  pageSize:5,
@@ -256,6 +273,22 @@ $(function(){
 				methods:{
 					//查询所有权限
 					AllQX(){
+						if(this.size>this.plcassPage.pages&&this.plcassPage.pages!=0){
+							this.size = this.plcassPage.pages;
+						}
+						this.params.pageNum  = this.size;
+						this.params.pageSize = $("#page").val();
+						this.params.keyWord=this.keywords;
+						axios.post('AllQX',this.params).then(res=>{
+							this.plcassPage=res.data;
+						}).catch(err=>{
+							console.log("请求失败");
+						});
+						
+					},
+					AllQXS(){
+						this.params.pageSize = $("#page").val();
+						this.params.keyWord=this.keywords;
 						axios.post('AllQX',this.params).then(res=>{
 							this.plcassPage=res.data;
 						}).catch(err=>{
@@ -279,7 +312,7 @@ $(function(){
 		                    return false;
 		                }
 						this.params.pageNum=page;
-						this.AllQX();
+						this.AllQXS();
 					},
 					addQx(){//点击增加权限时查询所有的父级菜单
 						axios.post("SelFj").then(res=>{
@@ -367,15 +400,10 @@ $(function(){
 							axios.post(url).then(res=>{
 								if(res.data=="成功"){
 									alert('删除成功')
-									this.list.splice(index,1)
 									this.AllQX();
 								}
-							}).catch(err=>{
-								alert('请求失败')
 							})
 						}
-					},created(){
-						this.AllQX();
 					}
 					
 			}

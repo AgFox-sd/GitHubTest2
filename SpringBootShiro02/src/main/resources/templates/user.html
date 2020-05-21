@@ -53,18 +53,15 @@
                 <div class="card-toolbar clearfix">
                 <form class="pull-right search-bar" method="get" action="#!" role="form">
                   <div class="input-group">
+                       <input type="text" class="form-control" placeholder="请输入名称或者编号"
+						  v-model="keywords" >
                     <div class="input-group-btn">
                       <input type="hidden" name="search_field" id="search-field" value="title">
-                      <button class="btn btn-default dropdown-toggle" id="search-btn" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded="false">
-                     名字<span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu">
-                        <li> <a tabindex="-1" href="javascript:void(0)" data-field="title">名字</a> </li>
-                      </ul>
-                    </div>
-                    <input type="text" class="form-control" placeholder="请输入名称"
-						  v-model="keywords" >
-                  </div>
+                         <button type="button" class="btn btn-primary btn-ms" @click="AllUser()">
+                 		查询
+                        </button>
+                     </div>
+                     </div>
                 </form>
                 <div class="toolbar-btn-action">
                <button type="button" class="btn btn-primary btn-ms" data-toggle="modal" data-target="#myModal">
@@ -82,7 +79,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="user in search()" :key="user.id" class="text-center">
+                      <tr v-for="(user,key,index) in plcassPage.list" :key="index" class="text-center">
                         <td>{{user.id}}</td>
                         <td>{{user.username}}</td>
                         <td>{{user.name}}</td>
@@ -99,10 +96,34 @@
                       </tr>
                     </tbody>
                </table>
-               
-               <div>
-               
-               </div>
+                 <center>
+                  <ul class="pagination pagination-lg">
+					<ul class="pagination pagination-lg">
+   						 <li><a href="#"  @click.prevent="searchid(plcassPage.firstPage)">首页</a></li>
+   						 <li><a href="#" @click.prevent="searchid(plcassPage.prePage)">上一页</a></li>
+  					 		<template v-for="pageNum in plcassPage.navigatepageNums">
+  					 		 <li><a href="#" @click.prevent="searchid(pageNum)">{{pageNum}}</a></li>
+  					 		</template>
+  					 		 <li><a href="#" @click.prevent="searchid(plcassPage.nextPage)">下一页</a></li>
+  			             <li><a href="#" @click.prevent="searchid(plcassPage.lastPage)">末页</a></li>
+  			             <li><a>{{plcassPage.pageNum}}/{{plcassPage.pages}}</a></li>
+  			             <li>
+  			             <a><input type="text" v-model="size" style="width:40px;height: 35px;" value="1"/></a>
+  			             </li>
+  			             <li><a href="#" @click.prevent="AllUser()">go</a></li>
+  			             <li>
+  			             <select style="height: 37px;" id="page"  @change="AllUser()">
+  			             <option value="2">2条/页</option>
+  			             <option value="3">3条/页</option>
+  			             <option value="4">4条/页</option>
+  			             <option value="5">5条/页</option>
+  			             <option value="6">6条/页</option>
+  			             <option value="7">7条/页</option>
+  			             </select>
+  			             </li>
+					</ul>
+				  </ul>	
+                  </center>
                   <!-- 增加用户的模态框开始 -->
        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                   <div class="modal-dialog" role="document">
@@ -214,7 +235,16 @@ $(function(){
 					id:'',
 					checkList:'',//查询的角色
 					updUsers:[],
-					NoRole:[]
+					NoRole:[],
+					size:1,
+					params:{
+		    			  pageNum:1,
+		    			  pageSize:3,
+		    			  keyWord:''
+		    		},
+		    		plcassPage:{
+		    			  
+		    	    }
 				},
 				mounted(){//初始化显示完成调用
 					this.AllUser();
@@ -222,14 +252,28 @@ $(function(){
 				methods:{
 					//查询所有用户
 					AllUser(){
-						axios.post("AllUser").then(res=>{
-							this.list=res.data;
+						if(this.size>this.plcassPage.pages&&this.plcassPage.pages!=0){
+							this.size = this.plcassPage.pages;
+						}
+						this.params.pageNum  = this.size;
+						this.params.pageSize = $("#page").val();
+						this.params.keyWord=this.keywords;
+						axios.post("AllUser",this.params).then(res=>{
+							this.plcassPage=res.data;
 						}).catch(err=>{
 							console.log("请求失败");
 						});
 						
-					},
-					search(){
+					},AllUsers(){
+						this.params.pageSize = $("#page").val();
+						this.params.keyWord=this.keywords;
+						axios.post("AllUser",this.params).then(res=>{
+							this.plcassPage=res.data;
+						}).catch(err=>{
+							console.log("请求失败");
+						});
+						
+					},search(){
 						//遍历list数组,如果品牌名称包含keywords中的内容,
 						//将品牌添加到新的list中
 						var newList=[];
@@ -239,8 +283,13 @@ $(function(){
 							}
 						})
 						return newList;
-					},
-					addUser:function(){
+					},searchid(page){						
+						if (page < 0 || page > this.plcassPage.pages){
+		                    return false;
+		                }
+						this.params.pageNum=page;
+						this.AllUsers();
+					},addUser:function(){
 						//提交参数
 						var param={username:this.username,password:this.password};
 						axios.post('addUser',param).then(res=>{

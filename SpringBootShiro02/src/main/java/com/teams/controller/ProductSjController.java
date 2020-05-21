@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.teams.service.ProductSjService;
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.D_file;
 import com.teams.pojo.D_module;
 import com.teams.pojo.D_module_details;
@@ -216,8 +217,8 @@ public class ProductSjController {
 	//产品档案查询
 	@RequestMapping("/selD_fileId")
 	@ResponseBody
-	public  List<D_file> selectId() {
-		List<D_file> list=service.selecId();
+	public   PageInfo<D_file> selectId(@RequestBody com.teams.utils.Params params) {
+		 PageInfo<D_file> list=service.selecId(params);
 		return list;
 	}
 	

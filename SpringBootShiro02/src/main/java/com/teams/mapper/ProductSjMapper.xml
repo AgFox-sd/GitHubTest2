@@ -239,7 +239,11 @@
 	<select id="selecId" resultType="D_file">
 		select a.*,b.fname,c.tname,d.pname from d_file a,feilei b,type c,pclass d
 		where a.fid=b.fid and a.tid=c.tid and a.pid=d.pid and
-		a.delete_tag='未删除'
+		a.delete_tag='未删除' 
+		<if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+		 </if> 
+		order by id desc
 	</select>
 
 	<!-- 物料设计单查询 -->
