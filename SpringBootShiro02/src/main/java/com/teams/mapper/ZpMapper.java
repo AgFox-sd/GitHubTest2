@@ -2,11 +2,13 @@ package com.teams.mapper;
 
 import java.util.List;
 
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.Roles;
 import com.teams.pojo.User;
 import com.teams.pojo.permissions;
 import com.teams.pojo.permissions_role;
 import com.teams.pojo.user_role;
+import com.teams.utils.Params;
 
 public interface ZpMapper {
 
@@ -45,7 +47,7 @@ public interface ZpMapper {
 	//删除用户角色
 	int deluserRo11(int id);
 	//查询所有的权限
-	List<permissions> AllQX();
+	PageInfo<permissions> AllQX(Params params);
 	//增加权限
 	int addQX(permissions per);
 	//查询父级菜单

@@ -96,14 +96,14 @@
                <!-- box2开始 -->
         <div class="btn-group" id="box2" style="display:none">
        			    <div>
-          				<p style="margin-left: 400px;margin-top: 10px;font-size: 25px;">生产派工单</p>
+          				<p style="margin-left: 450px;margin-top: 20px;font-size: 25px;">生产派工单</p>
        				</div>
   					<div class="example-box" style="margin-left: 580px">
 		                  <label class="lyear-radio radio-inline radio-pink">
 		                    <input type="radio" name="hh"  value="通过" ><span>通过</span>
 		                  </label>
 		                  <label class="lyear-radio radio-inline radio-pink"  style="margin-left: 20px">
-		                    <input type="radio" name="hh" value="未通过" checked="checked"><span>未通过</span>
+		                    <input type="radio" name="hh" value="不通过" checked="checked"><span>不通过</span>
 		                  </label>
 		            <div style="margin-left: 180px">     
 		            <button type="button" class="btn btn-primary"  
@@ -163,7 +163,7 @@
 					      <div class="form-group" style="margin-top: 20px">
 					           	<label for="message-text" class="control-label" style="margin-left: 200px" >工时总成本:</label>
 					            <span style="margin-left: 10px;" th:text="${session.gscb}"></span>	
-					            <label for="message-text" class="control-label" style="margin-left: 340px" >物料总成本:</label>
+					            <label for="message-text" class="control-label" style="margin-left: 310px" >物料总成本:</label>
 					            <span style="margin-left: 10px;" th:text="${session.wlcb}"></span>		            
 					      </div>
 					      <div class="form-group" style="margin-top: 20px">
@@ -172,6 +172,10 @@
 					            <label for="message-text" class="control-label" style="margin-left: 350px">审核人:</label>
 					            <span id="shr" style="margin-left: 10px;color: red" th:text="${session.username}"></span>
 					    </div>
+					    <div class="form-group" style="margin-left: 150px;margin-top: 30px">
+								<label for="message-text" class="control-label" >意见:</label>
+								<textarea rows="3" cols="90" v-model="check_reason" name="check_reason"></textarea>
+						</div>
 		<!-- 模态框开始 -->
                   <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
                   <div class="modal-dialog modal-lg" role="document">
@@ -266,7 +270,9 @@
 			  gscb:'',//工时总成本
 			  wlcb:'' ,     //物料总成本
 			  apply_id:'',
-			  pg_zdr:''
+			  pg_zdr:'',
+			  check_reason:'',//审核不通过原因
+			  tg:'通过',
     	  },
     	  mounted(){//页面挂载完成调用查询全部的方法
 				this.load();
@@ -325,7 +331,7 @@
 					 var checker=$("#shr").text()  //审核人
 					  if(an=="通过"){
 							 var check_tag="审核通过";
-							 axios.get('updPgtg?check_tag='+check_tag+'&pg_id='+this.pg_id+'').then(res=>{
+							 axios.get('updPgtg?check_tag='+check_tag+'&pg_id='+this.pg_id+'&check_reason='+this.tg+'').then(res=>{
 								 if(res.data>0){
 									 alert('审核成功')
 									 this.load();
@@ -335,21 +341,26 @@
 								 }
 							 }).catch(err=>{
 								 alert('请求失败')
-							 })
-						  }else{
-							  var manufacture_tag="未派工";
-							  var url="delpg?product_id="+this.product_id+"&apply_id="+this.apply_id+"&manufacture_tag="+manufacture_tag+"&pg_id="+this.pg_id+"";
-							  axios.get(url).then(res=>{
-								  if(res.data>0){
-									  alert('审核不通过,请重新制定生产派工单')
-									  this.load();		
-									  this.load2();
-									  $("#box1").toggle();
-								      $("#box2").toggle();
-								  }
-							  }).catch(err=>{
-								  alert('请求失败')
-							  })
+							 });
+						  }else if(an=="不通过"){
+							  if(this.check_reason==""){
+								  alert('请输入审核不通过原因！')
+							  }else{
+								  var manufacture_tag="未派工";
+								  var url="delpg?product_id="+this.product_id+"&apply_id="+this.apply_id+"&manufacture_tag="+manufacture_tag+"&pg_id="+this.pg_id+"&check_reason="+this.check_reason+"";
+								  axios.get(url).then(res=>{
+									  if(res.data>0){
+										  alert('审核不通过,请重新制定生产派工单')
+										  this.load();		
+										  this.load2();
+										  $("#box1").toggle();
+									      $("#box2").toggle();
+									  }
+								  }).catch(err=>{
+									  alert('请求失败')
+								  })
+							  }
+							 
 							  
 							  
 						  }

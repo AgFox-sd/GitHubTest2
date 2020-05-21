@@ -18,6 +18,8 @@ public class provider {
 	private String change_time;//变更时间
 	private String change_tag ;//变更标志
 	private String delete_tag ;//删除标志
+	private String change_reason ;//变更原因
+	private String check_reason ;//审核原因
 	
 	private String fname;
 	public provider() {
@@ -155,6 +157,55 @@ public class provider {
 	public void setFname(String fname) {
 		this.fname = fname;
 	}
+
+
+	public String getChange_reason() {
+		return change_reason;
+	}
+
+
+	public void setChange_reason(String change_reason) {
+		this.change_reason = change_reason;
+	}
+
+
+	public String getCheck_reason() {
+		return check_reason;
+	}
+
+
+	public void setCheck_reason(String check_reason) {
+		this.check_reason = check_reason;
+	}
+
+
+	public provider(int id, String providerId, String providerName, String providerAddress, String linkman, int fid,
+			String providerPhone, String register, String register_time, String checker, String check_tag,
+			String check_time, String changer, String change_time, String change_tag, String delete_tag,
+			String change_reason, String check_reason, String fname) {
+		super();
+		this.id = id;
+		this.providerId = providerId;
+		this.providerName = providerName;
+		this.providerAddress = providerAddress;
+		this.linkman = linkman;
+		this.fid = fid;
+		this.providerPhone = providerPhone;
+		this.register = register;
+		this.register_time = register_time;
+		this.checker = checker;
+		this.check_tag = check_tag;
+		this.check_time = check_time;
+		this.changer = changer;
+		this.change_time = change_time;
+		this.change_tag = change_tag;
+		this.delete_tag = delete_tag;
+		this.change_reason = change_reason;
+		this.check_reason = check_reason;
+		this.fname = fname;
+	}
+	
+	
 	
 	
 }

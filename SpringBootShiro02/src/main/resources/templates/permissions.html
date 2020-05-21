@@ -83,7 +83,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="qx in search()" :key="qx.id" class="text-center">
+                      <tr  v-for="(qx,key,index) in plcassPage.list" :key="index" class="text-center">
                         <td>{{qx.id}}</td>
                         <td>{{qx.f_fullName}}</td>
                          <td>{{qx.f_UrlAddress}}</td>
@@ -101,6 +101,17 @@
                       </tr>
                     </tbody>
                </table>
+                  <center>
+                  <ul class="pagination pagination-lg">
+					<ul class="pagination pagination-sm">
+   						 <li><a href="#" @click="searchid(plcassPage.firstPage)">&laquo;</a></li>
+  					 		<template v-for="pageNum in plcassPage.navigatepageNums">
+  					 		 <li><a href="#" @click.prevent="searchid(pageNum)">{{pageNum}}</a></li>
+  					 		</template>
+  			             <li><a href="#" @click="searchid(plcassPage.lastPage)">&raquo;</a></li>
+					</ul>
+				  </ul>	
+                  </center>
                 <!-- 增加权限的模态框开始 -->
       		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                   <div class="modal-dialog" role="document">
@@ -229,6 +240,14 @@ $(function(){
 					id:'',
 					Roleslist:[],
 					pid:'',
+					params:{
+		    			  pageNum:1,
+		    			  pageSize:5,
+		    			  keyWord:''
+		    		},
+		    		plcassPage:{
+		    			  
+		    	    }
 		
 				},
 				mounted(){//初始化显示完成调用
@@ -237,8 +256,8 @@ $(function(){
 				methods:{
 					//查询所有权限
 					AllQX(){
-						axios.post("AllQX").then(res=>{
-							this.list=res.data;
+						axios.post('AllQX',this.params).then(res=>{
+							this.plcassPage=res.data;
 						}).catch(err=>{
 							console.log("请求失败");
 						});
@@ -254,6 +273,13 @@ $(function(){
 							}
 						})
 						return newList;
+					},
+					searchid(page){						
+						if (page < 0 || page > this.plcassPage.pages){
+		                    return false;
+		                }
+						this.params.pageNum=page;
+						this.AllQX();
 					},
 					addQx(){//点击增加权限时查询所有的父级菜单
 						axios.post("SelFj").then(res=>{
@@ -348,7 +374,9 @@ $(function(){
 								alert('请求失败')
 							})
 						}
-					},
+					},created(){
+						this.AllQX();
+					}
 					
 			}
 				

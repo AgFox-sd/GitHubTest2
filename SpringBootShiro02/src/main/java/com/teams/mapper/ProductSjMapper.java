@@ -53,7 +53,7 @@ public interface ProductSjMapper {
 	//修改产品档案信息
 	int updBG(D_file file);
 	//查询通过审核的商品档案信息
-	List<D_file> Selad(String check_tag, String design_module_tag,int tid);
+	List<D_file> Selad(String check_tag, String design_module_tag,int tid,String sjdh);
 	
 	//物料组成设计单
 	void productWlZc(String sjdh, String product_id, String product_name, String sjr, double d);
@@ -95,4 +95,8 @@ public interface ProductSjMapper {
  			int amount, double residual_amount, double cost_price,double subtotal);
 
 	List<D_module> selD_moduleS();
+
+	int delwlsjzcd(String design_id, String product_id);
+
+	int selectCount(String sjdh);
 }

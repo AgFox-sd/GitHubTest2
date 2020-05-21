@@ -51,11 +51,7 @@ public class ProviderServiceimpl implements ProviderService{
 		return mapper.AllGYSFu(string);
 	}
 
-	@Override
-	public int updGYSFuS(String string, String string2, String providerId, String checker) {
-		// TODO Auto-generated method stub
-		return mapper.updGYSFuS(string, string2, providerId, checker);
-	}
+	
 
 	@Override
 	public int delGYS(String providerId) {
@@ -74,6 +70,17 @@ public class ProviderServiceimpl implements ProviderService{
 		// TODO Auto-generated method stub
 		return mapper.updGYSBG(pro);
 	}
+
+	@Override
+	public int updGYSFuS(String string2, String providerId, String checkerString, String check_tag,
+			String check_reason) {
+		// TODO Auto-generated method stub
+		return mapper.updGYSFuS(string2, providerId, checkerString, check_tag, check_reason);
+	}
+
+
+
+
 
 
 

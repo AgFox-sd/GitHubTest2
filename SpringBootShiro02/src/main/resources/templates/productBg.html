@@ -66,6 +66,7 @@
                         <th class="text-center">单位</th>
                         <th class="text-center">产品档次</th>
                         <th class="text-center">市场单价</th>
+                        <th class="text-center">审核状态</th>
                         <th class="text-center">档案变更</th>
                       </tr>
                     </thead>
@@ -78,6 +79,7 @@
                         <td>{{file.amount_unit}}</td>
                         <td>{{file.pname}}</td>
                        	<td>{{file.list_price}}</td>
+                       	<td>{{file.check_tag}}</td>
                         <td>
                           <div class="btn-group">
                              <button type="button" class="btn btn-primary  btn-xs" data-toggle="modal" data-target=".bs-example-modal-lg" @click="Selidxx(file.product_id)">产品档案变更</button>
@@ -86,7 +88,7 @@
                       </tr>
                     </tbody>
 		<!-- 修改模态框开始 -->
-		  <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+		  <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"  id="mtk" :class="{'mtk':flag}">
                   <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -154,13 +156,17 @@
 					            <label for="message-text" class="control-label">产品经理:</label>
 					             <input type="text" name="responsible_person" v-model="updFile.responsible_person">
 					            <label for="message-text" class="control-label">变更人:</label>
-					             <input type="text" name="changer" v-model="updFile.changer">
+					             <input type="text" name="changer" v-model="updFile.changer" >
 					          </div>
+					          <div class="form-group">
+								   <label for="message-text" class="control-label"><span style="color: red">*</span>变更意见：</label>
+								   <input type="text" class="form-control" v-model="change_reason"/>
+							 </div>
 		        </form>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" @click="tijiao()" data-dismiss="modal">点击保存</button>
+                        <button type="button" class="btn btn-primary" @click="tijiao()" >点击保存</button>
                       </div>
                     </div>
                   </div>
@@ -222,7 +228,9 @@ $(function(){
 		            amount_unit:'',
 		            product_describe:'',
 		            responsible_person:'',
-		            changer:''
+		            changer:'',
+		            change_reason:'',
+		            flag:false
 				},
 				mounted(){//初始化显示完成调用
 					this.selectId();
@@ -243,31 +251,38 @@ $(function(){
 						});
 					},
 					tijiao:function(){//变更提交
-					    var CHECK_TAG = '等待审核';
-						var url={product_id:this.updFile.product_id,product_name:this.updFile.product_name,
-								factory_name:this.updFile.factory_name,tid:this.updFile.tid,pid:this.updFile.pid,
-								product_nick:this.updFile.product_nick,personal_unit:this.updFile.personal_unit,
-								personal_value:this.updFile.personal_value,provider_group:this.updFile.provider_group,
-								warranty:this.updFile.warranty,twin_name:this.updFile.twin_name,twin_id:this.updFile.twin_id,
-								lifecycle:this.updFile.lifecycle,list_price:this.updFile.list_price,cost_price:this.updFile.cost_price,
-								real_cost_price:this.updFile.real_cost_price,amount_unit:this.updFile.amount_unit,
-								product_describe:this.updFile.product_describe,responsible_person:this.updFile.responsible_person,
-								changer:this.updFile.changer,check_tag:CHECK_TAG};
 						
-						axios.post('updBG',url).then(res=>{
-						if(res.data=="成功"){
-								alert('修改成功');
-								//清空文本框
-								this.product_id=this.product_name=this.factory_name=this.tid=this.pid=
-								this.product_nick=this.product_nick=this.personal_value=this.provider_group=
-								this.warranty=this.twin_name=this.twin_id=this.lifecycle=this.list_price=
-								this.cost_price=this.real_cost_price=this.amount_unit=this.product_describe=
-								this.responsible_person=this.changer=''
+						 if(this.change_reason==""){
+							  alert("请填写变更意见！");
+						  }else{
+							   var CHECK_TAG = '等待审核';
+							   var url={product_id:this.updFile.product_id,product_name:this.updFile.product_name,
+										factory_name:this.updFile.factory_name,tid:this.updFile.tid,pid:this.updFile.pid,
+										product_nick:this.updFile.product_nick,personal_unit:this.updFile.personal_unit,
+										personal_value:this.updFile.personal_value,provider_group:this.updFile.provider_group,
+										warranty:this.updFile.warranty,twin_name:this.updFile.twin_name,twin_id:this.updFile.twin_id,
+										lifecycle:this.updFile.lifecycle,list_price:this.updFile.list_price,cost_price:this.updFile.cost_price,
+										real_cost_price:this.updFile.real_cost_price,amount_unit:this.updFile.amount_unit,
+										product_describe:this.updFile.product_describe,responsible_person:this.updFile.responsible_person,
+										changer:this.updFile.changer,check_tag:CHECK_TAG,change_reason:this.change_reason};
 								
-								this.selectId();//再查询一次
+								axios.post('updBG',url).then(res=>{
+								if(res.data=="成功"){
+										alert('修改成功');
+										$("#mtk").modal('hide');
+										//清空文本框
+										this.product_id=this.product_name=this.factory_name=this.tid=this.pid=
+										this.product_nick=this.product_nick=this.personal_value=this.provider_group=
+										this.warranty=this.twin_name=this.twin_id=this.lifecycle=this.list_price=
+										this.cost_price=this.real_cost_price=this.amount_unit=this.product_describe=
+										this.responsible_person=this.changer=this.change_reason=''
+										
+										this.selectId();//再查询一次
+										
+								}
+								}); 
 								
-						}
-						});
+						  }
 					}
 			}
 				
