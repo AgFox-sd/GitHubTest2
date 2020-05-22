@@ -20,6 +20,9 @@ public class D_module {
 	private String change_time;//'变更时间',
 	private String check_tag;//审核标志
 	private String change_tag;//变更标志
+	
+	private String check_yj;//审核意见
+	private String change_yj;//变更意见
 	public int getId() {
 		return id;
 	}
@@ -110,12 +113,26 @@ public class D_module {
 	public void setChange_tag(String change_tag) {
 		this.change_tag = change_tag;
 	}
+	
+	public String getCheck_yj() {
+		return check_yj;
+	}
+	public void setCheck_yj(String check_yj) {
+		this.check_yj = check_yj;
+	}
+	public String getChange_yj() {
+		return change_yj;
+	}
+	public void setChange_yj(String change_yj) {
+		this.change_yj = change_yj;
+	}
 	public D_module() {
 		super();
 	}
 	public D_module(int id, String design_id, String product_id, String product_name, String designer,
 			String module_describe, double cost_price_sum, String register, String register_time, String checker,
-			String check_time, String changer, String change_time, String check_tag, String change_tag) {
+			String check_time, String changer, String change_time, String check_tag, String change_tag, String check_yj,
+			String change_yj) {
 		super();
 		this.id = id;
 		this.design_id = design_id;
@@ -132,6 +149,8 @@ public class D_module {
 		this.change_time = change_time;
 		this.check_tag = check_tag;
 		this.change_tag = change_tag;
+		this.check_yj = check_yj;
+		this.change_yj = change_yj;
 	}
 	@Override
 	public String toString() {
@@ -139,9 +158,9 @@ public class D_module {
 				+ product_name + ", designer=" + designer + ", module_describe=" + module_describe + ", cost_price_sum="
 				+ cost_price_sum + ", register=" + register + ", register_time=" + register_time + ", checker="
 				+ checker + ", check_time=" + check_time + ", changer=" + changer + ", change_time=" + change_time
-				+ ", check_tag=" + check_tag + ", change_tag=" + change_tag + "]";
+				+ ", check_tag=" + check_tag + ", change_tag=" + change_tag + ", check_yj=" + check_yj + ", change_yj="
+				+ change_yj + "]";
 	}
-	
 	
 	
 	

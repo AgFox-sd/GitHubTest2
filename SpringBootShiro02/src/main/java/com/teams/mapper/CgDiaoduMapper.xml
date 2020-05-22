@@ -85,7 +85,7 @@
   </update>
   
   <update id="updateDiaodu">
-  update  set checker=#{checker},check_time=sysdate(),check_tag='审核不通过' where cgDiaoduId = #{cgDiaoduId}
+  update cgDiaodu set checker=#{checker},check_time=sysdate(),check_tag='审核不通过'  where cgDiaoduId = #{cgDiaoduId}
   </update>
   
   	<!--//修改采购调度单为审核通过 -->

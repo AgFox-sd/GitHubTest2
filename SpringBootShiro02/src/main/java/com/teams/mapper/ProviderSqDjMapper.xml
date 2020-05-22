@@ -15,76 +15,90 @@
          providersqxq where providerSqId in(select providerSqId from providersq where providerId=#{providerSqId})) and tid=2
 	</select>
 
+    <select id="selectCount" resultType="int">
+    select count(1) from d_file where product_id not in (select product_id from 
+			providerSqXq where providerSqId in(select providersqId from providersq where providerId=#{providerId})) and tid=2 
+    </select>
 	<insert id="addproviderSq">
 		insert into providerSq
 		values(null,#{providerSqId},#{providerId},#{providerName},#{providerPhone},SYSDATE(),#{register},
-		SYSDATE(),DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT)
+		SYSDATE(),DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT)
 	</insert>
 	<insert id="addproviderSqXq">
 		insert into providerSqXq
 		values(null,#{providerSqId},#{providerSqXqId},#{product_id},#{product_name},
 		DEFAULT,#{unit},#{price},#{subtotal})
 	</insert>
-	
+
 	<select id="selproviderSqXq" resultType="providerSqXq">
 		select a.* from providerSqXq a,providerSq b,provider c 
 		where a.providerSqId=b.providerSqId and b.providerId=#{providerId} group by a.id
 	</select>
-	
+
 	<update id="updproviderSqXq">
-	  update providerSqXq set amount=#{amount},price=#{price},
-	  subtotal=#{subtotal} 
-      where product_id=#{product_id} and product_name=#{product_name}
+		update providerSqXq set price=#{price},
+		subtotal=#{price}
+		where product_id=#{product_id} and product_name=#{product_name}
 	</update>
 
-   <select id="selXq" resultType="providerSqXq">
-		select a.* from providerSqXq a,providerSq b,provider c 
-		where a.providerSqId=b.providerSqId 
+	<select id="selXq" resultType="providerSqXq">
+		select a.* from providerSqXq
+		a,providerSq b,provider c
+		where a.providerSqId=b.providerSqId
 		and b.providerId=#{providerId}
 
 	</select>
-	
+
 	<!-- 审核 -->
 	<select id="selproviderSq" resultType="providerSq">
-		select * from providerSq where check_tag='等待审核'
+		select * from providerSq
+		where check_tag='等待审核'  GROUP BY providerSqId
 	</select>
-	
+
 	<select id="selcxxq" resultType="providerSqXq">
-		select * from providerSqXq where providerSqId=#{providerSqId}
+		select * from providerSqXq where
+		providerSqId=#{providerSqId}
 	</select>
-	
+
 	<!-- 修改审核状态 -->
 	<update id="updshzt">
-	  update providerSq set check_tag=#{check_tag},check_time=sysdate(),checker=#{checker},change_tag=#{change_tag}
-	  where providerSqId=#{providerSqId} and providerName=#{providerName}
+		update providerSq set
+		check_tag=#{check_tag},check_time=sysdate(),checker=#{checker},change_tag=#{change_tag},
+		shbz=#{shbz}
+		where providerSqId=#{providerSqId} and providerName=#{providerName}
 	</update>
-	
+
 	<!-- 登记查询 -->
 	<select id="seldjsy" resultType="providerSq">
-	select * from providerSq
+		select * from providerSq
 	</select>
-	
+
 	<select id="selshxq" resultType="providerSqXq">
-	select * from providerSqXq where providerSqId=#{providerSqId}
+		select * from providerSqXq where providerSqId=#{providerSqId}
 	</select>
-	
+
 	<!-- 变更 -->
 	<select id="selsywbg" resultType="providerSq">
-	select a.*,b.providerSqXqId from providerSq a,providerSqXq b where a.providerSqId=b.providerSqId and  a.change_tag=#{change_tag} GROUP BY a.providerSqId
+		select a.*,b.providerSqXqId from providerSq a,providerSqXq b where
+		a.providerSqId=b.providerSqId and a.change_tag=#{change_tag} and check_tag!='审核通过' GROUP BY
+		a.providerSqId
 	</select>
-	
+
 	<select id="selspbg" resultType="D_file">
-	select * from d_file where  product_id not in
-    (select product_id from providerSqXq where providerSqId=#{providerSqId}) and tid=2
+		 select * from d_file where product_id not in (select product_id from 
+			providerSqXq where providerSqId in(select providersqId from providersq where providerId=#{providerSqId})) and tid=2 
 	</select>
-	
+
 	<delete id="delid">
-	   delete from providerSqXq where id=#{id} and product_id=#{product_id} and product_name=#{product_name}
+		delete from providerSqXq where id=#{id} and product_id=#{product_id} and
+		product_name=#{product_name}
 	</delete>
-	
+
 	<update id="updybg">
-	update providerSq set changer=#{changer},change_time=SYSDATE(),change_tag=#{change_tag},check_tag=#{check_tag}
-	where providerSqId=#{providerSqId} and providerId=#{providerId}
-	
+		update providerSq set
+		changer=#{changer},change_time=SYSDATE(),change_tag=#{change_tag},check_tag=#{check_tag},
+		bgbz=#{bgbz}
+		where providerSqId=#{providerSqId} and providerId=#{providerId}
+
 	</update>
 </mapper>

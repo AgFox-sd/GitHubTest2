@@ -39,8 +39,8 @@ public class ProviderSqDj {
 	// 查询商品信息
 	@RequestMapping("/selproviderSqXq")
 	@ResponseBody
-	public List<providerSqXq> selproviderSqXq(String providerId) {
-		List<providerSqXq> list = service.selproviderSqXq(providerId);
+	public List<providerSqXq> selproviderSqXq(String providerSqId) {
+		List<providerSqXq> list = service.selproviderSqXq(providerSqId);
 		return list;
 	}
 
@@ -64,11 +64,11 @@ public class ProviderSqDj {
 	// 修改
 	@RequestMapping("/updbjd")
 	@ResponseBody
-	public int updbjd(@RequestParam("amount") int[] amount, @RequestParam("price") double[] price,
-			@RequestParam("subtotal") double[] subtotal, @RequestParam("product_id") String[] product_id,
+	public int updbjd(@RequestParam("price") double[] price,
+			@RequestParam("product_id") String[] product_id,
 			@RequestParam("product_name") String[] product_name) {
-		for (int i = 0; i < amount.length; i++) {
-			service.updproviderSqXq(amount[i], price[i], subtotal[i], product_id[i], product_name[i]);
+		for (int i = 0; i < price.length; i++) {
+			service.updproviderSqXq(price[i], product_id[i], product_name[i]);
 		}
 		return 1;
 	}
@@ -93,8 +93,8 @@ public class ProviderSqDj {
 	// 修改审核状态
 	@RequestMapping("/updshzt")
 	@ResponseBody
-	public String updshzt(String check_tag, String checker,String change_tag, String providerSqId, String providerName) {
-		int row = service.updshzt(check_tag, checker,change_tag, providerSqId, providerName);
+	public String updshzt(String check_tag, String checker,String change_tag,String shbz, String providerSqId, String providerName) {
+		int row = service.updshzt(check_tag, checker,change_tag,shbz, providerSqId, providerName);
 		return row > 0 ? "成功" : "失败";
 	}
 
@@ -139,8 +139,7 @@ public class ProviderSqDj {
 			@RequestParam("product_name") String[] product_name, @RequestParam("unit") String[] unit,
 			@RequestParam("price") double[] price, @RequestParam("subtotal") double[] subtotal) {
 		for (int i = 0; i < price.length; i++) {
-			service.addproviderSqXq(providerSqId, providerSqXqId, product_id[i], product_name[i], unit[i], price[i],
-					subtotal[i]);
+			service.addproviderSqXq(providerSqId, providerSqXqId, product_id[i], product_name[i], unit[i], price[i], subtotal[i]);
 		}
 		return 1;
 	}
@@ -158,10 +157,16 @@ public class ProviderSqDj {
 	@RequestMapping("/updybg")
 	@ResponseBody
 	public String updybg(@RequestParam("changer") String changer, @RequestParam("change_tag") String change_tag,
-			@RequestParam("check_tag") String check_tag,@RequestParam("providerSqId") String providerSqId,
+			@RequestParam("check_tag") String check_tag,@RequestParam("bgbz") String bgbz,
+			@RequestParam("providerSqId") String providerSqId,
 			@RequestParam("providerId") String providerId) {
-		int row = service.updybg(changer, change_tag, check_tag, providerSqId, providerId);
+		int row = service.updybg(changer, change_tag, check_tag, bgbz,providerSqId, providerId);
 		return row > 0 ? "成功" : "失败";
 	}
 
+	@RequestMapping("/selectCount")
+	@ResponseBody
+	public int selectCount(String providerId) {
+		return service.selectCount(providerId);
+	}
 }

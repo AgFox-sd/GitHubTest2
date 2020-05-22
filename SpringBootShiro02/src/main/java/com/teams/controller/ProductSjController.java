@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.teams.service.ProductSjService;
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.D_file;
 import com.teams.pojo.D_module;
 import com.teams.pojo.D_module_details;
@@ -130,8 +131,8 @@ public class ProductSjController {
 	//产品物料设计审核  --不通过
 	@RequestMapping("/delwlsj")
 	@ResponseBody  
-	public int delwlsj(@RequestParam("design_id") String design_id,@RequestParam("product_id") String product_id,@RequestParam("design_module_tag") String design_module_tag) {
-		return service.delwlsj(design_id);
+	public int delwlsj(@RequestParam("check_yj") String check_yj,@RequestParam("design_id") String design_id,@RequestParam("product_id") String product_id,@RequestParam("design_module_tag") String design_module_tag) {
+		return service.delwlsj(check_yj,product_id,design_id);
 	}
 	
 	
@@ -163,36 +164,40 @@ public class ProductSjController {
    }
 
 
-	
+	//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 	//查询通过审核的商品档案信息
 	@RequestMapping("/Selad")
 	@ResponseBody
 	public List<D_file> Selad() {
-		List<D_file> list=service.Selad("审核通过","未设计",1);
+		List<D_file> list=service.Selad("审核通过","未设计",1,"s");
 		return list;
 	}
 	
 	//查询通过审核的物料信息
 	@RequestMapping("/Selad2")
 	@ResponseBody
-	public List<D_file> Selad2() {
-		List<D_file> list=service.Selad("审核通过","未设计", 2);
+	public List<D_file> Selad2(String sjdh) {
+		List<D_file> list=service.Selad("审核通过","未设计", 2,sjdh);
 		return list;
 	}
+	
 	//添加产品物料组成设计单和物料组成明细单
 	@RequestMapping("/productWlZc")
 	@ResponseBody
     public List<D_module_details> productWlZc(@RequestParam("bh") String[] bh,@RequestParam("mc") String[] mc,@RequestParam("lx") String[] lx,@RequestParam("dc") String[] dc,@RequestParam("sl") int[] sl,@RequestParam("dw") String[] dw,@RequestParam("dj") double[] dj,@RequestParam("product_id") String product_id,@RequestParam("product_name") String product_name,@RequestParam("sjdh") String sjdh,@RequestParam("sjr") String sjr) {		
 		double zje =0;
-    	List<D_module_details> list = new ArrayList<D_module_details>();
+		if(service.selectCount(sjdh)>0) {
+			
+		}else {
+			service.productWlZc(sjdh,product_id,product_name,sjr,zje);
+		}
+		List<D_module_details> list = new ArrayList<D_module_details>();
 		for (int i = 0; i < dj.length; i++) {
 			service.wlZcMx(sjdh,bh[i],mc[i],dw[i],sl[i],dj[i],sl[i]*dj[i]);
-			service.updWlSj(product_id,"已设计");
 			D_module_details dmd = new D_module_details(bh[i],mc[i],dw[i],sl[i],dj[i],sl[i]*dj[i],lx[i],dc[i]);
 			zje +=sl[i]*dj[i];
 			list.add(dmd);
 		}
-		service.productWlZc(sjdh,product_id,product_name,sjr,zje);
 		return list;
 	}
     
@@ -213,8 +218,8 @@ public class ProductSjController {
 	//产品档案查询
 	@RequestMapping("/selD_fileId")
 	@ResponseBody
-	public  List<D_file> selectId() {
-		List<D_file> list=service.selecId();
+	public   PageInfo<D_file> selectId(@RequestBody com.teams.utils.Params params) {
+		 PageInfo<D_file> list=service.selecId(params);
 		return list;
 	}
 	
@@ -284,8 +289,21 @@ public class ProductSjController {
       //变更时重新提交
       @RequestMapping("/upgwsh")
       @ResponseBody
-      public String upgwsh(String check_tag,String change_tag,String product_id,String product_name) {
-      	int list=service.upgwsh(check_tag, change_tag, product_id, product_name);
+      public String upgwsh(String check_tag,String change_tag,String change_yj,String product_id,String product_name) {
+      	int list=service.upgwsh(check_tag, change_tag,change_yj, product_id, product_name);
       	return list>0?"成功":"失败";
+      }
+      
+      @RequestMapping("/updwlysj")
+      @ResponseBody
+      public int updwlysj(String product_id) {
+    	  service.updWlSj(product_id,"已设计");
+			return 1;
+      }
+      
+      @RequestMapping("/delwlsjzcd")
+      @ResponseBody
+      public int delwlsjzcd(String design_id,String product_id) {
+    	  return service.delwlsjzcd(design_id, product_id);
       }
 }

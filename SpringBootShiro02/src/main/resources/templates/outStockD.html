@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="zh">
 <head>
 <meta charset="utf-8">
@@ -207,7 +207,7 @@
                        	<td>01-01-01</td>
                         <td>{{wl.address}}</td>
                         <td></td>
-                        <td>{{wl.max_capacity_amount-wl.amount}}</td>
+                        <td id="cfsl">{{wl.max_capacity_amount-wl.amount}}</td>
                         <td>
                           <input  type="text"  v-model="bcsl"/>
                         </td>
@@ -373,7 +373,7 @@
 						}else{
 							var attemper = $("#djr").text();
 							axios.get("selectKdd?product_id="+product_id+"").then(res=>{
-								if(res.data>0){
+								if(res.data>0){			
 									axios.get("updDdu?product_id="+product_id+"&attemper="+attemper+"&gather_id="+this.gather_id+"").then(res=>{
 										if(res.data>0){
 											alert('调度成功！');
@@ -414,19 +414,25 @@
 							})
 						}
 					},tijiao2(){
-						this.gathered_amount_sum=this.gathered_amount_sum+(1*this.bcsl);
-						this.yrkzcb=this.yrkzcb+(this.bcsl*this.cost_price)
-						axios.get("updDiaodu?product_id="+this.product_id+"&gathered_amount="+this.bcsl+"&gather_id="+this.gather_id+"&zsdbh="+this.zsdbh+"").then(res=>{
-							if(res.data>0){
-								alert('调度成功！');
-								$("#box3").toggle();
-								$("#box2").toggle();
-								this.bcsl='';
-								this.Selad2();
-							}
-						}).catch(err=>{
-							console.log("请求失败");
-						})
+						if(this.bcsl>$("#cfsl").text()){
+							alert("入库数量已超出可存放数量！请重新输入！");
+							this.bcsl=''
+						}else{
+							this.gathered_amount_sum=this.gathered_amount_sum+(1*this.bcsl);
+							this.yrkzcb=this.yrkzcb+(this.bcsl*this.cost_price)
+							axios.get("updDiaodu?product_id="+this.product_id+"&gathered_amount="+this.bcsl+"&gather_id="+this.gather_id+"&zsdbh="+this.zsdbh+"").then(res=>{
+								if(res.data>0){
+									alert('调度成功！');
+									$("#box3").toggle();
+									$("#box2").toggle();
+									this.bcsl='';
+									this.Selad2();
+								}
+							}).catch(err=>{
+								console.log("请求失败");
+							})
+						}
+						
 					}
 			}
 				

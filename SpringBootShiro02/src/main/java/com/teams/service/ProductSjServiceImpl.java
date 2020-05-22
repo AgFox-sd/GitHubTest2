@@ -15,6 +15,9 @@ import com.teams.pojo.D_module_details;
 import com.teams.pojo.Feilei;
 import com.teams.pojo.Pclass;
 import com.teams.pojo.Type;
+import com.teams.utils.Params;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.teams.mapper.ProductSjMapper;
 
 @Transactional
@@ -107,9 +110,9 @@ public class ProductSjServiceImpl implements ProductSjService{
 	}
 
 	@Override
-	public int delwlsj(@Param("design_id")String design_id) {
+	public int delwlsj(String check_yj,String product_id,@Param("design_id")String design_id) {
 		// TODO Auto-generated method stub
-		return mapper.delwlsj(design_id);
+		return mapper.delwlsj(check_yj,product_id,design_id);
 	}
 
 	@Override
@@ -131,9 +134,9 @@ public class ProductSjServiceImpl implements ProductSjService{
 	}
 
 	@Override
-	public List<D_file> Selad(String check_tag,String design_module_tag, int tid) {
+	public List<D_file> Selad(String check_tag,String design_module_tag, int tid,String sjdh) {
 		// TODO Auto-generated method stub
-		return mapper.Selad(check_tag,design_module_tag,tid);
+		return mapper.Selad(check_tag,design_module_tag,tid,sjdh);
 	}
 
 	@Override
@@ -176,9 +179,10 @@ public class ProductSjServiceImpl implements ProductSjService{
 	}
 	
 	@Override
-	public List<D_file> selecId() {
+	public PageInfo<D_file> selecId(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.selecId();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selecId(params));
 	}
 
 	@Override
@@ -224,9 +228,9 @@ public class ProductSjServiceImpl implements ProductSjService{
 	}
 
 	@Override
-	public int upgwsh(String check_tag, String change_tag, String product_id, String product_name) {
+	public int upgwsh(String check_tag, String change_tag, String change_yj,String product_id, String product_name) {
 		// TODO Auto-generated method stub
-		return mapper.upgwsh(check_tag, change_tag, product_id, product_name);
+		return mapper.upgwsh(check_tag, change_tag,change_yj, product_id, product_name);
 	}
 
 	@Override
@@ -240,6 +244,18 @@ public class ProductSjServiceImpl implements ProductSjService{
 	public List<D_module> selD_moduleS() {
 		// TODO Auto-generated method stub
 		return mapper.selD_moduleS();
+	}
+
+	@Override
+	public int delwlsjzcd(String design_id, String product_id) {
+		// TODO Auto-generated method stub
+		return mapper.delwlsjzcd(design_id, product_id);
+	}
+
+	@Override
+	public int selectCount(String sjdh) {
+		// TODO Auto-generated method stub
+		return mapper.selectCount(sjdh);
 	}
 
 	

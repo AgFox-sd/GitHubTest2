@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.Roles;
 import com.teams.pojo.User;
 import com.teams.pojo.permissions;
@@ -25,10 +26,12 @@ public class ZpController {
 	//查询所有用户
 	@RequestMapping("/AllUser")
 	@ResponseBody
-	public List<User> AllUser() {
-			List<User> list=service.AllUser();
+	public PageInfo<User> AllUser(@RequestBody com.teams.utils.Params params) {
+		PageInfo<User> list=service.AllUser(params);
 			return list;
 	}
+	
+	
 	
 	//新增用户
 	@RequestMapping("/addUser")
@@ -95,8 +98,8 @@ public class ZpController {
 	//查询所有的角色
 	@RequestMapping("/AllRoles")
 	@ResponseBody
-	public List<User> AllRoles() {
-			List<User> list=service.AllRoles();
+	public PageInfo<User> AllRoles(@RequestBody com.teams.utils.Params params) {
+		   PageInfo<User> list=service.AllRoles(params);
 			return list;
 	}
 	
@@ -140,9 +143,9 @@ public class ZpController {
 	//查询所有的权限
 	@RequestMapping("/AllQX")
 	@ResponseBody
-	public List<permissions> AllQX() {
-			List<permissions> list=service.AllQX();
-			return list;
+	public PageInfo<permissions> AllQX(@RequestBody com.teams.utils.Params params) {
+		PageInfo<permissions> permisPageInfo=service.AllQX(params);
+	    return permisPageInfo;
 	}
 	
 	//增加权限

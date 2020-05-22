@@ -43,9 +43,87 @@ public class D_file{
 		  private String tname;//产品类型名称
 		  private String pname;//产品档次名称
 		  
+		  private String  change_reason;  //变更原因
+		  private String  check_reason ;  //审核原因
+		  
 		public D_file() {
 			super();
 		}
+		
+		
+		public String getChange_reason() {
+			return change_reason;
+		}
+
+
+		public void setChange_reason(String change_reason) {
+			this.change_reason = change_reason;
+		}
+
+
+		public String getCheck_reason() {
+			return check_reason;
+		}
+
+
+		public void setCheck_reason(String check_reason) {
+			this.check_reason = check_reason;
+		}
+
+
+		public D_file(int id, String product_id, String product_name, String factory_name, String product_nick, int fid,
+				int tid, int pid, String personal_unit, String personal_value, String provider_group, String warranty,
+				String twin_name, String twin_id, String lifecycle, double list_price, double cost_price,
+				double real_cost_price, String amount_unit, String product_describe, String responsible_person,
+				String register, String register_time, String checker, String check_time, String check_tag,
+				String changer, String change_time, String change_tag, String price_change_tag,
+				String file_change_amount, String delete_tag, String design_module_tag, String design_procedure_tag,
+				String design_cell_tag, String fname, String tname, String pname, String change_reason,
+				String check_reason) {
+			super();
+			this.id = id;
+			this.product_id = product_id;
+			this.product_name = product_name;
+			this.factory_name = factory_name;
+			this.product_nick = product_nick;
+			this.fid = fid;
+			this.tid = tid;
+			this.pid = pid;
+			this.personal_unit = personal_unit;
+			this.personal_value = personal_value;
+			this.provider_group = provider_group;
+			this.warranty = warranty;
+			this.twin_name = twin_name;
+			this.twin_id = twin_id;
+			this.lifecycle = lifecycle;
+			this.list_price = list_price;
+			this.cost_price = cost_price;
+			this.real_cost_price = real_cost_price;
+			this.amount_unit = amount_unit;
+			this.product_describe = product_describe;
+			this.responsible_person = responsible_person;
+			this.register = register;
+			this.register_time = register_time;
+			this.checker = checker;
+			this.check_time = check_time;
+			this.check_tag = check_tag;
+			this.changer = changer;
+			this.change_time = change_time;
+			this.change_tag = change_tag;
+			this.price_change_tag = price_change_tag;
+			this.file_change_amount = file_change_amount;
+			this.delete_tag = delete_tag;
+			this.design_module_tag = design_module_tag;
+			this.design_procedure_tag = design_procedure_tag;
+			this.design_cell_tag = design_cell_tag;
+			this.fname = fname;
+			this.tname = tname;
+			this.pname = pname;
+			this.change_reason = change_reason;
+			this.check_reason = check_reason;
+		}
+
+
 		public D_file(int id, String product_id, String product_name, String factory_name, String product_nick, int fid,
 				int tid, int pid, String personal_unit, String personal_value, String provider_group, String warranty,
 				String twin_name, String twin_id, String lifecycle, double list_price, double cost_price,
@@ -322,22 +400,7 @@ public class D_file{
 		public void setPname(String pname) {
 			this.pname = pname;
 		}
-		@Override
-		public String toString() {
-			return "D_file [id=" + id + ", product_id=" + product_id + ", product_name=" + product_name
-					+ ", factory_name=" + factory_name + ", product_nick=" + product_nick + ", fid=" + fid + ", tid="
-					+ tid + ", pid=" + pid + ", personal_unit=" + personal_unit + ", personal_value=" + personal_value
-					+ ", provider_group=" + provider_group + ", warranty=" + warranty + ", twin_name=" + twin_name
-					+ ", twin_id=" + twin_id + ", lifecycle=" + lifecycle + ", list_price=" + list_price
-					+ ", cost_price=" + cost_price + ", real_cost_price=" + real_cost_price + ", amount_unit="
-					+ amount_unit + ", product_describe=" + product_describe + ", responsible_person="
-					+ responsible_person + ", register=" + register + ", register_time=" + register_time + ", checker="
-					+ checker + ", check_time=" + check_time + ", check_tag=" + check_tag + ", changer=" + changer
-					+ ", change_time=" + change_time + ", change_tag=" + change_tag + ", price_change_tag="
-					+ price_change_tag + ", file_change_amount=" + file_change_amount + ", delete_tag=" + delete_tag
-					+ ", design_module_tag=" + design_module_tag + ", design_procedure_tag=" + design_procedure_tag
-					+ ", design_cell_tag=" + design_cell_tag + ", fname=" + fname + ", tname=" + tname + ", pname="
-					+ pname + "]";
-		}
+		
+		
 	
 }

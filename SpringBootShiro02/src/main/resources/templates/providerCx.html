@@ -69,6 +69,7 @@
 													<th class="text-center">供应商电话</th>
 													<th class="text-center">供应商地址</th>
 													<th class="text-center">联系人</th>
+													<th class="text-center">审核状态</th>
 													<th class="text-center">操作</th>
 												</tr>
 											</thead>
@@ -79,6 +80,7 @@
 													<td>{{gys.providerPhone}}</td>
 													<td>{{gys.providerAddress}}</td>
 													<td>{{gys.linkman}}</td>
+													<td>{{gys.check_tag}}</td>
 													<td>
 														<button type="button" class="btn btn-primary  btn-xs"
 															data-target=".bs-example-modal-lg" @click="SelXX(gys.providerId)">查看详情</button>
@@ -102,20 +104,14 @@
 										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
 										  <label for="message-text" class="control-label">登记时间:</label>
 									      <span style="margin-left: 10px;">{{lists.register_time}}</span>
-									      <label for="message-text" class="control-label" style="margin-left: 400px">审核人:</label>
+									      <label for="message-text" class="control-label" style="margin-left: 335px">审核人:</label>
 					      				  <span style="margin-left: 10px;" th:text="${session.username}" id="shr"></span>
 										</div>
 										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
 										  <label for="message-text" class="control-label">审核时间:</label>
 									      <span style="margin-left: 10px;">{{lists.check_time}}</span>
-									      <label for="message-text" class="control-label" style="margin-left: 330px">审核标志:</label>
-					      				  <span style="margin-left: 10px;">{{lists.check_tag}}</span>
-										</div>
-										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
-										  <label for="message-text" class="control-label">变更人:</label>
-									      <span style="margin-left: 10px;">{{lists.changer}}</span>
-									      <label for="message-text" class="control-label" style="margin-left: 500px">变更时间:</label>
-					      				  <span style="margin-left: 10px;">{{lists.change_time}}</span>
+									      <label for="message-text" class="control-label" style="margin-left: 330px">审核意见:</label>
+					      				  <span style="margin-left: 10px;">{{lists.check_reason}}</span>
 										</div>
 										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
 										  <label for="message-text" class="control-label">变更标志:</label>

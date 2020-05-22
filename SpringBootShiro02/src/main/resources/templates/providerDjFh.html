@@ -81,7 +81,7 @@
 													<td>{{gys.linkman}}</td>
 													<td>
 														<button type="button" class="btn btn-primary  btn-xs"
-															data-target=".bs-example-modal-lg" @click="SelXX(gys.providerId)">复核</button>
+															data-target=".bs-example-modal-lg" @click="SelXX(gys.providerId,gys.change_reason)">复核</button>
 													</td>
 												</tr>
 											</tbody>
@@ -89,9 +89,17 @@
 										</table>
 									</div>
 								   <div class="btn-group" id="box2" style="display:none">
-							      		<div style="background-color: #46B8DA">
+							      		<div style="background-color: #46B8DA;margin-left: 50px" >
           									<p style="font-size: 25px;">供应商详情</p>
        									</div>
+       									<div class="example-box" style="margin-left: 700px"  @click="btg()">
+							                  <label class="lyear-radio radio-inline radio-pink">
+							                    <input type="radio" name="hh"  value="通过" checked="checked" ><span>通过</span>
+							                  </label>
+							                  <label class="lyear-radio radio-inline radio-pink"  style="margin-left: 20px">
+							                    <input type="radio" name="hh" value="不通过"><span>不通过</span>
+							                  </label>
+					                	</div>
        									<div class="form-group" style="margin-left: 50px;margin-top: 30px">
 										  <label for="message-text" class="control-label">产品类型名称:</label>
 									      <span style="margin-left: 10px;">{{lists.fname}}</span>
@@ -101,19 +109,22 @@
 										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
 										  <label for="message-text" class="control-label">登记时间:</label>
 									      <span style="margin-left: 10px;">{{lists.register_time}}</span>
-									      <label for="message-text" class="control-label" style="margin-left: 400px">审核人:</label>
+									      <label for="message-text" class="control-label" style="margin-left: 330px">审核人:</label>
 					      				  <span style="margin-left: 10px;" th:text="${session.username}" id="shr"></span>
 										</div>
-										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
-										  <label for="message-text" class="control-label">审核时间:</label>
-									      <span style="margin-left: 10px;">{{lists.check_time}}</span>
-									      <label for="message-text" class="control-label" style="margin-left: 480px">审核标志:</label>
-					      				  <span style="margin-left: 10px;">{{lists.check_tag}}</span>
+										<div class="form-group" style="margin-left: 50px;margin-top: 30px;display: none" id="change_reason">
+											<label for="message-text" class="control-label" >变更意见:</label>
+									    	<span rows="3" cols="105" name="change_reason">{{change_reason}}</span>
 										</div>
-						                 <div style="margin-left: 700px">
-						                 <button class="btn btn-w-xs btn-primary"  @click="Tongg()">复核通过</button>
-						                 <button class="btn btn-w-xs btn-pink"  @click="Fanhui()">返回</button>
-						                 </div>
+										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
+											<label for="message-text" class="control-label" >审核意见:</label>
+									    	<textarea rows="3" cols="105" v-model="check_reason" name="check_reason" id="check_reason"></textarea>
+										</div>
+										<div style="margin-left: 700px">
+								                 <button class="btn btn-w-xs btn-primary"  @click="Tongg()">确认</button>
+								                 <button class="btn btn-w-xs btn-pink"  @click="Fanhui()">返回</button>
+								         </div>
+						                
        							 </div>
 								</div>
 							</div>
@@ -140,7 +151,13 @@
     	  data:{
     			list:[],
     			lists:[],
-    			providerId:''
+    			providerId:'',
+    			hh:'',
+    			tg:'审核通过',
+				btg:'审核不通过',
+				check_reason:'',//审核不通过原因
+				tgyj:'通过',
+				change_reason:''
     	  },
     	  mounted(){//页面挂载完成调用查询全部的方法
 				this.AllGYS();
@@ -153,31 +170,54 @@
 						alert('请求失败')
 				  })
 			  },
-			  SelXX(providerId){
+			  SelXX(providerId,change_reason){
 				  this.providerId=providerId;
 				  $("#box1").toggle();
 				  $("#box2").toggle();
 				  axios.post('Selxx?providerId='+providerId+'').then(res=>{
 						this.lists=res.data;
 				 });	
+				  this.change_reason=change_reason;
+				  if(change_reason==""||change_reason==null){
+					  $("#change_reason").hide();
+				  }else{
+					  $("#change_reason").toggle();
+				  }
 			  },
 			  Fanhui(){//点击返回从box2，回到box1
 					$("#box1").toggle();
 					$("#box2").toggle();
+					$("#change_reason").hide();
 				},
 				Tongg(){
-					var url='updGYSFuS?providerId='+this.providerId+'&checker='+$("#shr").text()+''
-					axios.get(url).then(res=>{
-						if(res.data=="成功"){
-								alert('复核通过！');
-								this.AllGYS();
-								 $("#box1").toggle();
-								 $("#box2").toggle();
+					var s=$("input[name=hh]:checked").val(); //单选按钮
+					if(s=="通过"){						
+						var url='updGYSFuS?providerId='+this.providerId+'&checker='+$("#shr").text()+'&check_tag='+this.tg+'&check_reason='+this.tgyj+''
+						axios.get(url).then(res=>{
+							if(res.data=="成功"){
+									alert('复核通过！');
+									this.AllGYS();
+									 $("#box1").toggle();
+									 $("#box2").toggle();
+							}
+							});
+					}else if(s=="不通过"){
+						if(this.check_reason==""){
+							alert('请输入审核不通过原因！')
+						}else{
+							var url='updGYSFuS?providerId='+this.providerId+'&checker='+$("#shr").text()+'&check_tag='+this.btg+'&check_reason='+this.check_reason+''
+							axios.get(url).then(res=>{
+								if(res.data=="成功"){
+										alert('复核不通过！');
+										this.AllGYS();
+										 $("#box1").toggle();
+										 $("#box2").toggle();
+								}
+								});
 						}
-						});
-				},
-			    
-				  
+				
+					}
+				}	  
 			  }
 			  
       

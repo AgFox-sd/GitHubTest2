@@ -26,7 +26,7 @@ public interface ProducePgService {
 	//查询当前等待审核的生产派工单总数SelSum
 	int SelSum(String check_tag);
 	//生产派工单审核通过
-	int updPgtg(String  check_tag,String pg_id);
+	int updPgtg(String  check_tag,String pg_id, String check_reason);
 
 	//审核未通过,删除派工单 并修改派工标志
 	void updPgbz(String product_id, String apply_id, String manufacture_tag);

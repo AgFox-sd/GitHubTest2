@@ -33,9 +33,7 @@
 										class="lyear-toggler-bar"></span> <span
 										class="lyear-toggler-bar"></span>
 								</div>
-								<span class="navbar-page-title">采购管理 - 供应商申请审批管理 - 申请审核</span> <span
-									style="margin-left: 500px">当前等待审核的设计单总数:</span> <span
-									style="margin-left: 5px">{{ddshsum}}</span>
+								<span class="navbar-page-title">采购管理 - 供应商申请审批管理 - 申请审核</span>
 							</div>
 						</div>
 					</nav>
@@ -85,7 +83,7 @@
 															<button type="button" class="btn btn-primary  btn-xs"
 																data-toggle="modal" data-target="#modal1"
 																@click="ddsh(v.providerSqId,v.providerId,v.providerName,v.providerPhone,
-                             v.supply_time)">审核</button>
+                             v.supply_time,v.bgbz)">审核</button>
 														</div>
 													</td>
 												</tr>
@@ -140,10 +138,8 @@
 																		<th class="text-center">序号</th>
 																		<th class="text-center">商品编号</th>
 																		<th class="text-center">商品名称</th>
-																		<th class="text-center">数量</th>
 																		<th class="text-center">单位</th>
 																		<th class="text-center">单价</th>
-																		<th class="text-center">小计(元)</th>
 																	</tr>
 																</thead>
 																<tbody>
@@ -151,10 +147,8 @@
 																		<td>{{v.id}}</td>
 																		<td>{{v.product_id}}</td>
 																		<td>{{v.product_name}}</td>
-																		<td>{{v.amount}}</td>
 																		<td>{{v.unit}}</td>
 																		<td>{{v.price}}</td>
-																		<td>{{v.subtotal}}</td>
 																	</tr>
 																</tbody>
 															</table>
@@ -163,15 +157,23 @@
 
 														<div class="form-group" style="margin-top: 20px">
 															<label for="message-text" class="control-label">审核人:</label>
-													<span th:text="${session.username}" id="djr"> </span>
+															<span th:text="${session.username}" id="djr"> </span>
+														</div>
+														<div class="form-group bgbz" style="margin-top: 20px;display: none" id="box1">
+															<label for="message-text" class="control-label">变更意见:</label>
+															<span >{{bgbz}} </span>
+														</div>
+														<div class="form-group" style="margin-top: 20px">
+															<label for="message-text" class="control-label">审核意见:</label>
+															<textarea rows="3" cols="100" name="shbz" v-model="shbz"></textarea>
 														</div>
 													</form>
 												</div>
 												<div class="modal-footer">
 													<button type="button" class="btn btn-default"
-														data-dismiss="modal">返回</button>
+														data-dismiss="modal" @click="fanhui()">返回</button>
 													<button type="button" class="btn btn-primary" @click="qd()"
-														data-dismiss="modal">确定</button>
+														id="mtk">确定</button>
 												</div>
 											</div>
 										</div>
@@ -196,7 +198,6 @@
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 	<script type="text/javascript" src="js/main.min.js"></script>
-
 	<script>
       var vm=new Vue({
     	  el:'#app',
@@ -211,7 +212,9 @@
     		  supply_time:'',
     		  check_tag:'审核通过',
     		  bcheck_tag:'审核不通过',
-    		  change_tag:'未变更'
+    		  change_tag:'未变更',
+    		  shbz:'',
+    		  bgbz:''
     	  },
     	  mounted(){//页面挂载完成调用查询全部的方法
 				this.selAll();
@@ -224,12 +227,19 @@
 						alert('请求失败')
 				  })
 			  },
-			  ddsh(providerSqId,providerId,providerName,providerPhone,supply_time){ 
+			  ddsh(providerSqId,providerId,providerName,providerPhone,supply_time,bgbz){ 
 				  this.providerSqId=providerSqId;
 				  this.providerId=providerId;
 				  this.providerName=providerName;
 				  this.providerPhone=providerPhone;
 				  this.supply_time=supply_time;
+				  this.bgbz=bgbz;
+				  alert(this.bgbz);
+				  if(this.bgbz==" "||this.bgbz==null){
+					  $("#box1").hide();
+				  }else{
+					  $("#box1").toggle();
+				  }
 				  var url="selcxxq?providerSqId="+this.providerSqId+"";
 					  axios.get(url).then(res=>{
 				    	  this.slist=res.data;
@@ -240,7 +250,7 @@
 			  qd(){
 				  var s=$("input[name=sh]:checked").val(); //单选按钮
 				  if(s=="审核通过"){
-					  var url="updshzt?check_tag="+this.check_tag+"&checker="+$("#djr").text()+"&change_tag="+this.change_tag+"&providerSqId="+this.providerSqId+"&providerName="+this.providerName+"";
+					  var url="updshzt?check_tag="+this.check_tag+"&checker="+$("#djr").text()+"&change_tag="+this.change_tag+"&shbz="+this.shbz+"&providerSqId="+this.providerSqId+"&providerName="+this.providerName+"";
 					 axios.post(url).then(res=>{
 						 this.selAll();
 						 location.reload();
@@ -249,16 +259,23 @@
 						 alert('请求失败')
 					 })
 				  }else if(s=="审核不通过"){
-					  var url="updshzt?check_tag="+this.bcheck_tag+"&checker="+$("#djr").text()+"&change_tag="+this.change_tag+"&providerSqId="+this.providerSqId+"&providerName="+this.providerName+"";
-						 axios.post(url).then(res=>{
-								 alert('审核不通过');
-								 location.reload();
-								 this.selAll();
-						 }).catch(err=>{
-							 alert('请求失败')
-						 })
+					  if(this.shbz==""){
+						  alert("请输入原因！");
+					  }else{
+						  var url="updshzt?check_tag="+this.bcheck_tag+"&checker="+$("#djr").text()+"&change_tag="+this.change_tag+"&shbz="+this.shbz+"&providerSqId="+this.providerSqId+"&providerName="+this.providerName+"";
+							 axios.post(url).then(res=>{
+									 alert('审核不通过');
+									 location.reload();
+									 this.selAll();
+							 }).catch(err=>{
+								 alert('请求失败')
+							 })
+					  }
+					
 				  }
-			  },
+			  },fanhui(){
+				  $("#box1").hide();
+			  }
     	  }
       }) 
    </script>

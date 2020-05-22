@@ -65,7 +65,8 @@
 														<th class="text-center">供应商编号</th>
 														<th class="text-center">供应商名称</th>
 														<th class="text-center">电话</th>
-														<th class="text-center">登记</th>
+														<th class="text-center">审核状态</th>
+														<th class="text-center">变更</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -74,11 +75,12 @@
 														<td>{{v.providerId}}</td>
 														<td>{{v.providerName}}</td>
 														<td>{{v.providerPhone}}</td>
+														<td>{{v.check_tag}}</td>
 														<td>
 															<button type="button" id="sjbutton"
 																class="btn btn-primary  btn-xs"
 																data-target=".bs-example-modal-lg"
-																@click="Selidxx(v.providerId,v.providerName,v.providerPhone,v.providerSqId,v.supply_time,v.register,v.providerSqXqId)">变更</button>
+																@click="Selidxx(v.providerId,v.providerName,v.providerPhone,v.providerSqId,v.supply_time,v.register,v.providerSqXqId,v.shbz)">变更</button>
 														</td>
 													</tr>
 												</tbody>
@@ -88,7 +90,7 @@
 										</div>
 
 									</div>
-									<div class="btn-group" id="box2" style="display: none" >
+									<div class="btn-group" id="box2" style="display: none">
 										<div>
 											<button type="button" class="btn btn-pink  btn-xs"
 												@click="Selad2()" style="margin-left: 700px"
@@ -104,43 +106,34 @@
 												style="margin-left: 70px">报价单编号:</label> <span>{{providerSqId}}</span>
 										</div>
 										<div>
-										<label for="message-text" class="control-label"
+											<label for="message-text" class="control-label"
 												style="margin-left: 70px">供应商名称:</label> <span id="sjdh">{{providerName}}</span>
-										<label for="message-text" class="control-label"
+											<label for="message-text" class="control-label"
 												style="margin-left: 300px">供应商编号:</label> <span>{{providerId}}</span>
 										</div>
 										<div>
 											<label for="message-text" class="control-label"
 												style="margin-left: 70px">供应商电话:</label> <span>{{providerPhone}}</span>
-												<label for="message-text" class="control-label"
+											<label for="message-text" class="control-label"
 												style="margin-left: 300px">供货时间:</label> <span>{{supply_time}}</span>
 										</div>
 										<div style="margin-left: 10px">
 											<table class="table table-hover">
 												<thead>
 													<tr>
-														<th class="text-center">点选</th>
 														<th class="text-center">商品编号</th>
 														<th class="text-center">商品名称</th>
-														<th class="text-center">数量</th>
 														<th class="text-center">单位</th>
 														<th class="text-center">单价</th>
-														<th class="text-center">小计</th>
 														<th class="text-center">操作</th>
 													</tr>
 												</thead>
 												<tbody>
 													<tr v-for="wl in cus" class="text-center">
-														<td><label class="lyear-checkbox checkbox-primary">
-																<input type="checkbox" value="{{wl.product_id}}"
-																class="xz1" @click="xz()"><span class="xz1"></span>
-														</label></td>
-														<td>{{wl.product_id}}</td>
+														<td class="xz1" @click="xz()">{{wl.product_id}}</td>
 														<td>{{wl.product_name}}</td>
-														<td><input type="test" v-model="wl.amount" /></td>
 														<td>{{wl.unit}}</td>
 														<td><input type="test" v-model="wl.price" /></td>
-														<td>{{wl.subtotal}}</td>
 														<td><a href="#"
 															@click="delid(wl.id,wl.product_id,wl.product_name)">删除</a></td>
 													</tr>
@@ -151,14 +144,23 @@
 											<div class="row">
 												<div class="col-md-4" style="margin-left: 70px">
 													<label for="message-text" class="control-label">变更人:</label>
-													<span > {{register}}</span>
+													<span> {{register}}</span>
+												</div>
+												<div class="col-md-4" style="margin-left: 70px">
+													<label for="message-text" class="control-label">审核意见:</label>
+													<span>{{shbz}}</span>
 												</div>
 											</div>
 										</div>
-											<button class="btn btn-xs btn-primary" style="margin-left: 10px" @click="gb()">关闭</button>
+										<div class="form-group" style="margin-left: 70px">
+											<label for="message-text" class="control-label">变更意见:</label>
+											 <textarea rows="3"  cols="100" v-model="bgbz"></textarea>  
+										</div>
+										<button class="btn btn-xs btn-primary"
+											style="margin-left: 10px" @click="gb()">关闭</button>
 										<!-- 模态框开始 -->
 										<div class="modal fade bs-example-modal-lg" tabindex="-1"
-											role="dialog" aria-labelledby="myLargeModalLabel">
+											role="dialog" aria-labelledby="myLargeModalLabel" >
 											<div class="modal-dialog modal-lg" role="document">
 												<div class="modal-content">
 													<div class="modal-header">
@@ -182,7 +184,8 @@
 																		</tr>
 																	</thead>
 																	<tbody>
-																		<tr v-for="(wl,index) in wllist" :key="index" class="text-center">
+																		<tr v-for="(wl,index) in wllist" :key="index"
+																			class="text-center">
 																			<td><label
 																				class="lyear-checkbox checkbox-primary"> <input
 																					type="checkbox" value="{{wl.product_id}}"
@@ -223,45 +226,44 @@
 											<label for="message-text" class="control-label"
 												style="margin-left: 70px">供应商电话:</label> <span>{{providerPhone}}</span>
 										</div>
-											<table class="table table-hover">
-												<thead>
-													<tr>
-														<th class="text-center">商品编号</th>
-														<th class="text-center">商品名称</th>
-														<th class="text-center">数量</th>
-														<th class="text-center">单位</th>
-														<th class="text-center">单价</th>
-														<th class="text-center">小计</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr v-for="v in slist" class="text-center">
-														<td>{{v.product_id}}</td>
-														<td>{{v.product_name}}</td>
-														<td>{{v.amount}}</td>
-														<td>{{v.unit}}</td>
-														<td>{{v.price}}</td>
-														<td>{{v.subtotal}}</td>
-													</tr>
-												</tbody>
-											</table>
-											<button class="btn btn-xs btn-primary" @click="qd()">确定</button>
-										</div>
+										<table class="table table-hover">
+											<thead>
+												<tr>
+													<th class="text-center">商品编号</th>
+													<th class="text-center">商品名称</th>
+													<th class="text-center">数量</th>
+													<th class="text-center">单位</th>
+													<th class="text-center">单价</th>
+													<th class="text-center">小计</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr v-for="v in slist" class="text-center">
+													<td>{{v.product_id}}</td>
+													<td>{{v.product_name}}</td>
+													<td>{{v.amount}}</td>
+													<td>{{v.unit}}</td>
+													<td>{{v.price}}</td>
+													<td>{{v.subtotal}}</td>
+												</tr>
+											</tbody>
+										</table>
+										<button class="btn btn-xs btn-primary" @click="qd()">确定</button>
 									</div>
 								</div>
-								<!-- 分页开始 -->
-
-								<!-- 分页结束 -->
 							</div>
+							<!-- 分页开始 -->
+
+							<!-- 分页结束 -->
 						</div>
 					</div>
-
 				</div>
 			</div>
-
-			</main>
-			<!--End 页面主要内容-->
 		</div>
+
+		</main>
+		<!--End 页面主要内容-->
+	</div>
 	</div>
 	</div>
 	<script type="text/javascript" src="js/jquery.min.js"></script>
@@ -297,11 +299,12 @@ $(function(){
 					register:'',
 					providerSqXqId:'',
 					change_tag:'已变更',
-					check_tag:'等待审核'
+					check_tag:'等待审核',
+					bgbz:'',
 				},
 				mounted(){//初始化显示完成调用
 					this.Selad();
-				this.sy();
+			      	this.sy();
 				},
 				methods:{
 					Selad(){
@@ -312,7 +315,7 @@ $(function(){
 						alert('请求失败')
 				  })
 					},
-					Selidxx(providerId,providerName,providerPhone,providerSqId,supply_time,register,providerSqXqId){
+					Selidxx(providerId,providerName,providerPhone,providerSqId,supply_time,register,providerSqXqId,shbz){
 						 this.providerId = providerId;
 						 this.providerName = providerName;
 						 this.providerPhone=providerPhone;
@@ -320,6 +323,7 @@ $(function(){
 						 this.supply_time=supply_time;
 						 this.register=register;
 						 this.providerSqXqId=providerSqXqId;
+						 this.shbz=shbz;
 						 this.sy();
 						 $("#box1").toggle();
 						 $("#box2").toggle();	
@@ -330,7 +334,7 @@ $(function(){
 					})
 					},
 					Selad2(){//查询商品信息
-						var url="selspbg?providerSqId="+this.providerSqId+"";
+						var url="selspbg?providerSqId="+this.providerId+"";
 						axios.post(url).then(res=>{
 							this.wllist=res.data;
 						}).catch(err=>{
@@ -338,7 +342,7 @@ $(function(){
 						})
 					},
 					Selad3(){
-						axios.get("selshxq?selshxq="+this.selshxq).then(res=>{
+						axios.get("selshxq?providerSqId="+this.providerSqId).then(res=>{
 							this.cus=res.data;
 							})
 					},
@@ -366,51 +370,50 @@ $(function(){
 							alert('请求失败')
 						})
 						}
-					},xz(){
-						$(".xz1:checked").each(function(){
-							$(this).parent().parent().next().next().next().next().next().next().text($(this).parent().parent().next().next().next().children().val()*$(this).parent().parent().next().next().next().next().next().children().val());
-						});
 					},QueRen(){
-						var len=$("input[type=checkbox]:checked()");
-						if(len.length<=0){
-							alert("请选择商品");
-						}else{
 						 $("#box2").toggle();
 						 $("#box3").toggle();
-						var sl=[];
 						var dj=[];
-						var xj=[];
 						var bh=[];
 						var mc=[];
-						$(".xz1:checked").each(function(){
-							sl.push($(this).parent().parent().next().next().next().children().val());
-							dj.push($(this).parent().parent().next().next().next().next().next().children().val());
-							xj.push($(this).parent().parent().next().next().next().next().next().next().html());
-							bh.push($(this).parent().parent().next().html());
-							mc.push($(this).parent().parent().next().next().html());
-						});
-						var url="updbjd?amount="+sl+"&price="+dj+"&subtotal="+xj+"&product_id="+bh+"&product_name="+mc+"";
-					    axios.get(url).then(res=>{
-					    	var url="selproviderSqXq?providerId="+this.providerId+"";
-							axios.get(url).then(res=>{
-								this.slist=res.data;
+						if(this.bgbz==""){
+							alert("请输入变更原因!!!");
+							 $("#box2").toggle();
+							 $("#box3").toggle();
+						}else{
+							$(".xz1").each(function(){
+								dj.push($(this).next().next().next().children().val());
+								bh.push($(this).html());
+								mc.push($(this).next().html());
 							});
-					    	alert('成功');
-					    }).catch(err=>{
-							alert('请求失败')
-						})
-					}
+							var url="updbjd?price="+dj+"&subtotal="+dj+"&product_id="+bh+"&product_name="+mc+"";
+						    axios.get(url).then(res=>{
+						    	var url="selshxq?providerSqId="+this.providerSqId+"";
+								axios.get(url).then(res=>{
+									this.slist=res.data;
+								});
+						    	alert('成功');
+						    }).catch(err=>{
+								alert('请求失败')
+							})
+						}
 					},
 					qd(){
 						 $("#box1").toggle();
 						 $("#box3").toggle();
-						var url="updybg?changer="+this.register+"&change_tag="+this.change_tag+"&check_tag="+this.check_tag+"&providerSqId="+this.providerSqId+"&providerId="+this.providerId+"";
-							axios.get(url).then(res=>{
-						    	alert('变更成功');
-						        this.Selad();
-							}).catch(err=>{
-							alert('请求失败')
-						})
+						 location.reload();
+						 if(this.bgbz==""){
+							 alert("请输入变更原因");
+							 $("#box1").toggle();
+						 }else{
+							 var url="updybg?changer="+this.register+"&change_tag="+this.change_tag+"&check_tag="+this.check_tag+"&bgbz="+this.bgbz+"&providerSqId="+this.providerSqId+"&providerId="+this.providerId+"";							
+							 axios.get(url).then(res=>{
+							    	alert('变更成功');
+							        this.Selad();
+								}).catch(err=>{
+								alert('请求失败')
+							}) 
+						 }
 					},
 					delid(id,product_id,product_name){
 					    	var url="delid?id="+id+"&product_id="+product_id+"&product_name="+product_name+"";
@@ -426,9 +429,7 @@ $(function(){
 						$("#box2").toggle();
 					}
 			}
-				
 			})
-			
 		</script>
 
 </body>

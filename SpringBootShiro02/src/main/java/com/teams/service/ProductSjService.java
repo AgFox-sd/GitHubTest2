@@ -2,12 +2,14 @@ package com.teams.service;
 
 import java.util.List;
 
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.D_file;
 import com.teams.pojo.D_module;
 import com.teams.pojo.D_module_details;
 import com.teams.pojo.Feilei;
 import com.teams.pojo.Pclass;
 import com.teams.pojo.Type;
+import com.teams.utils.Params;
 
 public interface ProductSjService {
 
@@ -50,7 +52,7 @@ public interface ProductSjService {
 
 	void updcpdnwlsj(String product_id, String design_module_tag);// 物料组成设计不通过
 
-	int delwlsj(String design_id);// 物料组成设计不通过
+	int delwlsj(String check_yj,String product_id,String design_id);// 物料组成设计不通过
 
 	// 查询显示的信息为所有已通过复核的产品档案
 	List<D_file> selectId2(String check_tag);
@@ -61,8 +63,9 @@ public interface ProductSjService {
 	// 修改产品档案信息
 	int updBG(D_file file);
 
+	//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 	// 查询通过审核的商品档案信息
-	List<D_file> Selad(String check_tag, String design_module_tag, int tid);
+	List<D_file> Selad(String check_tag, String design_module_tag, int tid,String sjdh);
 
 	// 物料组成设计单
 	void productWlZc(String sjdh, String product_id, String product_name, String sjr, double d);
@@ -74,7 +77,7 @@ public interface ProductSjService {
 	void updWlSj(String product_id, String design_module_tag);
 
 	// 产品档案查询
-	List<D_file> selecId();
+	PageInfo<D_file> selecId(Params params);
 
 	// 物料查询
 	List<D_module> selD_module();
@@ -97,11 +100,15 @@ public interface ProductSjService {
 	int updzje(double d, String spid, String spmc);
 
 	// 重新提交
-	int upgwsh(String check_tag, String change_tag, String product_id, String product_name);
+	int upgwsh(String check_tag, String change_tag, String change_yj,String product_id, String product_name);
 
 	// 物料明细单
 	void zjwl(String design_id, String product_id, String product_name, String amount_unit,
 			int amount, double residual_amount, double cost_price,double subtotal);
 
 	List<D_module> selD_moduleS();
+
+	int delwlsjzcd(String design_id, String product_id);
+
+	int selectCount(String sjdh);
 }

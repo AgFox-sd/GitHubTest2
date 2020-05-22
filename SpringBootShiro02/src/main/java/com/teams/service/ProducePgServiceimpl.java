@@ -59,11 +59,6 @@ public class ProducePgServiceimpl implements ProducePgService{
 		return mapper.SelSum(check_tag);
 	}
 
-	@Override
-	public int updPgtg(String check_tag,String pg_id) {
-		// TODO Auto-generated method stub
-		return mapper.updPgtg(check_tag,pg_id);
-	}
 
 	//审核未通过,删除派工单 并修改派工标志
 	@Override
@@ -87,6 +82,12 @@ public class ProducePgServiceimpl implements ProducePgService{
 	public int SelSum2(String check_tag) {
 		// TODO Auto-generated method stub
 		return mapper.SelSum2(check_tag);
+	}
+
+	@Override
+	public int updPgtg(String check_tag, String pg_id, String check_reason) {
+		// TODO Auto-generated method stub
+		return mapper.updPgtg(check_tag, pg_id, check_reason);
 	}
 
 

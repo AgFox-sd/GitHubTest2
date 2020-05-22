@@ -8,15 +8,15 @@
   		<!-- 查询已通过审核并未派工的生产计划 -->
   		<select id="SelectApply" resultType="m_apply_mx">
   			SELECT a.*,b.check_time,b.`check_tag` FROM m_apply_mx a,m_apply b  WHERE
-a.`apply_id` IN(SELECT apply_id FROM m_apply WHERE check_tag=#{check_tag}) AND a.manufacture_tag=#{manufacture_tag} AND b.`check_tag`='审核通过'
-GROUP BY a.id
+			a.`apply_id` IN(SELECT apply_id FROM m_apply WHERE check_tag=#{check_tag}) AND a.manufacture_tag=#{manufacture_tag} AND b.`check_tag`='审核通过'
+			GROUP BY a.id
   		</select>
   
   		<!-- 通过产品编号查询工序-->
   		<select id="SelGx" resultType="M_design_procedure_details">
   			SELECT a.*,b.name FROM m_design_procedure_details a,m_gonxu b,
-    m_design_procedure c WHERE a.parent_id = c.design_id AND a.procedure_id
-    = b.id AND c.check_tag = '审核通过' AND c.product_id=#{product_id}
+		    m_design_procedure c WHERE a.parent_id = c.design_id AND a.procedure_id
+		    = b.id AND c.check_tag = '审核通过' AND c.product_id=#{product_id}
   		</select>
   		
   
@@ -28,7 +28,7 @@ GROUP BY a.id
   		
   		<!-- 提交派工单 -->
   		<insert id="addPg">
-  			insert into  m_pg value(null,#{jhdbh},#{pg_id},#{product_id},#{product_name},#{pg_ren},DEFAULT,#{amount},default,now(),DEFAULT,default)
+  			insert into  m_pg value(null,#{jhdbh},#{pg_id},#{product_id},#{product_name},#{pg_ren},DEFAULT,#{amount},default,now(),DEFAULT,default,default)
   		</insert>
   		
   		<!-- 修改生产计划表字段已派工 -->
@@ -48,7 +48,7 @@ GROUP BY a.id
   		
   		<!-- 生产派工单审核通过    通过产品编号product_id-->
   		<update id="updPgtg">
-	        update m_pg set check_tag=#{check_tag}
+	        update m_pg set check_tag=#{check_tag},check_reason=#{check_reason}
 	        where pg_id=#{pg_id}
        </update>
        

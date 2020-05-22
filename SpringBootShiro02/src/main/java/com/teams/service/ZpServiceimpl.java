@@ -5,12 +5,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.teams.mapper.ZpMapper;
 import com.teams.pojo.Roles;
 import com.teams.pojo.User;
 import com.teams.pojo.permissions;
 import com.teams.pojo.permissions_role;
 import com.teams.pojo.user_role;
+import com.teams.utils.Params;
 
 @Service
 public class ZpServiceimpl implements ZpService{
@@ -19,9 +22,10 @@ public class ZpServiceimpl implements ZpService{
 	ZpMapper mapper;
 	
 	@Override
-	public List<User> AllUser() {
+	public PageInfo<User> AllUser(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.AllUser();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.AllUser(params));
 	}
 
 	@Override
@@ -78,9 +82,10 @@ public class ZpServiceimpl implements ZpService{
 	}
 
 	@Override
-	public List<User> AllRoles() {
+	public PageInfo<User> AllRoles(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.AllRoles();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.AllRoles(params));
 	}
 
 	@Override
@@ -120,9 +125,10 @@ public class ZpServiceimpl implements ZpService{
 	}
 
 	@Override
-	public List<permissions> AllQX() {
+	public PageInfo<permissions> AllQX(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.AllQX();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.AllQX(params));
 	}
 
 	@Override
@@ -191,6 +197,7 @@ public class ZpServiceimpl implements ZpService{
 		return mapper.wmznp(djr);
 	}
 
+	
 
 
 

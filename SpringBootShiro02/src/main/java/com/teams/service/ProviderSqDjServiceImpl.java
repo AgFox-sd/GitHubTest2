@@ -27,11 +27,11 @@ public class ProviderSqDjServiceImpl implements ProviderSqDjService{
 	}
 
 	@Override
+
 	public List<D_file> selD_file(String providerId) {
-		// TODO Auto-generated method stub
 		return mapper.selD_file(providerId);
 	}
-
+	
 	@Override
 	public int addproviderSq(String providerSqId, String providerId, String providerName, String providerPhone,String register) {
 		// TODO Auto-generated method stub
@@ -46,15 +46,15 @@ public class ProviderSqDjServiceImpl implements ProviderSqDjService{
 	}
 
 	@Override
-	public List<providerSqXq> selproviderSqXq(String providerId) {
+	public List<providerSqXq> selproviderSqXq(String providerSqId) {
 		// TODO Auto-generated method stub
-		return mapper.selproviderSqXq(providerId);
+		return mapper.selproviderSqXq(providerSqId);
 	}
 
 	@Override
-	public int updproviderSqXq(int amount, double price, double subtotal,String product_id,String product_name) {
+	public int updproviderSqXq(double price,String product_id,String product_name) {
 		// TODO Auto-generated method stub
-		return mapper.updproviderSqXq(amount, price, subtotal,product_id,product_name);
+		return mapper.updproviderSqXq(price,product_id,product_name);
 	}
 
 	@Override
@@ -76,9 +76,9 @@ public class ProviderSqDjServiceImpl implements ProviderSqDjService{
 	}
 
 	@Override
-	public int updshzt(String check_tag, String checker,String change_tag, String providerSqId, String providerName) {
+	public int updshzt(String check_tag, String checker,String change_tag, String shbz,String providerSqId, String providerName) {
 		// TODO Auto-generated method stub
-		return mapper.updshzt(check_tag, checker, change_tag,providerSqId, providerName);
+		return mapper.updshzt(check_tag, checker, change_tag,shbz,providerSqId, providerName);
 	}
 
 	@Override
@@ -112,9 +112,15 @@ public class ProviderSqDjServiceImpl implements ProviderSqDjService{
 	}
 
 	@Override
-	public int updybg(String changer, String change_tag, String check_tag, String providerSqId, String providerId) {
+	public int updybg(String changer, String change_tag, String check_tag,String bgbz, String providerSqId, String providerId) {
 		// TODO Auto-generated method stub
-		return mapper.updybg(changer, change_tag, check_tag, providerSqId, providerId);
+		return mapper.updybg(changer, change_tag, check_tag, bgbz,providerSqId, providerId);
+	}
+
+	@Override
+	public int selectCount(String providerId) {
+		// TODO Auto-generated method stub
+		return mapper.selectCount(providerId);
 	}
 
 
