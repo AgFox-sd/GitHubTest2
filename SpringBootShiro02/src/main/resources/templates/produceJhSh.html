@@ -73,7 +73,7 @@
 					    <td>{{scjh.apply_id}}</td>
 					    <td>{{scjh.register}}</td>
 					    <td>{{scjh.register_time}}</td>
-						<td>生产计划</td>
+						<td>{{scjh.remark}}</td>
 						<td>
 						  <div class="btn-group">
                              <button type="button" class="btn btn-primary  btn-xs" data-toggle="modal" data-target="#modal1" @click="gosh(scjh.apply_id,scjh.register,scjh.register_time)">审核</button>
@@ -86,7 +86,7 @@
               </div>
               
               <!-- 审核模态框开始 -->
-		      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal1">
+		      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal1" :class="{'modal1':flag}">
                   <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -146,7 +146,7 @@
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
-                        <button type="button" class="btn btn-primary" @click="sh()" data-dismiss="modal">确定</button>
+                        <button type="button" class="btn btn-primary" @click="sh()">确定</button>
                       </div>
                     </div>
                   </div>
@@ -186,7 +186,7 @@
     		  register:'', //登记人
     		  register_time:'', //登记时间
     		  check_suggestion:'',//审核意见
-    		  
+    		  flag:false	  
     	  },
     	  mounted(){//页面挂载完成调用查询全部的方法
 				this.load();
@@ -228,6 +228,7 @@
 					 var param={apply_id:this.apply_id,checker:checker,check_suggestion:this.check_suggestion,check_tag:check_tag};
 					 axios.post('Scjhshtg',param).then(res=>{
 						 if(res.data>0){
+							 $("#modal1").modal('hide');
 							 alert('审核成功')
 							 this.load();
 							 this.load2();
@@ -236,17 +237,22 @@
 						 alert('请求失败')
 					 })
 				  }else{
-					  var check_tag="审核不通过";
-						 var param={apply_id:this.apply_id,checker:checker,check_suggestion:this.check_suggestion,check_tag:check_tag};
-						 axios.post('Scjhshtg',param).then(res=>{
-						  if(res.data>0){
-							  alert('审核不通过,请重新制定生产计划')
-							  this.load();
-							  this.load2();
-						  }
-					  }).catch(err=>{
-						  alert('请求失败')
-					  })
+					  if(this.check_suggestion==""){
+						  alert('请说明审核意见')
+					  }else{
+						  var check_tag="审核不通过";
+							 var param={apply_id:this.apply_id,checker:checker,check_suggestion:this.check_suggestion,check_tag:check_tag};
+							 axios.post('Scjhshtg',param).then(res=>{
+							  if(res.data>0){
+								  $("#modal1").modal('hide');
+								  alert('审核不通过,请重新制定生产计划')
+								  this.load();
+								  this.load2();
+							  }
+						  }).catch(err=>{
+							  alert('请求失败')
+						  })
+					  }
 					  
 					  
 				  }

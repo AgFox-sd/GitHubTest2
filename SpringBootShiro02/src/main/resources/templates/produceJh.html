@@ -270,67 +270,72 @@ Vue.filter('moneyFormat',function(money,length){
 						if(this.cpmxList==""){  //判断是否为空
 							alert('请添加产品');
 						}else{
-							//盒子切换
-							$("#box1").toggle();
-							$("#box2").toggle();
-							
-							var bh=[];//产品编号
-							var mc=[];//产品名称
-							var ms=[];//产品描述
-							var sl=[];//数量
-							var dw=[];//单位
-							var dj=[];//单价
-							//获得选择的信息
-							$(".ld:checked").each(function(){
-								bh.push($(this).parent().parent().next().next().html());
-								mc.push($(this).parent().parent().next().html());
-								ms.push($(this).parent().parent().next().next().next().html());
-								sl.push($(this).parent().parent().next().next().next().next().children().val());
-								dw.push($(this).parent().parent().next().next().next().next().next().html());
-								dj.push($(this).parent().parent().next().next().next().next().next().next().html());
+							if($('.ld').prop('checked')==false){
+								alert('请选择需要采购的产品')
+							}else{
+								//盒子切换
+								$("#box1").toggle();
+								$("#box2").toggle();
 								
-							});
-							
-							//生成  300+当前日期+6位随机数组成的流水号 --开始
-							var myDate =new Date();
-						    var a=myDate.getFullYear()+"0"+(myDate.getMonth()+1)+""+myDate.getDate();
-							var time="";
-							for(var i=0;i<6;i++){
-								time+=Math.floor(Math.random()*10)
+								var bh=[];//产品编号
+								var mc=[];//产品名称
+								var ms=[];//产品描述
+								var sl=[];//数量
+								var dw=[];//单位
+								var dj=[];//单价
+								//获得选择的信息
+								$(".ld:checked").each(function(){
+									bh.push($(this).parent().parent().next().next().html());
+									mc.push($(this).parent().parent().next().html());
+									ms.push($(this).parent().parent().next().next().next().html());
+									sl.push($(this).parent().parent().next().next().next().next().children().val());
+									dw.push($(this).parent().parent().next().next().next().next().next().html());
+									dj.push($(this).parent().parent().next().next().next().next().next().next().html());
+									
+								});
+								
+								//生成  300+当前日期+6位随机数组成的流水号 --开始
+								var myDate =new Date();
+							    var a=myDate.getFullYear()+"0"+(myDate.getMonth()+1)+""+myDate.getDate();
+								var time="";
+								for(var i=0;i<6;i++){
+									time+=Math.floor(Math.random()*10)
+								}
+								var dingdan=300+a+time;  //生成流水号结束
+								
+								var apply_id=dingdan;  //生产计划编号  --流水号赋给apply_id
+								
+								this.lidong=apply_id;  //生产计划编号赋给lidong  用来查询计划详细
+								
+								
+								var remark=this.remark;   //备注
+								var register=$("#djr").text();  //登记人
+								var sum=0;
+								$(".ld:checked").each(function(){
+									var dj = $(this).parent().parent().next().next().next().next().next().next().html();
+							    	var sl = $(this).parent().parent().next().next().next().next().children().val();
+							    	sum=sum+parseFloat((dj*sl));
+								});
+								var subtotal=sum;   //计划总成本
+								this.sum=subtotal;
+								
+								var check_tag="等待审核";    //审核标志
+								var manufacture_tag="未派工";  //派工标志
+								
+								var url="productSc?apply_id="+apply_id+"&remark="+remark+"&subtotal="
+										+subtotal+"&register="+register+"&check_tag="+check_tag+"&manufacture_tag="
+										+manufacture_tag+"&product_id="+bh+"&product_name="+mc+"&product_describe="
+										+ms+"&amount="+sl+"&personal_unit="+dw+"&real_cost_price="+dj+"";
+							    
+								axios.get(url).then(res=>{
+							    	if(res.data>0){
+							    		this.load2();
+							    	}
+							    }).catch(err=>{
+							    	console.log('请求失败');
+							    });
 							}
-							var dingdan=300+a+time;  //生成流水号结束
 							
-							var apply_id=dingdan;  //生产计划编号  --流水号赋给apply_id
-							
-							this.lidong=apply_id;  //生产计划编号赋给lidong  用来查询计划详细
-							
-							
-							var remark=this.remark;   //备注
-							var register=$("#djr").text();  //登记人
-							var sum=0;
-							$(".ld:checked").each(function(){
-								var dj = $(this).parent().parent().next().next().next().next().next().next().html();
-						    	var sl = $(this).parent().parent().next().next().next().next().children().val();
-						    	sum=sum+parseFloat((dj*sl));
-							});
-							var subtotal=sum;   //计划总成本
-							this.sum=subtotal;
-							
-							var check_tag="等待审核";    //审核标志
-							var manufacture_tag="未派工";  //派工标志
-							
-							var url="productSc?apply_id="+apply_id+"&remark="+remark+"&subtotal="
-									+subtotal+"&register="+register+"&check_tag="+check_tag+"&manufacture_tag="
-									+manufacture_tag+"&product_id="+bh+"&product_name="+mc+"&product_describe="
-									+ms+"&amount="+sl+"&personal_unit="+dw+"&real_cost_price="+dj+"";
-						    
-							axios.get(url).then(res=>{
-						    	if(res.data>0){
-						    		this.load2();
-						    	}
-						    }).catch(err=>{
-						    	console.log('请求失败');
-						    });
 							
 						}
 						
@@ -346,6 +351,7 @@ Vue.filter('moneyFormat',function(money,length){
 						alert('添加生产计划成功');
 						this.cpmxList="";
 						this.scmxlist="";
+						this.remark="";
 						//盒子切换
 						$("#box1").toggle();
 						$("#box2").toggle();

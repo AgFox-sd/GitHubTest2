@@ -47,19 +47,11 @@
       <div class="container-fluid">
         
         <div class="row">
-          <div class="col-lg-12" style="margin-left: -25%;margin-top: -6%;">
+          <div class="col-lg-11" style="margin-left: -25%;margin-top: -3%;">
             <div class="card">
-              <div class="card-toolbar clearfix">
-                <form class="pull-right search-bar" method="get" action="#!" role="form">
-                  <div class="input-group">
-                    <div class="input-group-btn">
-                      <input type="hidden" name="search_field" id="search-field" value="title">
-                    </div>
-                  </div>
-                </form>
-              </div>
               <div class="card-body">
-              <div class="table-responsive">
+              <!-- box1开始 -->
+              <div class="table-responsive" id="box1">
                   <table class="table table-hover">
                     <thead>
                       <tr>
@@ -69,6 +61,7 @@
 						<th class="text-center">审核人</th>
 						<th class="text-center">审核时间</th>
 						<th class="text-center">计划单状态</th>
+						<th class="text-center">操作</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -78,14 +71,28 @@
 					    </td>
 					    <td>{{scjh.register}}</td>
 					    <td>{{scjh.register_time}}</td>
-						<td>{{scjh.checker}}</td>
-						<td>{{scjh.check_time}}</td>
-						<td>{{scjh.check_tag}}</td>
+						<td>
+						   <span v-if="scjh.checker!=null">{{scjh.checker}}</span>
+						   <span v-if="scjh.checker==null">暂无</span>
+						</td>
+						<td>
+						   <span v-if="scjh.check_time!=null">{{scjh.check_time}}</span>
+						   <span v-if="scjh.check_time==null">暂无</span>
+                        </td>
+						<td>
+						   <span v-if="scjh.check_tag=='审核通过'">通过</span>
+						   <span v-if="scjh.check_tag=='审核不通过'">未通过</span>
+						   <span v-if="scjh.check_tag=='等待审核'">等待</span>
+						</td>
+						<td>
+						   <button v-if="scjh.check_tag=='审核不通过'" class="btn btn-xs btn-primary" @click="GetBj(scjh.apply_id,scjh.register,scjh.register_time,scjh.checker,scjh.check_time,scjh.check_suggestion)">编辑</button>
+						</td>
 					</tr>
 				</tbody>
 		
                   </table>
               </div>
+              <!-- box1结束 -->
               
               <!-- 计划单明细模态框开始 -->
 		      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal1">
@@ -113,7 +120,7 @@
 	                        <th class="text-center">数量</th>
 	                        <th class="text-center">单位</th>
 	                        <th class="text-center">单价(元)</th>
-	                        <th class="text-center">单位(元)</th>
+	                        <th class="text-center">小计(元)</th>
 	                      </tr>
 	                    </thead>
 	                    <tbody>
@@ -149,14 +156,132 @@
                   </div>
                 </div>
 		      <!-- 计划单明细模态框开始 -->
+              
+             <!-- box2开始 -->
+             <div class="btn-group" id="box2" style="display: none;">
+             <div class="form-group">
+                  <button class="btn btn-xs btn-pink" style="margin-left: 650px;margin-top: -1%;" @click="Getcp()" data-toggle="modal" data-target="#modal2">添加产品</button>
+          		          <button class="btn btn-xs btn-primary" @click="Gettj()" style="margin-left: 10px;margin-top: -1%;">重新提交</button>
+          		          <button class="btn btn-xs btn-default" @click="Getfh()" style="margin-left: 10px;margin-top: -1%;">返回</button>
+       		       </div>
+       			   <div class="form-group" style="margin-top: -3%">
+          				<h4 style="margin-left: 370px">修改生产计划单</h4>
+       			   </div>
+		           <div class="form-group" style="margin-left: 100px;margin-top: 20px">
+						<label for="message-text" class="control-label" >生产理由:</label>
+						<span style="margin-left: 8px">新发生修改</span>
+						<label for="message-text" class="control-label" style="margin-left: 300px">计划单编号:</label>
+					    <span style="margin-left: 8px;">{{apply_id}}</span>
+		          </div>
+		          <div style="margin-left: 70px">
+		           <table class="table table-bordered" >
+	                    <thead>
+	                      <tr>
+	                        <th>产品编号</th>
+	                        <th>产品名称</th>
+	                        <th>数量</th>
+	                        <th>单位</th>
+	                        <th>单价(元)</th>
+	                        <th>操作</th>
+	                      </tr>
+	                    </thead>
+	                    <tbody>
+	                      <tr v-for="(cpmx,index) in xgsclist" :key="index">
+		                        <td class="ld">{{cpmx.product_id}}</td>
+                       			<td>{{cpmx.product_name}}</td>
+                       			<td>
+                       				 <input type="text" v-model="cpmx.amount" name="sl" value="1">
+                       			</td>
+                       			<td>{{cpmx.personal_unit}}</td>
+                       			<td>{{cpmx.real_cost_price}}</td>
+                       			<td><a style="cursor: pointer;" @click="Delete(cpmx.product_id)">删除</a></td>
+	                      </tr>
+	                    </tbody>
+	                  </table>
+                  </div>
+                  <div class="form-group" style="margin-top: 5px;margin-left: 100px">
+					   <label for="message-text" class="control-label">登记人:</label>
+					   <span style="margin-left: 8px">{{register}}</span>      
+					   <label for="message-text" class="control-label" style="margin-left: 370px">登记时间:</label>
+					   <span style="margin-left: 10px;">{{register_time}}</span>
+				  </div>
+				  <div class="form-group" style="margin-top: 5px;margin-left: 100px">
+					   <label for="message-text" class="control-label">审核人:</label>
+					   <span style="margin-left: 8px;">{{checker}}</span>		            
+					   <label for="message-text" class="control-label" style="margin-left: 370px">审核时间:</label>
+					   <span style="margin-left: 10px;">{{check_time}}</span>
+				  </div>
+                  <div class="form-group" style="margin-top: 5px;margin-left: 100px">
+          			  <label for="message-text" class="control-label">要求:</label>
+          			  <span style="margin-left: 10px;color: red">{{check_suggestion}}</span>
+       			  </div>
+           </div>
+             <!-- box2结束 -->
+             
+             <!-- 产品模态框开始 -->
+           <div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                  <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" id="myLargeModalLabel">
+                                                                        添加产品                             
+                        </h4>
+                      </div>
+                      <div class="modal-body">
+                    	<form action="#" method="post">
+					   <div style="margin-left: 20px">
+			           <table class="table table-bordered" >
+	                    <thead>
+	                      <tr>
+	                        <th>选择</th>
+	                        <th>产品编号</th>
+	                        <th>产品名称</th>
+	                        <th>用途类型</th>
+	                        <th>单位</th>
+	                        <th>单价(元)</th>
+	                        <th>描述</th>
+	                      </tr>
+	                    </thead>
+	                    <tbody>
+	                      <tr v-for="(cp,index) in cplist" :key="index">
+			                    <td>
+		                          <label class="lyear-checkbox checkbox-primary">
+		                            <input type="checkbox" value="{{cp.product_id}}"  class="oo"><span  class="oo"></span>
+		                          </label>
+		                        </td>
+		                        <td>{{cp.product_id}}</td>
+                       			<td>{{cp.product_name}}</td>
+                        		<td>{{cp.tname}}</td>
+                       			<td>{{cp.personal_unit}}</td>
+                       			<td>{{cp.real_cost_price | moneyFormat(2)}}</td>
+                       			<td>{{cp.product_describe}}</td>
+	                      </tr>
+	                    </tbody>
+	                  </table>
+	                  </div>  
+		        		</form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" @click="Getaddcp()" data-dissmiss="modal" data-dismiss="modal">点击添加</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+           <!-- 产品模态框结束 -->
+             
+             
+             
+              
+              
+              
                 
                 
               </div>
             </div>
           </div>
-          
         </div>
-        
       </div>
       
     </main>
@@ -178,13 +303,19 @@
     	  data:{
     		  scjhlist:[],  //生产计划单list
     		  scjhmxlist:[], //生产计划明细list
+    		  xgsclist:[], //生产修改list
+    		  cplist:[],   //产品list
+    		  
     		  ddshsum:'', //等待审核总数
     		  tgfynum:'', //通过审核总数
+    		  
     		  apply_id:'', //生产计划编号
     		  register:'', //登记人
+    		  register_time:'', //登记时间
     		  checker:'', //审核人
     		  check_time:'',//审核时间
     		  subtotal:'', //计划总成本
+    		  check_suggestion:''// 审核意见
     		  
     	  },
     	  mounted(){//页面挂载完成调用查询全部的方法
@@ -227,7 +358,82 @@
 				  this.apply_id=apply_id;this.register=register;this.checker=checker;this.check_time=check_time;this.subtotal=subtotal;
 			      this.load4();
 			  },
-			  
+			  GetBj:function(apply_id,register,register_time,checker,check_time,check_suggestion){ //不通过进行编辑
+				  this.apply_id=apply_id;this.register=register;this.register_time=register_time;this.checker=checker;this.check_time=check_time;this.check_suggestion=check_suggestion;
+				  $("#box1").toggle();
+				  $("#box2").toggle();
+				  this.load5();
+			  },
+			  load5:function(){ //查询生产计划明细
+				  axios.get('productScmx?apply_id='+this.apply_id+'').then(res=>{
+			    	  this.xgsclist=res.data;
+			      }).catch(err=>{
+			    	  alert('请求失败')
+			      })
+			  },
+			  Getcp:function(){  //点击添加产品
+				  axios.get('ScjhXg?apply_id='+this.apply_id+'').then(res=>{
+			    	  this.cplist=res.data;
+			      }).catch(err=>{
+			    	  alert('请求失败')
+			      })
+			  },
+			  Getaddcp:function(){ //追加生产计划明细表
+				  //获得选择的产品 --追加到生产计划详细表中
+				  var bh=[];//编号
+				  var mc=[];//名称
+				  var dw=[];//单位
+				  var dj=[];//单价
+				  var ms=[];//描述
+				  $(".oo:checked").each(function(){
+					  bh.push($(this).parent().parent().next().html());
+					  mc.push($(this).parent().parent().next().next().html());
+					  dw.push($(this).parent().parent().next().next().next().next().html());
+					  dj.push($(this).parent().parent().next().next().next().next().next().html());
+					  ms.push($(this).parent().parent().next().next().next().next().next().next().html());
+				  })
+				  var url='addscjxmx?apply_id='+this.apply_id+'&product_id='+bh+'&product_name='+mc+'&personal_unit='+dw+'&real_cost_price='+dj+'&product_describe='+ms+'';
+                  axios.get(url).then(res=>{
+                	  if(res.data>0){
+                		  this.load5();
+                		  $('.oo:checked').prop("checked",false);
+                	  }
+                  }).catch(err=>{
+                	  alert('请求失败')
+                  }) 
+			  },
+			  Delete:function(product_id){//删除产品
+				  axios.get('delscjxmx?apply_id='+this.apply_id+'&product_id='+product_id+'').then(res=>{
+					  if(res.data>0){
+						 this.load5();
+					  }
+				  }).catch(err=>{
+					  alert('请求失败')
+				  })
+			  },
+			  Gettj:function(){  //点击重新提交
+				  var bh=[];var sl=[];var dj=[];
+				  $('.ld').each(function(){
+					  bh.push($(this).html());
+					  sl.push($(this).next().next().children().val());
+					  dj.push($(this).next().next().next().next().html());
+				  })
+				  var url='updscjh?apply_id='+this.apply_id+'&product_id='+bh+'&amount='+sl+'&real_cost_price='+dj+'';
+				  axios.get(url).then(res=>{
+					  if(res.data>0){
+						  alert('提交成功')
+						  $("#box1").toggle();
+						  $("#box2").toggle();
+						  this.load();
+					  }
+				  }).catch(err=>{
+					  alert('请求失败')
+				  })
+			  },
+			  Getfh:function(){   //编辑返回
+				  $("#box1").toggle();
+				  $("#box2").toggle();
+			  },
 				  
 				  
 				  

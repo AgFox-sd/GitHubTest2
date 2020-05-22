@@ -128,6 +128,22 @@ public interface LidongService {
 
 	//查询所有的出库申请单  --不为生产领料
 	List<s_pay> selectGetCksqd(String reason);
+
+	//查询不在生产计划中的产品档案
+	List<D_file> selectScjhXg(String apply_id);
+
+	//追加生产计划明细表产品
+	void addscjxmx(String apply_id, String string, String string2, String string3, double d, String product_describe,
+			String manufacture_tag);
+
+	//删除生产计划详情产品
+	int delscjxmx(String apply_id, String product_id);
+
+	//修改生产计划
+	int updscjh(String apply_id, String check_tag,double subtotal);
+
+	//修改生产计划明细
+	void updscjhmx(String apply_id, String string, Double double1);
     
 	
 }

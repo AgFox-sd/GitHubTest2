@@ -264,5 +264,49 @@ public class LidongController {
 	public List<s_pay> selectGetCksqd(@RequestParam("reason")String reason){
 		return service.selectGetCksqd(reason);
 	}
+	
+	
+	
+	//查询不在生产计划中的产品档案
+    @RequestMapping("/ScjhXg")
+	@ResponseBody
+	public List<D_file> selectScjhXg(@RequestParam("apply_id")String apply_id){
+		return service.selectScjhXg(apply_id);
+	}
+	
+	//追加生产计划明细表产品
+	@RequestMapping("/addscjxmx")
+	@ResponseBody
+	public int addscjxmx(@RequestParam("apply_id")String apply_id,@RequestParam("product_id")String [] product_id,@RequestParam("product_name")String [] product_name,@RequestParam("personal_unit")String [] personal_unit,@RequestParam("real_cost_price")double [] real_cost_price,@RequestParam("product_describe")String [] product_describe){
+		String manufacture_tag="未派工";
+		for (int i = 0; i < product_id.length; i++) {
+			service.addscjxmx(apply_id,product_id[i],product_name[i],personal_unit[i],real_cost_price[i],product_describe[i],manufacture_tag);
+		}
+		return 1;
+	}
+	
+	//删除生产计划详情产品
+	@RequestMapping("/delscjxmx")
+	@ResponseBody
+	public int delscjxmx(@RequestParam("apply_id")String apply_id,@RequestParam("product_id")String product_id) {
+		return service.delscjxmx(apply_id,product_id);
+	}
+	
+	//修改生产计划
+	@RequestMapping("/updscjh")
+	@ResponseBody
+	public int updscjh(@RequestParam("apply_id")String apply_id,@RequestParam("product_id")String[] product_id,@RequestParam("amount")Double[] amount,@RequestParam("real_cost_price")Double[] real_cost_price) {
+		double subtotal=0;
+		for (int i = 0; i < product_id.length; i++) {
+			service.updscjhmx(apply_id,product_id[i],amount[i]);
+			subtotal=subtotal+(amount[i]*real_cost_price[i]);
+		}
+		String check_tag="等待审核";
+		return service.updscjh(apply_id,check_tag,subtotal);
+	}
+	
+	
+	
+	
 		
 }
