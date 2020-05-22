@@ -16,7 +16,7 @@
      <!-- 添加产品  查询选中的产品信息 -->
      <select id="selectcpxx" resultType="D_file">
         select a.*,c.tname from d_file a,type c
-        where a.tid=c.tid and 
+        where a.tid=c.tid and
         a.product_id=#{product_id}
      </select>
      
@@ -212,9 +212,34 @@
         select * from s_pay where reason!=#{reason}
      </select>
      
+     <!-- 查询不在生产计划单中的产品 -->
+     <select id="selectScjhXg" resultType="D_file">
+        select a.*,c.tname from d_file a,type c
+        where a.tid=c.tid and a.tid=1 and 
+        a.check_tag="审核通过" and a.design_procedure_tag='已设计'
+        and a.product_id NOT in(select product_id from m_apply_mx WHERE apply_id=#{apply_id})
+     </select>
      
+     <!-- 追加生产计划明细表产品 -->
+     <insert id="addscjxmx">
+        insert into m_apply_mx(id,apply_id,product_id,product_name,product_describe,personal_unit,amount,real_cost_price,manufacture_tag)
+        values(null,#{apply_id},#{product_id},#{product_name},#{product_describe},#{personal_unit},1,#{real_cost_price},#{manufacture_tag})
+     </insert>
      
+     <!-- 删除生产计划明细 -->
+     <delete id="delscjxmx">
+        delete from m_apply_mx where apply_id=#{apply_id} and product_id=#{product_id}
+     </delete>
      
+     <!-- 修改生产计划 -->
+     <update id="updscjh"> 
+        update m_apply set check_tag=#{check_tag},subtotal=#{subtotal} where apply_id=#{apply_id}
+     </update>
+     
+     <!-- 修改生产计划明细 -->
+     <update id="updscjhmx"> 
+        update m_apply_mx set amount=#{amount} where apply_id=#{apply_id} and product_id=#{product_id}
+     </update>
      
      
   </mapper>

@@ -75,7 +75,7 @@
 					    <td>{{cg.register}}</td>
 					    <td>{{cg.register}}</td>
 						<td>{{cg.register_time}}</td>
-						<td>采购</td>
+						<td>{{cg.remark}}</td>
 						<td>
 						 <a style="cursor: pointer;text-decoration:underline;" data-toggle="modal" data-target="#modal1" @click="gosh(cg.cgPlanId,cg.register,cg.register_time,cg.remark)">审核</a>
 						</td>
@@ -86,7 +86,7 @@
               </div>
               
               <!-- 审核模态框开始 -->
-		      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal1">
+		      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal1" :class="{'modal1':flag}">
                   <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -138,15 +138,17 @@
 					            <label for="message-text" class="control-label" style="margin-left: 370px">登记时间:</label>
 					            <span id="shr" style="margin-left: 10px;">{{register_time}}</span>
 					          </div>
-					          <div class="form-group" style="margin-top: 10px;margin-left: 3px">
-					            <label for="message-text" class="control-label">备注:</label>
-					            <span style="margin-left: 10px;">{{remark}}</span>
+					          <div class="form-group" style="margin-top: 10px">
+					            <label for="message-text" class="control-label" style="margin-left: 5px;">审核意见:</label>
+					            <div>
+					            <textarea rows="3" cols="100" style="margin-left: 18px" v-model="check_suggestion"></textarea>		            
+					            </div>
 					          </div>
 		                </form>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
-                        <button type="button" class="btn btn-primary" @click="sh()" data-dismiss="modal">确定</button>
+                        <button type="button" class="btn btn-primary" @click="sh()">确定</button>
                       </div>
                     </div>
                   </div>
@@ -187,6 +189,8 @@
     		  register:'', //登记人 --计划制定人
     		  register_time:'',//登记时间
     		  remark:'',//备注
+    		  check_suggestion:'', //审核意见
+    		  flag:false
     		  
     	  },
     	  mounted(){//页面挂载完成调用查询全部的方法
@@ -229,6 +233,7 @@
 					 var param={cgPlanId:this.cgPlanId,checker:checker,check_tag:check_tag};
 					 axios.post('Cgshtg',param).then(res=>{
 						 if(res.data>0){
+							 $("#modal1").modal('hide');
 							 alert('审核成功')
 							 this.load();
 							 this.load2();
@@ -237,17 +242,23 @@
 						 alert('请求失败')
 					 })
 				  }else{
-					  var check_tag="审核不通过";
-					  var param={cgPlanId:this.cgPlanId,checker:checker,check_tag:check_tag};
-					  axios.post('Cgshtg',param).then(res=>{
-							 if(res.data>0){
-								 alert('审核不通过,请修改或者重新制定采购计划')
-								 this.load();
-								 this.load2();
-							 }
-						}).catch(err=>{
-							alert('请求失败')
-					    })
+					  if(this.check_suggestion==""){
+						  alert('请说明审核意见')
+					  }else{
+						  var check_tag="审核不通过";
+						  var param={cgPlanId:this.cgPlanId,checker:checker,check_tag:check_tag,check_suggestion:this.check_suggestion};
+						  axios.post('Cgshtg',param).then(res=>{
+								 if(res.data>0){
+									 alert('审核不通过,请修改或者重新制定采购计划')
+									 $("#modal1").modal('hide');
+									 this.load();
+									 this.load2();
+								 }
+							}).catch(err=>{
+								alert('请求失败')
+						    })
+					  }
+					  
 					  
 					  
 				  }

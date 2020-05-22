@@ -77,14 +77,14 @@
 					    <td>{{cg.register}}</td>
 					    <td>{{cg.register}}</td>
 					    <td>{{cg.register_time}}</td>
-						<td>采购</td>
+						<td>{{cg.remark}}</td>
 						<td>
 						   <span v-if="cg.check_tag=='审核通过'">通过</span>
 						   <span v-if="cg.check_tag=='审核不通过'">未通过</span>
 						   <span v-if="cg.check_tag=='等待审核'">等待</span>
 						</td>
 						<td>
-						   <button v-if="cg.check_tag=='审核不通过'" class="btn btn-xs btn-primary" @click="GetBj(cg.cgPlanId,cg.register,cg.register_time,cg.checker,cg.check_time,cg.remark)">编辑</button>
+						   <button v-if="cg.check_tag=='审核不通过'" class="btn btn-xs btn-primary" @click="GetBj(cg.cgPlanId,cg.register,cg.register_time,cg.checker,cg.check_time,cg.remark,cg.check_suggestion)">编辑</button>
 						</td>
 					</tr>
 				</tbody>
@@ -211,9 +211,9 @@
 					   <label for="message-text" class="control-label" style="margin-left: 370px">审核时间:</label>
 					   <span style="margin-left: 10px;">{{check_time}}</span>
 				  </div>
-                  <div class="form-group">
-          			  <label for="message-text" class="control-label" style="margin-left: 3%">备注:</label>
-          			  <textarea rows="2" cols="100" style="margin-left: 10px" v-model="remark"></textarea>
+                  <div class="form-group" style="margin-top: 5px;margin-left: 100px">
+          			  <label for="message-text" class="control-label">要求:</label>
+          			  <span style="margin-left: 10px;color: red">{{check_suggestion}}</span>
        			  </div>
            </div> 		
            <!-- box2结束 -->
@@ -315,6 +315,7 @@
     		  check_tag:'', //审核状态
     		  check_time:'',//审核时间
     		  remark:'', //备注
+    		  check_suggestion:'',//审核意见
     		  
     		  productsum:'',//符合条件的产品档案总数
     		  cplist:[],//符合要求的产品档案
@@ -377,8 +378,8 @@
 			    	  alert('请求失败')
 			      })
 			  },
-			  GetBj:function(cgPlanId,register,register_time,checker,check_time,remark){ //点击编辑
-				  this.cgPlanId=cgPlanId;this.register=register;this.register_time=register_time;this.checker=checker;this.check_time=check_time;this.remark=remark;
+			  GetBj:function(cgPlanId,register,register_time,checker,check_time,remark,check_suggestion){ //点击编辑
+				  this.cgPlanId=cgPlanId;this.register=register;this.register_time=register_time;this.checker=checker;this.check_time=check_time;this.remark=remark;this.check_suggestion=check_suggestion;
 				  this.load7();
 				  $("#box1").toggle();
 				  $("#box2").toggle();

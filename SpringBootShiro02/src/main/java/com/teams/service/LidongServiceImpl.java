@@ -271,6 +271,42 @@ public class LidongServiceImpl implements LidongService{
 		return mapper.selectGetCksqd(reason);
 	}
 
+	//查询不在生产计划中的产品档案
+	@Override
+	public List<D_file> selectScjhXg(String apply_id) {
+		// TODO Auto-generated method stub
+		return mapper.selectScjhXg(apply_id);
+	}
+
+	//追加生产计划明细表产品
+	@Override
+	public void addscjxmx(String apply_id, String string, String string2, String string3, double d,
+			String product_describe, String manufacture_tag) {
+		// TODO Auto-generated method stub
+		mapper.addscjxmx(apply_id,string,string2,string3,d,product_describe,manufacture_tag);
+	}
+
+	//删除生产计划详情产品
+	@Override
+	public int delscjxmx(String apply_id, String product_id) {
+		// TODO Auto-generated method stub
+		return mapper.delscjxmx(apply_id,product_id);
+	}
+
+	//修改生产计划
+	@Override
+	public int updscjh(String apply_id, String check_tag,double subtotal) {
+		// TODO Auto-generated method stub
+		return mapper.updscjh(apply_id,check_tag,subtotal);
+	}
+
+	//修改生产计划明细
+	@Override
+	public void updscjhmx(String apply_id, String string, Double double1) {
+		// TODO Auto-generated method stub
+	    mapper.updscjhmx(apply_id,string,double1);
+	}
+
 	
 
 
