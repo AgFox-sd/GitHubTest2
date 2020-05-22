@@ -214,6 +214,8 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="js/main.min.js"></script>
+<script type="text/javascript" src="js/lightyear.js"></script>
+<script src="js/bootstrap-notify.min.js"></script>
 
 
 
@@ -240,10 +242,22 @@
 						})
 						
 					},Selidxx(product_id,product_name){
-						 $("#box1").toggle();
-						 $("#box2").toggle();
-						 this.product_name=product_name;
-						 this.product_id=product_id;
+						axios.get("Selad2?sjdh="+$("#sjdh").text()+"").then(res=>{
+							if(res.data==""){
+								setTimeout(function() {
+							        lightyear.loading('hide');
+							        lightyear.notify('请设计物料！', 'danger', 1000);
+							    }, 1e3)
+							}else{
+								$("#box1").toggle();
+								 $("#box2").toggle();
+								 this.product_name=product_name;
+								 this.product_id=product_id;
+							}
+						}).catch(err=>{
+							console.log("请求失败");
+						})
+						 
 					},
 					Selad2(){//查询物料信息
 						axios.get("Selad2?sjdh="+$("#sjdh").text()+"").then(res=>{

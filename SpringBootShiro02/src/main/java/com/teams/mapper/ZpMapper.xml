@@ -12,6 +12,7 @@
 			<if test="keyWord!=null and keyWord!=''">
 		 	  and (username like concat('%',#{keyWord},'%') or name like concat('%',#{keyWord},'%') )
 		     </if> 
+		     order by id desc
   		</select>
   		
   		<!-- 新增用户 -->
@@ -65,6 +66,7 @@
   			<if test="keyWord!=null and keyWord!=''">
 		 	  and (name like concat('%',#{keyWord},'%') or id like concat('%',#{keyWord},'%') )
 		     </if> 
+		     order by id desc
   		</select>
   		
   		<!-- 增加角色 -->
@@ -101,6 +103,7 @@
    			 <if test="keyWord!=null and keyWord!=''">
 		 	  and (f_fullname like concat('%',#{keyWord},'%') or id like concat('%',#{keyWord},'%') )
 		     </if> 
+		     order by id desc
    		</select>
    		
    		<!-- 增加权限 -->
