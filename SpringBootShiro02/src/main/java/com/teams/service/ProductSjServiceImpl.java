@@ -15,6 +15,9 @@ import com.teams.pojo.D_module_details;
 import com.teams.pojo.Feilei;
 import com.teams.pojo.Pclass;
 import com.teams.pojo.Type;
+import com.teams.utils.Params;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.teams.mapper.ProductSjMapper;
 
 @Transactional
@@ -131,9 +134,9 @@ public class ProductSjServiceImpl implements ProductSjService{
 	}
 
 	@Override
-	public List<D_file> Selad(String check_tag,String design_module_tag, int tid) {
+	public List<D_file> Selad(String check_tag,String design_module_tag, int tid,String sjdh) {
 		// TODO Auto-generated method stub
-		return mapper.Selad(check_tag,design_module_tag,tid);
+		return mapper.Selad(check_tag,design_module_tag,tid,sjdh);
 	}
 
 	@Override
@@ -176,9 +179,10 @@ public class ProductSjServiceImpl implements ProductSjService{
 	}
 	
 	@Override
-	public List<D_file> selecId() {
+	public PageInfo<D_file> selecId(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.selecId();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selecId(params));
 	}
 
 	@Override
@@ -240,6 +244,18 @@ public class ProductSjServiceImpl implements ProductSjService{
 	public List<D_module> selD_moduleS() {
 		// TODO Auto-generated method stub
 		return mapper.selD_moduleS();
+	}
+
+	@Override
+	public int delwlsjzcd(String design_id, String product_id) {
+		// TODO Auto-generated method stub
+		return mapper.delwlsjzcd(design_id, product_id);
+	}
+
+	@Override
+	public int selectCount(String sjdh) {
+		// TODO Auto-generated method stub
+		return mapper.selectCount(sjdh);
 	}
 
 	

@@ -175,6 +175,8 @@
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 	<script type="text/javascript" src="js/main.min.js"></script>
+	<script type="text/javascript" src="js/lightyear.js"></script>
+	<script src="js/bootstrap-notify.min.js"></script>
 	<script>
 			var vm=new Vue({
 				el:'#app',
@@ -251,7 +253,6 @@
 						})
 					},
 					add(){
-		
 						var myDate =new Date();
 					    var a=myDate.getFullYear()+"0"+(myDate.getMonth()+1)+""+myDate.getDate();
 						var time="";
@@ -282,8 +283,13 @@
 							}else{
 								axios.post("addda",file).then(res=>{
 									if(res.data=="成功"){
-									alert("增加成功");		
-									this.b=this.c=this.d=this.e=this.f=this.g=this.h=this.i=this.j=this.k=this.l=this.m=this.n=this.o=this.p=this.q=this.r=this.s=this.t=this.fx=null
+										 lightyear.loading('show');
+										    // 假设ajax提交操作
+										    setTimeout(function() {
+										        lightyear.loading('hide');
+										        lightyear.notify('增加成功！', 'success', 1000);
+										    }, 1e3)			
+										   this.b=this.c=this.d=this.e=this.f=this.g=this.h=this.i=this.j=this.k=this.l=this.m=this.n=this.o=this.p=this.q=this.r=this.s=this.t=this.fx=null
 									}   
 								}).catch(err=>{   
 									alert("操作失败")

@@ -69,6 +69,8 @@
 													<th class="text-center">供应商电话</th>
 													<th class="text-center">供应商地址</th>
 													<th class="text-center">联系人</th>
+													<th class="text-center">审核状态</th>
+													<th class="text-center">审核意见</th>
 													<th class="text-center">操作</th>
 												</tr>
 											</thead>
@@ -79,6 +81,8 @@
 													<td>{{gys.providerPhone}}</td>
 													<td>{{gys.providerAddress}}</td>
 													<td>{{gys.linkman}}</td>
+													<td>{{gys.check_tag}}</td>
+													<td>{{gys.check_reason}}</td>
 													<td>
 														<button type="button" class="btn btn-primary  btn-xs"
 															data-target=".bs-example-modal-lg" @click="updBG(gys.providerId)">档案变更</button>
@@ -218,7 +222,11 @@
 								                    <label for="title"><span style="color: red">*</span>审核时间：</label>
 								                    <input type="text" class="form-control" v-model="listssss.check_time"/>
 								                  </div>
-								                  <div class="form-group col-md-6"></div>
+								                  <div class="form-group col-md-1"></div>
+								                  <div class="form-group col-md-5">
+								                  	<label for="title"><span style="color: red">*</span>变更意见：</label>
+								                    <input type="text" class="form-control" v-model="change_reason"/>
+								                  </div>
 								                 </div>
 												<div style="margin-left: 700px">
 							                		 <button class="btn btn-w-xs btn-pink"  @click="Queren()">确认变更</button>
@@ -252,7 +260,8 @@
     			providerId:'',
     			lists:[],
     			listfenlei:[],
-    			listssss:[]
+    			listssss:[],
+    			change_reason:''
     			
     	  },
     	  mounted(){//页面挂载完成调用查询全部的方法
@@ -300,25 +309,30 @@
 				 });
 			  },
 			  Queren(){
-				  var check_tag = '等待审核';
-				  var change_tag='已变更';
-				  var changer=$("#bgr").val();
-				  var url={providerId:this.listssss.providerId,providerName:this.listssss.providerName,
-						  fid:this.listssss.fid,providerAddress:this.listssss.providerAddress,linkman:this.listssss.linkman,
-						  providerPhone:this.listssss.providerPhone,register:this.listssss.register,
-						  register_time:this.listssss.register_time,check_time:this.listssss.check_time,
-						  check_tag:check_tag,changer:changer,checker:this.listssss.checker,
-						  change_tag:change_tag
-						  }
-				  
-					axios.post('updGYSBG',url).then(res=>{
-						if(res.data=="成功"){
-								alert('修改成功');
-								 $("#box1").toggle();
-								 $("#box2").toggle();
-								this.AllGYS();
-						}
-						});
+				  if(this.change_reason==""){
+					  alert("请填写变更意见！");
+				  }else{
+					  var check_tag = '等待审核';
+					  var change_tag='已变更';
+					  var changer=$("#bgr").val();
+					  var url={providerId:this.listssss.providerId,providerName:this.listssss.providerName,
+							  fid:this.listssss.fid,providerAddress:this.listssss.providerAddress,linkman:this.listssss.linkman,
+							  providerPhone:this.listssss.providerPhone,register:this.listssss.register,
+							  register_time:this.listssss.register_time,check_time:this.listssss.check_time,
+							  check_tag:check_tag,changer:changer,checker:this.listssss.checker,
+							  change_tag:change_tag,change_reason:this.change_reason
+							  }
+					  
+						axios.post('updGYSBG',url).then(res=>{
+							if(res.data=="成功"){
+									alert('修改成功');
+									 $("#box1").toggle();
+									 $("#box2").toggle();
+									this.AllGYS();
+							}
+							});
+					  
+				  }
 				  
 				  
 			  }

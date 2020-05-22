@@ -18,7 +18,7 @@
   
   		<!-- 增加供应商 -->
   		<insert id="addGYS">
-  			insert into provider value(NULL,#{providerId},#{providerName},#{providerAddress},#{linkman},#{fid},#{providerPhone},#{register},sysdate(),DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT)
+  			insert into provider value(NULL,#{providerId},#{providerName},#{providerAddress},#{linkman},#{fid},#{providerPhone},#{register},sysdate(),DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,null,null)
   		</insert>
   		
   		<!-- 供应商名称是否重复 -->
@@ -33,7 +33,7 @@
   		
   		<!-- 供应商审核通过,审核通过后把变更标志改为未变更 -->
   		<update id="updGYSFuS"> 
-  			update provider set check_tag=#{string},change_tag=#{string2},check_time=sysdate(),checker=#{checker} where providerId=#{providerId}
+  			update provider set check_tag=#{check_tag},change_tag=#{string2},check_time=sysdate(),checker=#{checker},check_reason=#{check_reason} where providerId=#{providerId}
   		</update>
   		
   		<!--供应商删除 -->
@@ -50,6 +50,6 @@
   		<update id="updGYSBG">
   			UPDATE  provider SET providerName=#{providerName},providerAddress=#{providerAddress},linkman=#{linkman},fid=#{fid},providerPhone=#{providerPhone},
 			register=#{register},register_time=#{register_time},checker=#{checker},check_tag=#{check_tag},check_time=#{check_time},changer=#{changer},
-			change_time=sysdate(),change_tag=#{change_tag} where providerId=#{providerId}
+			change_time=sysdate(),change_tag=#{change_tag},change_reason=#{change_reason} where providerId=#{providerId}
   		</update>
   </mapper>

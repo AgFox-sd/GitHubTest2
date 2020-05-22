@@ -114,24 +114,22 @@
                       <tr>
                         <th class="text-center">物料编号</th>
                         <th class="text-center">物料名称</th>
-                        <th class="text-center">用途类型</th>
-                        <th class="text-center">产品档次</th>
                         <th class="text-center">数量</th>
                         <th class="text-center">单位</th>
                         <th class="text-center">计划成本单价</th>
                         <th class="text-center">小计</th>
+						<th class="text-center">操作</th>                      
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="wl in wlmxList" class="text-center">
                        <td>{{wl.product_id}}</td>
                         <td>{{wl.product_name}}</td>
-                       	<td>{{wl.lx}}</td>
-                        <td>{{wl.dc}}</td>
                         <td>{{wl.amount}}</td>
                         <td>{{wl.amount_unit}}</td>
                         <td>{{wl.cost_price}}</td>
                         <td>{{wl.subtotal}}</td>
+                        <td><a href="#" @click="delid(wl.id,wl.subtotal,wl.product_id,wl.product_name)">删除</a></td>
                       </tr>
                     </tbody>
                   </table>
@@ -177,7 +175,7 @@
                        				 <input type="text" name="sl" value="1">
                        			</td>
                        			<td>{{wl.amount_unit}}</td>
-                       			<td>{{wl.cost_price}}</td>
+                       			<td>{{wl.list_price}}</td>
 	                      </tr>
 	                    </tbody>
 	                  </table>
@@ -216,6 +214,8 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="js/main.min.js"></script>
+<script type="text/javascript" src="js/lightyear.js"></script>
+<script src="js/bootstrap-notify.min.js"></script>
 
 
 
@@ -242,13 +242,25 @@
 						})
 						
 					},Selidxx(product_id,product_name){
-						 $("#box1").toggle();
-						 $("#box2").toggle();
-						 this.product_name=product_name;
-						 this.product_id=product_id;
+						axios.get("Selad2?sjdh="+$("#sjdh").text()+"").then(res=>{
+							if(res.data==""){
+								setTimeout(function() {
+							        lightyear.loading('hide');
+							        lightyear.notify('请设计物料！', 'danger', 1000);
+							    }, 1e3)
+							}else{
+								$("#box1").toggle();
+								 $("#box2").toggle();
+								 this.product_name=product_name;
+								 this.product_id=product_id;
+							}
+						}).catch(err=>{
+							console.log("请求失败");
+						})
+						 
 					},
 					Selad2(){//查询物料信息
-						axios.post("Selad2").then(res=>{
+						axios.get("Selad2?sjdh="+$("#sjdh").text()+"").then(res=>{
 							this.wllist=res.data;
 						}).catch(err=>{
 							console.log("请求失败");
@@ -280,20 +292,40 @@
 						var sjr  = $("#sjr").text();
 					    var url = "productWlZc?bh="+bh+"&mc="+mc+"&lx="+lx+"&dc="+dc+"&sl="+sl+"&dw="+dw+"&dj="+dj+"&product_id="+product_id+"&product_name="+product_name+"&sjdh="+sjdh+"&sjr="+sjr+"";	
 					    axios.get(url).then(res=>{
-					    	this.wlmxList=res.data;
+					    	this.Selad3();
+					    	$(".xz").prop("checked",false);
 					    }).catch(err=>{
 							alert('请求失败')
 						})
 					},
 					QueRen(){
-						$("#box1").toggle();
-						$("#box2").toggle();
-						this.Selad();
-						alert('设计完成');
+						axios.get("updwlysj?product_id="+this.product_id+"").then(res=>{
+							if(res.data>0){
+								$("#box1").toggle();
+								$("#box2").toggle();
+								this.Selad();
+								alert('设计完成');
+							}
+						})
+						
 					},
 					Fanhui(){//点击返回从box2，回到box1
 						$("#box1").toggle();
 						$("#box2").toggle();
+					},					
+					delid(id,subtotal,product_id,product_name){
+						var url="delwlsjzcd?design_id="+$("#sjdh").text()+"&product_id="+product_id+"";
+						axios.get(url).then(res=>{
+							this.Selad3();
+							alert("成功")
+					    }).catch(err=>{
+							alert('请求失败')
+						})
+					},
+					Selad3(){
+						axios.get("selD_module_details?design_id="+$("#sjdh").text()).then(res=>{
+							this.wlmxList=res.data;
+							})
 					}
 			}
 				

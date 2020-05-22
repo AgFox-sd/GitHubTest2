@@ -46,11 +46,11 @@
 	<!-- 产品档案审核 -->
 	<update id="updfh">
 		update d_file set product_name=#{product_name},factory_name=#{factory_name},
-		product_nick=#{product_nick},tid=#{tid},pid=#{pid},personal_unit=#{personal_unit},
+		change_tag='未变更' ,product_nick=#{product_nick},tid=#{tid},pid=#{pid},personal_unit=#{personal_unit},
 		personal_value=#{personal_value},provider_group=#{provider_group},list_price=#{list_price},
 		cost_price=#{cost_price},amount_unit=#{amount_unit},warranty=#{warranty},twin_name=#{twin_name},
 		twin_id=#{twin_id},lifecycle=#{lifecycle},responsible_person=#{responsible_person},register=#{register},
-		check_tag=#{check_tag},checker=#{checker},check_time=now()
+		check_tag=#{check_tag},checker=#{checker},check_time=now(),check_reason=#{check_reason}
 		where product_id=#{product_id}
 	</update>
 
@@ -105,11 +105,11 @@
 	<!-- 查询显示的信息为所有已通过复核的产品档案 -->
 	<select id="selectId2" resultType="D_file">
 		SELECT
-		a.product_id,a.product_name,a.list_price,a.factory_name,a.amount_unit,
+		a.product_id,a.product_name,a.list_price,a.factory_name,a.amount_unit,a.check_tag,
 		b.tname,c.pname FROM D_FILE a,TYPE b,pclass c
 		WHERE b.`tid`=a.`tid`
 		AND c.`pid`=a.`pid`
-		AND CHECK_TAG=#{CHECK_TAG}
+		and change_tag='未变更'
 	</select>
 
 	<!-- 通过产品编号(id)查询档案信息 -->
@@ -124,8 +124,8 @@
 	<update id="updBG">
 		update D_file
 		<set>
-			change_time=NOW(),file_change_amount=(file_change_amount+1),CHECK_TAG=#{check_tag},
-			<if test="product_name!=null and product_name!=''">product_name=#{product_name},</if>
+			change_time=NOW(),file_change_amount=(file_change_amount+1),CHECK_TAG=#{check_tag},change_reason=#{change_reason},
+			change_tag='已变更' ,<if test="product_name!=null and product_name!=''">product_name=#{product_name},</if>
 			<if test="factory_name!=null and factory_name!=''">factory_name=#{factory_name},</if>
 			<if test="product_nick!=null and product_nick!=''">product_nick=#{product_nick},</if>
 			<if test="tid!=null and tid!=''">tid=#{tid},</if>
@@ -164,11 +164,12 @@
 	<!-- 查询通过审核的商品档案信息 -->
 	<select id="Selad" resultType="D_file">
 		SELECT a.product_id ,a.product_name,a.factory_name
-		,a.amount_unit,a.cost_price ,c.tname ,d.pname
+		,a.amount_unit,a.list_price ,c.tname ,d.pname
 		FROM d_file a,TYPE c,pclass d
 		WHERE a.tid=c.tid AND a.pid=d.pid AND a.check_tag=#{check_tag} AND
 		c.tid=#{tid}
 		AND design_module_tag = #{design_module_tag} AND a.delete_tag ='未删除'
+        and a.product_id not in(select product_id from d_module_details where design_id=#{sjdh})
 	</select>
 
 
@@ -233,7 +234,8 @@
 		#{delete_tag},
 		#{design_module_tag},
 		#{design_procedure_tag},
-		#{design_cell_tag}
+		#{design_cell_tag},
+		null,null
 		)
 	</insert>
 
@@ -241,7 +243,11 @@
 	<select id="selecId" resultType="D_file">
 		select a.*,b.fname,c.tname,d.pname from d_file a,feilei b,type c,pclass d
 		where a.fid=b.fid and a.tid=c.tid and a.pid=d.pid and
-		a.delete_tag='未删除'
+		a.delete_tag='未删除' 
+		<if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+		 </if> 
+		order by id desc
 	</select>
 
 	<!-- 物料设计单查询 -->
@@ -294,4 +300,12 @@
 		values(null,#{design_id},#{product_id},#{product_name},null,
 		#{amount_unit},#{amount},#{residual_amount},#{cost_price},#{subtotal});
 	</insert>
+	
+	<delete id="delwlsjzcd">
+	delete from d_module_details where design_id=#{design_id} and product_id=#{product_id}
+	</delete>
+	
+	<select id="selectCount" resultType="int">
+	select count(1) from d_module where design_id=#{sjdh}
+	</select>
 </mapper>

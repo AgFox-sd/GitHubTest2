@@ -97,16 +97,16 @@ public class ProducePgController {
 	//生产派工单审核通过
 	@RequestMapping("/updPgtg")
 	@ResponseBody  
-	public int updPgtg(String check_tag,String pg_id) {
-		return service.updPgtg(check_tag,pg_id);
+	public int updPgtg(String check_tag,String pg_id,String check_reason) {
+		return service.updPgtg(check_tag,pg_id,check_reason);//修改生产派工单
 	}
 	
-   	//审核未通过,删除派工单 并修改派工标志
+   	//审核未通过，并修改派工标志
 	@RequestMapping("/delpg")
 	@ResponseBody  
-	public int delpg(String product_id,String apply_id,String manufacture_tag,String pg_id) {
-		service.updPgbz(manufacture_tag,product_id,apply_id);
-		return service.updPgtg("审核不通过",pg_id);
+	public int delpg(String product_id,String apply_id,String manufacture_tag,String pg_id,String check_reason) {
+		service.updPgbz(manufacture_tag,product_id,apply_id);//修改生产计划明细
+		return service.updPgtg("审核不通过",pg_id, check_reason);//修改生产派工单
 	}
 	
 	//生产派工单查询

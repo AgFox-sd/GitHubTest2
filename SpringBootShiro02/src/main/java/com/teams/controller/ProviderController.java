@@ -62,8 +62,8 @@ public class ProviderController {
 	//供应商审核通过
 	@RequestMapping("/updGYSFuS")
 	@ResponseBody
-	public String updGYSFuS(@RequestParam("providerId") String providerId,@RequestParam("checker") String checker){
-		int upd=service.updGYSFuS("审核通过","未变更", providerId,checker);
+	public String updGYSFuS(@RequestParam("providerId") String providerId,@RequestParam("checker") String checker,@RequestParam("check_tag") String check_tag,@RequestParam("check_reason") String check_reason){
+		int upd=service.updGYSFuS("未变更", providerId,checker,check_tag,check_reason);
 		return upd>0?"成功":"失败";
 	}	
 	

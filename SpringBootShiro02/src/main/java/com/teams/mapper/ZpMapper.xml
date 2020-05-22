@@ -8,7 +8,11 @@
   		<!-- 查询所有用户信息 -->
   		<select id="AllUser" resultType="User">
   			SELECT a.id,a.username,b.rid,c.name FROM USER a LEFT JOIN  user_role  b ON a.id=b.uid
-			LEFT JOIN   roles c ON b.rid=c.id
+			LEFT JOIN   roles c ON b.rid=c.id where 1=1
+			<if test="keyWord!=null and keyWord!=''">
+		 	  and (username like concat('%',#{keyWord},'%') or name like concat('%',#{keyWord},'%') )
+		     </if> 
+		     order by id desc
   		</select>
   		
   		<!-- 新增用户 -->
@@ -58,7 +62,11 @@
   		
   		<!-- 查询所有的角色 -->
   		<select id="AllRoles" resultType="roles">
-  			SELECT * FROM roles
+  			SELECT * FROM roles where 1=1
+  			<if test="keyWord!=null and keyWord!=''">
+		 	  and (name like concat('%',#{keyWord},'%') or id like concat('%',#{keyWord},'%') )
+		     </if> 
+		     order by id desc
   		</select>
   		
   		<!-- 增加角色 -->
@@ -91,7 +99,11 @@
    		
    		<!--查询所有的权限 -->
    		<select id="AllQX" resultType="permissions">
-   			select * from permissions
+   			select * from permissions where 1=1
+   			 <if test="keyWord!=null and keyWord!=''">
+		 	  and (f_fullname like concat('%',#{keyWord},'%') or id like concat('%',#{keyWord},'%') )
+		     </if> 
+		     order by id desc
    		</select>
    		
    		<!-- 增加权限 -->
