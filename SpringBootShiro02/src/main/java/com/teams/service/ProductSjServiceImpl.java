@@ -107,9 +107,9 @@ public class ProductSjServiceImpl implements ProductSjService{
 	}
 
 	@Override
-	public int delwlsj(@Param("design_id")String design_id) {
+	public int delwlsj(String check_yj,String product_id,@Param("design_id")String design_id) {
 		// TODO Auto-generated method stub
-		return mapper.delwlsj(design_id);
+		return mapper.delwlsj(check_yj,product_id,design_id);
 	}
 
 	@Override
@@ -224,9 +224,9 @@ public class ProductSjServiceImpl implements ProductSjService{
 	}
 
 	@Override
-	public int upgwsh(String check_tag, String change_tag, String product_id, String product_name) {
+	public int upgwsh(String check_tag, String change_tag, String change_yj,String product_id, String product_name) {
 		// TODO Auto-generated method stub
-		return mapper.upgwsh(check_tag, change_tag, product_id, product_name);
+		return mapper.upgwsh(check_tag, change_tag,change_yj, product_id, product_name);
 	}
 
 	@Override

@@ -80,7 +80,7 @@
 						<td>{{wuzc.cost_price_sum | moneyFormat(2,'$')}}</td>
 						<td>
 						  <div class="btn-group">
-                             <button type="button" class="btn btn-primary  btn-xs" data-toggle="modal" data-target="#modal1" @click="gosh(wuzc.design_id,wuzc.designer,wuzc.product_id,wuzc.product_name,wuzc.cost_price_sum,wuzc.module_describe)">审核</button>
+                             <button type="button" class="btn btn-primary  btn-xs" data-toggle="modal" data-target="#modal1" @click="gosh(wuzc.design_id,wuzc.designer,wuzc.product_id,wuzc.product_name,wuzc.cost_price_sum,wuzc.module_describe,wuzc.change_yj)">审核</button>
                           </div>
 						</td>
 					</tr>
@@ -90,7 +90,7 @@
               </div>
               
               <!-- 审核模态框开始 -->
-		      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal1">
+		      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal1" >
                   <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -152,16 +152,20 @@
 					            <label for="message-text" class="control-label" style="margin-left: 450px">审核人:</label>
 					            <span id="shr" style="margin-left: 10px;color: red" th:text="${session.username}"></span>
 					          </div>
+					          <div class="form-group" style="margin-top: 20px;display: none" id="box1">
+					            <label for="message-text" class="control-label" style="margin-left: 3px" >变更意见:</label>
+					            <span style="margin-left: 10px;color: red">{{change_yj}}</span>		            
+					          </div>
 					          <div class="form-group" style="margin-top: 10px">
-					            <label for="message-text" class="control-label" style="margin-left: 18px;">设计要求:</label>
+					            <label for="message-text" class="control-label" style="margin-left: 18px;">审核意见:</label>
 					            <div>
-					            <textarea rows="3" cols="100" style="margin-left: 18px" v-model="module_describe"></textarea>		            
+					            <textarea rows="3" cols="100" style="margin-left: 18px" name="check_yj" v-model="check_yj"></textarea>		            
 					            </div>
 					          </div>
 		                </form>
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" @click="fanhui()">返回</button>
                         <button type="button" class="btn btn-primary" @click="sh()" data-dismiss="modal">确定</button>
                       </div>
                     </div>
@@ -197,15 +201,15 @@
     	  data:{
     		  list:[],  //产品物料设计单list
     		  xxlist:[], //产品物料组成明细list
-    		  
     		  ddshsum:'', //等待审核总数
-    		  
     		  design_id:'',  //设计单编号
     		  designer:'',  //设计人
     		  product_id:'', //产品编号
     		  product_name:'', //产品名称
     		  cost_price_sum:'', //物料总成本
-    	      module_describe:'',//设计要求
+    	      module_describe:'',//设计要求,
+    	      check_yj:'',//审核意见
+    	     change_yj:'',
     	  },
     	  mounted(){//页面挂载完成调用查询全部的方法
 				this.load();
@@ -235,16 +239,22 @@
 			    	  alert('请求失败')
 			      })
 			  },
-			  gosh:function(design_id,designer,product_id,product_name,cost_price_sum,module_describe){ 
+			  gosh:function(design_id,designer,product_id,product_name,cost_price_sum,module_describe,change_yj){ 
 				  this.design_id=design_id;this.designer=designer;this.product_id=product_id;this.product_name=product_name;this.cost_price_sum=cost_price_sum;this.module_describe=module_describe;
-			      this.load3();
+			     this.change_yj=change_yj;
+			     if(this.change_yj==" "||this.change_yj==null){
+					  $("#box1").hide();
+				  }else{
+					  $("#box1").toggle();
+				  }
+				  this.load3();
 			  },
 			  sh:function(){
 				  var s=$("input[name=hh]:checked").val(); //单选按钮
 				  var checker=$("#shr").text()  //审核人
 				  if(s=="通过"){
 					 var check_tag="审核通过";
-					 var param={design_id:this.design_id,module_describe:this.module_describe,checker:checker,check_tag:check_tag};
+					 var param={design_id:this.design_id,checker:checker,check_tag:check_tag};
 					 axios.post('updatewlsh',param).then(res=>{
 						 if(res.data>0){
 							 alert('审核成功')
@@ -256,7 +266,8 @@
 					 })
 				  }else{
 					  var design_module_tag="未设计";
-					  var url="delwlsj?design_id="+this.design_id+"&product_id="+this.product_id+"&design_module_tag="+design_module_tag+"";
+					  alert(this.check_yj);
+					  var url="delwlsj?check_yj="+this.check_yj+"&design_id="+this.design_id+"&product_id="+this.product_id+"&design_module_tag="+design_module_tag+"";
 					  axios.get(url).then(res=>{
 						  if(res.data>0){
 							  alert('审核不通过,请重新设计物料组成')
@@ -266,20 +277,12 @@
 					  }).catch(err=>{
 						  alert('请求失败')
 					  })
-					  
-					  
 				  }
-				  
-				  
-				  
-			  },
-			  
-			  
-			  
+			  },fanhui(){
+				  $("#box1").hide();
+			  }
     	  }
-      
       }) 
-
    </script>
 
 </body>

@@ -65,6 +65,7 @@
 														<th class="text-center">供应商编号</th>
 														<th class="text-center">供应商名称</th>
 														<th class="text-center">电话</th>
+														<th class="text-center">审核状态</th>
 														<th class="text-center">变更</th>
 													</tr>
 												</thead>
@@ -74,6 +75,7 @@
 														<td>{{v.providerId}}</td>
 														<td>{{v.providerName}}</td>
 														<td>{{v.providerPhone}}</td>
+														<td>{{v.check_tag}}</td>
 														<td>
 															<button type="button" id="sjbutton"
 																class="btn btn-primary  btn-xs"
@@ -119,7 +121,6 @@
 											<table class="table table-hover">
 												<thead>
 													<tr>
-														<th class="text-center">点选</th>
 														<th class="text-center">商品编号</th>
 														<th class="text-center">商品名称</th>
 														<th class="text-center">单位</th>
@@ -129,11 +130,7 @@
 												</thead>
 												<tbody>
 													<tr v-for="wl in cus" class="text-center">
-														<td><label class="lyear-checkbox checkbox-primary">
-																<input type="checkbox" value="{{wl.product_id}}"
-																class="xz1" @click="xz()"><span class="xz1"></span>
-														</label></td>
-														<td>{{wl.product_id}}</td>
+														<td class="xz1" @click="xz()">{{wl.product_id}}</td>
 														<td>{{wl.product_name}}</td>
 														<td>{{wl.unit}}</td>
 														<td><input type="test" v-model="wl.price" /></td>
@@ -150,20 +147,20 @@
 													<span> {{register}}</span>
 												</div>
 												<div class="col-md-4" style="margin-left: 70px">
-													<label for="message-text" class="control-label">审核原因:</label>
+													<label for="message-text" class="control-label">审核意见:</label>
 													<span>{{shbz}}</span>
 												</div>
 											</div>
 										</div>
 										<div class="form-group" style="margin-left: 70px">
-											<label for="message-text" class="control-label">变更原因:</label>
+											<label for="message-text" class="control-label">变更意见:</label>
 											 <textarea rows="3"  cols="100" v-model="bgbz"></textarea>  
 										</div>
 										<button class="btn btn-xs btn-primary"
 											style="margin-left: 10px" @click="gb()">关闭</button>
 										<!-- 模态框开始 -->
 										<div class="modal fade bs-example-modal-lg" tabindex="-1"
-											role="dialog" aria-labelledby="myLargeModalLabel">
+											role="dialog" aria-labelledby="myLargeModalLabel" >
 											<div class="modal-dialog modal-lg" role="document">
 												<div class="modal-content">
 													<div class="modal-header">
@@ -303,11 +300,11 @@ $(function(){
 					providerSqXqId:'',
 					change_tag:'已变更',
 					check_tag:'等待审核',
-					shbz:''
+					bgbz:'',
 				},
 				mounted(){//初始化显示完成调用
 					this.Selad();
-				this.sy();
+			      	this.sy();
 				},
 				methods:{
 					Selad(){
@@ -373,52 +370,50 @@ $(function(){
 							alert('请求失败')
 						})
 						}
-					},xz(){
-						$(".xz1:checked").each(function(){
-							$(this).parent().parent().next().next().next().next().next().next().text($(this).parent().parent().next().next().next().children().val()*$(this).parent().parent().next().next().next().next().next().children().val());
-						});
 					},QueRen(){
-						var len=$("input[type=checkbox]:checked()");
-						if(len.length<=0){
-							alert("请选择商品");
-						}else{
 						 $("#box2").toggle();
 						 $("#box3").toggle();
 						var dj=[];
 						var bh=[];
 						var mc=[];
-						$(".xz1:checked").each(function(){
-							dj.push($(this).parent().parent().next().next().next().next().children().val());
-							bh.push($(this).parent().parent().next().html());
-							mc.push($(this).parent().parent().next().next().html());
-						});
-						var url="updbjd?price="+dj+"&subtotal="+dj+"&product_id="+bh+"&product_name="+mc+"";
-					    axios.get(url).then(res=>{
-					    	var url="selshxq?providerSqId="+this.providerSqId+"";
-							axios.get(url).then(res=>{
-								this.slist=res.data;
+						if(this.bgbz==""){
+							alert("请输入变更原因!!!");
+							 $("#box2").toggle();
+							 $("#box3").toggle();
+						}else{
+							$(".xz1").each(function(){
+								dj.push($(this).next().next().next().children().val());
+								bh.push($(this).html());
+								mc.push($(this).next().html());
 							});
-					    	alert('成功');
-					    }).catch(err=>{
-							alert('请求失败')
-						})
-					}
+							var url="updbjd?price="+dj+"&subtotal="+dj+"&product_id="+bh+"&product_name="+mc+"";
+						    axios.get(url).then(res=>{
+						    	var url="selshxq?providerSqId="+this.providerSqId+"";
+								axios.get(url).then(res=>{
+									this.slist=res.data;
+								});
+						    	alert('成功');
+						    }).catch(err=>{
+								alert('请求失败')
+							})
+						}
 					},
 					qd(){
 						 $("#box1").toggle();
 						 $("#box3").toggle();
-<<<<<<< HEAD
 						 location.reload();
-						var url="updybg?changer="+this.register+"&change_tag="+this.change_tag+"&check_tag="+this.check_tag+"&bgbz="+this.bgbz+"&providerSqId="+this.providerSqId+"&providerId="+this.providerId+"";
-=======
-						var url="updybg?changer="+this.register+"&change_tag="+this.change_tag+"&check_tag="+this.check_tag+"&providerSqId="+this.providerSqId+"&providerId="+this.providerId+"";
->>>>>>> branch 'master' of https://github.com/AgFox-sd/GitHubTest2.git
-							axios.get(url).then(res=>{
-						    	alert('变更成功');
-						        this.Selad();
-							}).catch(err=>{
-							alert('请求失败')
-						})
+						 if(this.bgbz==""){
+							 alert("请输入变更原因");
+							 $("#box1").toggle();
+						 }else{
+							 var url="updybg?changer="+this.register+"&change_tag="+this.change_tag+"&check_tag="+this.check_tag+"&bgbz="+this.bgbz+"&providerSqId="+this.providerSqId+"&providerId="+this.providerId+"";							
+							 axios.get(url).then(res=>{
+							    	alert('变更成功');
+							        this.Selad();
+								}).catch(err=>{
+								alert('请求失败')
+							}) 
+						 }
 					},
 					delid(id,product_id,product_name){
 					    	var url="delid?id="+id+"&product_id="+product_id+"&product_name="+product_name+"";
@@ -434,9 +429,7 @@ $(function(){
 						$("#box2").toggle();
 					}
 			}
-				
 			})
-			
 		</script>
 
 </body>

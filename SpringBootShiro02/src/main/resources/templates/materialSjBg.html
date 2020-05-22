@@ -83,7 +83,7 @@
 															<button type="button" id="sjbutton"
 																class="btn btn-primary  btn-xs"
 																data-target=".bs-example-modal-lg"
-																@click="Selidxx(v.design_id,v.product_id,v.product_name,v.designer,v.cost_price_sum)">变更</button>
+																@click="Selidxx(v.design_id,v.product_id,v.product_name,v.designer,v.cost_price_sum,v.register_time,v.check_yj)">变更</button>
 														</td>
 													</tr>
 												</tbody>
@@ -148,6 +148,14 @@
 											<span>{{register_time}}</span>
 
 										</div>
+										<div class="form-group" style="margin-left: 200px">
+													<label for="message-text" class="control-label">审核意见:</label>
+													<span>{{check_yj}}</span>
+												</div>
+												<div class="form-group" style="margin-left: 20px">
+													<label for="message-text" class="control-label">变更意见:</label>
+													<textarea rows="3" cols="100" name="change_yj" v-model="change_yj"></textarea>
+												</div>
 										<button class="btn btn-w-xs btn-primary"
 											style="margin-left: 700px" @click="QueRen()">重新提交</button>
 										<!-- 模态框开始 -->
@@ -252,8 +260,9 @@
 					cost_price_sum:'',
 					register_time:'',
 					check_tag:'变更等待审核',
-					change_tag:'已变更'
-					
+					change_tag:'已变更',
+					check_yj:'',
+					change_yj:''
 				},
 				mounted(){//初始化显示完成调用
 					this.Selad();
@@ -267,7 +276,7 @@
 						alert('请求失败')
 				  })
 						
-					},Selidxx(design_id,product_id,product_name,designer,cost_price_sum,register_time){
+					},Selidxx(design_id,product_id,product_name,designer,cost_price_sum,register_time,check_yj){
 						 this.design_id = design_id;
 						 $("#box1").toggle();
 						 $("#box2").toggle();	
@@ -278,6 +287,8 @@
 						 this.cost_price_sum=cost_price_sum;
 						 this.register_time=register_time;
 						 this.designer=designer;
+						 this.check_yj=check_yj;
+						
 					},
 					Selad2(){//查询物料信息
 						axios.get("selwl?design_id="+this.design_id+"").then(res=>{
@@ -292,10 +303,11 @@
 							})
 					},
 					QueRen(){
+						alert(this.change_yj);
 						$("#box1").toggle();
 						$("#box2").toggle();
 						this.Selad();
-						var url="upgwsh?check_tag="+this.check_tag+"&change_tag="+this.change_tag+"&product_id="+this.product_id+"&product_name="+this.product_name+"";
+						var url="upgwsh?check_tag="+this.check_tag+"&change_tag="+this.change_tag+"&change_yj="+this.change_yj+"&product_id="+this.product_id+"&product_name="+this.product_name+"";
 						axios.get(url).then(res=>{
 							alert("变更成功！");
 							this.list=res.data;

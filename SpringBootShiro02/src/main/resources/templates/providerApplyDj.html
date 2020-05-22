@@ -112,7 +112,6 @@
 											<table class="table table-hover">
 												<thead>
 													<tr>
-														<th class="text-center">点选</th>
 														<th class="text-center">商品编号</th>
 														<th class="text-center">商品名称</th>
 														<th class="text-center">单位</th>
@@ -122,16 +121,12 @@
 												</thead>
 												<tbody>
 													<tr v-for="wl in cus" class="text-center">
-														<td><label class="lyear-checkbox checkbox-primary">
-																<input type="checkbox" value="{{wl.product_id}}"
-																class="xz1" @click="xz()"><span class="xz1"></span>
-														</label></td>
-														<td>{{wl.product_id}}</td>
+														<td class="xz1" @click="xz()">{{wl.product_id}}</td>
 														<td>{{wl.product_name}}</td>
 														<td>{{wl.unit}}</td>
 														<td><input type="test" v-model="wl.price" /></td>
 														<td><a href="#"
-															@click="delid(wl.id,wl.subtotal,wl.product_id,wl.product_name)">删除</a></td>
+															@click="delid(wl.id,wl.product_id,wl.product_name)">删除</a></td>
 													</tr>
 												</tbody>
 											</table>
@@ -176,7 +171,7 @@
 																					type="checkbox" value="{{wl.product_id}}"
 																					class="xz"><span class="xz"></span>
 																			</label></td>
-																			<td>{{wl.product_id}}</td>
+																			<td class="xz">{{wl.product_id}}</td>
 																			<td>{{wl.product_name}}</td>
 																			<td>{{wl.amount_unit}}</td>
 																			<td>{{wl.list_price}}</td>
@@ -318,13 +313,8 @@
 						
 					},
 					Selad2(){//查询商品信息
-<<<<<<< HEAD
 						$("#mtk").modal('show');
-					var url="selcp?providerSqId="+this.providerId+"";
-						axios.post(url).then(res=>{
-=======
 						axios.get("selcp?providerId="+this.providerId+"").then(res=>{
->>>>>>> branch 'master' of https://github.com/AgFox-sd/GitHubTest2.git
 							this.wllist=res.data;
 						}).catch(err=>{
 							console.log("请求失败");
@@ -337,19 +327,6 @@
 						});
 					},
 					tianjia:function(){//点击添加
-						//生成 050200+当前日期+6位随机数组成的流水号 --开始
-						/*var myDate =new Date();
-					    var a=myDate.getFullYear()+"0"+(myDate.getMonth()+1)+""+myDate.getDate();
-						var time="";
-						for(var i=0;i<6;i++){
-							time+=Math.floor(Math.random()*10)
-						}
-						var dingdan="0502"+a+time;  //生成流水号结束
-						var providerSqId=dingdan;  
-						//生成供应商申请详情
-						var c=Math.random().toString(8).substring(2);
-						this.providerSqXqId=c;
-						this.providerSqId=providerSqId;  */
 						var len=$("input[type=checkbox]:checked()");
 						$("#mtk").modal('show');
 						if(len.length<=0){
@@ -375,11 +352,7 @@
 							alert('请求失败')
 						})
 						}
-					},/*xz(){
-						$(".xz1:checked").each(function(){
-							$(this).parent().parent().next().next().next().next().next().next().text($(this).parent().parent().next().next().next().children().val()*$(this).parent().parent().next().next().next().next().next().children().val());
-						});
-					},*/QueRen(){
+					},QueRen(){
 						var len=$("input[type=checkbox]:checked()");
 						if(len.length<=0){
 							alert("没有选中");
@@ -390,10 +363,10 @@
 						var xj=[];
 						var bh=[];
 						var mc=[];
-						$(".xz1:checked").each(function(){
-							dj.push($(this).parent().parent().next().next().next().next().children().val());
-							bh.push($(this).parent().parent().next().html());
-							mc.push($(this).parent().parent().next().next().html());
+						$(".xz1").each(function(){
+							dj.push($(this).next().next().next().children().val());
+							bh.push($(this).html());
+							mc.push($(this).next().html());
 						});
 						var url="updbjd?price="+dj+"&product_id="+bh+"&product_name="+mc+"";
 					    axios.get(url).then(res=>{
@@ -412,7 +385,16 @@
 						 $("#box3").toggle();
 						 location.reload();
 						 this.Selad();
-					}
+					},
+					delid(id,product_id,product_name){
+				    	var url="delid?id="+id+"&product_id="+product_id+"&product_name="+product_name+"";
+						axios.get(url).then(res=>{
+							 this.Selad3();
+				    	alert('成功');
+				    }).catch(err=>{
+						alert('请求失败')
+					})
+				},
 			}
 				
 			})

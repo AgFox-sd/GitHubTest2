@@ -130,8 +130,8 @@ public class ProductSjController {
 	//产品物料设计审核  --不通过
 	@RequestMapping("/delwlsj")
 	@ResponseBody  
-	public int delwlsj(@RequestParam("design_id") String design_id,@RequestParam("product_id") String product_id,@RequestParam("design_module_tag") String design_module_tag) {
-		return service.delwlsj(design_id);
+	public int delwlsj(@RequestParam("check_yj") String check_yj,@RequestParam("design_id") String design_id,@RequestParam("product_id") String product_id,@RequestParam("design_module_tag") String design_module_tag) {
+		return service.delwlsj(check_yj,product_id,design_id);
 	}
 	
 	
@@ -163,7 +163,7 @@ public class ProductSjController {
    }
 
 
-	
+	//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 	//查询通过审核的商品档案信息
 	@RequestMapping("/Selad")
 	@ResponseBody
@@ -179,6 +179,7 @@ public class ProductSjController {
 		List<D_file> list=service.Selad("审核通过","未设计", 2);
 		return list;
 	}
+	
 	//添加产品物料组成设计单和物料组成明细单
 	@RequestMapping("/productWlZc")
 	@ResponseBody
@@ -284,8 +285,8 @@ public class ProductSjController {
       //变更时重新提交
       @RequestMapping("/upgwsh")
       @ResponseBody
-      public String upgwsh(String check_tag,String change_tag,String product_id,String product_name) {
-      	int list=service.upgwsh(check_tag, change_tag, product_id, product_name);
+      public String upgwsh(String check_tag,String change_tag,String change_yj,String product_id,String product_name) {
+      	int list=service.upgwsh(check_tag, change_tag,change_yj, product_id, product_name);
       	return list>0?"成功":"失败";
       }
 }

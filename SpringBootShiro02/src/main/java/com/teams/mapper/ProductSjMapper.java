@@ -44,7 +44,7 @@ public interface ProductSjMapper {
 
 	void updcpdnwlsj(String product_id, String design_module_tag);//物料组成设计不通过
 
-	int delwlsj(String design_id);//物料组成设计不通过
+	int delwlsj(String check_yj,String product_id,String design_id);//物料组成设计不通过
 	
 	//查询显示的信息为所有已通过复核的产品档案
 	List<D_file> selectId2(String check_tag);
@@ -52,6 +52,8 @@ public interface ProductSjMapper {
 	D_file Selidxx(String product_id);
 	//修改产品档案信息
 	int updBG(D_file file);
+	
+	//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 	//查询通过审核的商品档案信息
 	List<D_file> Selad(String check_tag, String design_module_tag,int tid);
 	
@@ -89,7 +91,7 @@ public interface ProductSjMapper {
   //修改物料总金额
   	int updzje(double d,String spid,String spmc);
   //重新提交
-  	int upgwsh(String check_tag,String change_tag,String product_id,String product_name);
+  	int upgwsh(String check_tag,String change_tag,String change_yj,String product_id,String product_name);
  // 物料明细单
  	void zjwl(String design_id, String product_id, String product_name, String amount_unit,
  			int amount, double residual_amount, double cost_price,double subtotal);

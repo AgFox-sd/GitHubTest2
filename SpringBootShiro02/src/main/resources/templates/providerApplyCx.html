@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-<title>采购管理 - 供应商申请审批管理 - 申请审核</title>
+<title>采购管理 - 供应商申请审批管理 - 申请查询</title>
 <link rel="icon" href="favicon.ico" type="image/ico">
 <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
 <meta name="description"
@@ -33,7 +33,7 @@
 										class="lyear-toggler-bar"></span> <span
 										class="lyear-toggler-bar"></span>
 								</div>
-								<span class="navbar-page-title">采购管理 - 供应商申请审批管理 - 申请审核</span> 
+								<span class="navbar-page-title">采购管理 - 供应商申请审批管理 - 申请查询</span> 
 							</div>
 						</div>
 					</nav>
@@ -72,7 +72,7 @@
 												<tr v-for="v in list" class="text-center">
 													<td style="color: red" data-toggle="modal"
 														data-target="#modal1"
-														@click="xq(v.providerSqId,v.providerName,v.check_tag,v.providerId,v.register,v.register_time,v.providerPhone,v.supply_time,v.shbz)">{{v.providerSqId}}</td>
+														@click="xq(v.providerSqId,v.providerName,v.check_tag,v.providerId,v.register,v.register_time,v.providerPhone,v.supply_time,v.shbz,v.bgbz)">{{v.providerSqId}}</td>
 													<td>{{v.providerName}}</td>
 													<td>{{v.check_tag}}</td>
 												</tr>
@@ -126,7 +126,6 @@
 																		<th class="text-center">序号</th>
 																		<th class="text-center">商品编号</th>
 																		<th class="text-center">商品名称</th>
-																		<th class="text-center">数量</th>
 																		<th class="text-center">单位</th>
 																		<th class="text-center">单价</th>
 																	</tr>
@@ -136,7 +135,6 @@
 																		<td>{{v.id}}</td>
 																		<td>{{v.product_id}}</td>
 																		<td>{{v.product_name}}</td>
-																		<td>{{v.amount}}</td>
 																		<td>{{v.unit}}</td>
 																		<td>{{v.price}}</td>
 																	</tr>
@@ -153,17 +151,21 @@
 																	style="margin-left: 300px">登记时间:</label> <span>{{register_time}}</span>
 															</div>
 														</div>
-														<div class="form-group" style="margin-left: 70px">
-														<label for="message-text" class="control-label">原因:</label>
-														   <!-- <textarea rows="3"  cols="100" >{{bg}}</textarea> -->
-														    <span>{{shbz}}</span> 
+														<div class="form-group">
+															<div>
+																<label for="message-text" class="control-label"
+																	style="margin-left: 70px">变更标志:</label>
+																 <span>{{bg}}</span>
+																 <label for="message-text" class="control-label"
+																 style="margin-left: 300px">审核标志:</label>
+														    <span>{{sh}}</span>
+															</div>
 														</div>
 													</form>
 												</div>
 												<div class="modal-footer">
 													<button type="button" class="btn btn-default"
-														data-dismiss="modal">确定</button>
-													
+														data-dismiss="modal" @click="fanhui()">确定</button>
 												</div>
 											</div>
 										</div>
@@ -204,7 +206,10 @@
     		  register:'',
     		  check_tag:'',
     		  supply_time:'',
-    		  shbz:''
+    		  shbz:'',
+    		  bgbz:'',
+    		  bg:'',
+    		  sh:''
     	  },
     	  mounted(){//页面挂载完成调用查询全部的方法
 				this.selAll();
@@ -217,7 +222,7 @@
 						alert('请求失败')
 				  })
 			  },
-			  xq(providerSqId,providerName,check_tag,providerId,register,register_time,providerPhone,supply_time,shbz){
+			  xq(providerSqId,providerName,check_tag,providerId,register,register_time,providerPhone,supply_time,shbz,bgbz){
 				  this.providerSqId=providerSqId;
 				  this.providerId=providerId;
 				  this.providerName=providerName;
@@ -227,12 +232,26 @@
 				  this.check_tag=check_tag;
 				  this.supply_time=supply_time;
 				  this.shbz=shbz;
+				  this.bgbz=bgbz;
+				  if(this.shbz==" "||this.shbz==null){
+					  this.sh="未审核";
+				  }else{
+					  this.sh="已审核";
+				  }
+				  if(this.bgbz==" "||this.bgbz==null){
+					  this.bg="未变更";
+				  }else{
+					  this.bg="已变更";
+				  }
 				  var url="selshxq?providerSqId="+this.providerSqId+"";
 				  axios.get(url).then(res=>{
 						this.slist=res.data;
 					  }).catch(err=>{
 							alert('请求失败')
 					  })
+			  },
+			  fanhui(){
+				  $("#box1").hide();
 			  }
     	  }
       }) 

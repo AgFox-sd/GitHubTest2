@@ -82,7 +82,7 @@
 	<!-- 物料组成设计通过 -->
 	<update id="updatewlsh">
 		update D_module set
-		module_describe=#{module_describe},checker=#{checker},check_time=now(),check_tag=#{check_tag}
+		checker=#{checker},check_time=now(),check_tag=#{check_tag}
 		where design_id=#{design_id}
 	</update>
 
@@ -99,7 +99,7 @@
 
 	<!-- 物料组成设计不通过 -->
 	<update id="delwlsj">
-			update  D_module set check_tag='审核不通过'  where design_id=#{design_id}
+			update D_module set check_tag='审核不通过',check_yj=#{check_yj}  where design_id=#{design_id}
 	</update>
 
 	<!-- 查询显示的信息为所有已通过复核的产品档案 -->
@@ -157,7 +157,10 @@
 		</set>
 		where product_id=#{product_id}
 	</update>
-
+	
+	
+	
+   <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
 	<!-- 查询通过审核的商品档案信息 -->
 	<select id="Selad" resultType="D_file">
 		SELECT a.product_id ,a.product_name,a.factory_name
@@ -172,7 +175,8 @@
 	<!-- 物料组成设计单 -->
 	<insert id="productWlZc">
 		insert into d_module
-		values(null,#{sjdh},#{product_id},#{product_name},#{sjr},null,#{d},#{sjr},sysdate(),null,default,null,default,default,default);
+		values(null,#{sjdh},#{product_id},#{product_name},#{sjr},null,
+		#{d},#{sjr},sysdate(),null,default,null,default,default,default,DEFAULT,DEFAULT);
 	</insert>
 
 	<!-- 物料明细 -->
@@ -280,7 +284,7 @@
 
 	<!-- 重新提交 -->
 	<update id="upgwsh">
-		update D_module set check_tag=#{check_tag},change_tag=#{check_tag},
+		update D_module set check_tag=#{check_tag},change_tag=#{check_tag},change_yj=#{change_yj},
         change_time=sysdate()
         where product_id=#{product_id} and product_name=#{product_name}
 	</update>
