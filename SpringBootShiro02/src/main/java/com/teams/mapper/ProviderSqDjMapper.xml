@@ -7,6 +7,10 @@
 	<select id="selprovider" resultType="provider">
 		select * from provider where
 		check_tag='审核通过'
+		<if test="keyWord!=null and keyWord!=''">
+		 	and (providerId like concat('%',#{keyWord},'%') or providerName like concat('%',#{keyWord},'%') ) 
+	    </if>
+	    order by id desc
 	</select>
 
 	<select id="selD_file" resultType="D_file">
@@ -52,7 +56,11 @@
 	<!-- 审核 -->
 	<select id="selproviderSq" resultType="providerSq">
 		select * from providerSq
-		where check_tag='等待审核'  GROUP BY providerSqId
+		where check_tag='等待审核'  
+		<if test="keyWord!=null and keyWord!=''">
+		 	and (providerId like concat('%',#{keyWord},'%') or providerName like concat('%',#{keyWord},'%') ) 
+	    </if>
+	   GROUP BY providerSqId order by id desc
 	</select>
 
 	<select id="selcxxq" resultType="providerSqXq">
@@ -70,7 +78,11 @@
 
 	<!-- 登记查询 -->
 	<select id="seldjsy" resultType="providerSq">
-		select * from providerSq
+		select * from providerSq where 1=1
+		<if test="keyWord!=null and keyWord!=''">
+		 	and (providerId like concat('%',#{keyWord},'%') or providerName like concat('%',#{keyWord},'%') ) 
+	    </if>
+	   order by id desc
 	</select>
 
 	<select id="selshxq" resultType="providerSqXq">
@@ -80,8 +92,12 @@
 	<!-- 变更 -->
 	<select id="selsywbg" resultType="providerSq">
 		select a.*,b.providerSqXqId from providerSq a,providerSqXq b where
-		a.providerSqId=b.providerSqId and a.change_tag=#{change_tag} and check_tag!='审核通过' GROUP BY
+		a.providerSqId=b.providerSqId and a.change_tag='未变更' and check_tag!='审核通过' GROUP BY
 		a.providerSqId
+		<if test="keyWord!=null and keyWord!=''">
+		 	and (providerId like concat('%',#{keyWord},'%') or providerName like concat('%',#{keyWord},'%') ) 
+	    </if>
+	   order by id desc
 	</select>
 
 	<select id="selspbg" resultType="D_file">

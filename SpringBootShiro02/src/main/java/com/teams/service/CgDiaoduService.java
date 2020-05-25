@@ -2,15 +2,17 @@ package com.teams.service;
 
 import java.util.List;
 
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.cgDiaodu;
 import com.teams.pojo.cgDiaoduXq;
 import com.teams.pojo.cgPlanXq;
 import com.teams.pojo.provider;
+import com.teams.utils.Params;
 
 public interface CgDiaoduService {
 
 	//查询采购计划明细
-	List<cgPlanXq> selectcgPlanXq();
+	PageInfo<cgPlanXq> selectcgPlanXq(Params params);
 
 	//查询产品推荐的供应商信息
 	List<provider> selectCgGys(String product_id);
@@ -42,20 +44,22 @@ public interface CgDiaoduService {
 	int selectAllCgCount8();
 
 	//查询所有采购调度单
-	List<cgDiaodu> selectcgDiaodu();
+	PageInfo<cgDiaodu> selectcgDiaodu(Params params);
 
 	//根据编号查询采购调度单详情
 	List<cgDiaoduXq> selectcgDiaoduXq(String cgDiaoduId);
 
 	//查询等待审核的采购调度单
-	List<cgDiaodu> selectcgDiaoduDdsh();
+	PageInfo<cgDiaodu> selectcgDiaoduDdsh(Params params);
 	
 	//修改采购调度单为未审核 修改 采购计划单为未执行
 	void updCgJhXq1(String cgPlanId, String product_id);
 
-	int updateDiaodu(String checker,String cgDiaoduId);
+	int updateDiaodu(String checker,String check_yj,String cgDiaoduId);
 
 	//修改采购调度单为审核通过
-	int updDiaoduSh(String checker, String cgDiaoduId);
+	int updDiaoduSh(String check_yj,String checker, String cgDiaoduId);
+
+	List<provider> selectPrice(String product_id);
 
 }

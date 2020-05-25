@@ -22,6 +22,7 @@ public class provider {
 	private String check_reason ;//审核原因
 	
 	private String fname;
+	private Double price;
 	public provider() {
 		super();
 	}
@@ -48,6 +49,16 @@ public class provider {
 		this.change_tag = change_tag;
 		this.delete_tag = delete_tag;
 		this.fname = fname;
+	}
+
+    
+	public provider(String providerId, String providerName, String linkman, String providerPhone,double price) {
+		super();
+		this.providerId = providerId;
+		this.providerName = providerName;
+		this.linkman = linkman;
+		this.providerPhone = providerPhone;
+		this.price = price;
 	}
 
 
@@ -203,6 +214,16 @@ public class provider {
 		this.change_reason = change_reason;
 		this.check_reason = check_reason;
 		this.fname = fname;
+	}
+
+
+	public Double getPrice() {
+		return price;
+	}
+
+
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 	
 	

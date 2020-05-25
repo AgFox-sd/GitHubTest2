@@ -8,6 +8,10 @@
   <select id="selectcgPlanXq" resultType="cgPlanXq">
   select *,check_time from cgplanXq  left join cgplan  on cgplanXq.cgPlanId = cgplan.cgPlanId where execute_tag='未执行' 
   and cgplanXq.cgPlanId in(select cgPlanId from cgplan where check_tag='审核通过')
+   <if test="keyWord!=null and keyWord!=''">
+	and (cgplanXq.cgPlanId like concat('%',#{keyWord},'%') or product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+		    </if>
+    order BY cgplanXq.id desc	
   </select>
   
   <!-- //查询产品推荐的供应商信息 -->
@@ -20,7 +24,7 @@
   
   <!-- 添加采购信息 -->
   <insert id="addCgZx">
-  insert into cgDiaodu values(null,#{cgDiaoduId},#{cgPlanId},#{product_id},#{product_name},#{zsl},#{zje},#{register},sysdate(),default,default,default,default);
+  insert into cgDiaodu values(null,#{cgDiaoduId},#{cgPlanId},#{product_id},#{product_name},#{zsl},#{zje},#{register},sysdate(),default,default,default,default,default);
   </insert>
   
   <insert id="addCgZxXq">
@@ -66,7 +70,11 @@
   
   <!-- //查询所有采购调度单 -->
   <select id="selectcgDiaodu" resultType="cgDiaodu">
-  select * from cgDiaodu
+  select * from cgDiaodu where 1=1
+  <if test="keyWord!=null and keyWord!=''">
+	and (cgPlanId like concat('%',#{keyWord},'%') or product_name like concat('%',#{keyWord},'%') ) 
+		    </if>
+    order BY id desc	
   </select>
   
   <!-- //根据编号查询采购调度单详情 -->
@@ -77,6 +85,10 @@
   <!-- //查询等待审核的采购调度单 -->
   <select id="selectcgDiaoduDdsh" resultType="cgDiaodu">
   select * from cgDiaodu where check_tag = '等待审核'
+  <if test="keyWord!=null and keyWord!=''">
+	and (cgDiaoduId like concat('%',#{keyWord},'%') or product_name like concat('%',#{keyWord},'%') ) 
+		    </if>
+    order BY id desc	
   </select>
   
   <!-- //修改采购调度单为未审核 修改 采购计划单为未执行 -->
@@ -85,11 +97,15 @@
   </update>
   
   <update id="updateDiaodu">
-  update cgDiaodu set checker=#{checker},check_time=sysdate(),check_tag='审核不通过'  where cgDiaoduId = #{cgDiaoduId}
+  update cgDiaodu set checker=#{checker},check_yj=#{check_yj},check_time=sysdate(),check_tag='审核不通过'  where cgDiaoduId = #{cgDiaoduId}
   </update>
   
   	<!--//修改采购调度单为审核通过 -->
   <update id="updDiaoduSh">
-  update cgDiaodu set checker=#{checker},check_time=sysdate(),check_tag='审核通过' where cgDiaoduId = #{cgDiaoduId}
+  update cgDiaodu set check_yj=#{check_yj},checker=#{checker},check_time=sysdate(),check_tag='审核通过' where cgDiaoduId = #{cgDiaoduId}
   </update>
+  
+  <select id="selectPrice" resultType="provider">
+  SELECT price  FROM providersqxq WHERE product_Id =#{product_Id}
+  </select>
   </mapper>

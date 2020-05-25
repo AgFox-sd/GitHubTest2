@@ -158,9 +158,6 @@ button {
   			             <li><a href="#" @click.prevent="selectId()">go</a></li>
   			             <li>
   			             <select style="height: 37px;" id="page"  @change="selectId()">
-  			             <option value="1">1条/页</option>
-  			             <option value="2">2条/页</option>
-  			             <option value="3">3条/页</option>
   			             <option value="4">4条/页</option>
   			             <option value="5">5条/页</option>
   			             <option value="6">6条/页</option>
@@ -305,7 +302,7 @@ button {
 		    		  size:1,
 					  params:{
 			    			  pageNum:1,
-			    			  pageSize:1,
+			    			  pageSize:4,
 			    			  keyWord:''
 			    	  },
 			    	  plcassPage:{
@@ -351,7 +348,7 @@ button {
 						  if(change_reason==""||change_reason==null){
 							  $("#change_reason").hide();
 						  }else{
-							  $("#change_reason").toggle();
+							  $("#change_reason").show();
 						  }
 						  
 					},

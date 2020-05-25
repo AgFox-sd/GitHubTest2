@@ -1,8 +1,6 @@
 package com.teams.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.D_file;
 import com.teams.pojo.cgPlan;
 import com.teams.pojo.cgPlanXq;
 import com.teams.service.ProductCgService;
+import com.teams.utils.Params;
 
 @Controller
 public class ProductCgController {
@@ -80,8 +80,8 @@ public class ProductCgController {
 	//查询所有等待审核的采购计划单
 	@RequestMapping("/Cgddsh")
 	@ResponseBody
-	public List<cgPlan> selectCgddsh(@RequestParam("check_tag")String check_tag){
-		return service.selectCgddsh(check_tag);
+	public PageInfo<cgPlan> selectCgddsh(@RequestBody Params params){
+		return service.selectCgddsh(params);
 	}
 	
 	//查询所有等待审核的采购计划单总数
@@ -101,8 +101,8 @@ public class ProductCgController {
 	//查询所有的采购计划单
 	@RequestMapping("/GetCg")
 	@ResponseBody
-	public List<cgPlan> selectGetCg(){
-		return service.selectGetCg();
+	public PageInfo<cgPlan> selectGetCg(@RequestBody Params params){
+		return service.selectGetCg(params);
 	}
 	
 	//查询所有采购计划单总数

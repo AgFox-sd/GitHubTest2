@@ -1,6 +1,5 @@
 package com.teams.controller;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,9 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.teams.pojo.D_file;
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.provider;
 import com.teams.service.ProviderService;
+import com.teams.utils.Params;
 
 @Controller
 public class ProviderController {
@@ -22,8 +22,8 @@ public class ProviderController {
 	//查询所有供应商
 	@RequestMapping("/AllGYS")
 	@ResponseBody
-	 public List<provider> AllGYS(){
-		 List<provider> list=service.AllGYS();
+	 public PageInfo<provider> AllGYS(@RequestBody Params params){
+		 PageInfo<provider> list=service.AllGYS(params);
 		return list;
 	 }
 	 
@@ -55,10 +55,18 @@ public class ProviderController {
 	//供应商审核查询
 	@RequestMapping("/AllGYSFu")
 	@ResponseBody
-		public List<provider> AllGYSFu(){
-		 List<provider> list=service.AllGYSFu("等待审核");
+		public PageInfo<provider> AllGYSFu(@RequestBody Params params){
+			PageInfo<provider> list=service.AllGYSFu(params);
 		return list;
 	 }
+ 
+
+	@RequestMapping("/AllGYSFu1")
+	@ResponseBody
+	public PageInfo<provider> AllGYSFu1(@RequestBody Params params){
+		PageInfo<provider> list=service.AllGYSFu1(params);
+	return list;
+    }
 	//供应商审核通过
 	@RequestMapping("/updGYSFuS")
 	@ResponseBody
@@ -78,8 +86,8 @@ public class ProviderController {
 	//查询未变更的供应商
 	@RequestMapping("/selWBG")
 	@ResponseBody 
-	public List<provider> selWBG(){
-		List<provider> list=service.selWBG("未变更");
+	public PageInfo<provider> selWBG(@RequestBody Params params){
+		PageInfo<provider> list=service.selWBG(params);
 		return list;
 	}
 	

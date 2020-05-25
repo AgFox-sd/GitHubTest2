@@ -43,7 +43,11 @@
      
      <!-- 查询所有等待审核的采购计划单 -->
      <select id="selectCgddsh" resultType="cgPlan">
-        select * from cgPlan where check_tag=#{check_tag}
+        select * from cgPlan where check_tag='等待审核'
+        <if test="keyWord!=null and keyWord!=''">
+		 	and (cgPlanId like concat('%',#{keyWord},'%') or register like concat('%',#{keyWord},'%') ) 
+		    </if>
+		    GROUP BY id 
      </select>
      
      <!-- 查询审核状态的采购计划单总数 -->
@@ -58,7 +62,11 @@
      
      <!-- 查询所有的采购计划单 -->
      <select id="selectGetCg" resultType="cgPlan">
-        select * from cgPlan
+        select * from cgPlan where 1=1
+        <if test="keyWord!=null and keyWord!=''">
+		 	and (cgPlanId like concat('%',#{keyWord},'%') or register like concat('%',#{keyWord},'%') ) 
+		    </if>
+		    GROUP BY id 
      </select>
      
      <!-- 查询所有的采购计划单总数 -->

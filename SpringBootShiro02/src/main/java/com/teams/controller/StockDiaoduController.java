@@ -4,10 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.S_gather;
 import com.teams.pojo.S_gather_details;
 import com.teams.pojo.s_cell;
@@ -16,6 +17,7 @@ import com.teams.pojo.s_pay_details;
 import com.teams.pojo.stockjh;
 import com.teams.pojo.stockjhs;
 import com.teams.service.StockDiaoduService;
+import com.teams.utils.Params;
 
 @Controller
 public class StockDiaoduController {
@@ -26,27 +28,27 @@ public class StockDiaoduController {
 	//查询所有入库单
 	@RequestMapping("selectoutStock")
 	@ResponseBody
-	public List<S_gather> selectoutStock(){
-		return service.selectoutStock();
+	public PageInfo<S_gather> selectoutStock(@RequestBody Params params){
+		return service.selectoutStock(params);
 	}
 	
 	@RequestMapping("selectAlloutStock")
 	@ResponseBody
-	public List<S_gather> selectAlloutStock(){
-		return service.selectAlloutStock();
+	public PageInfo<s_pay> selectAlloutStock(@RequestBody Params params){
+		return service.selectAlloutStock(params);
 	}
 	
 	@RequestMapping("selectAllinStock")
 	@ResponseBody
-	public List<s_pay> selectAllinStock(){
-		return service.selectAllinStock();
+	public PageInfo<s_pay> selectAllinStock(@RequestBody Params params){
+		return service.selectAllinStock(params);
 	}
 	
 	//查询所有出库单
 	@RequestMapping("selectoutStock1")
 	@ResponseBody
-	public List<s_pay> selectoutStock1(){
-		return service.selectoutStock1();
+	public  PageInfo<s_pay> selectoutStock1(@RequestBody Params params){
+		return service.selectoutStock1(params);
 	}
 	
 	@RequestMapping("selectoutStockcount1")
@@ -183,9 +185,10 @@ public class StockDiaoduController {
 	
 	@RequestMapping("updDiaodu3")
 	@ResponseBody
-	public int updDiaodu3(String product_id,String paid_amount,String pay_id) {
+	public int updDiaodu3(String product_id,String paid_amount,String pay_id,String check_yj) {
 		service.updKc2(paid_amount,product_id);
-		return service.updDiaodu3(paid_amount,product_id,pay_id);
+		service.updshyj(check_yj,pay_id);
+		return service.updDiaodu3(paid_amount,check_yj,product_id,pay_id);
 	}
 	//修改入库表为已调度
 	@RequestMapping("updZdiaodu")
@@ -237,8 +240,8 @@ public class StockDiaoduController {
 	//查询库存
 	@RequestMapping("selectscell")
 	@ResponseBody
-	public List<s_cell> selectscell() {			
-		return service.selectscell();
+	public PageInfo<s_cell> selectscell(@RequestBody Params params) {			
+		return service.selectscell(params);
 	}
 	
 	@RequestMapping("selectscellcount1")
@@ -268,9 +271,14 @@ public class StockDiaoduController {
 	//查询所有出库单
 	@RequestMapping("/GetCkd")
 	@ResponseBody
-	public List<s_pay> selectGetCkd(@RequestParam("reason")String reason,@RequestParam("store_tag")String store_tag,@RequestParam("check_tag")String check_tag){
-		return service.selectGetCkd(reason,store_tag,check_tag);
+	public PageInfo<s_pay> selectGetCkd(@RequestBody Params params){
+		return service.selectGetCkd(params);
 	}	
 	
+	@RequestMapping("/GetCkds")
+	@ResponseBody
+	public PageInfo<s_pay> selectGetCkds(@RequestBody Params params){
+		return service.selectGetCkds(params);
+	}	
 	
 }

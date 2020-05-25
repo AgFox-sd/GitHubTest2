@@ -43,14 +43,19 @@
       <div class="container-fluid">
         
         <div class="row">
-          <div class="col-lg-10" style="margin-left: -25%;margin-top: -6%;">
+          <div class="col-lg-10" style="margin-left: -25%;margin-top: -2%;">
             <div class="card">
               <div class="card-toolbar clearfix">
                <form class="pull-right search-bar" method="get" action="#!" role="form">
-                  <div class="input-group">
+                   <div class="input-group">
+                     <input type="text" class="form-control" placeholder="请输入名称或者编号"
+						  v-model="keywords" >
                     <div class="input-group-btn">
                       <input type="hidden" name="search_field" id="search-field" value="title">
-                    </div>
+                         <button type="button" class="btn btn-primary btn-ms" @click="selectId()">
+                 		查询
+                        </button>
+                     </div>
                   </div>
                 </form>
               </div>
@@ -71,7 +76,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="file in list" class="text-center">
+                      <tr v-for="(file,key,index) in plcassPage.list" class="text-center">
                         <td>{{file.product_id}}</td>
                         <td>{{file.product_name}}</td>
                         <td>{{file.tname}}</td>
@@ -156,7 +161,7 @@
 					            <label for="message-text" class="control-label">产品经理:</label>
 					             <input type="text" name="responsible_person" v-model="updFile.responsible_person">
 					            <label for="message-text" class="control-label">变更人:</label>
-					             <input type="text" name="changer" v-model="updFile.changer" >
+					             <input type="text" name="changer" id="changer" th:value="${session.username}">
 					          </div>
 					          <div class="form-group">
 								   <label for="message-text" class="control-label"><span style="color: red">*</span>变更意见：</label>
@@ -174,6 +179,31 @@
 		<!-- 修改模态框结束 -->
                   </table>
                 </div>
+                  <center style="display: none;" id="fy">
+                  <ul class="pagination pagination-lg">
+					<ul class="pagination pagination-lg">
+   						 <li><a  @click.prevent="searchid(plcassPage.firstPage)">首页</a></li>
+   						 <li><a href="#" @click.prevent="searchid(plcassPage.prePage)">上一页</a></li>
+  					 		<template v-for="pageNum in plcassPage.navigatepageNums">
+  					 		 <li><a href="#" @click.prevent="searchid(pageNum)">{{pageNum}}</a></li>
+  					 		</template>
+  					 		 <li><a href="#" @click.prevent="searchid(plcassPage.nextPage)">下一页</a></li>
+  			             <li><a href="#" @click.prevent="searchid(plcassPage.lastPage)">末页</a></li>
+  			             <li><a>{{plcassPage.pageNum}}/{{plcassPage.pages}}</a></li>
+  			             <li>
+  			             <a><input type="text" v-model="size" style="width:40px;height: 35px;" value="1"/></a>
+  			             </li>
+  			             <li><a href="#" @click.prevent="selectId()">go</a></li>
+  			             <li>
+  			             <select style="height: 37px;" id="page"  @change="selectId()">
+  			             <option value="4">4条/页</option>
+  			             <option value="5">5条/页</option>
+  			             <option value="6">6条/页</option>
+  			             </select>
+  			             </li>
+					</ul>
+				  </ul>	
+                  </center>
                 <!-- 分页开始 -->
                 
        			<!-- 分页结束 -->
@@ -194,6 +224,8 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="js/main.min.js"></script>
+<script type="text/javascript" src="js/lightyear.js"></script>
+<script src="js/bootstrap-notify.min.js"></script>
 <!--  <script type="text/javascript">
 $(function(){
     $('.search-bar .dropdown-menu a').click(function() {
@@ -230,19 +262,51 @@ $(function(){
 		            responsible_person:'',
 		            changer:'',
 		            change_reason:'',
-		            flag:false
+		            flag:false,
+		    		size:1,
+		    		keywords:'',
+					params:{
+			    			  pageNum:1,
+			    			  pageSize:4,
+			    			  keyWord:''
+			    	},
+			    	plcassPage:{
+			    			  
+			    	}
 				},
 				mounted(){//初始化显示完成调用
 					this.selectId();
 				},
 				methods:{
 					selectId(){
+						if(this.size>this.plcassPage.pages&&this.plcassPage.pages!=0){
+							this.size = this.plcassPage.pages;
+						}
+						this.params.pageNum  = this.size;
+						this.params.pageSize = $("#page").val();
 						//发送异步请求，请求后端控制器，获取所有的品牌信息
-						axios.post("selectId2").then(res=>{
-							this.list=res.data;
-						}).catch(err=>{
-							console.log("请求失败");
-						})
+						this.params.keyWord=this.keywords;						
+					    axios.post('selectId2',this.params).then(res=>{
+							this.plcassPage=res.data;
+							if(res.data.list!=""){
+							    $("#fy").show();
+						  }else{
+							    $("#fy").hide();
+						  }
+					  }).catch(err=>{
+							alert('请求失败')
+					  })
+						
+					},
+					selectIds(){
+						this.params.pageSize = $("#page").val();
+						//发送异步请求，请求后端控制器，获取所有的品牌信息
+						this.params.keyWord=this.keywords;						
+					  axios.post('selectId2',this.params).then(res=>{
+								this.plcassPage=res.data;
+					  }).catch(err=>{
+							alert('请求失败')
+					  })
 						
 					},
 					Selidxx(product_id){
@@ -253,7 +317,10 @@ $(function(){
 					tijiao:function(){//变更提交
 						
 						 if(this.change_reason==""){
-							  alert("请填写变更意见！");
+							 setTimeout(function() {
+							        lightyear.loading('hide');
+							        lightyear.notify('请填写变更意见！', 'danger', 1000);
+							    }, 1e3)		
 						  }else{
 							   var CHECK_TAG = '等待审核';
 							   var url={product_id:this.updFile.product_id,product_name:this.updFile.product_name,
@@ -264,26 +331,34 @@ $(function(){
 										lifecycle:this.updFile.lifecycle,list_price:this.updFile.list_price,cost_price:this.updFile.cost_price,
 										real_cost_price:this.updFile.real_cost_price,amount_unit:this.updFile.amount_unit,
 										product_describe:this.updFile.product_describe,responsible_person:this.updFile.responsible_person,
-										changer:this.updFile.changer,check_tag:CHECK_TAG,change_reason:this.change_reason};
+										changer:$("#changer").val(),check_tag:CHECK_TAG,change_reason:this.change_reason};
 								
 								axios.post('updBG',url).then(res=>{
 								if(res.data=="成功"){
-										alert('修改成功');
+									setTimeout(function() {
+								        lightyear.loading('hide');
+								        lightyear.notify('修改成功！', 'success', 1000);
+								    }, 1e3)	
 										$("#mtk").modal('hide');
+								    this.selectId();//再查询一次								    
 										//清空文本框
 										this.product_id=this.product_name=this.factory_name=this.tid=this.pid=
 										this.product_nick=this.product_nick=this.personal_value=this.provider_group=
 										this.warranty=this.twin_name=this.twin_id=this.lifecycle=this.list_price=
 										this.cost_price=this.real_cost_price=this.amount_unit=this.product_describe=
-										this.responsible_person=this.changer=this.change_reason=''
-										
-										this.selectId();//再查询一次
-										
+										this.responsible_person=this.changer=this.change_reason=''										
 								}
 								}); 
 								
 						  }
+					},searchid(page){						
+						if (page < 0 || page > this.plcassPage.pages){
+		                    return false;
+		                }
+						this.params.pageNum=page;
+						this.selectIds();
 					}
+				  
 			}
 				
 			})

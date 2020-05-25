@@ -15,12 +15,16 @@ public class recommend {
 	private String change_time;//#变更时间
 	private String change_tag;//'未变更'#变更标志 
 	private String tname;//产品类型
+	private String fname;//产品风险
+	
+	private String checker_yj;
+	private String change_yj;
 	public recommend() {
 		super();
 	}
 	public recommend(int id, String recommendId, String product_id, String product_name, String recommender,
 			String recommend_time, String recommend_tag, String checker, String check_tag, String check_time,
-			String changer, String change_time, String change_tag, String tname) {
+			String changer, String change_time, String change_tag, String tname, String check_yj, String change_yj,String fname) {
 		super();
 		this.id = id;
 		this.recommendId = recommendId;
@@ -36,6 +40,9 @@ public class recommend {
 		this.change_time = change_time;
 		this.change_tag = change_tag;
 		this.tname = tname;
+		this.checker_yj = check_yj;
+		this.change_yj = change_yj;
+		this.fname = fname;
 	}
 	public int getId() {
 		return id;
@@ -120,6 +127,24 @@ public class recommend {
 	}
 	public void setTname(String tname) {
 		this.tname = tname;
+	}
+	public String getChecker_yj() {
+		return checker_yj;
+	}
+	public void setChecker_yj(String checker_yj) {
+		this.checker_yj = checker_yj;
+	}
+	public String getChange_yj() {
+		return change_yj;
+	}
+	public void setChange_yj(String change_yj) {
+		this.change_yj = change_yj;
+	}
+	public String getFname() {
+		return fname;
+	}
+	public void setFname(String fname) {
+		this.fname = fname;
 	}
 	
 	

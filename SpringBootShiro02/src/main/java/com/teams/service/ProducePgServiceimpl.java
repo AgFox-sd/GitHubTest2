@@ -5,11 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.teams.mapper.ProducePgMapper;
 import com.teams.pojo.M_design_procedure_details;
 import com.teams.pojo.m_apply;
 import com.teams.pojo.m_pg;
 import com.teams.pojo.m_procedure_module;
+import com.teams.utils.Params;
 
 @Service
 public class ProducePgServiceimpl implements ProducePgService{
@@ -18,9 +21,10 @@ public class ProducePgServiceimpl implements ProducePgService{
 	ProducePgMapper mapper;
 	
 	@Override
-	public List<m_apply> SelectApply(String check_tag, String manufacture_tag) {
+	public PageInfo<m_apply> SelectApply(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.SelectApply(check_tag,manufacture_tag);
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.SelectApply(params));
 	}
 
 	@Override
@@ -73,9 +77,10 @@ public class ProducePgServiceimpl implements ProducePgService{
 	}
 
 	@Override
-	public List<m_pg> SelectPG2() {
+	public PageInfo<m_pg> SelectPG2(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.SelectPG2();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.SelectPG2(params));
 	}
 
 	@Override
@@ -88,6 +93,13 @@ public class ProducePgServiceimpl implements ProducePgService{
 	public int updPgtg(String check_tag, String pg_id, String check_reason) {
 		// TODO Auto-generated method stub
 		return mapper.updPgtg(check_tag, pg_id, check_reason);
+	}
+
+	@Override
+	public PageInfo<m_pg> SelectPgs(Params params) {
+		// TODO Auto-generated method stub
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.SelectPgs(params));
 	}
 
 

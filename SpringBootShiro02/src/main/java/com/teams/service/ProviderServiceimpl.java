@@ -1,13 +1,15 @@
 package com.teams.service;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.teams.mapper.ProviderMapper;
 import com.teams.pojo.provider;
+import com.teams.utils.Params;
 
 @Service
 @Transactional
@@ -17,9 +19,10 @@ public class ProviderServiceimpl implements ProviderService{
 	ProviderMapper mapper;
 	
 	@Override
-	public List<provider> AllGYS() {
+	public PageInfo<provider> AllGYS(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.AllGYS();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.AllGYS(params));
 	}
 
 	@Override
@@ -46,12 +49,18 @@ public class ProviderServiceimpl implements ProviderService{
 	}
 
 	@Override
-	public List<provider> AllGYSFu(String string) {
+	public PageInfo<provider> AllGYSFu(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.AllGYSFu(string);
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.AllGYSFu(params));
 	}
 
-	
+	@Override
+	public PageInfo<provider> AllGYSFu1(Params params) {
+		// TODO Auto-generated method stub
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.AllGYSFu1(params));
+	}
 
 	@Override
 	public int delGYS(String providerId) {
@@ -60,9 +69,10 @@ public class ProviderServiceimpl implements ProviderService{
 	}
 
 	@Override
-	public List<provider> selWBG(String string) {
+	public PageInfo<provider> selWBG(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.selWBG(string);
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selWBG(params));
 	}
 
 	@Override

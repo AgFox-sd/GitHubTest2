@@ -203,6 +203,8 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="js/main.min.js"></script>
+<script type="text/javascript" src="js/lightyear.js"></script>
+<script src="js/bootstrap-notify.min.js"></script>
 <!--  <script type="text/javascript">
 $(function(){
     $('.search-bar .dropdown-menu a').click(function() {
@@ -294,7 +296,10 @@ $(function(){
 						var param={name:this.name};
 						axios.post('addRoles',param).then(res=>{
 							if(res.data=="成功"){
-								alert('增加成功')
+								setTimeout(function() {
+									 lightyear.loading('hide');
+								     lightyear.notify('增加成功！', 'success', 1000);
+								    }, 1e3)	
 								this.list=res.data;
 								this.name=''
 								this.AllRoles();
@@ -315,7 +320,10 @@ $(function(){
 					QueRen(){//点击确认的时候
 						var len=$("input[type=checkbox]:checked()");
 						if(len.length<=0){
-							alert("请选择需要赋予的权限!");
+							setTimeout(function() {
+								 lightyear.loading('hide');
+							     lightyear.notify('请选择需要赋予的权限！', 'danger', 1000);
+							    }, 1e3)	
 						}else{
 							var qx=[];//权限
 							//获得选择的信息
@@ -327,7 +335,10 @@ $(function(){
 							var url="FuQX?rid="+this.id+"&pid="+qx+""
 							axios.get(url).then(res=>{
 								if(res.data=="成功"){
-									alert('赋予权限成功');
+									setTimeout(function() {
+										 lightyear.loading('hide');
+									     lightyear.notify('赋予权限成功！', 'success', 1000);
+									    }, 1e3)
 									$("#box1").toggle();
 									$("#box2").toggle();
 									this.AllRoles();
@@ -339,18 +350,19 @@ $(function(){
 						
 					},
 					Del(id,index){
-						if(confirm('确认要删除吗?')){
 							var url='delRole?id='+id+'';
 							axios.post(url).then(res=>{
 								if(res.data=="成功"){
-									alert('删除成功')
+									setTimeout(function() {
+										 lightyear.loading('hide');
+									     lightyear.notify('删除成功！', 'success', 1000);
+									    }, 1e3)
 									this.list.splice(index,1)
 									this.AllRoles();
 								}
 							}).catch(err=>{
 								alert('请求失败')
 							})
-						}
 					},
 					update(id){//修改角色
 						$("#box1").toggle();
@@ -363,7 +375,10 @@ $(function(){
 					QueRenXIu(){//修改保存
 						axios.get('updRoles?id='+this.updRoles.id+'&name='+this.updRoles.name+'').then(res=>{
 							if(res.data=="成功"){
-								alert('修改成功')
+								setTimeout(function() {
+									 lightyear.loading('hide');
+								     lightyear.notify('修改成功！', 'success', 1000);
+								    }, 1e3)
 								$("#box1").toggle();
 								$("#box3").toggle();
 								this.AllRoles();
@@ -371,8 +386,6 @@ $(function(){
 						}).catch(err=>{
 							alert('请求失败')
 						});
-					alert(this.updRoles.id)
-					alert(this.updRoles.name)
 					}
 			}
 				

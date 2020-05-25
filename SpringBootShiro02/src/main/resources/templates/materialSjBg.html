@@ -33,7 +33,8 @@
 										class="lyear-toggler-bar"></span> <span
 										class="lyear-toggler-bar"></span>
 								</div>
-								<span class="navbar-page-title"> 产品设计 - 产品物料组成设计 - 物料组成设计单变更</span>
+								<span class="navbar-page-title"> 产品设计 - 产品物料组成设计 -
+									物料组成设计单变更</span>
 							</div>
 						</div>
 					</nav>
@@ -43,15 +44,19 @@
 				<main class="lyear-layout-content">
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-lg-10" style="margin-left: -25%; margin-top: -6%;">
+						<div class="col-lg-10" style="margin-left: -25%; margin-top: -2%;">
 							<div class="card">
-								<div class="card-toolbar clearfix">
+								<div class="card-toolbar clearfix" id="ss">
 									<form class="pull-right search-bar" method="get" action="#!"
 										role="form">
 										<div class="input-group">
+											<input type="text" class="form-control"
+												placeholder="请输入名称或者编号" v-model="keywords">
 											<div class="input-group-btn">
 												<input type="hidden" name="search_field" id="search-field"
 													value="title">
+												<button type="button" class="btn btn-primary btn-ms"
+													@click="Selad()">查询</button>
 											</div>
 										</div>
 									</form>
@@ -67,17 +72,19 @@
 														<th class="text-center">产品名称</th>
 														<th class="text-center">设计人</th>
 														<th class="text-center">登记时间</th>
+														<th class="text-center">审核状态</th>
 														<th class="text-center">物料总成本</th>
 														<th class="text-center">变更</th>
 													</tr>
 												</thead>
 												<tbody>
-													<tr v-for="v in list" :key="index" class="text-center">
+													<tr v-for="(v,key,index) in plcassPage.list" class="text-center">
 														<td>{{v.design_id}}</td>
 														<td>{{v.product_id}}</td>
 														<td>{{v.product_name}}</td>
 														<td>{{v.designer}}</td>
 														<td>{{v.register_time}}</td>
+														<td>{{v.check_tag}}</td>
 														<td>{{v.cost_price_sum}}</td>
 														<td>
 															<button type="button" id="sjbutton"
@@ -89,30 +96,53 @@
 												</tbody>
 
 											</table>
-
+									<center style="display: none;" id="fy">
+										<ul class="pagination pagination-lg">
+											<ul class="pagination pagination-lg">
+												<li><a @click.prevent="searchid(plcassPage.firstPage)">首页</a></li>
+												<li><a href="#"
+													@click.prevent="searchid(plcassPage.prePage)">上一页</a></li>
+												<template v-for="pageNum in plcassPage.navigatepageNums">
+												<li><a href="#" @click.prevent="searchid(pageNum)">{{pageNum}}</a></li>
+												</template>
+												<li><a href="#"
+													@click.prevent="searchid(plcassPage.nextPage)">下一页</a></li>
+												<li><a href="#"
+													@click.prevent="searchid(plcassPage.lastPage)">末页</a></li>
+												<li><a>{{plcassPage.pageNum}}/{{plcassPage.pages}}</a></li>
+												<li><a><input type="text" v-model="size"
+														style="width: 40px; height: 35px;" value="1" /></a></li>
+												<li><a href="#" @click.prevent="Selad()">go</a></li>
+												<li><select style="height: 37px;" id="page"
+													@change="Selad()">
+														<option value="4">4条/页</option>
+														<option value="5">5条/页</option>
+														<option value="6">6条/页</option>
+												</select></li>
+											</ul>
+										</ul>
+									</center>
 										</div>
-
 									</div>
+
 									<div class="btn-group" id="box2" style="display: none">
 										<div>
+											<p style="text-align:center;font-size: 25px;">物料组成设计</p>
 											<a type="button" class="btn btn-pink  btn-xs"
-												@click="Selad2()" style="margin-left: 700px"
+												@click="Selad2()" style="margin-left: 700px;margin-top: -75px;"
 												data-toggle="modal" data-target=".bs-example-modal-lg">添加物料</a>
-										</div>
-										<div>
-											<p style="margin-left: 390px;font-size: 25px;">物料组成设计</p>
 											<label for="message-text" class="control-label"
-												style="margin-left: 200px">设计单编号:</label> <span id="sjdh">{{design_id}}</span>
-											<label for="message-text" class="control-label">设计人:</label>
+												style="margin-left: 250px">设计单编号:</label> <span id="sjdh">{{design_id}}</span>
+											<label for="message-text" class="control-label" style="margin-left: 200px">设计人:</label>
 											<span>{{designer}}</span>
 										</div>
-										<div class="form-group" style="margin-left: 200px">
+										<div class="form-group" style="margin-left: 250px">
 											<label for="message-text" class="control-label">产品名称:</label>
 											<span>{{product_name}}</span> <label for="message-text"
-												class="control-label" style="margin-left: 200px">产品编号:</label>
+												class="control-label" style="margin-left: 310px">产品编号:</label>
 											<span name="product_id">{{product_id}}</span>
 										</div>
-										<div style="margin-left: 70px">
+										<div style="margin-left: 20px">
 											<table class="table table-hover">
 												<thead>
 													<tr>
@@ -135,29 +165,32 @@
 														<td>{{wl.amount_unit}}</td>
 														<td>{{wl.cost_price}}</td>
 														<td>{{wl.subtotal}}</td>
-														<td><a href="#" @click="delid(wl.id,wl.subtotal,wl.product_id,wl.product_name)">删除</a></td>
+														<td><a href="#"
+															@click="delid(wl.id,wl.subtotal,wl.product_id,wl.product_name)">删除</a></td>
 													</tr>
 												</tbody>
 											</table>
 										</div>
-										<div class="form-group" style="margin-left: 200px">
+										<div class="form-group" style="margin-left: 250px">
 
-											<label for="message-text" class="control-label">物料总成本::</label>
+											<label for="message-text" class="control-label">物料总成本:</label>
 											<span>{{cost_price_sum}}</span> <label for="message-text"
-												class="control-label" style="margin-left: 200px">变更时间:</label>
+												class="control-label" style="margin-left: 250px">变更时间:</label>
 											<span>{{register_time}}</span>
 
 										</div>
-										<div class="form-group" style="margin-left: 200px">
-													<label for="message-text" class="control-label">审核意见:</label>
-													<span>{{check_yj}}</span>
-												</div>
-												<div class="form-group" style="margin-left: 20px">
-													<label for="message-text" class="control-label">变更意见:</label>
-													<textarea rows="3" cols="100" name="change_yj" v-model="change_yj"></textarea>
-												</div>
+										<div class="form-group" style="margin-left: 250px">
+											<label for="message-text" class="control-label">审核意见:</label>
+											<span>{{check_yj}}</span>
+										</div>
+										<div class="form-group" style="margin-left: 250px">
+											<label for="message-text" class="control-label">变更意见:</label>
+											<textarea rows="1" cols="100" name="change_yj"
+												v-model="change_yj"></textarea>
+										</div>
+										<button class="btn btn-w-xs btn-pink"  @click="Fanhui()" style="margin-left: 600px;margin-top: -100px;">返回</button>
 										<button class="btn btn-w-xs btn-primary"
-											style="margin-left: 700px" @click="QueRen()">重新提交</button>
+											style="margin-left: 700px;margin-top: -100px;" @click="QueRen()">重新提交</button>
 										<!-- 模态框开始 -->
 										<div class="modal fade bs-example-modal-lg" tabindex="-1"
 											role="dialog" aria-labelledby="myLargeModalLabel">
@@ -187,7 +220,8 @@
 																		</tr>
 																	</thead>
 																	<tbody>
-																		<tr v-for="(wl,index) in wllist" :key="index" class="text-center">
+																		<tr v-for="(wl,index) in wllist" :key="index"
+																			class="text-center">
 																			<td><label
 																				class="lyear-checkbox checkbox-primary"> <input
 																					type="checkbox" value="{{wl.product_id}}"
@@ -241,6 +275,8 @@
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 	<script type="text/javascript" src="js/main.min.js"></script>
+	<script type="text/javascript" src="js/lightyear.js"></script>
+    <script src="js/bootstrap-notify.min.js"></script>
 
 
 
@@ -262,23 +298,56 @@
 					check_tag:'变更等待审核',
 					change_tag:'已变更',
 					check_yj:'',
-					change_yj:''
+					change_yj:'',
+		    		size:1,
+		    		keywords:'',
+					params:{
+			    			  pageNum:1,
+			    			  pageSize:4,
+			    			  keyWord:''
+			    	},
+			    	plcassPage:{
+			    			  
+			    	}
 				},
 				mounted(){//初始化显示完成调用
 					this.Selad();
 				},
 				methods:{
 					Selad(){
+						if(this.size>this.plcassPage.pages&&this.plcassPage.pages!=0){
+							this.size = this.plcassPage.pages;
+						}
+						this.params.pageNum  = this.size;
+						this.params.pageSize = $("#page").val();
 						//发送异步请求，请求后端控制器，获取所有的品牌信息
-						axios.get('selD_moduleS').then(res=>{
-							this.list=res.data;
-				  }).catch(err=>{
-						alert('请求失败')
-				  })
+						this.params.keyWord=this.keywords;						
+					    axios.post('selD_moduleS',this.params).then(res=>{
+							this.plcassPage=res.data;
+							if(res.data.list!=""){
+							    $("#fy").show();
+						  }else{
+							    $("#fy").hide();
+						  }
+					  }).catch(err=>{
+							alert('请求失败')
+					  })
+						
+					},
+					Selads(){
+						this.params.pageSize = $("#page").val();
+						//发送异步请求，请求后端控制器，获取所有的品牌信息
+						this.params.keyWord=this.keywords;						
+					  axios.post('selD_moduleS',this.params).then(res=>{
+								this.plcassPage=res.data;
+					  }).catch(err=>{
+							alert('请求失败')
+					  })
 						
 					},Selidxx(design_id,product_id,product_name,designer,cost_price_sum,register_time,check_yj){
 						 this.design_id = design_id;
 						 $("#box1").toggle();
+						 $("#ss").toggle();
 						 $("#box2").toggle();	
 						 this.Selad3();
 						 this.product_name=product_name;
@@ -303,27 +372,41 @@
 							})
 					},
 					QueRen(){
-						alert(this.change_yj);
-						$("#box1").toggle();
-						$("#box2").toggle();
-						this.Selad();
-						var url="upgwsh?check_tag="+this.check_tag+"&change_tag="+this.change_tag+"&change_yj="+this.change_yj+"&product_id="+this.product_id+"&product_name="+this.product_name+"";
-						axios.get(url).then(res=>{
-							alert("变更成功！");
-							this.list=res.data;
+						if(this.change_yj==""){
+							setTimeout(function() {
+								 lightyear.loading('hide');
+							     lightyear.notify('请填写变更意见！', 'danger', 1000);
+							    }, 1e3)
+						}else{
+							$("#box1").toggle();
+							$("#ss").toggle();
+							$("#box2").toggle();
 							this.Selad();
-						    }).catch(err=>{
-								alert('请求失败')
-							})
+							var url="upgwsh?check_tag="+this.check_tag+"&change_tag="+this.change_tag+"&change_yj="+this.change_yj+"&product_id="+this.product_id+"&product_name="+this.product_name+"";
+							axios.get(url).then(res=>{
+								setTimeout(function() {
+									 lightyear.loading('hide');
+								     lightyear.notify('变更成功！', 'success', 1000);
+								    }, 1e3)
+								this.Selad();
+							    }).catch(err=>{
+									alert('请求失败')
+								})
+						}
+						
 					},
 					delid(id,subtotal,product_id,product_name){
 						var url="delbg?id="+id+"&jq="+subtotal+"&product_id="+this.product_id+"&product_name="+this.product_name+"";
 						axios.get(url).then(res=>{
 							 this.Selad3();
-							alert("成功")
+							 setTimeout(function() {
+								 lightyear.loading('hide');
+							     lightyear.notify('删除成功！', 'success', 1000);
+							    }, 1e3)
 					    }).catch(err=>{
 							alert('请求失败')
 						})
+						this.cost_price_sum=this.cost_price_sum-subtotal;
 					},
 					tianjia:function(){//点击添加
 						var bh=[];//编号
@@ -333,7 +416,7 @@
 						var sl=[];//数量
 						var dw=[];//单位
 						var dj=[];//单价
-						var wl=0;
+						var zcb=0;
 						//获得选择的信息
 						$(".xz:checked").each(function(){
 							bh.push($(this).parent().parent().next().html());
@@ -342,9 +425,10 @@
 							dc.push($(this).parent().parent().next().next().next().next().html());
 							sl.push($(this).parent().parent().next().next().next().next().next().children().val());
 							dw.push($(this).parent().parent().next().next().next().next().next().next().html());
-							dj.push($(this).parent().parent().next().next().next().next().next().next().next().html());															
+							dj.push($(this).parent().parent().next().next().next().next().next().next().next().html());	
+							zcb=zcb+($(this).parent().parent().next().next().next().next().next().children().val()*$(this).parent().parent().next().next().next().next().next().next().next().html());
 						});
-						//this.wl=sl*dj;
+						this.cost_price_sum=this.cost_price_sum+zcb;
 						var sjdh = $("#sjdh").text();
 						var sjr  = $("#sjr").text();
 					   var url="bgxiu?design_id="+sjdh+"&product_id="+bh+"&product_name="+mc+
@@ -352,13 +436,27 @@
 							   "&spid="+this.product_id+"&spmc="+this.product_name+"";
 					    axios.get(url).then(res=>{
 					    	if(res.data>0){
-						    	alert('成功');
+					    		setTimeout(function() {
+									 lightyear.loading('hide');
+								     lightyear.notify('添加成功！', 'success', 1000);
+								    }, 1e3)
+								    $(".xz").prop("checked",false);
 								 this.Selad3();
 					    	}
 					    }).catch(err=>{
 							alert('请求失败')
 						})
-					},
+					},searchid(page){						
+						if (page < 0 || page > this.plcassPage.pages){
+		                    return false;
+		                }
+						this.params.pageNum=page;
+						this.Selads();
+					},Fanhui(){//点击返回从box2，回到box1
+						$("#box1").toggle();
+						$("#ss").toggle();
+						$("#box2").toggle();
+					},	
 			}
 				
 			})

@@ -7,11 +7,12 @@ import com.teams.pojo.M_design_procedure_details;
 import com.teams.pojo.m_apply;
 import com.teams.pojo.m_pg;
 import com.teams.pojo.m_procedure_module;
+import com.teams.utils.Params;
 
 public interface ProducePgMapper {
 
 	//查询已通过审核并未派工的生产计划
-	List<m_apply> SelectApply(String check_tag, String manufacture_tag);
+	List<m_apply> SelectApply(Params params);
 	//通过产品编号查询工序
 	List<M_design_procedure_details> SelGx(String product_id);
 	//查询工序物料
@@ -32,10 +33,11 @@ public interface ProducePgMapper {
 	int delPgd(String pg_id);
 	
 	//生产派工单查询
-	List<m_pg> SelectPG2();
+	List<m_pg> SelectPG2(Params params);
 	
 	//查询符合条件的生产派工单总数
 	int SelSum2(String check_tag);
+	List<m_pg> SelectPgs(Params params);
 
 
 }

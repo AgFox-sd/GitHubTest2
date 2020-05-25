@@ -14,12 +14,13 @@ public class cgDiaodu {
 	private String check_tag;//审核标志 
 	private String check_time;//审核时间
 	private String onstock_tag ;//入库状态
+	private String check_yj;
 	public cgDiaodu() {
 		super();
 	}
 	public cgDiaodu(int id, String cgDiaoduId, String cgPlanId, String product_id, String product_name, int amount_sum,
 			double price_sun, String register, String register_time, String checker, String check_tag,
-			String check_time, String onstock_tag) {
+			String check_time, String onstock_tag,String check_yj) {
 		super();
 		this.id = id;
 		this.cgDiaoduId = cgDiaoduId;
@@ -34,6 +35,7 @@ public class cgDiaodu {
 		this.check_tag = check_tag;
 		this.check_time = check_time;
 		this.onstock_tag = onstock_tag;
+		this.check_yj=check_yj;
 	}
 	public int getId() {
 		return id;
@@ -112,6 +114,14 @@ public class cgDiaodu {
 	}
 	public void setOnstock_tag(String onstock_tag) {
 		this.onstock_tag = onstock_tag;
+	}
+	
+	
+	public String getCheck_yj() {
+		return check_yj;
+	}
+	public void setCheck_yj(String check_yj) {
+		this.check_yj = check_yj;
 	}
 	@Override
 	public String toString() {

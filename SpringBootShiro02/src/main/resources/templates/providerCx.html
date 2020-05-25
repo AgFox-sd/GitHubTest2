@@ -45,23 +45,26 @@
 				<div class="container-fluid">
 
 					<div class="row">
-						<div class="col-lg-12"
-							style="margin-left: -25%; margin-top: -6%;">
+						<div class="col-lg-12" style="margin-left: -25%; margin-top: -2%;">
 							<div class="card">
-								<div class="card-toolbar clearfix">
+								<div class="card-toolbar clearfix" id="ss">
 									<form class="pull-right search-bar" method="get" action="#!"
 										role="form">
 										<div class="input-group">
+											<input type="text" class="form-control"
+												placeholder="请输入供应商名称或者编号" v-model="keywords">
 											<div class="input-group-btn">
 												<input type="hidden" name="search_field" id="search-field"
 													value="title">
+												<button type="button" class="btn btn-primary btn-ms"
+													@click="AllGYS()">查询</button>
 											</div>
 										</div>
 									</form>
 								</div>
 								<div class="card-body">
 									<div class="table-responsive" id="box1">
-										<table class="table table-hover" >
+										<table class="table table-hover">
 											<thead>
 												<tr>
 													<th class="text-center">供应商编号</th>
@@ -74,7 +77,8 @@
 												</tr>
 											</thead>
 											<tbody>
-												<tr v-for="(gys,index) in list" :key="index" class="text-center">
+												<tr v-for="(gys,key,index) in plcassPage.list"
+													class="text-center">
 													<td>{{gys.providerId}}</td>
 													<td>{{gys.providerName}}</td>
 													<td>{{gys.providerPhone}}</td>
@@ -83,46 +87,82 @@
 													<td>{{gys.check_tag}}</td>
 													<td>
 														<button type="button" class="btn btn-primary  btn-xs"
-															data-target=".bs-example-modal-lg" @click="SelXX(gys.providerId)">查看详情</button>
+															data-target=".bs-example-modal-lg"
+															@click="SelXX(gys.providerId)">查看详情</button>
 													</td>
 												</tr>
 											</tbody>
 
 										</table>
+										<center style="display: none;" id="fy">
+											<ul class="pagination pagination-lg">
+												<ul class="pagination pagination-lg">
+													<li><a @click.prevent="searchid(plcassPage.firstPage)">首页</a></li>
+													<li><a href="#"
+														@click.prevent="searchid(plcassPage.prePage)">上一页</a></li>
+													<template v-for="pageNum in plcassPage.navigatepageNums">
+													<li><a href="#" @click.prevent="searchid(pageNum)">{{pageNum}}</a></li>
+													</template>
+													<li><a href="#"
+														@click.prevent="searchid(plcassPage.nextPage)">下一页</a></li>
+													<li><a href="#"
+														@click.prevent="searchid(plcassPage.lastPage)">末页</a></li>
+													<li><a>{{plcassPage.pageNum}}/{{plcassPage.pages}}</a></li>
+													<li><a><input type="text" v-model="size"
+															style="width: 40px; height: 35px;" value="1" /></a></li>
+													<li><a href="#" @click.prevent="AllGYS()">go</a></li>
+													<li><select style="height: 37px;" id="page"
+														@change="AllGYS()">
+															<option value="4">4条/页</option>
+															<option value="5">5条/页</option>
+															<option value="6">6条/页</option>
+													</select></li>
+												</ul>
+											</ul>
+										</center>
 									</div>
-								   <div class="btn-group" id="box2" style="display:none">
-								   		
-								   	  		<div style="background-color: #46B8DA">
-          									<p style="font-size: 25px;">供应商详情</p>
-       									</div>
-       									<div class="form-group" style="margin-left: 50px;margin-top: 30px">
-										  <label for="message-text" class="control-label">产品类型名称:</label>
-									      <span style="margin-left: 10px;">{{lists.fname}}</span>
-									      <label for="message-text" class="control-label" style="margin-left: 400px">登记人:</label>
-					      				  <span style="margin-left: 10px;">{{lists.register}}</span>
+									<div class="btn-group" id="box2" style="display: none">
+
+										<div style="background-color: #46B8DA">
+											<p style="font-size: 25px;">供应商详情</p>
 										</div>
-										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
-										  <label for="message-text" class="control-label">登记时间:</label>
-									      <span style="margin-left: 10px;">{{lists.register_time}}</span>
-									      <label for="message-text" class="control-label" style="margin-left: 335px">审核人:</label>
-					      				  <span style="margin-left: 10px;" th:text="${session.username}" id="shr"></span>
+										<div class="form-group"
+											style="margin-left: 50px; margin-top: 30px">
+											<label for="message-text" class="control-label">产品类型名称:</label>
+											<span style="margin-left: 10px;">{{lists.fname}}</span> <label
+												for="message-text" class="control-label"
+												style="margin-left: 400px">登记人:</label> <span
+												style="margin-left: 10px;">{{lists.register}}</span>
 										</div>
-										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
-										  <label for="message-text" class="control-label">审核时间:</label>
-									      <span style="margin-left: 10px;">{{lists.check_time}}</span>
-									      <label for="message-text" class="control-label" style="margin-left: 330px">审核意见:</label>
-					      				  <span style="margin-left: 10px;">{{lists.check_reason}}</span>
+										<div class="form-group"
+											style="margin-left: 50px; margin-top: 30px">
+											<label for="message-text" class="control-label">登记时间:</label>
+											<span style="margin-left: 10px;">{{lists.register_time}}</span>
+											<label for="message-text" class="control-label"
+												style="margin-left: 335px">审核人:</label> <span
+												style="margin-left: 10px;" th:text="${session.username}"
+												id="shr"></span>
 										</div>
-										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
-										  <label for="message-text" class="control-label">变更标志:</label>
-									      <span style="margin-left: 10px;">{{lists.change_tag}}</span>
-									      <label for="message-text" class="control-label" style="margin-left: 440px">删除标志:</label>
-					      				  <span style="margin-left: 10px;">{{lists.delete_tag}}</span>
+										<div class="form-group"
+											style="margin-left: 50px; margin-top: 30px">
+											<label for="message-text" class="control-label">审核时间:</label>
+											<span style="margin-left: 10px;">{{lists.check_time}}</span>
+											<label for="message-text" class="control-label"
+												style="margin-left: 330px">审核意见:</label> <span
+												style="margin-left: 10px;">{{lists.check_reason}}</span>
 										</div>
-					                 <div style="margin-left: 700px">
-					                 <button class="btn btn-w-xs btn-pink"  @click="Fanhui()">返回</button>
-					                 </div>
-       							 </div>
+										<div class="form-group"
+											style="margin-left: 50px; margin-top: 30px">
+											<label for="message-text" class="control-label">变更标志:</label>
+											<span style="margin-left: 10px;">{{lists.change_tag}}</span>
+											<label for="message-text" class="control-label"
+												style="margin-left: 440px">删除标志:</label> <span
+												style="margin-left: 10px;">{{lists.delete_tag}}</span>
+										</div>
+										<div style="margin-left: 700px">
+											<button class="btn btn-w-xs btn-pink" @click="Fanhui()">返回</button>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -140,7 +180,8 @@
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 	<script type="text/javascript" src="js/main.min.js"></script>
-
+	<script type="text/javascript" src="js/lightyear.js"></script>
+	<script src="js/bootstrap-notify.min.js"></script>
 	<script>
     
       var vm=new Vue({
@@ -149,21 +190,54 @@
     			list:[],
     			lists:[],
     			providerId:'',
+    			size:1,
+	    		keywords:'',
+				params:{
+		    			  pageNum:1,
+		    			  pageSize:4,
+		    			  keyWord:''
+		    	},
+		    	plcassPage:{
+		    			  
+		    	}
     		  
     	  },
     	  mounted(){//页面挂载完成调用查询全部的方法
 				this.AllGYS();
 		  },
 		  methods:{
-			  AllGYS:function(){
-				  axios.get('AllGYS').then(res=>{
-							this.list=res.data;
-				  }).catch(err=>{
+			  AllGYS(){
+					//发送异步请求，请求后端控制器，获取所有的品牌信息
+					if(this.size>this.plcassPage.pages&&this.plcassPage.pages!=0){
+						this.size = this.plcassPage.pages;
+					}
+					this.params.pageNum  = this.size;
+					this.params.pageSize = $("#page").val();
+					//发送异步请求，请求后端控制器，获取所有的品牌信息
+					this.params.keyWord=this.keywords;						
+				    axios.post('AllGYS',this.params).then(res=>{
+						this.plcassPage=res.data;
+						if(res.data.list!=""){
+						    $("#fy").show();
+					  }else{
+						    $("#fy").hide();
+					  }
+				      }).catch(err=>{
 						alert('请求失败')
-				  })
-			  },
+				       })
+				    },AllGYSs(){
+						this.params.pageSize = $("#page").val();
+						//发送异步请求，请求后端控制器，获取所有的品牌信息
+						this.params.keyWord=this.keywords;						
+					    axios.post('AllGYS',this.params).then(res=>{
+							this.plcassPage=res.data;
+					  }).catch(err=>{
+							alert('请求失败')
+					  })
+				    },
 			  SelXX(providerId){
 				  $("#box1").toggle();
+				  $("#ss").toggle();
 				  $("#box2").toggle();
 				  axios.post('Selxx?providerId='+providerId+'').then(res=>{
 						this.lists=res.data;
@@ -171,8 +245,15 @@
 			  },
 			 Fanhui(){//点击返回从box2，回到box1
 					$("#box1").toggle();
+					$("#ss").toggle();
 					$("#box2").toggle();
-				}
+				},searchid(page){						
+					if (page < 0 || page > this.plcassPage.pages){
+	                    return false;
+	                }
+					this.params.pageNum=page;
+					this.AllGYSs();
+				},	
 			    
 				  
 			  }

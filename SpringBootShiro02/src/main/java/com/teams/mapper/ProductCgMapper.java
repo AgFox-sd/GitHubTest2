@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.teams.pojo.D_file;
 import com.teams.pojo.cgPlan;
 import com.teams.pojo.cgPlanXq;
+import com.teams.utils.Params;
 
 public interface ProductCgMapper {
 
@@ -30,7 +31,7 @@ public interface ProductCgMapper {
 	List<cgPlanXq> selectCgmx(String cgPlanId);
 
 	//查询所有等待审核的采购计划单
-	List<cgPlan> selectCgddsh(String check_tag);
+	List<cgPlan> selectCgddsh(Params params);
 
 	//查询所有等待审核的采购计划单总数
 	int selectCgddshsum(String check_tag);
@@ -39,7 +40,7 @@ public interface ProductCgMapper {
 	int updCgshtg(cgPlan cgPlan);
 
 	//查询所有的采购计划单
-	List<cgPlan> selectGetCg();
+	List<cgPlan> selectGetCg(Params params);
 
 	//查询所有等待审核的采购计划单总数
 	int selectGetCgsum();

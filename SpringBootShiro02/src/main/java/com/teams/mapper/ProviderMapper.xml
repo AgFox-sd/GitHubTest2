@@ -7,7 +7,11 @@
   
   		<!-- 查询所有供应商 -->
   		<select id="AllGYS" resultType="provider">
-  			select * from provider
+  			select * from provider where 1=1
+  			<if test="keyWord!=null and keyWord!=''">
+		 	and (providerId like concat('%',#{keyWord},'%') or providerName like concat('%',#{keyWord},'%') ) 
+	    </if>
+	    order by id desc
   		</select>
   		
   		<!--查询供应商详情 -->
@@ -28,9 +32,20 @@
 		
 		<!-- 查询等待审核的供应商信息 -->
 		<select id="AllGYSFu" resultType="provider">
-  			select * from provider where check_tag=#{check_tag}
+  			select * from provider where check_tag='等待审核'
+  			<if test="keyWord!=null and keyWord!=''">
+		 	and (providerId like concat('%',#{keyWord},'%') or providerName like concat('%',#{keyWord},'%') ) 
+	    </if>
+	    order by id desc
   		</select>
   		
+  		<select id="AllGYSFu1" resultType="provider">
+  			select * from provider where 1=1
+  			<if test="keyWord!=null and keyWord!=''">
+		 	and (providerId like concat('%',#{keyWord},'%') or providerName like concat('%',#{keyWord},'%') ) 
+	    </if>
+	    order by id desc
+  		</select>
   		<!-- 供应商审核通过,审核通过后把变更标志改为未变更 -->
   		<update id="updGYSFuS"> 
   			update provider set check_tag=#{check_tag},change_tag=#{string2},check_time=sysdate(),checker=#{checker},check_reason=#{check_reason} where providerId=#{providerId}
@@ -43,7 +58,11 @@
   		
   		<!--查询未变更的供应商 -->
   		<select id="selWBG" resultType="provider">
-  			SELECT * FROM  provider WHERE change_tag=#{string}
+  			SELECT * FROM  provider WHERE change_tag='未变更'
+  			<if test="keyWord!=null and keyWord!=''">
+		 	and (providerId like concat('%',#{keyWord},'%') or providerName like concat('%',#{keyWord},'%') ) 
+	    </if>
+	    order by id desc
   		</select>
   		
   		<!-- 提交变更 -->

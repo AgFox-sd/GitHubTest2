@@ -33,7 +33,8 @@
 										class="lyear-toggler-bar"></span> <span
 										class="lyear-toggler-bar"></span>
 								</div>
-								<span class="navbar-page-title"> 采购管理 -产品供应商推荐管理-产品供应商推荐变更</span>
+								<span class="navbar-page-title"> 采购管理
+									-产品供应商推荐管理-产品供应商推荐变更</span>
 							</div>
 						</div>
 					</nav>
@@ -43,15 +44,19 @@
 				<main class="lyear-layout-content">
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-lg-10" style="margin-left: -25%; margin-top: -6%;">
+						<div class="col-lg-10" style="margin-left: -25%; margin-top: -2%;">
 							<div class="card">
-								<div class="card-toolbar clearfix">
+								<div class="card-toolbar clearfix" id="ss">
 									<form class="pull-right search-bar" method="get" action="#!"
 										role="form">
 										<div class="input-group">
+											<input type="text" class="form-control"
+												placeholder="请输入产品名称或者编号" v-model="keywords">
 											<div class="input-group-btn">
 												<input type="hidden" name="search_field" id="search-field"
 													value="title">
+												<button type="button" class="btn btn-primary btn-ms"
+													@click="Selad()">查询</button>
 											</div>
 										</div>
 									</form>
@@ -71,163 +76,207 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr v-for="v in list" :key="index" class="text-center">
+													<tr v-for="(v,key,index) in plcassPage.list"
+														class="text-center">														
 														<td>{{v.recommendId}}</td>
-					                                    <td>{{v.product_id}}</td>
-					                                    <td>{{v.product_name}}</td>
-						                                <td>{{v.fname}}</td>
-						                                <td>{{v.recommend_time}}</td>
+														<td>{{v.product_id}}</td>
+														<td>{{v.product_name}}</td>
+														<td>{{v.fname}}</td>
+														<td>{{v.recommend_time}}</td>
 														<td>
 															<button type="button" id="sjbutton"
 																class="btn btn-primary  btn-xs"
 																data-target=".bs-example-modal-lg"
-																@click="Selidxx(v.recommendId,v.product_id,v.product_name,v.designer,v.cost_price_sum)">变更</button>
+																@click="Selidxx(v.recommendId,v.product_id,v.product_name,v.checker_yj)">变更</button>
 														</td>
 													</tr>
 												</tbody>
 
 											</table>
-
+											<center style="display: none;" id="fy">
+												<ul class="pagination pagination-lg">
+													<ul class="pagination pagination-lg">
+														<li><a
+															@click.prevent="searchid(plcassPage.firstPage)">首页</a></li>
+														<li><a href="#"
+															@click.prevent="searchid(plcassPage.prePage)">上一页</a></li>
+														<template v-for="pageNum in plcassPage.navigatepageNums">
+														<li><a href="#" @click.prevent="searchid(pageNum)">{{pageNum}}</a></li>
+														</template>
+														<li><a href="#"
+															@click.prevent="searchid(plcassPage.nextPage)">下一页</a></li>
+														<li><a href="#"
+															@click.prevent="searchid(plcassPage.lastPage)">末页</a></li>
+														<li><a>{{plcassPage.pageNum}}/{{plcassPage.pages}}</a></li>
+														<li><a><input type="text" v-model="size"
+																style="width: 40px; height: 35px;" value="1" /></a></li>
+														<li><a href="#" @click.prevent="Selad()">go</a></li>
+														<li><select style="height: 37px;" id="page"
+															@change="Selad()">
+																<option value="4">4条/页</option>
+																<option value="5">5条/页</option>
+																<option value="6">6条/页</option>
+														</select></li>
+													</ul>
+												</ul>
+											</center>
 										</div>
 
 									</div>
 									<div class="btn-group" id="box2" style="display: none">
 										<div>
 											<a type="button" class="btn btn-pink  btn-xs"
-												@click="Selad2()" style="margin-left: 700px"
+												@click="Selad2()" style="margin-left: 750px"
 												data-toggle="modal" data-target=".bs-example-modal-lg">添加供应商</a>
 										</div>
 										<div>
-										<p style="text-align: center;font-size: 25px;">供应商推荐变更</p>
+											<p style="margin-left: 460px; font-size: 25px;">供应商推荐变更</p>
 											<div class="form-group">
-							    <label for="message-text" class="control-label">推荐单编号:</label>
-					            <span style="margin-left: 10px;color: red">{{recommendId}}</span>
-					            <label for="message-text" class="control-label" style="margin-left: 340px">推荐人:</label>
-					            <span style="margin-left: 10px;color: red" th:text="${session.username}"></span>
-					          </div>
-					          <div class="form-group">
-					            <label for="message-text" class="control-label" style="margin-left: 15px">产品编号:</label>
-					            <span style="margin-left: 10px;color: red">{{product_id}}</span>
-					            <label for="message-text" class="control-label" style="margin-left: 325px">产品名称:</label>
-					            <span style="margin-left: 10px;color: red">{{product_name}}</span>
-					          </div>
-										<div style="margin-left: 70px">
-											<table class="table table-hover">
-												<thead>
-													<tr>
-														<th class="text-center">序号</th>
-														<th class="text-center">推荐单编号</th>
-														<th class="text-center">供应商编号</th>
-														<th class="text-center">供应商名称</th>
-														<th class="text-center">操作</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr v-for="wl in cus" class="text-center">
-														 <td>{{wl.id}}</td>
-                       			                         <td>{{wl.recommendId}}</td>
-                        		                         <td>{{wl.providerId}}</td>
-                       			                         <td>{{wl.providerName}}</td>
-														<td><a href="#" @click="delid(wl.id,wl.recommendId,wl.providerId,wl.providerName)">删除</a></td>
-													</tr>
-													<tr>
-													<tr v-for="wl in listss" class="text-center">
-														 <td>{{wl.bh}}</td>
-                       			                         <td>{{wl.dc}}</td>
-                        		                         <td>{{wl.mc}}</td>
-                       			                         <td>{{wl.lx}}</td>
-														<td><a href="#" @click="delid(wl.id,wl.recommendId,wl.providerId,wl.providerName)">删除</a></td>
-													</tr>
-													</tr>
-												</tbody>
-											</table>
-										</div>
-										<div class="form-group" style="margin-left: 200px">
-
-										</div>
-										<button class="btn btn-w-xs btn-primary"
-											style="margin-left: 700px" @click="QueRen()">重新提交</button>
-										<!-- 模态框开始 -->
-										<div class="modal fade bs-example-modal-lg" tabindex="-1"
-											role="dialog" aria-labelledby="myLargeModalLabel">
-											<div class="modal-dialog modal-lg" role="document">
-												<div class="modal-content">
-													<div class="modal-header">
-														<button type="button" class="close" data-dismiss="modal"
-															aria-label="Close">
-															<span aria-hidden="true">×</span>
-														</button>
-														<h4 class="modal-title" id="myLargeModalLabel">添加供应商</h4>
-													</div>
-													<div class="modal-body">
-														<form action="#" method="post">
-															<div style="margin-left: 20px">
-																<table class="table table-bordered">
-																	<thead>
-																		<tr>
-																			<th class="text-center">选择</th>
-																			<th class="text-center">物料编号</th>
-																			<th class="text-center">物料名称</th>
-																			<th class="text-center">用途类型</th>
-																			<th class="text-center">产品档次</th>
-																			<th class="text-center">数量</th>
-																			<th class="text-center">单位</th>
-																		</tr>
-																	</thead>
-																	<tbody>
-																		<tr v-for="(wl,index) in wllist" :key="index" class="text-center">
-																			<td><label
-																				class="lyear-checkbox checkbox-primary"> <input
-																					type="checkbox" value="{{wl.product_id}}"
-																					class="xz"><span class="xz"></span>
-																			</label></td>
-																			<td>{{wl.id}}</td>
-                       			                                            <td>{{wl.providerId}}</td>
-                        		                                            <td>{{wl.providerName}}</td>
-                       			                                            <td>一般</td>
-                       			                                            <td>{{wl.fname}}</td>
-                       			                                            <td>中国</td>
-																		</tr>
-																	</tbody>
-																</table>
-															</div>
-														</form>
-													</div>
-													<div class="modal-footer">
-														<button type="button" class="btn btn-default"
-															data-dismiss="modal">关闭</button>
-														<button type="button" class="btn btn-primary"
-															@click="tianjia()" data-dissmiss="modal"
-															data-dismiss="modal">点击添加</button>
+												<label for="message-text" class="control-label"
+													style="margin-left: 200px">推荐单编号:</label> <span
+													style="margin-left: 10px; color: red">{{recommendId}}</span>
+												<label for="message-text" class="control-label"
+													style="margin-left: 340px">推荐人:</label> <span
+													style="margin-left: 10px; color: red"
+													th:text="${session.username}"></span>
+											</div>
+											<div class="form-group">
+												<label for="message-text" class="control-label"
+													style="margin-left: 200px">产品编号:</label> <span
+													style="margin-left: 10px; color: red">{{product_id}}</span>
+												<label for="message-text" class="control-label"
+													style="margin-left: 325px">产品名称:</label> <span
+													style="margin-left: 10px; color: red">{{product_name}}</span>
+											</div>
+											<div style="margin-left: 10px">
+												<table class="table table-hover">
+													<thead>
+														<tr>
+															<th class="text-center">序号</th>
+															<th class="text-center">推荐单编号</th>
+															<th class="text-center">供应商编号</th>
+															<th class="text-center">供应商名称</th>
+															<th class="text-center">操作</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr v-for="wl in cus" class="text-center">
+															<td>{{wl.id}}</td>
+															<td>{{wl.recommendId}}</td>
+															<td>{{wl.providerId}}</td>
+															<td>{{wl.providerName}}</td>
+															<td><a href="#"
+																@click.prevent="delid(wl.id,wl.recommendId,wl.providerId,wl.providerName)">删除</a></td>
+														</tr>
+														<tr>
+														<tr v-for="wl in listss" class="text-center">
+															<td>{{wl.bh}}</td>
+															<td>{{wl.dc}}</td>
+															<td>{{wl.mc}}</td>
+															<td>{{wl.lx}}</td>
+															<td><a href="#"
+																@click.prevent="delid(wl.id,wl.recommendId,wl.providerId,wl.providerName)">删除</a></td>
+														</tr>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+                                            <div class="form-group">
+												<label for="message-text" class="control-label" style="margin-left: 200px;">变更意见:</label><br/>
+											<textarea rows="1" cols="100" v-model="change_yj"
+												name="change_yj" id="change_yj" style="margin-left: 200px;"></textarea>
+												<label for="message-text" class="control-label"
+													style="margin-left: 745px;">审核意见:</label> <span
+													style="margin-left: 10px; color: red">{{checker_yj}}</span>
+											</div>
+											<button class="btn btn-w-xs btn-pink"
+												style="margin-left: 650px" @click="fanhui()">返回</button>
+											<button class="btn btn-w-xs btn-primary"
+												style="margin-left: 750px; margin-top: -59px;"
+												@click="QueRen()">重新提交</button>
+											<!-- 模态框开始 -->
+											<div class="modal fade bs-example-modal-lg" tabindex="-1"
+												role="dialog" aria-labelledby="myLargeModalLabel">
+												<div class="modal-dialog modal-lg" role="document">
+													<div class="modal-content">
+														<div class="modal-header">
+															<button type="button" class="close" data-dismiss="modal"
+																aria-label="Close">
+																<span aria-hidden="true">×</span>
+															</button>
+															<h4 class="modal-title" id="myLargeModalLabel">添加供应商</h4>
+														</div>
+														<div class="modal-body">
+															<form action="#" method="post">
+																<div style="margin-left: 20px">
+																	<table class="table table-bordered">
+																		<thead>
+																			<tr>
+																				<th class="text-center">选择</th>
+																				<th class="text-center">物料编号</th>
+																				<th class="text-center">物料名称</th>
+																				<th class="text-center">用途类型</th>
+																				<th class="text-center">产品档次</th>
+																				<th class="text-center">数量</th>
+																				<th class="text-center">单位</th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			<tr v-for="(wl,index) in wllist" :key="index"
+																				class="text-center">
+																				<td><label
+																					class="lyear-checkbox checkbox-primary"> <input
+																						type="checkbox" value="{{wl.product_id}}"
+																						class="xz"><span class="xz"></span>
+																				</label></td>
+																				<td>{{wl.id}}</td>
+																				<td>{{wl.providerId}}</td>
+																				<td>{{wl.providerName}}</td>
+																				<td>一般</td>
+																				<td>{{wl.fname}}</td>
+																				<td>中国</td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</div>
+															</form>
+														</div>
+														<div class="modal-footer">
+															<button type="button" class="btn btn-default"
+																data-dismiss="modal">关闭</button>
+															<button type="button" class="btn btn-primary"
+																@click="tianjia()" data-dissmiss="modal"
+																data-dismiss="modal">点击添加</button>
+														</div>
 													</div>
 												</div>
 											</div>
+											<!-- 模态框结束 -->
 										</div>
-										<!-- 模态框结束 -->
+
+
 									</div>
+									<!-- 分页开始 -->
 
-
+									<!-- 分页结束 -->
 								</div>
-								<!-- 分页开始 -->
-
-								<!-- 分页结束 -->
 							</div>
 						</div>
+
 					</div>
-
 				</div>
-			</div>
 
-			</main>
-			<!--End 页面主要内容-->
+				</main>
+				<!--End 页面主要内容-->
+			</div>
 		</div>
-	</div>
 	</div>
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 	<script type="text/javascript" src="js/main.min.js"></script>
-
+    <script type="text/javascript" src="js/lightyear.js"></script>
+	<script src="js/bootstrap-notify.min.js"></script>
 
 
 	<script>
@@ -252,7 +301,19 @@
 					providerId:'',
 					providerName:'',
 					check_tag:'等待审核',
-					change_tag:'已变更'
+					change_tag:'已变更',
+					size:1,
+		    		keywords:'',
+					params:{
+			    			  pageNum:1,
+			    			  pageSize:4,
+			    			  keyWord:''
+			    	},
+			    	plcassPage:{
+			    			  
+			    	},
+			    	checker_yj:'',
+			    	change_yj:''
 					
 				},
 				mounted(){//初始化显示完成调用
@@ -260,18 +321,42 @@
 				},
 				methods:{
 					Selad(){
+						if(this.size>this.plcassPage.pages&&this.plcassPage.pages!=0){
+							this.size = this.plcassPage.pages;
+						}
+						this.params.pageNum  = this.size;
+						this.params.pageSize = $("#page").val();
 						//发送异步请求，请求后端控制器，获取所有的品牌信息
-						axios.get('selectwbg').then(res=>{
-							this.list=res.data;
-				  }).catch(err=>{
-						alert('请求失败')
-				  })
+						this.params.keyWord=this.keywords;						
+					    axios.post('selectwbg',this.params).then(res=>{
+							this.plcassPage=res.data;
+							if(res.data.list!=""){
+							    $("#fy").show();
+						  }else{
+							    $("#fy").hide();
+						  }
+					  }).catch(err=>{
+							alert('请求失败')
+					  })
 						
-					},Selidxx(recommendId,product_id,product_name){
+					},
+					Selads(){
+						this.params.pageSize = $("#page").val();
+						//发送异步请求，请求后端控制器，获取所有的品牌信息
+						this.params.keyWord=this.keywords;						
+					  axios.post('selectwbg',this.params).then(res=>{
+								this.plcassPage=res.data;
+					  }).catch(err=>{
+							alert('请求失败')
+					  })
+						
+					},Selidxx(recommendId,product_id,product_name,checker_yj){
 						 this.recommendId=recommendId
 						 this.product_name=product_name;
 						 this.product_id=product_id;
+						 this.checker_yj=checker_yj;
 						 $("#box1").toggle();
+						 $("#ss").toggle();
 						 $("#box2").toggle();	
 						 this.Selad3();
 					},
@@ -288,20 +373,30 @@
 							})
 					},
 					QueRen(){
-						$("#box1").toggle();
-						$("#box2").toggle();
-						this.Selad();
-						var url="updbgs?recommendId="+this.recommendId;
-						axios.get(url).then(res=>{
-							
-							//this.list=res.data;
+						if(this.change_yj==""){
+							setTimeout(function() {
+						        lightyear.loading('hide');
+						        lightyear.notify('请填写变更意见！', 'danger', 1000);
+						    }, 1e3)
+						}else{
+							$("#box1").toggle();
+							$("#ss").toggle();
+							$("#box2").toggle();
 							this.Selad();
-							if(res.data>0){
-								alert("变更成功")
-							}
-						    }).catch(err=>{
-								alert('请求失败')
-							})
+							var url="updbgs?recommendId="+this.recommendId+"&change_yj="+this.change_yj+"";
+							axios.get(url).then(res=>{
+								//this.list=res.data;
+								this.Selad();
+								if(res.data>0){
+									setTimeout(function() {
+								        lightyear.loading('hide');
+								        lightyear.notify('变更成功！请审核！', 'success', 1000);
+								    }, 1e3)
+								}
+							    }).catch(err=>{
+									alert('请求失败')
+								})
+					}
 					},
 					delid(id,recommendId,providerId,providerName){
 						this.id=id;
@@ -311,7 +406,10 @@
 						var url="delbgs?id="+id;
 						axios.get(url).then(res=>{
 							 this.Selad3();
-							alert("成功")
+							 setTimeout(function() {
+							        lightyear.loading('hide');
+							        lightyear.notify('删除成功！', 'success', 1000);
+							    }, 1e3)
 					    }).catch(err=>{
 							alert('请求失败')
 						})
@@ -334,18 +432,30 @@
 						});
 						
 						 $.each(mc, function(i,val){        
-								 //alert(val)
 							  });
 
 					   var url="bgxius?bh="+bh+"&mc="+mc+"&lx="+lx+
 							   "&dc="+this.recommendId+"&sl="+sl+"&dw="+dw;
 					    axios.get(url).then(res=>{
 					    	this.listss=res.data;
-					    	alert('成功');
+					    	setTimeout(function() {
+						        lightyear.loading('hide');
+						        lightyear.notify('推荐成功！', 'success', 1000);
+						    }, 1e3)
 					    }).catch(err=>{
 							alert('请求失败')
 						})
-					},
+					},fanhui(){
+						$("#box1").toggle();
+						$("#ss").toggle();
+						$("#box2").toggle();
+					},searchid(page){						
+						if (page < 0 || page > this.plcassPage.pages){
+		                    return false;
+		                }
+						this.params.pageNum=page;
+						this.Selads();
+					}
 			}
 				
 			})

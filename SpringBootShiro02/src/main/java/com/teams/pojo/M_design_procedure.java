@@ -21,14 +21,17 @@ public class M_design_procedure {
 	  private String change_tag;	//变更标志B002-0: 未变更，B002-1: 已变更
 	  private String design_module_tag;	//工序物料设计标志 G002-0: 未设计,G002-1: 已提交,G002-2: 已审核
 	  private String design_module_change_tag; //工序物料变更标志 G003-0: 未变更,G003-1: 已变更
-	public M_design_procedure() {
+	  private String check_yj;
+	  private String change_yj;
+	  private String wlbg_yj;
+	  public M_design_procedure() {
 		super();
-	}
+	  }
 	public M_design_procedure(int id, String design_id, int fid, String product_id, String product_name,
 			String procedure_describe, double cost_price_sum, double module_cost_price_sum, String designer,
 			String register, String register_time, String checker, String check_time, String check_suggestion,
 			String check_tag, String changer, String change_time, String change_tag, String design_module_tag,
-			String design_module_change_tag) {
+			String design_module_change_tag, String check_yj, String change_yj,String wlbg_yj) {
 		super();
 		this.id = id;
 		this.design_id = design_id;
@@ -50,6 +53,9 @@ public class M_design_procedure {
 		this.change_tag = change_tag;
 		this.design_module_tag = design_module_tag;
 		this.design_module_change_tag = design_module_change_tag;
+		this.check_yj = check_yj;
+		this.change_yj = change_yj;
+		this.wlbg_yj = wlbg_yj;
 	}
 	public int getId() {
 		return id;
@@ -170,6 +176,24 @@ public class M_design_procedure {
 	}
 	public void setDesign_module_change_tag(String design_module_change_tag) {
 		this.design_module_change_tag = design_module_change_tag;
+	}
+	public String getCheck_yj() {
+		return check_yj;
+	}
+	public void setCheck_yj(String check_yj) {
+		this.check_yj = check_yj;
+	}
+	public String getChange_yj() {
+		return change_yj;
+	}
+	public void setChange_yj(String change_yj) {
+		this.change_yj = change_yj;
+	}
+	public String getWlbg_yj() {
+		return wlbg_yj;
+	}
+	public void setWlbg_yj(String wlbg_yj) {
+		this.wlbg_yj = wlbg_yj;
 	}
 	  
 }

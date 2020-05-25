@@ -39,7 +39,11 @@
      
      <!--查询所有等待审核的生产计划 -->
      <select id="selectShcx" resultType="m_apply">
-        select * from m_apply where check_tag=#{check_tag}
+        select * from m_apply where check_tag= '等待审核'
+        <if test="keyWord!=null and keyWord!=''">
+		 	and (register like concat('%',#{keyWord},'%') or apply_id like concat('%',#{keyWord},'%') ) 
+		 </if>
+		 order by id desc
      </select>
      
      <!-- 查询所有等待审核的生产计划总数 -->
@@ -66,6 +70,10 @@
      <!-- 查询所有生产计划 --> 
      <select id="selectShjh" resultType="m_apply">
         select * from m_apply
+        <if test="keyWord!=null and keyWord!=''">
+		 	and (register like concat('%',#{keyWord},'%') or apply_id like concat('%',#{keyWord},'%') ) 
+		 </if>
+		 order by id desc
      </select>
      
      
@@ -119,9 +127,26 @@
      <!-- 查询所有的入库单 -->
      <select id="selectGetRkd" resultType="S_gather">
         select * from s_gather 
-        where reason=#{reason}
-        and store_tag=#{store_tag}
-        and check_tag=#{check_tag}
+        where reason='生产入库'
+        and store_tag='已调度'
+        and check_tag='等待审核'
+         <if test="keyWord!=null and keyWord!=''">
+		 	and (storer like concat('%',#{keyWord},'%') or gather_id like concat('%',#{keyWord},'%') ) 
+		 </if>
+		 order by id desc
+        
+     </select>
+     
+     <select id="selectGetRkds" resultType="S_gather">
+        select * from s_gather 
+        where reason='生产入库'
+        and store_tag='已登记'
+        and check_tag='等待审核'
+         <if test="keyWord!=null and keyWord!=''">
+		 	and (register like concat('%',#{keyWord},'%') or gather_id like concat('%',#{keyWord},'%') ) 
+		 </if>
+		 order by id desc
+        
      </select>
      <!-- 查询入库单总数 -->
      <select id="selectGetRkdsum" resultType="int">
@@ -161,7 +186,7 @@
      
      <!-- 入库单复核通过 修改入库表 -->
      <update id="updGetRkdfhtg">
-        update s_gather set gathered_amount_sum=#{gathered_amount_sum},checker=#{checker},check_time=now(),check_tag=#{check_tag},store_tag=#{store_tag}
+        update s_gather set gathered_amount_sum=#{gathered_amount_sum},checker=#{checker},check_time=now(),check_tag=#{check_tag},store_tag=#{store_tag},check_yj=#{check_yj}
         where gather_id=#{gather_id}
      </update>
      
@@ -176,8 +201,8 @@
      <!-- 出库管理-->
      <!-- 添加出库申请单 -->
      <insert id="addCk" >
-        insert into s_pay(id,pay_id,storer,reason,amount_sum,cost_price_sum,remark,register,register_time,check_tag,store_tag,sjbh)
-        values(null,#{pay_id},#{storer},#{reason},#{amount_sum},#{cost_price_sum},#{remark},#{register},now(),#{check_tag},#{store_tag},default)
+        insert into s_pay(id,pay_id,storer,reason,amount_sum,cost_price_sum,remark,register,register_time,check_tag,store_tag,sjbh,check_yj)
+        values(null,#{pay_id},#{storer},#{reason},#{amount_sum},#{cost_price_sum},#{remark},#{register},now(),#{check_tag},#{store_tag},default,default)
      </insert>
      
      <!-- 添加出库申请明细 -->
@@ -193,7 +218,11 @@
      
      <!-- 查询所有等待审核的出库申请单 -->
      <select id="selectCkddsh" resultType="s_pay">
-        select * from s_pay where check_tag=#{check_tag} and reason!=#{reason}
+        select * from s_pay where check_tag='等待审核' and reason!='生产领料'
+        <if test="keyWord!=null and keyWord!=''">
+		 	and (pay_id like concat('%',#{keyWord},'%') or storer like concat('%',#{keyWord},'%') ) 
+		 </if>
+		 order by id desc
      </select>
      
      <!-- 查询等待审核的出库申请单总数 -->
@@ -203,13 +232,17 @@
      
      <!-- 出库申请单审核 -->
      <update id="updCksqdsh">
-        update s_pay set checker=#{checker},check_time=now(),check_tag=#{check_tag}
+        update s_pay set checker=#{checker},check_time=now(),check_tag=#{check_tag},check_yj=#{check_yj}
         where pay_id=#{pay_id}
      </update>
      
      <!-- 查询所有的出库申请单 不为生产领料 -->
      <select id="selectGetCksqd" resultType="s_pay">
-        select * from s_pay where reason!=#{reason}
+        select * from s_pay where 1=1
+         <if test="keyWord!=null and keyWord!=''">
+		 	and (pay_id like concat('%',#{keyWord},'%') or storer like concat('%',#{keyWord},'%') ) 
+		 </if>
+		 order by id desc
      </select>
      
      <!-- 查询不在生产计划单中的产品 -->

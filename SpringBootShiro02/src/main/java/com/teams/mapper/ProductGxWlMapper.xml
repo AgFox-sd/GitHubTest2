@@ -8,8 +8,11 @@
     <select id="productGxWl" resultType="M_design_procedure">
     select * from m_design_procedure 
     where check_tag = '审核通过' and design_module_tag = '未设计'
+    <if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+    </if>
+    order by id desc
     </select>
-    
     <!-- 查询设计完产品工序的工序信息 -->
     <select id="productGxMx" resultType="M_design_procedure_details">
     select a.*,b.name from m_design_procedure_details a,m_gonxu b,
@@ -75,7 +78,7 @@
     </update>
     <!-- 修改产品工序表设计字段 -->
     <update id="updGxWlSj">
-    update   m_design_procedure  set design_module_tag=#{design_module_tag}
+    update   m_design_procedure  set design_module_tag=#{design_module_tag},design_module_change_tag=#{check_yj}
      where design_id = #{design_id}
     </update>
     
@@ -88,17 +91,25 @@
     <!-- 查询已设计完物料工序的产品 -->
      <select id="productGxWlSh" resultType="M_design_procedure">
     select * from m_design_procedure 
-    where check_tag = '审核通过' and design_module_tag = #{design_module_tag} or design_module_tag='已设计'
+    where check_tag = '审核通过' and (design_module_tag ='变更等待审核' or design_module_tag='已设计')
+   <if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+    </if>
+    order by id desc
     </select>
     
     
     <select id="productGxWlSh2" resultType="M_design_procedure">
     select * from m_design_procedure 
-    where check_tag = '审核通过' and design_module_tag !='变更等待审核' or design_module_tag='未设计'
+    where check_tag = '审核通过' and design_module_tag='已设计'  or design_module_tag='已审核' or design_module_tag='审核不通过'
+     <if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+    </if>
+    order by id desc
     </select>
     <!-- 修改产品工序为已审核 -->
     <update id="updateGxWlSh">
-     update   m_design_procedure  set design_module_tag='已审核'  where design_id = #{design_id}
+     update   m_design_procedure  set design_module_tag='已审核',design_module_change_tag='审核通过'  where design_id = #{design_id}
     </update>
     
     <!-- //删除工序物料表 -->
@@ -114,7 +125,10 @@
     <!-- 查询已审核或已设计的产品 -->
      <select id="productGxWlCx" resultType="M_design_procedure">
     select * from m_design_procedure 
-    where check_tag = '审核通过' 
+    where check_tag = '审核通过' and design_module_tag!='未设计'
+    <if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+    </if>
     </select>
     
     <update id="updmpm">
@@ -136,4 +150,36 @@
     update d_module_details set residual_amount =residual_amount+#{ky}
     where product_id =#{product_id} and design_id in(select design_id from d_module where product_id in(select product_id from m_design_procedure where design_id=#{design_id}))
     </update>
+    
+    <delete id="deletewlzc">
+    delete from m_procedure_module where design_id=#{design_id} and procedure_name=#{gongxu_name} and product_id=#{string}
+    </delete>
+    
+    <update id="updzbzje">
+    update m_design_procedure set module_cost_price_sum=module_cost_price_sum-#{zje} where design_id=#{design_id}
+    </update>
+    
+    <update id="updatewlzc">
+    update d_module_details set residual_amount=residual_amount+#{i}
+    where design_id in(select design_id from d_module where product_id=#{product_id})
+    and product_id =#{string}
+    </update>
+    
+    <update id="updzje">
+    update m_design_procedure_details set module_subtotal=0,design_module_tag='未设计' where parent_id=#{design_id}
+    and procedure_id in(select id from m_gonxu where name = #{gongxu_name})
+    </update>
+    
+    <select id="selectwlzcb" resultType="double">
+    select module_cost_price_sum from m_design_procedure where design_id=#{design_id}
+    </select>
+    
+    <update id="updwlbgyj">
+    update m_design_procedure set design_module_tag='变更等待审核',wlbg_yj=#{wlbg_yj}
+    where design_id=#{design_id}
+    </update>
+    
+    <select id="selectcf" resultType="int">
+    SELECT COUNT(DISTINCT procedure_name) FROM m_procedure_module WHERE design_id =#{design_id} 
+    </select>
   </mapper>

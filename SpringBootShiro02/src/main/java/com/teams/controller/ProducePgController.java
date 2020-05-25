@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.M_design_procedure_details;
 import com.teams.pojo.m_apply;
 import com.teams.pojo.m_pg;
 import com.teams.pojo.m_procedure_module;
 import com.teams.service.LyService;
 import com.teams.service.ProducePgService;
+import com.teams.utils.Params;
 
 /*
  *	生产调度管理控制器
@@ -34,8 +36,9 @@ public class ProducePgController {
 	//查询已通过审核并未派工的生产计划
 	@RequestMapping("/SelectApply")
 	@ResponseBody
-	public List<m_apply> SelectApply() {
-		List<m_apply> list=service.SelectApply("审核通过","未派工");
+	public PageInfo<m_apply> SelectApply(@RequestBody Params params) {
+		System.out.println(params.getPageNum());
+		PageInfo<m_apply> list=service.SelectApply(params);
 		return list;
 	}
 	
@@ -76,22 +79,22 @@ public class ProducePgController {
 	//查询信息范围为已派工的派工单
 	@RequestMapping("/SelectPg")
 	@ResponseBody
-	public List<m_pg> SelectPg(HttpSession session){
-		List<m_pg> list=service.SelectPg("等待审核");
+	public PageInfo<m_pg> SelectPg(@RequestBody Params params,HttpSession session){
+		PageInfo<m_pg> list1=service.SelectPgs(params);
+		List<m_pg> list = service.SelectPg("等待审核");
 		String zdr="";
 		for (int i = 0; i < list.size(); i++) {
 			zdr=list.get(i).getPg_ren();
 		}
-		System.out.println(zdr);
 		session.setAttribute("zdr", zdr);
-		return list;
+		return list1;
 	}
 	
 	//查询当前等待审核的生产派工单总数SelSum
 	@RequestMapping("/SelSum")
 	@ResponseBody
 	public int SelSum(){
-		return service.SelSum("未审核");
+		return service.SelSum("等待审核");
 	}
 	
 	//生产派工单审核通过
@@ -112,8 +115,8 @@ public class ProducePgController {
 	//生产派工单查询
 	@RequestMapping("/SelectPG2")
 	@ResponseBody  
-	public List<m_pg> SelectPG2() {
-		List<m_pg> list=service.SelectPG2();
+	public PageInfo<m_pg> SelectPG2(@RequestBody Params params) {
+		PageInfo<m_pg> list=service.SelectPG2(params);
 		return list;
 	}
 	

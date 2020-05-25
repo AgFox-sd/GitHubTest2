@@ -28,8 +28,9 @@ public class ProductSjServiceImpl implements ProductSjService{
 
 	//查询审核通过的产品信息
 	@Override
-	public List<D_file> selectProduct(String check_tag) {
-		return mapper.selectProduct(check_tag);
+	public PageInfo<D_file> selectProduct(Params params) {
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectProduct(params));
 	}
 
 	//删除和恢复审核通过的产品信息
@@ -44,9 +45,10 @@ public class ProductSjServiceImpl implements ProductSjService{
 		return mapper.yjDeleteProduct(product_id);
 	}
 	@Override
-	public List<D_file> selectcpdash(@Param("check_tag")String check_tag) {
+	public PageInfo<D_file> selectcpdash(Params params) {
 		
-		return mapper.selectcpdash(check_tag);
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectcpdash(params));
 	}
 
 	@Override
@@ -74,9 +76,10 @@ public class ProductSjServiceImpl implements ProductSjService{
 	 * 产品物料设计单查询
 	 */
 	@Override
-	public List<D_module> selectwusjsh(@Param("check_tag")String check_tag) {
+	public PageInfo<D_module> selectwusjsh(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.selectwusjsh(check_tag);
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectwusjsh(params));
 	}
 
 	@Override
@@ -110,15 +113,16 @@ public class ProductSjServiceImpl implements ProductSjService{
 	}
 
 	@Override
-	public int delwlsj(String check_yj,String product_id,@Param("design_id")String design_id) {
+	public int delwlsj(String check_tag,String check_yj,String product_id,@Param("design_id")String design_id) {
 		// TODO Auto-generated method stub
-		return mapper.delwlsj(check_yj,product_id,design_id);
+		return mapper.delwlsj(check_tag,check_yj,product_id,design_id);
 	}
 
 	@Override
-	public List<D_file> selectId2(String check_tag) {
+	public PageInfo<D_file> selectId2(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.selectId2(check_tag);
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectId2(params));
 	}
 
 	@Override
@@ -134,9 +138,10 @@ public class ProductSjServiceImpl implements ProductSjService{
 	}
 
 	@Override
-	public List<D_file> Selad(String check_tag,String design_module_tag, int tid,String sjdh) {
+	public PageInfo<D_file> Selad(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.Selad(check_tag,design_module_tag,tid,sjdh);
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.Selad(params));
 	}
 
 	@Override
@@ -186,9 +191,10 @@ public class ProductSjServiceImpl implements ProductSjService{
 	}
 
 	@Override
-	public List<D_module> selD_module() {
+	public PageInfo<D_module> selD_module(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.selD_module();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selD_module(params));
 	}
 
 	@Override
@@ -241,9 +247,10 @@ public class ProductSjServiceImpl implements ProductSjService{
 	}
 
 	@Override
-	public List<D_module> selD_moduleS() {
+	public PageInfo<D_module> selD_moduleS(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.selD_moduleS();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selD_moduleS(params));
 	}
 
 	@Override
@@ -258,5 +265,19 @@ public class ProductSjServiceImpl implements ProductSjService{
 		return mapper.selectCount(sjdh);
 	}
 
-	
+	@Override
+	public List<D_file> Selad2(String string, String string2, int i, String sjdh) {
+		return mapper.Selad2(string, string2, i, sjdh);
+	}
+
+	@Override
+	public void updatezje(double subtotal, String design_id) {
+		mapper.updatezje(subtotal, design_id);
+	}
+
+	@Override
+	public void updatejzje(double subtotal, String design_id) {
+		mapper.updatejzje(subtotal, design_id);
+	}
+
 }

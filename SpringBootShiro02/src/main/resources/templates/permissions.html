@@ -232,6 +232,8 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="js/main.min.js"></script>
+<script type="text/javascript" src="js/lightyear.js"></script>
+<script src="js/bootstrap-notify.min.js"></script>
 <!--  <script type="text/javascript">
 $(function(){
     $('.search-bar .dropdown-menu a').click(function() {
@@ -326,7 +328,10 @@ $(function(){
 						var param={f_ModuleId:this.f_ModuleId,f_fullName:this.f_fullName,f_UrlAddress:this.f_UrlAddress};
 						axios.post('addQX',param).then(res=>{
 							if(res.data=="成功"){
-								alert('增加成功')
+								setTimeout(function() {
+									 lightyear.loading('hide');
+								     lightyear.notify('增加成功！', 'success', 1000);
+								    }, 1e3)	
 								this.list=res.data;
 								this.f_ModuleId=this.f_fullName=this.f_UrlAddress=''
 								this.AllQX();
@@ -348,7 +353,10 @@ $(function(){
 					XGBaoCun(){
 						axios.get('updatePer?id='+this.updQX.id+'&f_ModuleId='+this.updQX.f_ModuleId+'&f_ParentId='+this.updQX.f_ParentId+'&f_fullName='+this.updQX.f_fullName+'&f_UrlAddress='+this.updQX.f_UrlAddress+'&type='+this.updQX.type+'').then(res=>{
 							if(res.data=="成功"){
-								alert('修改成功')
+								setTimeout(function() {
+									 lightyear.loading('hide');
+								     lightyear.notify('修改成功！', 'success', 1000);
+								    }, 1e3)	
 								$("#box1").toggle();
 								$("#box3").toggle();
 								this.AllQX();
@@ -369,7 +377,10 @@ $(function(){
 					Ding(){
 						var len=$("input[type=checkbox]:checked()");
 						if(len.length<=0){
-							alert("请选择需要撤销的角色!");
+							setTimeout(function() {
+								 lightyear.loading('hide');
+							     lightyear.notify('请选择需要撤销的角色!', 'danger', 1000);
+							    }, 1e3)	
 						}else{
 							var je=[];//角色
 							//获得选择的信息
@@ -378,11 +389,13 @@ $(function(){
 								$(this).prop("checked",false);
 							});
 							//发送请求撤销，删除角色权限表
-							alert(this.id)
 							var url="CxiaoRoleQ?pid="+this.id+"&rid="+je+""
 							axios.get(url).then(res=>{
 								if(res.data=="成功"){
-									alert('撤销权限成功')
+									setTimeout(function() {
+										 lightyear.loading('hide');
+									     lightyear.notify('撤销权限成功!', 'success', 1000);
+									    }, 1e3)	
 									$("#box1").toggle();
 									$("#box2").toggle();
 									this.AllQX();
@@ -399,7 +412,10 @@ $(function(){
 							var url='delQx?pid='+id+'';
 							axios.post(url).then(res=>{
 								if(res.data=="成功"){
-									alert('删除成功')
+									setTimeout(function() {
+										 lightyear.loading('hide');
+									     lightyear.notify('删除成功!', 'success', 1000);
+									    }, 1e3)	
 									this.AllQX();
 								}
 							})

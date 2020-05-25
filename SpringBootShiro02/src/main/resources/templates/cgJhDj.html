@@ -39,7 +39,7 @@
     <main class="lyear-layout-content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-lg-10" style="margin-left: -25%;margin-top: -3%;">
+          <div class="col-lg-10" style="margin-left: -25%;margin-top: -2%;">
             <div class="card">
               <div class="card-toolbar clearfix">
                <form class="pull-right search-bar" method="get" action="#!" role="form">
@@ -61,15 +61,15 @@
           		          <button class="btn btn-xs btn-primary" @click="Getyl()" style="margin-left: 10px;margin-top: -12%;">预览</button>
        		       </div>
        			   <div class="form-group" style="margin-top: -8%">
-          				<h4 style="margin-left: 370px">采购计划单</h4>
+          				<h4 style="margin-left: 460px;font-size: 25px;">采购计划单</h4>
        			   </div>
-		           <div class="form-group" style="margin-left: 100px;margin-top: 20px">
+		           <div class="form-group" style="margin-left: 250px;margin-top: 20px">
 						<label for="message-text" class="control-label" >采购理由:</label>
-						<span style="margin-left: 8px">新发生</span>
+						<span style="margin-left: 40px">新发生</span>
 						<label for="message-text" class="control-label" style="margin-left: 300px">登记人:</label>
 						<span  id="djr" th:text="${session.username}" style="margin-left: 8px"></span>
 		          </div>
-		          <div style="margin-left: 70px">
+		          <div style="margin-left: 200px">
 		           <table class="table table-bordered" >
 	                    <thead>
 	                      <tr>
@@ -102,8 +102,8 @@
 	                  </table>
                   </div>
                   <div class="form-group">
-          			  <label for="message-text" class="control-label" style="margin-left: 9%">备注:</label>
-          			  <textarea rows="2" cols="100" style="margin-left: 9%;" v-model="remark"></textarea>
+          			  <label for="message-text" class="control-label" style="margin-left: 15%">备注:</label>
+          			  <textarea rows="2" cols="100" style="margin-left: 15%;" v-model="remark"></textarea>
        			  </div>
            </div> 		
            <!-- box1结束 -->
@@ -230,7 +230,8 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="js/main.min.js"></script>
-
+<script type="text/javascript" src="js/lightyear.js"></script>
+<script src="js/bootstrap-notify.min.js"></script>
 
 
 <script>
@@ -248,7 +249,7 @@ Vue.filter('moneyFormat',function(money,length){
 					sum:'',        //合计总金额
 					cgmxlist:[], //采购计划明细
 					cgPlanId:'' ,  //采购计划编号
-					
+					remark:'新发生'
 				},
 				methods:{
 					Getcp:function(){//查询符合条件的产品信息
@@ -287,10 +288,16 @@ Vue.filter('moneyFormat',function(money,length){
 					},
 					Getyl:function(){  //预览 --增加采购计划			
 						if(this.cpmxList==""){  //判断是否为空
-							alert('请添加产品');
+							setTimeout(function() {
+								 lightyear.loading('hide');
+							     lightyear.notify('请添加产品！', 'danger', 1000);
+							    }, 1e3)
 						}else{
 							if($('.ld').prop('checked')==false){ //判断是否为选中产品
-								alert('请选择需要采购的产品')
+								setTimeout(function() {
+									 lightyear.loading('hide');
+								     lightyear.notify('请选择需要采购的产品！', 'danger', 1000);
+								    }, 1e3)
 							}else{
 								//盒子切换
 								$("#box1").toggle();
@@ -317,7 +324,7 @@ Vue.filter('moneyFormat',function(money,length){
 								for(var i=0;i<6;i++){
 									time+=Math.floor(Math.random()*10);
 								}
-								var dingdan='0504'+a+time;  //生成流水号结束
+								var dingdan='504'+a+time;  //生成流水号结束
 								this.cgPlanId=dingdan;  //采购计划编号赋给cgPlanId
 								
 								
@@ -346,6 +353,10 @@ Vue.filter('moneyFormat',function(money,length){
 							    
 								axios.get(url).then(res=>{
 							    	if(res.data>0){
+							    		setTimeout(function() {
+											 lightyear.loading('hide');
+										     lightyear.notify('添加成功！', 'success', 1000);
+										    }, 1e3)
 							    		this.load2();
 							    	}
 							    }).catch(err=>{
@@ -364,7 +375,10 @@ Vue.filter('moneyFormat',function(money,length){
 						})
 					},
 					QueRen:function(){ //点击预览确定
-						alert('添加采购计划成功');
+						setTimeout(function() {
+							 lightyear.loading('hide');
+						     lightyear.notify('添加采购计划成功！', 'success', 1000);
+						    }, 1e3)
 						this.cpmxList="";
 						this.cgmxlist="";
 						this.remark="";

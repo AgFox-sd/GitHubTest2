@@ -9,14 +9,15 @@ import com.teams.pojo.s_pay;
 import com.teams.pojo.s_pay_details;
 import com.teams.pojo.stockjh;
 import com.teams.pojo.stockjhs;
+import com.teams.utils.Params;
 
 public interface StockDiaoduMapper {
 
 	//查询所有入库单
-	List<S_gather> selectoutStock();
+	List<S_gather> selectoutStock(Params params);
 
 	//查询所有出库单
-	List<s_pay> selectoutStock1();
+	List<s_pay> selectoutStock1(Params params);
 	
 	//查询所有入库单详情
 	List<S_gather_details> selectoutStockXq(String gather_id);
@@ -70,7 +71,7 @@ public interface StockDiaoduMapper {
 	int selectoutStockcount4();
 
 	//查询库存
-	List<s_cell> selectscell();
+	List<s_cell> selectscell(Params params);
 
 	int selectscellcount1();
 	
@@ -80,7 +81,7 @@ public interface StockDiaoduMapper {
 	
 	int selectscellcount4();
 
-	List<S_gather> selectAlloutStock();
+	List<S_gather> selectAlloutStock(Params params);
 
 	int selectAlloutStockcount1();
 
@@ -98,8 +99,9 @@ public interface StockDiaoduMapper {
 
 	int selectoutStockcount8();
 	//查询所有出库单
-	List<s_pay> selectGetCkd(String reason, String store_tag, String check_tag);
+	List<s_pay> selectGetCkd(Params params);
 
+	List<s_pay> selectGetCkds(Params params);
 	int updZb2(String paid_amount, String pay_id);
 
 	int updDiaodu2(String product_id,String paid_amount,String pay_id);
@@ -108,13 +110,15 @@ public interface StockDiaoduMapper {
 	
 	void updKc2(String paid_amount, String product_id);
 
-	int updDiaodu3(String paid_amount, String product_id,String pay_id);
+	int updDiaodu3(String paid_amount,String check_yj, String product_id,String pay_id);
 
 	int updZdiaodu3(String attemper, String pay_id);
 
-	List<s_pay> selectAllinStock();
+	List<s_pay> selectAllinStock(Params params);
 
 	void updpg(String pg_id);
 
 	void updzsd(String zsdbh);
+
+	void updshyj(String check_yj, String pay_id);
 }

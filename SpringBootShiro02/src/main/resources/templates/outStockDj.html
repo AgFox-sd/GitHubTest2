@@ -39,7 +39,7 @@
     <main class="lyear-layout-content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-lg-10" style="margin-left: -25%;margin-top: -1.5%;">
+          <div class="col-lg-10" style="margin-left: -25%;margin-top: -2%;">
             <div class="card">
               <div class="card-toolbar clearfix">
                <form class="pull-right search-bar" method="get" action="#!" role="form">
@@ -234,6 +234,8 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="js/main.min.js"></script>
+<script type="text/javascript" src="js/lightyear.js"></script>
+<script src="js/bootstrap-notify.min.js"></script>
 
 
 
@@ -362,7 +364,10 @@ Vue.filter('moneyFormat',function(money,length){
 						})
 					},
 					QueRen:function(){ //点击预览确定
-						alert('添加出库申请单成功');
+						setTimeout(function() {
+							 lightyear.loading('hide');
+						     lightyear.notify('添加出库申请单成功！', 'success', 1);
+						    }, 1e3)
 						this.cpmxList="";
 						this.scmxlist="";
 						this.remark="";

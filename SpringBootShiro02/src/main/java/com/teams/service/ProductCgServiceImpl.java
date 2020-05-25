@@ -5,10 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.teams.mapper.ProductCgMapper;
 import com.teams.pojo.D_file;
 import com.teams.pojo.cgPlan;
 import com.teams.pojo.cgPlanXq;
+import com.teams.utils.Params;
 
 @Service
 public class ProductCgServiceImpl implements ProductCgService{
@@ -61,9 +64,10 @@ public class ProductCgServiceImpl implements ProductCgService{
 
 	//查询所有等待审核的采购计划单
 	@Override
-	public List<cgPlan> selectCgddsh(String check_tag) {
+	public PageInfo<cgPlan> selectCgddsh(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.selectCgddsh(check_tag);
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectCgddsh(params));
 	}
 
 	//查询所有等待审核的采购计划单总数
@@ -82,9 +86,10 @@ public class ProductCgServiceImpl implements ProductCgService{
 
 	//查询所有的采购计划单
 	@Override
-	public List<cgPlan> selectGetCg() {
+	public PageInfo<cgPlan> selectGetCg(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.selectGetCg();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectGetCg(params));
 	}
 
 	//查询所有等待审核的采购计划单总数

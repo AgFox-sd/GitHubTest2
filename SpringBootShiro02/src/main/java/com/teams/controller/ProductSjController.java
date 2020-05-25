@@ -3,8 +3,6 @@ package com.teams.controller;
 import java.util.List;
 import java.util.ArrayList;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.teams.service.ProductSjService;
+import com.teams.utils.Params;
 import com.github.pagehelper.PageInfo;
 import com.teams.pojo.D_file;
 import com.teams.pojo.D_module;
@@ -30,8 +29,8 @@ public class ProductSjController {
 	//查询审核通过的产品信息
 	@RequestMapping("/selectAllProduct")
 	@ResponseBody
-	public List<D_file> selectProduct() {
-			List<D_file> list=service.selectProduct("审核通过");
+	public PageInfo<D_file> selectProduct(@RequestBody Params params) {
+		   PageInfo<D_file> list=service.selectProduct(params);
 			return list;
 	}
 	
@@ -59,8 +58,9 @@ public class ProductSjController {
 	//产品档案等待审核查询
 	@RequestMapping("/cpdash")
 	@ResponseBody   
-	public List<D_file > selectcpdash(@RequestParam("check_tag") String check_tag){
-		return service.selectcpdash(check_tag);
+	public PageInfo<D_file > selectcpdash(@RequestBody Params params){
+		PageInfo<D_file > pageInfo = service.selectcpdash(params);
+		return pageInfo;
 	}
 	
 	//查询等待复核总数
@@ -102,9 +102,9 @@ public class ProductSjController {
 	//产品物料设计单查询
 	@RequestMapping("/wusjsh")
 	@ResponseBody    
-	public List<D_module> selectwusjsh(@RequestParam("check_tag") String check_tag){
+	public PageInfo<D_module> selectwusjsh(@RequestBody Params params){
 		
-		return service.selectwusjsh(check_tag);
+		return service.selectwusjsh(params);
 	}
 	
 	//查询产品物料设计单等待审核总数
@@ -132,17 +132,15 @@ public class ProductSjController {
 	@RequestMapping("/delwlsj")
 	@ResponseBody  
 	public int delwlsj(@RequestParam("check_yj") String check_yj,@RequestParam("design_id") String design_id,@RequestParam("product_id") String product_id,@RequestParam("design_module_tag") String design_module_tag) {
-		return service.delwlsj(check_yj,product_id,design_id);
+		return service.delwlsj("审核不通过",check_yj,product_id,design_id);
 	}
 	
 	
 	//查询显示的信息为所有已通过复核的产品档案
 	@RequestMapping("/selectId2")
 	@ResponseBody
-	public List<D_file> selectId2() {
-			//System.out.println("1111");
-			List<D_file> list=service.selectId2("审核通过");
-			//System.out.println(list);
+	public PageInfo<D_file> selectId2(@RequestBody Params params) {
+		    PageInfo<D_file> list=service.selectId2(params);
 			return list;
 	}
 	
@@ -164,12 +162,11 @@ public class ProductSjController {
    }
 
 
-	//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 	//查询通过审核的商品档案信息
 	@RequestMapping("/Selad")
 	@ResponseBody
-	public List<D_file> Selad() {
-		List<D_file> list=service.Selad("审核通过","未设计",1,"s");
+	public PageInfo<D_file> Selad(@RequestBody Params params) {
+		PageInfo<D_file> list=service.Selad(params);
 		return list;
 	}
 	
@@ -177,7 +174,7 @@ public class ProductSjController {
 	@RequestMapping("/Selad2")
 	@ResponseBody
 	public List<D_file> Selad2(String sjdh) {
-		List<D_file> list=service.Selad("审核通过","未设计", 2,sjdh);
+		List<D_file> list=service.Selad2("审核通过","未设计", 2,sjdh);
 		return list;
 	}
 	
@@ -186,17 +183,18 @@ public class ProductSjController {
 	@ResponseBody
     public List<D_module_details> productWlZc(@RequestParam("bh") String[] bh,@RequestParam("mc") String[] mc,@RequestParam("lx") String[] lx,@RequestParam("dc") String[] dc,@RequestParam("sl") int[] sl,@RequestParam("dw") String[] dw,@RequestParam("dj") double[] dj,@RequestParam("product_id") String product_id,@RequestParam("product_name") String product_name,@RequestParam("sjdh") String sjdh,@RequestParam("sjr") String sjr) {		
 		double zje =0;
-		if(service.selectCount(sjdh)>0) {
-			
-		}else {
-			service.productWlZc(sjdh,product_id,product_name,sjr,zje);
-		}
 		List<D_module_details> list = new ArrayList<D_module_details>();
 		for (int i = 0; i < dj.length; i++) {
 			service.wlZcMx(sjdh,bh[i],mc[i],dw[i],sl[i],dj[i],sl[i]*dj[i]);
 			D_module_details dmd = new D_module_details(bh[i],mc[i],dw[i],sl[i],dj[i],sl[i]*dj[i],lx[i],dc[i]);
 			zje +=sl[i]*dj[i];
 			list.add(dmd);
+		}
+        if(service.selectCount(sjdh)>0) {
+        	service.updatejzje(zje,sjdh);
+		}else {
+			System.out.println(zje);
+			service.productWlZc(sjdh,product_id,product_name,sjr,zje);
 		}
 		return list;
 	}
@@ -226,15 +224,15 @@ public class ProductSjController {
 	//物料查询
 	@RequestMapping("/selD_module")
 	@ResponseBody
-	public  List<D_module> selD_module() {
-		List<D_module> list=service.selD_module();
+	public  PageInfo<D_module> selD_module(@RequestBody Params params) {
+		PageInfo<D_module> list=service.selD_module(params);
 		return list;
 	}
 	
 	@RequestMapping("/selD_moduleS")
 	@ResponseBody
-	public  List<D_module> selD_moduleS() {
-		List<D_module> list=service.selD_moduleS();
+	public  PageInfo<D_module> selD_moduleS(@RequestBody Params params)  {
+		PageInfo<D_module> list=service.selD_moduleS(params);
 		return list;
 	}
 	//物料查询详情
@@ -303,7 +301,8 @@ public class ProductSjController {
       
       @RequestMapping("/delwlsjzcd")
       @ResponseBody
-      public int delwlsjzcd(String design_id,String product_id) {
+      public int delwlsjzcd(String design_id,String product_id,double subtotal) {
+    	  service.updatezje(subtotal,design_id);
     	  return service.delwlsjzcd(design_id, product_id);
       }
 }

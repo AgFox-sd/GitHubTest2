@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.teams.mapper.StockDiaoduMapper;
 import com.teams.pojo.S_gather;
 import com.teams.pojo.S_gather_details;
@@ -14,6 +16,7 @@ import com.teams.pojo.s_pay;
 import com.teams.pojo.s_pay_details;
 import com.teams.pojo.stockjh;
 import com.teams.pojo.stockjhs;
+import com.teams.utils.Params;
 
 @Service
 @Transactional
@@ -24,14 +27,16 @@ public class StockDiaoduServiceImpl implements StockDiaoduService {
 
 	//查询所有入库单
 	@Override
-	public List<S_gather> selectoutStock() {
-		return mapper.selectoutStock();
+	public PageInfo<S_gather> selectoutStock(Params params) {
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectoutStock(params));
 	}
 
 	//查询所有出库单
 	@Override
-	public List<s_pay> selectoutStock1() {
-		return mapper.selectoutStock1();
+	public PageInfo<s_pay> selectoutStock1(Params params) {
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectoutStock1(params));
 	}
 	
 	//查询所有入库单详情
@@ -102,8 +107,8 @@ public class StockDiaoduServiceImpl implements StockDiaoduService {
 	}
 
 	@Override
-	public int updDiaodu3(String paid_amount, String product_id,String pay_id) {
-		return mapper.updDiaodu3(paid_amount, product_id, pay_id);
+	public int updDiaodu3(String paid_amount,String check_yj, String product_id,String pay_id) {
+		return mapper.updDiaodu3(paid_amount, check_yj,product_id, pay_id);
 	}
 
 	@Override
@@ -197,8 +202,9 @@ public class StockDiaoduServiceImpl implements StockDiaoduService {
 	}
 	//查询库存
 	@Override
-	public List<s_cell> selectscell() {
-		return mapper.selectscell();
+	public PageInfo<s_cell> selectscell(Params params) {
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectscell(params));
 	}
 
 	@Override
@@ -222,8 +228,9 @@ public class StockDiaoduServiceImpl implements StockDiaoduService {
 	}
 
 	@Override
-	public List<S_gather> selectAlloutStock() {
-		return mapper.selectAlloutStock();
+	public PageInfo<s_pay> selectAlloutStock(Params params) {
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectAlloutStock(params));
 	}
 
 	@Override
@@ -247,13 +254,20 @@ public class StockDiaoduServiceImpl implements StockDiaoduService {
 	}
 	//查询所有出库单
 	@Override
-	public List<s_pay> selectGetCkd(String reason, String store_tag, String check_tag) {
-		return mapper.selectGetCkd(reason, store_tag, check_tag);
+	public PageInfo<s_pay> selectGetCkd(Params params) {
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectGetCkd(params));
 	}
 
 	@Override
-	public List<s_pay> selectAllinStock() {
-		return mapper.selectAllinStock();
+	public PageInfo<s_pay> selectGetCkds(Params params) {
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectGetCkds(params));
+	}
+	@Override
+	public PageInfo<s_pay> selectAllinStock(Params params) {
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectAllinStock(params));
 	}
 
 	@Override
@@ -264,6 +278,11 @@ public class StockDiaoduServiceImpl implements StockDiaoduService {
 	@Override
 	public void updzsd(String zsdbh) {
 		mapper.updzsd(zsdbh);
+	}
+
+	@Override
+	public void updshyj(String check_yj, String pay_id) {
+		mapper.updshyj(check_yj, pay_id);
 	}
 
 }

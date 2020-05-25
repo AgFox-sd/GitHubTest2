@@ -3,6 +3,7 @@ package com.teams.service;
 import java.util.List;
 
 
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.D_file;
 import com.teams.pojo.S_gather;
 import com.teams.pojo.S_gather_details;
@@ -10,6 +11,7 @@ import com.teams.pojo.m_apply;
 import com.teams.pojo.s_pay;
 import com.teams.pojo.s_pay_details;
 import com.teams.pojo.stockjh;
+import com.teams.utils.Params;
 
 public interface LidongService {
 
@@ -30,7 +32,7 @@ public interface LidongService {
 	List<D_file> selectscmx(String apply_id);
 
 	//查询所有等待审核的生产计划
-	List<m_apply> selectShcx(String check_tag);
+	PageInfo<m_apply> selectShcx(Params params);
 
 	//查询所有等待审核的生产计划总数
 	int selectShcxsum(String check_tag);
@@ -45,7 +47,7 @@ public interface LidongService {
 	void delShjhmx(String apply_id);
 
 	//查询所有生产计划
-	List<m_apply> selectShjh();
+	PageInfo<m_apply> selectShjh(Params params);
 
 	//查询所有通过审核的产品档案信息
 	List<D_file> selectShtg(String check_tag);
@@ -79,7 +81,9 @@ public interface LidongService {
 	 */
 	
 	//查询所有入库单
-	List<S_gather> selectGetRkd(String reason, String store_tag,String check_tag);
+	PageInfo<S_gather> selectGetRkd(Params params);
+	
+	PageInfo<S_gather> selectGetRkds(Params params);
 
 	//查询入库单总数
 	int selectGetRkdsum(String check_tag, String reason, String store_tag);
@@ -97,7 +101,7 @@ public interface LidongService {
 	int selectGetRkpd(String gather_id);
 
 	//入库单复核通过   --修改入库表
-	int updGetRkdfhtg(String gather_id, String store_tag, Integer gathered_amount, String checker, String check_tag);
+	int updGetRkdfhtg(String check_yj,String gather_id, String store_tag, Integer gathered_amount, String checker, String check_tag);
 
 	//入库单复核通过   --修改安全库存配置表
 	void updGets_cell(String gather_id, Integer gathered_amount);
@@ -118,7 +122,7 @@ public interface LidongService {
 	List<s_pay_details> selectCkmx(String pay_id);
 
 	//查询所有等待审核的出库申请单  --不为生产领料的
-	List<s_pay> selectCkddsh(String check_tag, String reason);
+	PageInfo<s_pay> selectCkddsh(Params params);
 
 	//查询所有审核状态的出库申请单总数    --审核状态
 	int selectCkddshsum(String check_tag, String reason);
@@ -127,7 +131,7 @@ public interface LidongService {
 	int updCksqdsh(s_pay s);
 
 	//查询所有的出库申请单  --不为生产领料
-	List<s_pay> selectGetCksqd(String reason);
+	PageInfo<s_pay> selectGetCksqd(Params params);
 
 	//查询不在生产计划中的产品档案
 	List<D_file> selectScjhXg(String apply_id);

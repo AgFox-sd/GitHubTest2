@@ -10,6 +10,10 @@
      d_file a,feilei b,type c,pclass d where 
      a.fid=b.fid and a.tid=c.tid and a.pid = d.pid 
      and a.design_cell_tag ='未设计' and a.check_tag='审核通过'
+     <if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+	 </if>
+	order by id desc
     </select>
     
     <!-- 查询库存配置未设计的产品和物料数量 -->
@@ -21,7 +25,7 @@
     </select>
     <!-- 增加库存信息 -->
     <insert id="addkC">
-    insert into s_cell values(null,#{store_id},#{product_id},#{product_name},default,#{product_type},default,default,#{address},default,default,default,#{register},sysdate(),default,default,default);
+    insert into s_cell values(null,#{store_id},#{product_id},#{product_name},default,#{product_type},default,default,#{address},default,default,default,#{register},sysdate(),default,default,default,default,default);
     </insert>
     
     <!-- 查询库存信息 -->
@@ -47,12 +51,23 @@
     
     <!-- 查询所有未审核的库存配置信息 -->
     <select id="selectAll" resultType="s_cell">
-    select * from s_cell where check_tag=#{check_tag} or check_tag=#{check_tags}
+    select * from s_cell where check_tag='变更等待审核' or check_tag='未审核'
+    <if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+	 </if>
+	order by id desc
     </select>
     
+     <select id="selectAll1" resultType="s_cell">
+    select * from s_cell where check_tag!='变更等待审核' 
+    <if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+	 </if>
+	order by id desc
+    </select>
     <!-- 查询可变更的配置单总数-->
     <select id="selectAllKbg" resultType="int">
-    select count(1) from s_cell where check_tag=#{check_tag}
+    select count(1) from s_cell where check_tag=#{check_tag} or check_tag='未审核'
     </select>
     
     <!-- 查询所有未审核或审核通过的库存配置信息数量 -->
@@ -64,13 +79,24 @@
     <update id="updfh">
     update s_cell set min_amount =#{min_amount},
     max_amount=#{max_amount},max_capacity_amount=#{max_capacity_amount},
-    checker=#{checker},check_time=sysdate(),check_tag=#{check_tag}
+    checker=#{checker},check_time=sysdate(),check_tag=#{check_tag},check_yj=#{check_yj}
     where store_id =#{store_id}
     </update>
     
+    <update id="updfh1">
+    update s_cell set min_amount =#{min_amount},
+    max_amount=#{max_amount},max_capacity_amount=#{max_capacity_amount},
+    checker=#{checker},check_time=sysdate(),check_tag=#{check_tag},change_yj=#{change_yj}
+    where store_id =#{store_id}
+    </update>
+   
     <!-- 查询所有库存配置信息 -->
     <select id="selectSy" resultType="s_cell">
-    select * from s_cell
+    select * from s_cell where 1=1
+    <if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+	 </if>
+	 order by id desc
     </select>
     
     <select id="selectSycount1" resultType="int">

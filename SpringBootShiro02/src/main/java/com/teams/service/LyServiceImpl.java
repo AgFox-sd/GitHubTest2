@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.teams.mapper.LyMapper;
 import com.teams.pojo.M_design_procedure_details;
 import com.teams.pojo.M_djfh_xq;
@@ -13,6 +15,7 @@ import com.teams.pojo.M_nbsc;
 import com.teams.pojo.m_pg;
 import com.teams.pojo.M_sc;
 import com.teams.pojo.m_procedure_module;
+import com.teams.utils.Params;
 
 @Transactional
 @Service
@@ -22,9 +25,10 @@ public class LyServiceImpl implements LyService {
 
 	// 查询登记
 	@Override
-	public List<m_pg> scdj(String check_tag, String pg_zt) {
+	public PageInfo<m_pg> scdj(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.scdj(check_tag, pg_zt);
+		return  PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.scdj(params));
 	}
 
 	// 根据产品编号查询工序
@@ -85,9 +89,10 @@ public class LyServiceImpl implements LyService {
 	}
 
 	@Override
-	public List<m_pg> scdjwfh(String check_tag) {
+	public PageInfo<m_pg> scdjwfh(Params params)  {
 		// TODO Auto-generated method stub
-		return mapper.scdjwfh(check_tag);
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.scdjwfh(params));
 	}
 
 	@Override
@@ -165,15 +170,16 @@ public class LyServiceImpl implements LyService {
 	}
 
 	@Override
-	public void xgscct(String pg_id) {
+	public void xgscct(int sc_unit,String pg_id) {
 		// TODO Auto-generated method stub
-		mapper.xgxcct(pg_id);
+		mapper.xgxcct(sc_unit,pg_id);
 	}
 
 	@Override
-	public List<m_pg> cxpgsc() {
+	public PageInfo<m_pg> cxpgsc(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.cxpgsc();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.cxpgsc(params));
 	}
 
 	@Override
@@ -183,8 +189,8 @@ public class LyServiceImpl implements LyService {
 
 	@Override
 	public void addsg(String gather_id, String storer, String reason, int sc_unit, double d, String string,
-			String string2,String cgDiaoduId) {
-		mapper.addsg(gather_id, storer, reason, sc_unit, d, string, string2,cgDiaoduId);
+			String string2,String cgDiaoduId,String check_yj) {
+		mapper.addsg(gather_id, storer, reason, sc_unit, d, string, string2,cgDiaoduId,check_yj);
 	}
 
 	@Override

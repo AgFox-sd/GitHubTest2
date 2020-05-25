@@ -6,11 +6,12 @@ import com.teams.pojo.D_file;
 import com.teams.pojo.provider;
 import com.teams.pojo.providerSq;
 import com.teams.pojo.providerSqXq;
+import com.teams.utils.Params;
 
 public interface ProviderSqDjMapper {
 	
 	//登记
-	List<provider> selprovider();
+	List<provider> selprovider(Params params);
 
 	// 查询商品
 
@@ -33,7 +34,7 @@ public interface ProviderSqDjMapper {
 
    //审核
     //查询等待审核
-    List<providerSq> selproviderSq();
+    List<providerSq> selproviderSq(Params params);
     
   //查询详情
     List<providerSqXq> selcxxq(String providerSqId);
@@ -43,12 +44,12 @@ public interface ProviderSqDjMapper {
     
   //查询
     //登记查询所有
-    List<providerSq> seldjsy();
+    List<providerSq> seldjsy(Params params);
     List<providerSqXq> selshxq(String providerSqId);
     
   //变更
     //查寻所有未变更
-    List<providerSq> selsywbg(String change_tag);
+    List<providerSq> selsywbg(Params params);
     //查询商品
     List<D_file> selspbg(String providerSqId);
   //删除商品

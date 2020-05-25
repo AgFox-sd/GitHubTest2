@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.teams.mapper.ProviderSqDjMapper;
 import com.teams.pojo.D_file;
 import com.teams.pojo.provider;
 import com.teams.pojo.providerSq;
 import com.teams.pojo.providerSqXq;
+import com.teams.utils.Params;
 
 
 @Service
@@ -21,9 +24,10 @@ public class ProviderSqDjServiceImpl implements ProviderSqDjService{
 	ProviderSqDjMapper mapper;
 
 	@Override
-	public List<provider> selprovider() {
+	public PageInfo<provider> selprovider(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.selprovider();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selprovider(params));
 	}
 
 	@Override
@@ -64,9 +68,10 @@ public class ProviderSqDjServiceImpl implements ProviderSqDjService{
 	}
 
 	@Override
-	public List<providerSq> selproviderSq() {
+	public PageInfo<providerSq> selproviderSq(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.selproviderSq();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selproviderSq(params));
 	}
 
 	@Override
@@ -82,9 +87,10 @@ public class ProviderSqDjServiceImpl implements ProviderSqDjService{
 	}
 
 	@Override
-	public List<providerSq> seldjsy() {
+	public PageInfo<providerSq> seldjsy(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.seldjsy();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+		.doSelectPageInfo(()->mapper.seldjsy(params));
 	}
 
 	@Override
@@ -94,9 +100,10 @@ public class ProviderSqDjServiceImpl implements ProviderSqDjService{
 	}
 
 	@Override
-	public List<providerSq> selsywbg(String change_tag) {
+	public PageInfo<providerSq> selsywbg(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.selsywbg(change_tag);
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selsywbg(params));
 	}
 
 	@Override

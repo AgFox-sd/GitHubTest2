@@ -215,6 +215,8 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" src="js/main.min.js"></script>
+<script type="text/javascript" src="js/lightyear.js"></script>
+<script src="js/bootstrap-notify.min.js"></script>
 <!--  <script type="text/javascript">
 $(function(){
     $('.search-bar .dropdown-menu a').click(function() {
@@ -294,7 +296,10 @@ $(function(){
 						var param={username:this.username,password:this.password};
 						axios.post('addUser',param).then(res=>{
 							if(res.data=="成功"){
-								alert('增加成功')
+								setTimeout(function() {
+									 lightyear.loading('hide');
+								     lightyear.notify('增加成功！', 'success', 1000);
+								    }, 1e3)	
 								this.list=res.data;
 								this.username=this.password=''
 								this.AllUser();
@@ -319,9 +324,15 @@ $(function(){
 						
 						var len=$("input[type=checkbox]:checked()");
 						if(len.length<=0){
-							alert("请选择需要赋予的角色!");
+							setTimeout(function() {
+								 lightyear.loading('hide');
+							     lightyear.notify('请选择需要赋予的角色！', 'danger', 1000);
+							    }, 1e3)	
 						}else if(len.length>=2){
-							alert("一个用户只能赋予一个角色!");
+							setTimeout(function() {
+								 lightyear.loading('hide');
+							     lightyear.notify('一个用户只能赋予一个角色!', 'danger', 1000);
+							    }, 1e3)	
 						}else{
 							var role='';//角色
 							//获得选择的信息
@@ -333,7 +344,10 @@ $(function(){
 							var param={uid:this.id,rid:role};
 							axios.post('FuRoles',param).then(res=>{
 								if(res.data=="成功"){
-									alert('赋予角色成功')
+									setTimeout(function() {
+										 lightyear.loading('hide');
+									     lightyear.notify('赋予角色成功!', 'success', 1000);
+									    }, 1e3)	
 									$("#box1").toggle();
 									$("#box2").toggle();	
 									this.AllUser();
@@ -345,18 +359,19 @@ $(function(){
 						
 					},
 					SC:function(id,index){//删除
-						if(confirm('确认要删除吗?')){
 							var url='delUser?id='+id+'';
 							axios.post(url).then(res=>{
 								if(res.data=="成功"){
-									alert('删除成功')
+									setTimeout(function() {
+										 lightyear.loading('hide');
+									     lightyear.notify('删除成功!', 'success', 1000);
+									    }, 1e3)	
 									this.list.splice(index,1)
 									this.AllUser();
 								}
 							}).catch(err=>{
 								alert('请求失败')
 							})
-						}
 					
 					},
 					UPD(id){
@@ -376,9 +391,15 @@ $(function(){
 						//获取用户编号，名称，角色
 						var len=$("input[type=checkbox]:checked()");
 						if(len.length<=0){
-							alert("请选择需要赋予的角色!");
+							setTimeout(function() {
+								 lightyear.loading('hide');
+							     lightyear.notify('请选择需要赋予的角色！', 'danger', 1000);
+							    }, 1e3)	
 						}else if(len.length>=2){
-							alert("一个用户只能赋予一个角色!");
+							setTimeout(function() {
+								 lightyear.loading('hide');
+							     lightyear.notify('一个用户只能赋予一个角色!', 'danger', 1000);
+							    }, 1e3)
 						}else{
 							var role='';//角色
 							//获得选择的信息
@@ -389,7 +410,10 @@ $(function(){
 							//发送请求修改用户
 							axios.get('updateUser?uid='+this.updUsers.id+'&username='+this.updUsers.username+'&rid='+role+'').then(res=>{
 								if(res.data=="成功"){
-									alert('修改成功')
+									setTimeout(function() {
+										 lightyear.loading('hide');
+									     lightyear.notify('修改成功！', 'success', 1000);
+									    }, 1e3)
 									$("#box1").toggle();
 									$("#box3").toggle();
 									this.AllUser();

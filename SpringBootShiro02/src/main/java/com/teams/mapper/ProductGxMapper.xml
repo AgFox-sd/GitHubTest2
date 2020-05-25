@@ -6,16 +6,20 @@
   <mapper namespace="com.teams.mapper.ProductGxMapper">
   <!-- 产品档案查询 -->
    <select id="selecIds" resultType="D_file">
-select a.*,b.fname,c.tname,d.pname from d_file a,feilei b,type c,pclass d where a.fid=b.fid and a.tid=c.tid and a.pid=d.pid and a.delete_tag='未删除' and a.check_tag='审核通过' and c.tid=1 and a.design_procedure_tag='未设计'
-	</select>
+   select a.*,b.fname,c.tname,d.pname from d_file a,feilei b,type c,pclass d where a.fid=b.fid and a.tid=c.tid and a.pid=d.pid and a.delete_tag='未删除' and a.check_tag='审核通过' and c.tid=1 and a.design_procedure_tag='未设计'
+    <if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+    </if>
+    order by id desc
+    </select>
 	<!-- 工序步骤查询 -->
 	<select id="selectbz" resultType="M_gonxu">
-	select *from M_gonxu
+	select *from M_gonxu where id not in(select procedure_id from m_design_procedure_details where parent_id=#{parent_id})
 	</select>
 	<!-- 增加产品工序 -->
 	<insert id="addgx">
 INSERT INTO m_design_procedure VALUES(NULL,#{design_id},1,#{product_id},#{product_name},DEFAULT,#{cost_price_sum},DEFAULT,#{designer},#{register},NOW(),DEFAULT,DEFAULT,DEFAULT,'等待审核',
-DEFAULT,DEFAULT,'未变更','未设计','未设计')
+DEFAULT,DEFAULT,'未变更','未设计','未设计',default,default,default)
 	</insert>
 	<!-- 增加产品工序明细 -->
 	<insert id="addgxmx">
@@ -23,7 +27,10 @@ INSERT INTO m_design_procedure_details VALUES(NULL,#{parent_id},#{procedure_id},
 	</insert>
 	<!-- 查询产品工序表中等待审核的 -->
 	<select id="selectcpgx" resultType="M_design_procedure">
-	select * from m_design_procedure where check_tag=#{check_tag} or check_tag='变更等待审核'
+	select * from m_design_procedure where (check_tag='等待审核' or check_tag='变更等待审核')
+	<if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+    </if>
 	</select>
 	<!-- 修改d_file表中的工序步骤 -->
 	<update id="updsj">
@@ -32,17 +39,17 @@ INSERT INTO m_design_procedure_details VALUES(NULL,#{parent_id},#{procedure_id},
 	</update>
 	<!-- 查询所有 -->
 	<select id="selectcpmxb" resultType="M_design_procedure_details">
-	SELECT s.id ,s.parent_id ,s.labour_hour_amount,s.amount_unit,s.cost_price,s.subtotal,u.name as'name'
+	SELECT s.id ,s.procedure_id,s.parent_id ,s.labour_hour_amount,s.amount_unit,s.cost_price,s.subtotal,u.name as'name'
  FROM  m_design_procedure_details s left JOIN m_gonxu u  ON s.procedure_id=u.id WHERE s.parent_id=#{parent_id} 
 	</select>
 	<!-- 审核通过修改 -->
 	<update id="updsjd">
-	update M_design_procedure set check_tag =#{check_tag},checker=#{checker},check_time=sysdate()
+	update M_design_procedure set check_tag =#{check_tag},checker=#{checker},check_time=sysdate(),check_yj='通过'
             where design_id =#{design_id}
 	</update>
 	<!-- 审核不通过删除工序表 -->
 	<update id="delgxsj">
-	update M_design_procedure set check_tag='审核不通过' where design_id =#{design_id}
+	update M_design_procedure set check_yj=#{check_yj},check_tag='审核不通过'  where design_id =#{design_id}
 	</update>
 	<!-- 审核不通过删除工序明细表 -->
 	<delete id="delgxsjs">
@@ -55,18 +62,41 @@ INSERT INTO m_design_procedure_details VALUES(NULL,#{parent_id},#{procedure_id},
 	</update>
 	 <!-- 查询产品工序表中审核通过的 -->
 	 <select id="selectcpgxs" resultType="M_design_procedure">
-	 	select *from m_design_procedure 
+	 	select *from m_design_procedure where 1=1
+	 	<if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+        </if>
+    order by id desc
 	 </select>
 
 	 <select id="selectcpgxss" resultType="M_design_procedure">
 	 	select *from m_design_procedure  where check_tag!='变更等待审核'
+	    <if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+        </if>
 	 </select>	 
 	 <!-- 工序变更 -->
 	 <update id="updbg">
-	 UPDATE m_design_procedure SET cost_price_sum=#{cost_price_sum},check_tag='变更等待审核',change_time=NOW(),change_tag='已变更' WHERE design_id=#{design_id}
+	 UPDATE m_design_procedure SET check_tag='变更等待审核',change_time=NOW(),change_tag='已变更',change_yj=#{change_yj}  WHERE design_id=#{design_id}
 	 </update>
 	 <!-- 工序明细变更 -->
 	 <delete id="delgxbg">
 DELETE from m_design_procedure_details WHERE parent_id=#{parent_id}
 	 </delete>
+	 
+	 <delete id="delgxsjd">
+	 delete from m_design_procedure_details where  procedure_id=#{id} and parent_id=#{parent_id}
+	 </delete>
+	 
+	 <update id="updgxsjd">
+	 update m_design_procedure  set cost_price_sum=cost_price_sum-#{xj} where design_id=#{parent_id}
+	 </update>
+	 
+	 <select id="selectcount" resultType="int">
+	 select count(1) from m_design_procedure where design_id=#{sjdh}
+	 </select>
+	 
+	 <update id="updzje">
+	 update m_design_procedure set cost_price_sum=cost_price_sum+#{zje} where design_id=#{sjdh}
+	 </update>
   </mapper>

@@ -1,21 +1,21 @@
 package com.teams.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.D_file;
-import com.teams.pojo.D_gonxus;
 import com.teams.pojo.provider;
 import com.teams.pojo.providerSq;
 import com.teams.pojo.providerSqXq;
-import com.teams.service.LyService;
 import com.teams.service.ProviderSqDjService;
+import com.teams.utils.Params;
 
 @Controller
 public class ProviderSqDj {
@@ -24,8 +24,8 @@ public class ProviderSqDj {
 
 	@RequestMapping("/seltg")
 	@ResponseBody
-	public List<provider> selprovider() {
-		List<provider> list = service.selprovider();
+	public PageInfo<provider> selprovider(@RequestBody Params params) {
+		PageInfo<provider> list = service.selprovider(params);
 		return list;
 	}
 
@@ -77,8 +77,8 @@ public class ProviderSqDj {
 	// 查询等待审核
 	@RequestMapping("/selddsh")
 	@ResponseBody
-	public List<providerSq> selproviderSq() {
-		List<providerSq> list = service.selproviderSq();
+	public PageInfo<providerSq> selproviderSq(@RequestBody Params params) {
+		PageInfo<providerSq> list = service.selproviderSq(params);
 		return list;
 	}
 
@@ -102,8 +102,8 @@ public class ProviderSqDj {
 	// 查询登记所有
 	@RequestMapping("/seldjsy")
 	@ResponseBody
-	public List<providerSq> seldjsy() {
-		List<providerSq> row = service.seldjsy();
+	public PageInfo<providerSq> seldjsy(@RequestBody Params params) {
+		PageInfo<providerSq> row = service.seldjsy(params);
 		return row;
 	}
 
@@ -118,8 +118,8 @@ public class ProviderSqDj {
 	// 查询所有未变更
 	@RequestMapping("/selsywbg")
 	@ResponseBody
-	public List<providerSq> selsywbg() {
-		List<providerSq> row = service.selsywbg("未变更");
+	public PageInfo<providerSq> selsywbg(@RequestBody Params params) {
+		PageInfo<providerSq> row = service.selsywbg(params);
 		return row;
 	}
 

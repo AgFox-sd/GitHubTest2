@@ -6,6 +6,10 @@
   <!-- 查询需要推荐供应商的物料信息 -->
   <select id="selectrec" resultType="D_file">
 SELECT a.*,b.tname,c.fname,d.pname from d_file a,type b,feilei c,pclass d WHERE a.tid=b.tid AND a.product_id NOT in (select product_id from recommend WHERE recommend_tag='已推荐') AND a.tid=2 AND a.fid=c.fid AND a.pid =d.pid
+  <if test="keyWord!=null and keyWord!=''">
+		 	and (product_id like concat('%',#{keyWord},'%') or product_name like concat('%',#{keyWord},'%') ) 
+	    </if>
+	   order by id desc
   </select>
   
   <!-- 查询所有供应商 -->
@@ -15,7 +19,7 @@ SELECT a.*,b.tname,c.fname,d.pname from d_file a,type b,feilei c,pclass d WHERE 
   
   <!-- 增加产品供应商推荐管理表 -->
   <insert id="addgys">
-  INSERT INTO recommend VALUES(NULL,#{recommendId},#{product_id},#{product_name},#{recommender},SYSDATE(),DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT);
+  INSERT INTO recommend VALUES(NULL,#{recommendId},#{product_id},#{product_name},#{recommender},SYSDATE(),DEFAULT,'',DEFAULT,DEFAULT,'',DEFAULT,DEFAULT,DEFAULT,DEFAULT);
   </insert>
   <!-- 增加产品供应商推荐管理明细表 -->
   <insert id="addgysmx">
@@ -28,7 +32,11 @@ SELECT a.*,b.tname,c.fname,d.pname from d_file a,type b,feilei c,pclass d WHERE 
   
   <!-- 查询需要审核的数据 -->
   <select id="selectfname" resultType="recommend">
-  SELECT a.* ,b.fname from recommend a,feilei b where b.fid in (select fid from d_file where product_id = a.product_id) and a.check_tag='等待审核'
+  SELECT a.*,b.fname from recommend a,feilei b where b.fid in (select fid from d_file where product_id = a.product_id) and a.check_tag='等待审核'
+    <if test="keyWord!=null and keyWord!=''">
+		 	and (product_id like concat('%',#{keyWord},'%') or product_name like concat('%',#{keyWord},'%') ) 
+	    </if>
+	   order by id desc
   </select>
   <!-- 查询明细表 -->
   <select id="selectmxb" resultType="recommendXq">
@@ -37,17 +45,21 @@ SELECT a.*,b.tname,c.fname,d.pname from d_file a,type b,feilei c,pclass d WHERE 
   
   <!-- 审核通过修改字段 -->
   <update id="updsh">
- UPDATE recommend SET check_tag="审核通过",change_tag='未变更',recommend_tag='已推荐' WHERE recommendId=#{recommendId}
+ UPDATE recommend SET check_tag="审核通过",check_time=sysdate(),change_tag='未变更',checker_yj=#{check_yj},recommend_tag='已推荐' WHERE recommendId=#{recommendId}
   </update>
   
   <!-- 审核未通过修改字段 -->
   <update id="updshs"> 
-  UPDATE recommend SET check_tag="审核未通过",change_tag="未变更" WHERE recommendId=#{recommendId}
+  UPDATE recommend SET check_tag="审核未通过",check_time=sysdate(),change_tag="未变更",checker_yj=#{check_yj}  WHERE recommendId=#{recommendId}
   </update>
   
   <!-- 查询产品供应商推荐管理 -->
   <select id="selectreco" resultType="recommend">
-  select *from recommend
+  select *from recommend where 1=1
+   <if test="keyWord!=null and keyWord!=''">
+		 	and (product_id like concat('%',#{keyWord},'%') or product_name like concat('%',#{keyWord},'%') ) 
+	    </if>
+	   order by id desc
   </select>
   
   <!-- 查询明细 -->
@@ -56,13 +68,17 @@ SELECT a.*,b.tname,c.fname,d.pname from d_file a,type b,feilei c,pclass d WHERE 
   </select>
   
   <select id="selectwbg" resultType="recommend">
-    SELECT a.* ,b.fname from recommend a,feilei b where b.fid in (select fid from d_file where product_id = a.product_id) and a.change_tag='未变更'
+    SELECT a.*,b.fname from recommend a,feilei b where b.fid in (select fid from d_file where product_id = a.product_id) and a.change_tag='未变更'
+    <if test="keyWord!=null and keyWord!=''">
+		 	and (product_id like concat('%',#{keyWord},'%') or product_name like concat('%',#{keyWord},'%') ) 
+	    </if>
+	   order by id desc
   </select>
   
   
    <!-- 变更数据 -->
   <update id="updbgs">
-  UPDATE recommend SET change_tag='已变更',check_tag='等待审核',recommend_tag='未推荐' WHERE recommendId=#{recommendId}
+  UPDATE recommend SET change_tag='已变更',check_tag='等待审核',recommend_tag='未推荐',change_yj=#{change_yj}  WHERE recommendId=#{recommendId}
   </update>
   
   <!-- 删除需要变更的供应商 -->

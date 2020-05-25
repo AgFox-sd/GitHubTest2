@@ -2,271 +2,413 @@
 <html lang="zh">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>生产管理 -工序物料设计- 工序物料设计单变更</title>
 <link rel="icon" href="favicon.ico" type="image/ico">
 <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
-<meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="description"
+	content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
 <meta name="author" content="yinqi">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/materialdesignicons.min.css" rel="stylesheet">
 <link href="css/style.min.css" rel="stylesheet">
 <script type="text/javascript" src="js/axios.min.js"></script>
-<script type="text/javascript"   src="js/vue-2.4.0.js"></script>
+<script type="text/javascript" src="js/vue-2.4.0.js"></script>
 </head>
-  
+
 <body>
-<div id="app">
-<div class="lyear-layout-web">
-  <div class="lyear-layout-container">
-   
-    <header class="lyear-layout-header" style="margin-left: -18%;">
-      
-      <nav class="navbar navbar-default">
-        <div class="topbar">
-          
-          <div class="topbar-left">
-            <div class="lyear-aside-toggler">
-              <span class="lyear-toggler-bar"></span>
-              <span class="lyear-toggler-bar"></span>
-              <span class="lyear-toggler-bar"></span>
-            </div>
-            <span class="navbar-page-title"> 生产管理 -工序物料设计- 工序物料设计单变更</span>
-          </div>
-        </div>
-      </nav>
-      
-    </header>
-    <!--页面主要内容-->
-    <main class="lyear-layout-content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-11" style="margin-left: -25%;margin-top: -6%;">
-            <div class="card">
-              <div class="card-toolbar clearfix">
-               <form class="pull-right search-bar" method="get" action="#!" role="form">
-                  <div class="input-group">
-                    <div class="input-group-btn">
-                      <input type="hidden" name="search_field" id="search-field" value="title">
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive" id="box1">
-                <div>
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th>工序设计单编号</th>
-                        <th>产品编号</th>
-                        <th>产品名称</th>
-                        <th>设计人</th>
-                        <th>登记时间</th>
-                        <th>工时总成本</th>
-                        <th>审核状态</th>
-                        <th>变更</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="gongxu in list" >
-                        <td>{{gongxu.design_id}}</td>
-                        <td>{{gongxu.product_id}}</td>
-                       	<td>{{gongxu.product_name}}</td>
-                        <td>{{gongxu.designer}}</td>
-                        <td>{{gongxu.register_time}}</td>
-                        <td>{{gongxu.cost_price_sum}}</td>
-                        <td>
-                        <span v-if="gongxu.design_module_tag=='已审核'">通过</span>
-                        <span v-if="gongxu.design_module_tag=='已设计'">等待审核</span>
-                        <span v-if="gongxu.design_module_tag=='审核不通过'">不通过</span>
-                        </td>
-                        <td>
-                          <div class="btn-group">
-                            <button type="button"  id="sjbutton" class="btn btn-primary  btn-xs"  data-target=".bs-example-modal-lg" @click="Selidxx(gongxu.design_id,gongxu.product_id,gongxu.product_name,gongxu.designer,gongxu.cost_price_sum,gongxu.module_cost_price_sum,gongxu.checker,gongxu.check_time)">变更</button>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-              </div>
+	<div id="app">
+		<div class="lyear-layout-web">
+			<div class="lyear-layout-container">
 
-        </div>
-        <div class="btn-group" id="box2" style="display:none">
-       			    <div>
-          				<h4 style="margin-left: 360px;font-size: 22px;" class="modal-title" id="myLargeModalLabel">工序物料设计单
-                        </h4>
-       				</div></br>
-          		 	<div class="form-group" style="margin-left: 200px">
-						<label for="message-text" class="control-label">工序单编号:</label>
-						<span>{{design_id}}</span>
-						<label for="message-text" class="control-label" style="margin-left: 200px">设计人:</label>
-				   		<span>{{designer}}</span>
-		          </div>
-		          <div class="form-group" style="margin-left: 200px">			          	
-						<label for="message-text" class="control-label" >产品名称:</label>
-						<span>{{product_name}}</span>
-						<label for="message-text" class="control-label" style="margin-left: 200px">产品编号:</label>
-						<span>{{product_id}}</span>		
-		          </div>
-		          <div style="margin-left: 7px">
-		           <table class="table table-hover" border="1" style="width:880px">
-                    <thead>
-                      <tr>
-                        <th class="text-center" style="width:60px">序号</th>
-                        <th class="text-center" style="width:120px">工序名称</th>
-                        <th class="text-center" style="width:120px">工序编号</th>
-                        <th class="text-center" style="width:200px">描述</th>
-                        <th class="text-center" style="width:180px">工时数（小时）</th>
-                        <th class="text-center" style="width:200px">工时成本小计（元）</th>
-                        <th class="text-center" style="width:200px">物料成本小计（元）</th>
-                        <th class="text-center" style="width:60px">变更</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="wl in wllist" class="text-center">
-                       <td>{{wl.id}}</td>
-                        <td>{{wl.name}}</td>
-                       	<td>{{wl.procedure_id}}</td>
-                        <td>{{wl.procedure_describe}}</td>
-                        <td>{{wl.labour_hour_amount}}</td>
-                        <td>{{wl.subtotal}}</td>
-                        <td>{{wl.module_subtotal}}</td>
-                        <td>
-                          <div class="btn-group">
-                             <button type="button" class="btn btn-primary  btn-xs" @click="sheji(wl.name)">
-                             <span>变更</span>
-                             </button>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  </div>
-                <!-- 模态框开始 -->
-                  <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-                  <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                        <h4 class="modal-title" id="myLargeModalLabel">添加物料</h4>
-                      </div>
-                      <div class="modal-body">
-                    	<form action="#" method="post">
-					   <div style="margin-left: 20px">
-			           
-	                  </div>  
-		        		</form>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" @click="tianjia()" data-dissmiss="modal" data-dismiss="modal">点击添加</button>
-                      </div>
-                    </div>
-                  </div>
-                </div> 
-                <!-- 模态框结束 -->
-          		 	<div class="form-group" style="margin-left: 200px">
-						<label for="message-text" class="control-label">工时总成本:</label>
-						<span>{{cost_price_sum}}</span>
-						<label for="message-text" class="control-label" style="margin-left: 200px">物料总成本:</label>
-				   		<span>{{module_cost_price_sum}}</span>
-		            </div>
-		          <div class="form-group" style="margin-left: 200px">			          	
-						<label for="message-text" class="control-label" >审核人:</label>
-						<span>{{checker}}</span>
-						<label for="message-text" class="control-label" style="margin-left: 200px">审核时间:</label>
-						<span>{{check_time}}</span>		
-		          </div>
-		        <button class="btn btn-w-xs btn-primary" style="margin-left: 700px" @click="QueRen()">确认</button>	          
-        </div>
- 
-         <div class="btn-group" id="box4" style="display:none">
-       			    <div>
-          				<p style="margin-left: 340px;font-size: 25px;">工序物料设计单</p>
-       				</div>
-          		 	<div class="form-group" style="margin-left: 200px">
-					    <label for="message-text" class="control-label">工序单编号:</label>
-					    <span>{{design_id}}</span>
-						<label for="message-text" class="control-label" style="margin-left: 100px">工序名称:</label>
-				   		<span>{{gongxu_name}}</span>
-		          </div>
-		          <div style="margin-left: 70px">
-		           <table class="table table-hover" border="1" id="tab">
-                    <thead>
-                      <tr>
-                       <th>序号</th>
-	                        <th class="text-center">物料名称</th>
-	                        <th class="text-center">物料编号</th>
-	                        <th class="text-center">描述</th>
-	                        <th class="text-center">本工序数量</th>	       
-	                        <th class="text-center">单位</th>
-	                        <th class="text-center">单价</th>
-	                        <th class="text-center">小计</th>
-	                        <th class="text-center">操作</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="wl in wlsjList" class="text-center"> 
-                       <td>{{wl.id}}</td>
-                        <td>{{wl.product_name}}</td>
-                       	<td>{{wl.product_id}}</td>
-                        <td>{{wl.product_describe}}</td>
-                        <td>
-                        <input class="sl" type="text" name="sl" :value="wl.amount" v-model="slsl">
-                        </td>
-                        <td>{{wl.amount_unit}}</td>
-                        <td>{{wl.cost_price}}</td>
-                        <td>{{wl.subtotal}}</td>
-                        <td>
-                          <div class="btn-group">
-                             <button id ="xg" type="button" class="btn btn-primary  btn-xs" @click="xiugai(wl.product_id,wl.amount,wl.cost_price,wl.subtotal)">
-                             <span>修改</span>
-                             </button>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  </div>
-                 <button class="btn btn-w-xs btn-primary" style="margin-left: 700px" @click="QueRen2()">确认</button>       
-        </div>
-                <!-- 分页开始 -->
-                
-       			<!-- 分页结束 -->
-       			    <div class="btn-group" style="display:none">
-       			    <table>
-                    <tbody>
-                      <tr v-for="wl in wl1sjList" > 
-                      <td>
-                      <input type="checkbox" value="{{wl.product_id}}"   class="xz" checked="checked">
-                      </td>
-                       <td>{{wl.amount}}</td>
-                        <td>{{wl.product_id}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-        </div>
-              </div>
-            </div>
-          </div>
-          
-        </div>
-        
-      </div>
-    </main>
-    <!--End 页面主要内容-->
-  </div>
-</div>
-</div>
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
-<script type="text/javascript" src="js/main.min.js"></script>
+				<header class="lyear-layout-header" style="margin-left: -18%;">
+
+					<nav class="navbar navbar-default">
+						<div class="topbar">
+
+							<div class="topbar-left">
+								<div class="lyear-aside-toggler">
+									<span class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span>
+								</div>
+								<span class="navbar-page-title"> 生产管理 -工序物料设计- 工序物料设计单变更</span>
+							</div>
+						</div>
+					</nav>
+
+				</header>
+				<!--页面主要内容-->
+				<main class="lyear-layout-content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-lg-11" style="margin-left: -25%; margin-top: -2%;">
+							<div class="card">
+									<div class="card-toolbar clearfix" id="ss">
+									<form class="pull-right search-bar" method="get" action="#!"
+										role="form">
+										<div class="input-group">
+											<input type="text" class="form-control"
+												placeholder="请输入名称或者编号" v-model="keywords">
+											<div class="input-group-btn">
+												<input type="hidden" name="search_field" id="search-field"
+													value="title">
+												<button type="button" class="btn btn-primary btn-ms"
+													@click="Selad()">查询</button>
+											</div>
+										</div>
+									</form>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive" id="box1">
+										<div>
+											<table class="table table-hover">
+												<thead>
+													<tr>
+														<th class="text-center">工序设计单编号</th>
+														<th class="text-center">产品编号</th>
+														<th class="text-center">产品名称</th>
+														<th class="text-center">设计人</th>
+														<th class="text-center">登记时间</th>
+														<th class="text-center">工时总成本</th>
+														<th class="text-center">审核状态</th>
+														<th class="text-center">变更</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr v-for="(gongxu,key,index) in plcassPage.list" class="text-center">
+														<td>{{gongxu.design_id}}</td>
+														<td>{{gongxu.product_id}}</td>
+														<td>{{gongxu.product_name}}</td>
+														<td>{{gongxu.designer}}</td>
+														<td>{{gongxu.register_time}}</td>
+														<td>{{gongxu.cost_price_sum}}</td>
+														<td><span v-if="gongxu.design_module_tag=='已审核'">通过</span>
+															<span v-if="gongxu.design_module_tag=='已设计'">等待审核</span>
+															<span v-if="gongxu.design_module_tag=='审核不通过'">不通过</span>
+														</td>
+														<td>
+															<div class="btn-group">
+																<button type="button" id="sjbutton"
+																	class="btn btn-primary  btn-xs"
+																	data-target=".bs-example-modal-lg"
+																	@click="Selidxx(gongxu.design_id,gongxu.product_id,gongxu.product_name,gongxu.designer,gongxu.cost_price_sum,gongxu.module_cost_price_sum,gongxu.checker,gongxu.check_time,gongxu.design_module_change_tag,gongxu.wlbg_yj)">变更</button>
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+					<center style="display: none;" id="fy">
+										<ul class="pagination pagination-lg">
+											<ul class="pagination pagination-lg">
+												<li><a @click.prevent="searchid(plcassPage.firstPage)">首页</a></li>
+												<li><a href="#"
+													@click.prevent="searchid(plcassPage.prePage)">上一页</a></li>
+												<template v-for="pageNum in plcassPage.navigatepageNums">
+												<li><a href="#" @click.prevent="searchid(pageNum)">{{pageNum}}</a></li>
+												</template>
+												<li><a href="#"
+													@click.prevent="searchid(plcassPage.nextPage)">下一页</a></li>
+												<li><a href="#"
+													@click.prevent="searchid(plcassPage.lastPage)">末页</a></li>
+												<li><a>{{plcassPage.pageNum}}/{{plcassPage.pages}}</a></li>
+												<li><a><input type="text" v-model="size"
+														style="width: 40px; height: 35px;" value="1" /></a></li>
+												<li><a href="#" @click.prevent="Selad()">go</a></li>
+												<li><select style="height: 37px;" id="page"
+													@change="Selad()">
+														<option value="4">4条/页</option>
+														<option value="5">5条/页</option>
+														<option value="6">6条/页</option>
+												</select></li>
+											</ul>
+										</ul>
+									</center>
+										</div>
+
+									</div>
+									<div class="btn-group" id="box2" style="display: none">
+										<div>
+											<h4 style="margin-left: 410px; font-size: 22px;"
+												class="modal-title" id="myLargeModalLabel">工序物料设计单</h4>
+										</div>
+										</br>
+										<div class="form-group" style="margin-left: 250px">
+											<label for="message-text" class="control-label">工序单编号:</label>
+											<span>{{design_id}}</span> <label for="message-text"
+												class="control-label" style="margin-left: 250px">设计人:</label>
+											<span>{{designer}}</span>
+										</div>
+										<div class="form-group" style="margin-left: 250px">
+											<label for="message-text" class="control-label">产品名称:</label>
+											<span>{{product_name}}</span> <label for="message-text"
+												class="control-label" style="margin-left: 250px">产品编号:</label>
+											<span>{{product_id}}</span>
+										</div>
+										<div style="margin-left: 100px">
+											<table class="table table-hover" border="1"
+												style="width: 880px">
+												<thead>
+													<tr>
+														<th class="text-center" style="width: 60px">序号</th>
+														<th class="text-center" style="width: 120px">工序名称</th>
+														<th class="text-center" style="width: 120px">工序编号</th>
+														<th class="text-center" style="width: 200px">描述</th>
+														<th class="text-center" style="width: 180px">工时数（小时）</th>
+														<th class="text-center" style="width: 200px">工时成本小计（元）</th>
+														<th class="text-center" style="width: 200px">物料成本小计（元）</th>
+														<th class="text-center" style="width: 60px">变更</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr v-for="wl in wllist" class="text-center">
+														<td>{{wl.id}}</td>
+														<td>{{wl.name}}</td>
+														<td>{{wl.procedure_id}}</td>
+														<td>医疗</td>
+														<td>{{wl.labour_hour_amount}}</td>
+														<td>{{wl.subtotal}}</td>
+														<td>{{wl.module_subtotal}}</td>
+														<td>
+															<div class="btn-group">
+																<button type="button" class="btn btn-primary  btn-xs"
+																	@click="sheji(wl.name)">
+																	<span>变更</span>
+																</button>
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<!-- 模态框开始 -->
+										<div class="modal fade bs-example-modal-lg" tabindex="-1"
+											role="dialog" aria-labelledby="myLargeModalLabel">
+											<div class="modal-dialog modal-lg" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<span aria-hidden="true">×</span>
+														</button>
+														<h4 class="modal-title" id="myLargeModalLabel">添加物料</h4>
+													</div>
+													<div class="modal-body">
+														<form action="#" method="post">
+															<div style="margin-left: 20px"></div>
+														</form>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-default"
+															data-dismiss="modal">关闭</button>
+														<button type="button" class="btn btn-primary"
+															@click="tianjia()" data-dissmiss="modal"
+															data-dismiss="modal">点击添加</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- 模态框结束 -->
+										<div class="form-group" style="margin-left: 250px">
+											<label for="message-text" class="control-label">工时总成本:</label>
+											<span>{{cost_price_sum}}</span> <label for="message-text"
+												class="control-label" style="margin-left: 250px">物料总成本:</label>
+											<span>{{module_cost_price_sum}}</span>
+										</div>
+										<div class="form-group" style="margin-left: 250px">
+											<label for="message-text" class="control-label">审核人:</label>
+											<span>{{checker}}</span> <label for="message-text"
+												class="control-label" style="margin-left: 270px">审核时间:</label>
+											<span>{{check_time}}</span>
+										</div>
+							<label for="message-text" class="control-label" style="margin-left:590px;margin-top: -8px;" id="bgyj">审核意见:</label>
+					            <span style="margin-left: 10px;color: red">{{check_yj}}</span>		            
+					          <div class="form-group" style="margin-top: -33px" id="shyj">
+					            <label for="message-text" class="control-label" style="margin-left: 250px;">变更意见:</label>
+					            <div>
+					            <textarea rows="1" cols="100" style="margin-left: 250px;margin-top: 5px;" name="change_yj" v-model="change_yj"></textarea>		            
+					            </div>
+					            </div>
+										<button class="btn btn-w-xs btn-primary"
+											style="margin-left: 700px" @click="QueRen()">确认</button>
+											<button class="btn btn-w-xs btn-pink"
+											style="margin-left: 600px; margin-top: -37px;"
+											@click="fanhui()">返回</button>
+									</div>
+
+									<div class="btn-grop" id="box3" style="display: none">
+										<div>
+											<p style="margin-left: 410px; font-size: 25px;">工序物料设计单</p>
+										</div>
+										<div>
+											<p style="margin-left: 10px; font-size: 15px;">制造{{product_name}}产品，供选择的物料清单如下：</p>
+										</div>
+										<table class="table table-bordered" border="1">
+											<thead>
+												<tr>
+													<th class="text-center">选择</th>
+													<th class="text-center">序号</th>
+													<th class="text-center">物料编号</th>
+													<th class="text-center">物料名称</th>
+													<th class="text-center">描述</th>
+													<th class="text-center">设计数量</th>
+													<th class="text-center">可用数量</th>
+													<th class="text-center">单位</th>
+													<th class="text-center">单价</th>
+													<th class="text-center">本工序数量</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr v-for="(wl,index) in wuliulist" :key="index"
+													class="text-center">
+													<td @click="xz()"><label class="lyear-checkbox checkbox-primary">
+															<input type="checkbox" value="{{wl.product_id}}"
+															class="xz"><span class="xz"></span>
+													</label></td>
+													<td>{{wl.id}}</td>
+													<td>{{wl.product_id}}</td>
+													<td>{{wl.product_name}}</td>
+													<td>医疗</td>
+													<td>{{wl.amount}}</td>
+													<td>{{wl.residual_amount}}</td>
+													<td>{{wl.amount_unit}}</td>
+													<td>{{wl.cost_price}}</td>
+													<td><input type="text" name="sl"></td>
+												</tr>
+											</tbody>
+										</table>
+										<button class="btn btn-w-xs btn-primary"
+											style="margin-left: 700px;margin-top: 15px;" @click="yulan()">预览</button>
+										<button class="btn btn-w-xs btn-pink"
+											style="margin-left: 600px; margin-top: -60px;"
+											@click="fanhui1()">返回</button>
+									</div>
+
+									<div class="btn-group" id="box4" style="display: none">
+										<div>
+											<p style="margin-left: 408px; font-size: 25px;">工序物料设计单</p>
+										</div>
+										<div class="form-group" style="margin-left: 140px">
+											<label for="message-text" class="control-label">工序单编号:</label>
+											<span>{{design_id}}</span> <label for="message-text"
+												class="control-label" style="margin-left: 500px">工序名称:</label>
+											<span>{{gongxu_name}}</span>
+										</div>
+										<div style="margin-left: 70px">
+											<table class="table table-hover" border="1">
+												<thead>
+													<tr>
+														<th class="text-center">序号</th>
+														<th class="text-center">物料名称</th>
+														<th class="text-center">物料编号</th>
+														<th class="text-center">描述</th>
+														<th class="text-center">本工序数量</th>
+														<th class="text-center">单位</th>
+														<th class="text-center">单价</th>
+														<th class="text-center">小计</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr v-for="wl in wlsjList" class="text-center">
+														<td>{{wl.id}}</td>
+														<td>{{wl.product_name}}</td>
+														<td>{{wl.product_id}}</td>
+														<td>医疗</td>
+														<td>{{wl.amount}}</td>
+														<td>{{wl.amount_unit}}</td>
+														<td>{{wl.cost_price}}</td>
+														<td>{{wl.subtotal}}</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<button class="btn btn-w-xs btn-primary"
+											style="margin-left: 900px" @click="QueRen2()">确认</button>
+											
+									</div>
+									<!-- 分页开始 -->
+									<div class="btn-group" id="box5" style="display: none">
+									   <p style="color:red; font-size: 15px;margin-left: 70px;">变更将首先清除原有工序物料的设计，您确定进行重新设计吗？</p>
+										<div>
+											<p style="margin-left: 408px; font-size: 25px;">工序物料设计单</p>
+										</div>
+										<div class="form-group" style="margin-left: 140px">
+											<label for="message-text" class="control-label">工序单编号:</label>
+											<span>{{design_id}}</span> <label for="message-text"
+												class="control-label" style="margin-left: 500px">工序名称:</label>
+											<span>{{gongxu_name}}</span>
+										</div>
+										<div style="margin-left: 70px">
+											<table class="table table-hover" border="1">
+												<thead>
+													<tr>
+														<th class="text-center">序号</th>
+														<th class="text-center">物料名称</th>
+														<th class="text-center">物料编号</th>
+														<th class="text-center">描述</th>
+														<th class="text-center">本工序数量</th>
+														<th class="text-center">单位</th>
+														<th class="text-center">单价</th>
+														<th class="text-center">小计</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr v-for="wl in wlsjList" class="text-center">
+														<td>{{wl.id}}</td>
+														<td>{{wl.product_name}}</td>
+														<td class="wl">{{wl.product_id}}</td>
+														<td>医疗</td>
+														<td>{{wl.amount}}</td>
+														<td>{{wl.amount_unit}}</td>
+														<td>{{wl.cost_price}}</td>
+														<td>{{wl.subtotal}}</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<button class="btn btn-w-xs btn-primary"
+											style="margin-left: 900px" @click="QueRen3()">确认</button>
+											<button class="btn btn-w-xs btn-pink"
+											style="margin-left: 800px; margin-top: -37px;"
+											@click="fanhui2()">返回</button>
+									</div>
+									<!-- 分页开始 -->
+
+									<!-- 分页结束 -->
+									<div class="btn-group" style="display: none">
+										<table>
+											<tbody>
+												<tr v-for="wl in wl1sjList">
+													<td><input type="checkbox" value="{{wl.product_id}}"
+														class="xz" checked="checked"></td>
+													<td>{{wl.amount}}</td>
+													<td>{{wl.product_id}}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+				</main>
+				<!--End 页面主要内容-->
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+	<script type="text/javascript" src="js/main.min.js"></script>
+    <script type="text/javascript" src="js/lightyear.js"></script>
+    <script src="js/bootstrap-notify.min.js"></script>
 
 
-
-<script>
+	<script>
 			var vm=new Vue({
 				el:'#app',
 				data:{
@@ -283,22 +425,58 @@
 					checker:'',
 					check_time:'',
 					gongxu_name:'',
-					slsl:''
+					slsl:'',
+					size:1,
+		    		keywords:'',
+					params:{
+			    			  pageNum:1,
+			    			  pageSize:4,
+			    			  keyWord:''
+			    	},
+			    	plcassPage:{
+			    			  
+			    	},
+			    	change_yj:'',
+			    	check_yj:''
 				},
 				mounted(){//初始化显示完成调用
 					this.Selad();
 				   },
 				methods:{
 					Selad(){
-						//发送异步请求，请求后端控制器，获取所有的品牌信息
-						axios.post("productGxWlSh2").then(res=>{
-							this.list=res.data;
-						}).catch(err=>{
-							console.log("请求失败");
-						})
-						
-					},Selidxx(design_id,product_id,product_name,designer,cost_price_sum,module_cost_price_sum,checker,check_time){
+					//发送异步请求，请求后端控制器，获取所有的品牌信息
+					if(this.size>this.plcassPage.pages&&this.plcassPage.pages!=0){
+						this.size = this.plcassPage.pages;
+					}
+					this.params.pageNum  = this.size;
+					this.params.pageSize = $("#page").val();
+					//发送异步请求，请求后端控制器，获取所有的品牌信息
+					this.params.keyWord=this.keywords;						
+				    axios.post('productGxWlSh2',this.params).then(res=>{
+						this.plcassPage=res.data;
+						if(res.data.list!=""){
+						    $("#fy").show();
+					  }else{
+						    $("#fy").hide();
+					  }
+				  }).catch(err=>{
+						alert('请求失败')
+				  })
+					
+				},
+				Selads(){
+					this.params.pageSize = $("#page").val();
+					//发送异步请求，请求后端控制器，获取所有的品牌信息
+					this.params.keyWord=this.keywords;						
+				  axios.post('productGxWlSh2',this.params).then(res=>{
+							this.plcassPage=res.data;
+				  }).catch(err=>{
+						alert('请求失败')
+				  })
+					
+				},Selidxx(design_id,product_id,product_name,designer,cost_price_sum,module_cost_price_sum,checker,check_time,change_yj,check_yj){
    						 $("#box1").toggle();
+   						 $("#ss").toggle();
 						 $("#box2").toggle();
 						 this.checker=checker;
 						 this.check_time=check_time
@@ -310,6 +488,7 @@
 						 this.product_id=product_id;
 						 this.Selad2();
 						 this.Selad3();
+						 this.check_yj=change_yj;
 					},
 					Selad2(){//查询物料信息
 						axios.get("productGxMx?product_id="+this.product_id+"").then(res=>{
@@ -319,40 +498,146 @@
 						})
 					},
 					Selad3(){
-						axios.post("cxsygx?design_id="+this.design_id+"").then(res=>{
-							this.wl1sjList=res.data;
-						}).catch(err=>{
-							alert('请求失败');
-						})
+						 axios.get("productGxWlSj?proudct_id="+this.product_id+"").then(res=>{
+								this.wuliulist=res.data;
+								}).catch(err=>{
+									console.log("请求失败");
+								})
 					},
 					QueRen(){	
-						$("#box1").toggle();
-						$("#box2").toggle();
-						alert('变更成功！请审核！');
-						this.Selad();
+						if(this.change_yj==""||this.change_yj==null){
+							setTimeout(function() {
+								 lightyear.loading('hide');
+							     lightyear.notify('请填写变更意见！', 'danger', 1000);
+							    }, 1e3)	
+						}else{
+							var real_cost_price = this.cost_price_sum+this.module_cost_price_sum;
+							var url = "updwlbgyj?design_id="+this.design_id+"&wlbg_yj="+this.change_yj+"&real_cost_price="+real_cost_price+""
+							axios.get(url).then(res=>{
+								setTimeout(function() {
+									 lightyear.loading('hide');
+								     lightyear.notify('变更成功！请审核！', 'success', 1000);
+								    }, 1e3)	
+								$("#box1").toggle();
+								$("#ss").toggle();
+								$("#box2").toggle();
+								this.Selad();
+						    }).catch(err=>{
+								alert('请求失败')
+							})
+						}
 					},sheji(gongxu_name){
+						$("#box5").toggle();
 						$("#box2").toggle();
-						$("#box4").toggle();
+						var url = "selectwlzcsj?gongxu_name="+gongxu_name+"&design_id="+this.design_id+""
+						axios.get(url).then(res=>{
+					    	this.wlsjList=res.data;
+					    }).catch(err=>{
+							alert('请求失败')
+						})
+					   
 						this.gongxu_name=gongxu_name;
-						axios.get("selectGxWl?design_id="+this.design_id+"&gongxu_name="+gongxu_name+"").then(res=>{
-						 this.wlsjList = res.data;
-						}).catch(err=>{
-									console.log("请求失败");
-					   })
-					},QueRen2(){
+						
+					},QueRen3(){
+						var bh=[];//编号
+						var sl=[];//本工序数量
+						var xj=[];//单价
+						//获得选择的信息
+						$(".wl").each(function(){
+							bh.push($(this).html());
+							sl.push($(this).next().next().html());
+							xj.push($(this).next().next().next().next().next().html());															
+						});
+						var url = "updsjdsl?product_id="+this.product_id+"&design_id="+this.design_id+"&gongxu_name="+this.gongxu_name+"&bh="+bh+"&sl="+sl+"&xj="+xj+""
+						axios.get(url).then(res=>{
+					    	if(res.data>0){
+					    		setTimeout(function() {
+									 lightyear.loading('hide');
+								     lightyear.notify('清除成功！请重新设计！', 'success', 1000);
+								    }, 1e3)			
+								$("#box5").toggle();
+								$("#box3").toggle();
+								this.Selad3();
+								this.Selad2();
+					    	}
+					    }).catch(err=>{
+							alert('请求失败')
+						})
+					},
+					QueRen2(){
 						$("#box2").toggle();
 						$("#box4").toggle();
 						this.Selad2();
-					},xiugai(product_id,sl,dj,xj){
-						axios.get("updgxwlbg?product_id="+product_id+"&sl="+sl+"&dj="+dj+"&xj="+xj+"&slsl="+this.slsl+"&design_id="+this.design_id+"&gongxu_name="+this.gongxu_name+"").then(res=>{
-						   if(res.data>0){
-							   alert('修改成功!');
-							   this.module_cost_price_sum = this.module_cost_price_sum+((this.slsl*dj)-xj);
-							   this.slsl='';
-						   }
-							}).catch(err=>{
-							 onsole.log("请求失败");
-						   })
+						this.wlzcb();
+					},searchid(page){						
+						if (page < 0 || page > this.plcassPage.pages){
+		                    return false;
+		                }
+						this.params.pageNum=page;
+						this.Selads();
+					},
+					wlzcb(){
+						var url = "selectwlzcb?design_id="+this.design_id+""
+						axios.get(url).then(res=>{
+					    this.module_cost_price_sum=res.data;
+					    }).catch(err=>{
+							alert('请求失败')
+						})
+					},fanhui2(){
+						$("#box2").toggle();
+						$("#box5").toggle();
+					},
+					yulan:function(){//点击添加
+						var bh=[];//编号
+						var mc=[];//名称
+						var mx=[];//描述
+						var sl=[];//本工序数量
+						var dw=[];//单位
+						var dj=[];//单价
+						var zje=0;
+						//获得选择的信息
+						$(".xz:checked").each(function(){
+							bh.push($(this).parent().parent().next().next().html());
+							mc.push($(this).parent().parent().next().next().next().html());
+							mx.push($(this).parent().parent().next().next().next().next().html());
+							dw.push($(this).parent().parent().next().next().next().next().next().next().next().html());
+							dj.push($(this).parent().parent().next().next().next().next().next().next().next().next().html());															
+							sl.push($(this).parent().parent().next().next().next().next().next().next().next().next().next().children().val());
+						    zje = zje+($(this).parent().parent().next().next().next().next().next().next().next().next().html()*$(this).parent().parent().next().next().next().next().next().next().next().next().next().children().val());
+						    $(this).parent().parent().next().next().next().next().next().next().next().next().next().children().val("");
+						    $(this).prop("checked",false);
+						});
+						this.module_cost_price_sum=this.module_cost_price_sum+zje;
+					    var url = "addGxWl?bh="+bh+"&mc="+mc+"&mx="+mx+"&sl="+sl+"&dw="+dw+"&dj="+dj+"&design_id="+this.design_id+"&gongxu_name="+this.gongxu_name+"&product_id="+this.product_id+"";	
+					    axios.get(url).then(res=>{
+					    	this.wlsjList=res.data;
+					    }).catch(err=>{
+							alert('请求失败')
+						})
+						$("#box3").toggle();
+						$("#box4").toggle();
+					},
+					xz(){
+						$(".xz:checked").each(function(){
+							var dw = $(this).parent().parent().next().next().next().next().next().next().html();
+							var sl = $(this).parent().parent().next().next().next().next().next().next().next().next().next().children().val();
+						    if(sl>dw){
+						    	setTimeout(function() {
+									 lightyear.loading('hide');
+								     lightyear.notify('本工序数量不能大于可用数量！', 'danger', 1000);
+								    }, 1e3)	
+									$(this).prop("checked",false);
+						    	$(this).parent().parent().next().next().next().next().next().next().next().next().next().children().val("")
+						    }
+						});
+					},
+					fanhui(){
+						$("#box1").toggle();
+						$("#ss").toggle();
+						$("#box2").toggle();
+					},fanhui1(){
+						$("#box2").toggle();
+						$("#box3").toggle();
 					}
 			}
 				

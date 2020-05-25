@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.teams.mapper.LidongMapper;
 import com.teams.pojo.D_file;
 import com.teams.pojo.S_gather;
@@ -15,6 +17,7 @@ import com.teams.pojo.m_apply;
 import com.teams.pojo.s_pay;
 import com.teams.pojo.s_pay_details;
 import com.teams.pojo.stockjh;
+import com.teams.utils.Params;
 
 @Service
 @Transactional
@@ -61,9 +64,10 @@ public class LidongServiceImpl implements LidongService{
 
 	//查询所有等待审核的生产计划
 	@Override
-	public List<m_apply> selectShcx(String check_tag) {
+	public PageInfo<m_apply> selectShcx(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.selectShcx(check_tag);
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectShcx(params));
 	}
 
 	//查询所有等待审核的生产计划总数
@@ -96,9 +100,10 @@ public class LidongServiceImpl implements LidongService{
 
 	//查询所有生产计划
 	@Override
-	public List<m_apply> selectShjh() {
+	public PageInfo<m_apply> selectShjh(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.selectShjh();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectShjh(params));
 	}
 
 	//查询所有通过审核的产品档案信息
@@ -160,9 +165,17 @@ public class LidongServiceImpl implements LidongService{
 
 	//查询所有入库单
 	@Override
-	public List<S_gather> selectGetRkd(String reason, String store_tag,String check_tag) {
+	public PageInfo<S_gather> selectGetRkd(Params params){
 		// TODO Auto-generated method stub
-		return mapper.selectGetRkd(reason,store_tag,check_tag);
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectGetRkd(params));
+	}
+
+	@Override
+	public PageInfo<S_gather> selectGetRkds(Params params){
+		// TODO Auto-generated method stub
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectGetRkds(params));
 	}
 
 	//查询入库单总数
@@ -202,10 +215,10 @@ public class LidongServiceImpl implements LidongService{
 
 	//入库单复核通过   --修改入库表
 	@Override
-	public int updGetRkdfhtg(String gather_id, String store_tag, Integer gathered_amount, String checker,
+	public int updGetRkdfhtg(String check_yj,String gather_id, String store_tag, Integer gathered_amount, String checker,
 			String check_tag) {
 		// TODO Auto-generated method stub
-		return mapper.updGetRkdfhtg(gather_id,store_tag,gathered_amount,checker,check_tag);
+		return mapper.updGetRkdfhtg(check_yj,gather_id,store_tag,gathered_amount,checker,check_tag);
 	}
 
 	//入库单复核通过   --修改安全库存配置表
@@ -245,9 +258,10 @@ public class LidongServiceImpl implements LidongService{
 
 	//查询所有等待审核的出库申请单  --不为生产领料的
 	@Override
-	public List<s_pay> selectCkddsh(String check_tag, String reason) {
+	public PageInfo<s_pay> selectCkddsh(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.selectCkddsh(check_tag,reason);
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectCkddsh(params));
 	}
 
 	//查询所有审核状态的出库申请单总数    --审核状态
@@ -266,9 +280,10 @@ public class LidongServiceImpl implements LidongService{
 
 	//查询所有的出库申请单  --不为生产领料
 	@Override
-	public List<s_pay> selectGetCksqd(String reason) {
+	public PageInfo<s_pay> selectGetCksqd(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.selectGetCksqd(reason);
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectGetCksqd(params));
 	}
 
 	//查询不在生产计划中的产品档案

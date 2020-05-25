@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.teams.mapper.ProductGxWlMapper;
 import com.teams.pojo.D_module_details;
 import com.teams.pojo.M_design_procedure;
 import com.teams.pojo.M_design_procedure_details;
 import com.teams.pojo.m_procedure_module;
+import com.teams.utils.Params;
 
 @Transactional
 @Service
@@ -21,8 +24,9 @@ public class ProductGxWlServiceImpl implements ProductGxWlService {
 	
 	//查询已设计完工序的产品信息
 	@Override
-	public List<M_design_procedure> productGxWl() {
-		return mapper.productGxWl();
+	public PageInfo<M_design_procedure> productGxWl(Params param) {
+		return PageHelper.startPage(param.getPageNum(),param.getPageSize())
+				.doSelectPageInfo(()->mapper.productGxWl(param));
 	}
 	
 	//查询设计完产品工序的工序信息
@@ -69,8 +73,8 @@ public class ProductGxWlServiceImpl implements ProductGxWlService {
 
 	//修改产品工序表为已设计
 	@Override
-	public int updGxWlSj(String design_id,String design_module_tag) {
-		return mapper.updGxWlSj(design_id,design_module_tag);
+	public int updGxWlSj(String check_yj,String design_id,String design_module_tag) {
+		return mapper.updGxWlSj(check_yj,design_id,design_module_tag);
 	}
 	
 	//修改产品表为已设计
@@ -80,13 +84,15 @@ public class ProductGxWlServiceImpl implements ProductGxWlService {
 	}
 
 	@Override
-	public List<M_design_procedure> productGxWlSh(String design_module_tag) {
-		return mapper.productGxWlSh(design_module_tag);
+	public PageInfo<M_design_procedure> productGxWlSh(Params params) {
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.productGxWlSh(params));
 	}
 
 	@Override
-	public List<M_design_procedure> productGxWlSh2() {
-		return mapper.productGxWlSh2();
+	public PageInfo<M_design_procedure> productGxWlSh2(Params params) {
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.productGxWlSh2(params));
 	}
 
 	//修改产品工序表为已审核
@@ -125,8 +131,9 @@ public class ProductGxWlServiceImpl implements ProductGxWlService {
 	
 	//查询已设计或已审核的产品
 	@Override
-	public List<M_design_procedure> productGxWlCx() {
-		return mapper.productGxWlCx();
+	public PageInfo<M_design_procedure> productGxWlCx(Params params) {
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.productGxWlCx(params));
 	}
 
 	@Override
@@ -147,5 +154,40 @@ public class ProductGxWlServiceImpl implements ProductGxWlService {
 	@Override
 	public int upddmd(int ky, String product_id, String design_id) {
 		return mapper.upddmd(ky, product_id, design_id);
+	}
+
+	@Override
+	public void deletewlzc(String design_id, String gongxu_name, String string) {
+		mapper.deletewlzc(design_id, gongxu_name, string);
+	}
+
+	@Override
+	public void updzbzje(double zje, String design_id) {
+		mapper.updzbzje(zje, design_id);
+	}
+
+	@Override
+	public void updatewlzc(int i, String product_id, String string) {
+		mapper.updatewlzc(i, product_id, string);
+	}
+
+	@Override
+	public int updzje(String design_id, String gongxu_name) {
+		return mapper.updzje(design_id, gongxu_name);
+	}
+
+	@Override
+	public double selectwlzcb(String design_id) {
+		return mapper.selectwlzcb(design_id);
+	}
+
+	@Override
+	public int updwlbgyj(String wlbg_yj, String design_id) {
+		return mapper.updwlbgyj(wlbg_yj, design_id);
+	}
+
+	@Override
+	public int selectcf(String design_id) {
+		return mapper.selectcf(design_id);
 	}
 }

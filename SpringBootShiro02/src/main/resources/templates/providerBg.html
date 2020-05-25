@@ -45,23 +45,26 @@
 				<div class="container-fluid">
 
 					<div class="row">
-						<div class="col-lg-12"
-							style="margin-left: -25%; margin-top:-6%;">
+						<div class="col-lg-12" style="margin-left: -25%; margin-top: -2%;">
 							<div class="card">
-								<div class="card-toolbar clearfix">
+								<div class="card-toolbar clearfix" id="ss">
 									<form class="pull-right search-bar" method="get" action="#!"
 										role="form">
 										<div class="input-group">
+											<input type="text" class="form-control"
+												placeholder="请输入供应商名称或者编号" v-model="keywords">
 											<div class="input-group-btn">
 												<input type="hidden" name="search_field" id="search-field"
 													value="title">
+												<button type="button" class="btn btn-primary btn-ms"
+													@click="AllGYS()">查询</button>
 											</div>
 										</div>
 									</form>
 								</div>
 								<div class="card-body">
 									<div class="table-responsive" id="box1">
-										<table class="table table-hover" >
+										<table class="table table-hover">
 											<thead>
 												<tr>
 													<th class="text-center">供应商编号</th>
@@ -75,8 +78,9 @@
 												</tr>
 											</thead>
 											<tbody>
-												<tr v-for="(gys,index) in list" :key="index" class="text-center">
-													<td style="color:red;"  @click="gosh(gys.providerId)">{{gys.providerId}}</td>
+												<tr v-for="(gys,key,index) in plcassPage.list"
+													class="text-center">
+													<td style="color: red;" @click="gosh(gys.providerId)">{{gys.providerId}}</td>
 													<td>{{gys.providerName}}</td>
 													<td>{{gys.providerPhone}}</td>
 													<td>{{gys.providerAddress}}</td>
@@ -85,152 +89,207 @@
 													<td>{{gys.check_reason}}</td>
 													<td>
 														<button type="button" class="btn btn-primary  btn-xs"
-															data-target=".bs-example-modal-lg" @click="updBG(gys.providerId)">档案变更</button>
+															data-target=".bs-example-modal-lg"
+															@click="updBG(gys.providerId)">档案变更</button>
 													</td>
 												</tr>
 											</tbody>
 
 										</table>
+										<center style="display: none;" id="fy">
+											<ul class="pagination pagination-lg">
+												<ul class="pagination pagination-lg">
+													<li><a @click.prevent="searchid(plcassPage.firstPage)">首页</a></li>
+													<li><a href="#"
+														@click.prevent="searchid(plcassPage.prePage)">上一页</a></li>
+													<template v-for="pageNum in plcassPage.navigatepageNums">
+													<li><a href="#" @click.prevent="searchid(pageNum)">{{pageNum}}</a></li>
+													</template>
+													<li><a href="#"
+														@click.prevent="searchid(plcassPage.nextPage)">下一页</a></li>
+													<li><a href="#"
+														@click.prevent="searchid(plcassPage.lastPage)">末页</a></li>
+													<li><a>{{plcassPage.pageNum}}/{{plcassPage.pages}}</a></li>
+													<li><a><input type="text" v-model="size"
+															style="width: 40px; height: 35px;" value="1" /></a></li>
+													<li><a href="#" @click.prevent="AllGYS()">go</a></li>
+													<li><select style="height: 37px;" id="page"
+														@change="AllGYS()">
+															<option value="4">4条/页</option>
+															<option value="5">5条/页</option>
+															<option value="6">6条/页</option>
+													</select></li>
+												</ul>
+											</ul>
+										</center>
 									</div>
 									<!-- box2开始 -->
 									<div id="box2">
 										<div style="background-color: #46B8DA">
-          									<p style="font-size: 25px;">供应商详情</p>
-       									</div>
-       									<div class="form-group" style="margin-left: 50px;margin-top: 30px">
-										  <label for="message-text" class="control-label">供应商名字:</label>
-									      <span style="margin-left: 10px;">{{lists.providerName}}</span>
-									      <label for="message-text" class="control-label" style="margin-left: 400px">供应商电话:</label>
-					      				  <span style="margin-left: 10px;">{{lists.providerPhone}}</span>
+											<p style="font-size: 25px;">供应商详情</p>
 										</div>
-										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
-										  <label for="message-text" class="control-label">供应商地址:</label>
-									      <span style="margin-left: 10px;">{{lists.providerAddress}}</span>
-									      <label for="message-text" class="control-label" style="margin-left: 380px">联系人:</label>
-					      				  <span style="margin-left: 10px;">{{lists.linkman}}</span>
+										<div class="form-group"
+											style="margin-left: 50px; margin-top: 30px">
+											<label for="message-text" class="control-label">供应商名字:</label>
+											<span style="margin-left: 10px;">{{lists.providerName}}</span>
+											<label for="message-text" class="control-label"
+												style="margin-left: 400px">供应商电话:</label> <span
+												style="margin-left: 10px;">{{lists.providerPhone}}</span>
 										</div>
-										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
-										  <label for="message-text" class="control-label">产品类型名称:</label>
-									      <span style="margin-left: 10px;">{{lists.fname}}</span>
-									      <label for="message-text" class="control-label" style="margin-left: 400px">登记人:</label>
-					      				  <span style="margin-left: 10px;">{{lists.register}}</span>
+										<div class="form-group"
+											style="margin-left: 50px; margin-top: 30px">
+											<label for="message-text" class="control-label">供应商地址:</label>
+											<span style="margin-left: 10px;">{{lists.providerAddress}}</span>
+											<label for="message-text" class="control-label"
+												style="margin-left: 380px">联系人:</label> <span
+												style="margin-left: 10px;">{{lists.linkman}}</span>
 										</div>
-										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
-										  <label for="message-text" class="control-label">登记时间:</label>
-									      <span style="margin-left: 10px;">{{lists.register_time}}</span>
-									      <label for="message-text" class="control-label" style="margin-left: 410px">审核人:</label>
-					      				  <span style="margin-left: 10px;">{{lists.checker}}</span>
+										<div class="form-group"
+											style="margin-left: 50px; margin-top: 30px">
+											<label for="message-text" class="control-label">产品类型名称:</label>
+											<span style="margin-left: 10px;">{{lists.fname}}</span> <label
+												for="message-text" class="control-label"
+												style="margin-left: 400px">登记人:</label> <span
+												style="margin-left: 10px;">{{lists.register}}</span>
 										</div>
-										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
-										  <label for="message-text" class="control-label">审核时间:</label>
-									      <span style="margin-left: 10px;">{{lists.check_time}}</span>
-									      <label for="message-text" class="control-label" style="margin-left: 340px">审核标志:</label>
-					      				  <span style="margin-left: 10px;">{{lists.check_tag}}</span>
+										<div class="form-group"
+											style="margin-left: 50px; margin-top: 30px">
+											<label for="message-text" class="control-label">登记时间:</label>
+											<span style="margin-left: 10px;">{{lists.register_time}}</span>
+											<label for="message-text" class="control-label"
+												style="margin-left: 410px">审核人:</label> <span
+												style="margin-left: 10px;">{{lists.checker}}</span>
 										</div>
-										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
-										  <label for="message-text" class="control-label">变更人:</label>
-									      <span style="margin-left: 10px;">{{lists.changer}}</span>
-									      <label for="message-text" class="control-label" style="margin-left: 510px">变更时间:</label>
-					      				  <span style="margin-left: 10px;">{{lists.change_time}}</span>
+										<div class="form-group"
+											style="margin-left: 50px; margin-top: 30px">
+											<label for="message-text" class="control-label">审核时间:</label>
+											<span style="margin-left: 10px;">{{lists.check_time}}</span>
+											<label for="message-text" class="control-label"
+												style="margin-left: 340px">审核标志:</label> <span
+												style="margin-left: 10px;">{{lists.check_tag}}</span>
 										</div>
-										<div class="form-group" style="margin-left: 50px;margin-top: 30px">
-										  <label for="message-text" class="control-label">变更标志:</label>
-									      <span style="margin-left: 10px;">{{lists.change_tag}}</span>
-									      <label for="message-text" class="control-label" style="margin-left: 450px">删除标志:</label>
-					      				  <span style="margin-left: 10px;">{{lists.delete_tag}}</span>
+										<div class="form-group"
+											style="margin-left: 50px; margin-top: 30px">
+											<label for="message-text" class="control-label">变更人:</label>
+											<span style="margin-left: 10px;">{{lists.changer}}</span> <label
+												for="message-text" class="control-label"
+												style="margin-left: 510px">变更时间:</label> <span
+												style="margin-left: 10px;">{{lists.change_time}}</span>
+										</div>
+										<div class="form-group"
+											style="margin-left: 50px; margin-top: 30px">
+											<label for="message-text" class="control-label">变更标志:</label>
+											<span style="margin-left: 10px;">{{lists.change_tag}}</span>
+											<label for="message-text" class="control-label"
+												style="margin-left: 450px">删除标志:</label> <span
+												style="margin-left: 10px;">{{lists.delete_tag}}</span>
 										</div>
 										<div style="margin-left: 700px">
-					                		 <button class="btn btn-w-xs btn-pink"  @click="Fanhui()">返回</button>
-					                    </div>
+											<button class="btn btn-w-xs btn-pink" @click="Fanhui()">返回</button>
+										</div>
 									</div>
 									<!-- box2结束 -->
 									<!-- box3开始 -->
 									<div id="box3">
 										<div style="background-color: #46B8DA">
-          									<p style="font-size: 25px;">供应商档案变更</p>
-       									</div>
-       									<div class="row" style="margin-top: 20px">
-							                  <div class="form-group col-md-1 "></div>
-							                  <div class="form-group col-md-5 ">
-								                    <label for="title"><span style="color: red">*</span>供应商编号：</label>
-								                    <input type="text" class="form-control"  v-model="listssss.providerId" disabled="disabled"/>
-								              </div>
-								              <div class="form-group col-md-1 "></div>
-							                  <div class="form-group col-md-5">
-							                    <label for="type"><span style="color: red">*</span>供应商名字：</label>
-							                    <input type="text" class="form-control" v-model="listssss.providerName"  />
-							                  </div>
-							            </div>
-							            <div class="row">
-							                  <div class="form-group col-md-1 "></div>
-							                 <div class="form-group col-md-5">
-							                    <label for="type"><span style="color: red">*</span>产品类型:</label>
-							                    <div class="form-controls">
-							                      <select name="type" class="form-control" v-model="listssss.fid">
-							                        <option value="">请选择</option>
-													<option :value="i.fid" v-for="i in listfenlei" :key="i.fid">{{i.fname}}</option>
-							                      </select>
-							                    </div>
-							                  </div>
-							                  <div class="form-group col-md-1 "></div>
-							                  <div class="form-group col-md-5 ">
-							                    <label for="title"><span style="color: red">*</span>供应商地址：</label>
-							                    <input type="text" class="form-control"  v-model="listssss.providerAddress"/>
-							                  </div>
-							                </div>
-										     <div class="row">
-								                 <div class="form-group col-md-1 "></div>
-								                 <div class="form-group col-md-5 ">
-								                    <label for="title"><span style="color: red">*</span>联系人：</label>
-								                    <input type="text" class="form-control"  v-model="listssss.linkman"/>
-								                  </div>
-								                  <div class="form-group col-md-1 "></div>
-								                   <div class="form-group col-md-5 ">
-								                    <label for="title"><span style="color: red">*</span>电话：</label>
-								                    <input type="text" class="form-control"   v-model="listssss.providerPhone" />
-							                     </div>
-								                </div>
-								                <div class="row">
-								                 <div class="form-group col-md-1 "></div>
-								                <div class="form-group col-md-5 ">
-								                    <label for="title"><span style="color: red">*</span>登记人：</label>
-								                    <input type="text" class="form-control"  v-model="listssss.register" id="djr" />
-								                </div>
-								                <div class="form-group col-md-1 "></div>
-								                 <div class="form-group col-md-5 ">
-								                    <label for="title"><span style="color: red">*</span>登记时间：</label>
-								                    <input type="text" class="form-control"  v-model="listssss.register_time"/>
-								                 </div>
-								                </div>
-								                <div class="row">
-								                 <div class="form-group col-md-1 "></div>
-								                  <div class="form-group col-md-5 ">
-								                    <label for="title"><span style="color: red">*</span>审核人：</label>
-								                    <input type="text" class="form-control"  v-model="listssss.checker"/>
-								                  </div>
-								                  <div class="form-group col-md-1 "></div>
-								                  <div class="form-group col-md-5 ">
-								                    <label for="title"><span style="color: red">*</span>变更人：</label>
-								                    <input type="text" class="form-control"  th:value="${session.username}" id="bgr" />
-								                  </div>
-								                  
-								                  
-								                </div>
-								                <div class="row">
-								                 <div class="form-group col-md-1 "></div>
-								                 <div class="form-group col-md-5 ">
-								                    <label for="title"><span style="color: red">*</span>审核时间：</label>
-								                    <input type="text" class="form-control" v-model="listssss.check_time"/>
-								                  </div>
-								                  <div class="form-group col-md-1"></div>
-								                  <div class="form-group col-md-5">
-								                  	<label for="title"><span style="color: red">*</span>变更意见：</label>
-								                    <input type="text" class="form-control" v-model="change_reason"/>
-								                  </div>
-								                 </div>
-												<div style="margin-left: 700px">
-							                		 <button class="btn btn-w-xs btn-pink"  @click="Queren()">确认变更</button>
-							                    </div>
+											<p style="font-size: 25px;">供应商档案变更</p>
+										</div>
+										<div class="row" style="margin-top: 20px">
+											<div class="form-group col-md-1 "></div>
+											<div class="form-group col-md-5 ">
+												<label for="title"><span style="color: red">*</span>供应商编号：</label>
+												<input type="text" class="form-control"
+													v-model="listssss.providerId" disabled="disabled" />
+											</div>
+											<div class="form-group col-md-1 "></div>
+											<div class="form-group col-md-5">
+												<label for="type"><span style="color: red">*</span>供应商名字：</label>
+												<input type="text" class="form-control"
+													v-model="listssss.providerName" />
+											</div>
+										</div>
+										<div class="row">
+											<div class="form-group col-md-1 "></div>
+											<div class="form-group col-md-5">
+												<label for="type"><span style="color: red">*</span>产品类型:</label>
+												<div class="form-controls">
+													<select name="type" class="form-control"
+														v-model="listssss.fid">
+														<option value="">请选择</option>
+														<option :value="i.fid" v-for="i in listfenlei"
+															:key="i.fid">{{i.fname}}</option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group col-md-1 "></div>
+											<div class="form-group col-md-5 ">
+												<label for="title"><span style="color: red">*</span>供应商地址：</label>
+												<input type="text" class="form-control"
+													v-model="listssss.providerAddress" />
+											</div>
+										</div>
+										<div class="row">
+											<div class="form-group col-md-1 "></div>
+											<div class="form-group col-md-5 ">
+												<label for="title"><span style="color: red">*</span>联系人：</label>
+												<input type="text" class="form-control"
+													v-model="listssss.linkman" />
+											</div>
+											<div class="form-group col-md-1 "></div>
+											<div class="form-group col-md-5 ">
+												<label for="title"><span style="color: red">*</span>电话：</label>
+												<input type="text" class="form-control"
+													v-model="listssss.providerPhone" />
+											</div>
+										</div>
+										<div class="row">
+											<div class="form-group col-md-1 "></div>
+											<div class="form-group col-md-5 ">
+												<label for="title"><span style="color: red">*</span>登记人：</label>
+												<input type="text" class="form-control"
+													v-model="listssss.register" id="djr" />
+											</div>
+											<div class="form-group col-md-1 "></div>
+											<div class="form-group col-md-5 ">
+												<label for="title"><span style="color: red">*</span>登记时间：</label>
+												<input type="text" class="form-control"
+													v-model="listssss.register_time" />
+											</div>
+										</div>
+										<div class="row">
+											<div class="form-group col-md-1 "></div>
+											<div class="form-group col-md-5 ">
+												<label for="title"><span style="color: red">*</span>审核人：</label>
+												<input type="text" class="form-control"
+													v-model="listssss.checker" />
+											</div>
+											<div class="form-group col-md-1 "></div>
+											<div class="form-group col-md-5 ">
+												<label for="title"><span style="color: red">*</span>变更人：</label>
+												<input type="text" class="form-control"
+													th:value="${session.username}" id="bgr" />
+											</div>
+
+
+										</div>
+										<div class="row">
+											<div class="form-group col-md-1 "></div>
+											<div class="form-group col-md-5 ">
+												<label for="title"><span style="color: red">*</span>审核时间：</label>
+												<input type="text" class="form-control"
+													v-model="listssss.check_time" />
+											</div>
+											<div class="form-group col-md-1"></div>
+											<div class="form-group col-md-5">
+												<label for="title"><span style="color: red">*</span>变更意见：</label>
+												<input type="text" class="form-control"
+													v-model="change_reason" />
+											</div>
+										</div>
+										<div style="margin-left: 700px">
+										<button class="btn btn-w-xs btn-pink" @click="Fanhui()">返回</button>
+											<button class="btn btn-w-xs btn-primary" @click="Queren()">确认变更</button>
+										</div>
 									</div>
 									<!-- box3结束 -->
 								</div>
@@ -250,7 +309,8 @@
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 	<script type="text/javascript" src="js/main.min.js"></script>
-
+    <script type="text/javascript" src="js/lightyear.js"></script>
+	<script src="js/bootstrap-notify.min.js"></script>
 	<script>
     
       var vm=new Vue({
@@ -261,7 +321,17 @@
     			lists:[],
     			listfenlei:[],
     			listssss:[],
-    			change_reason:''
+    			change_reason:'',
+    			size:1,
+	    		keywords:'',
+				params:{
+		    			  pageNum:1,
+		    			  pageSize:4,
+		    			  keyWord:''
+		    	},
+		    	plcassPage:{
+		    			  
+		    	}
     			
     	  },
     	  mounted(){//页面挂载完成调用查询全部的方法
@@ -277,23 +347,48 @@
 						console.log("请求失败")
 					})
 				},
-			  AllGYS:function(){
-				  $("#box2").toggle();
-				  $("#box3").toggle();
-				  axios.get('selWBG').then(res=>{
-							this.list=res.data;
-				  }).catch(err=>{
+				AllGYS(){
+					 $("#box2").toggle();
+					  $("#box3").toggle();
+					//发送异步请求，请求后端控制器，获取所有的品牌信息
+					if(this.size>this.plcassPage.pages&&this.plcassPage.pages!=0){
+						this.size = this.plcassPage.pages;
+					}
+					this.params.pageNum  = this.size;
+					this.params.pageSize = $("#page").val();
+					//发送异步请求，请求后端控制器，获取所有的品牌信息
+					this.params.keyWord=this.keywords;						
+				    axios.post('selWBG',this.params).then(res=>{
+						this.plcassPage=res.data;
+						if(res.data.list!=""){
+						    $("#fy").show();
+					  }else{
+						    $("#fy").hide();
+					  }
+				      }).catch(err=>{
 						alert('请求失败')
-				  })
-			  },
-			  Fanhui(){//点击返回从box2，回到box1
+				       })
+				    },AllGYSs(){
+				    	 $("#box2").toggle();
+						  $("#box3").toggle();
+						this.params.pageSize = $("#page").val();
+						//发送异步请求，请求后端控制器，获取所有的品牌信息
+						this.params.keyWord=this.keywords;						
+					    axios.post('selWBG',this.params).then(res=>{
+							this.plcassPage=res.data;
+					  }).catch(err=>{
+							alert('请求失败')
+					  })
+				    },
+				    Fanhui(){//点击返回从box2，回到box1
 					$("#box1").toggle();
-					$("#box2").toggle();
+					$("#ss").toggle();
+					$("#box3").toggle();
 			  },
 			  gosh(providerId){
 				  $("#box1").toggle();
+				  $("#ss").toggle();
 				  $("#box2").toggle();
-				  
 				  //查详情
 				  axios.post('Selxx?providerId='+providerId+'').then(res=>{
 						this.lists=res.data;
@@ -302,6 +397,7 @@
 			  },
 			  updBG(providerId){
 				  $("#box1").toggle();
+				  $("#ss").toggle();
 				  $("#box3").toggle();
 				  //查详情
 				  axios.post('Selxx?providerId='+providerId+'').then(res=>{
@@ -310,7 +406,10 @@
 			  },
 			  Queren(){
 				  if(this.change_reason==""){
-					  alert("请填写变更意见！");
+					  setTimeout(function() {
+							 lightyear.loading('hide');
+						     lightyear.notify('请填写审核意见！', 'danger', 1000);
+						    }, 1e3)	
 				  }else{
 					  var check_tag = '等待审核';
 					  var change_tag='已变更';
@@ -322,20 +421,27 @@
 							  check_tag:check_tag,changer:changer,checker:this.listssss.checker,
 							  change_tag:change_tag,change_reason:this.change_reason
 							  }
-					  
 						axios.post('updGYSBG',url).then(res=>{
 							if(res.data=="成功"){
-									alert('修改成功');
+								setTimeout(function() {
+									 lightyear.loading('hide');
+								     lightyear.notify('修改成功！', 'success', 1000);
+								    }, 1e3)	
 									 $("#box1").toggle();
+									 $("#ss").toggle();
 									 $("#box2").toggle();
 									this.AllGYS();
 							}
 							});
 					  
 				  }
-				  
-				  
-			  }
+			  },searchid(page){						
+					if (page < 0 || page > this.plcassPage.pages){
+	                    return false;
+	                }
+					this.params.pageNum=page;
+					this.AllGYSs();
+				},	
 			  
 			  }
 			  

@@ -6,7 +6,11 @@
 <mapper namespace="com.teams.mapper.LyMapper">
 	<select id="scdj" resultType="m_pg">
 		select * from m_pg where
-		check_tag=#{check_tag} and pg_zt=#{pg_zt} and scly='已领料'
+		check_tag='审核通过' and pg_zt='未生产' and scly='已领料'
+		<if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or pg_id like concat('%',#{keyWord},'%') ) 
+	 </if>
+	order by id desc
 	</select>
 	<select id="scgx" resultType="M_design_procedure_details">
 		select
@@ -59,7 +63,7 @@
 		procedure_name=#{procedure_name} and did=#{did}
 	</update>
 	<update id="xgxcct">
-		update m_pg set pg_zt='已生产' where pg_id=#{pg_id}
+		update m_pg set hgsl=#{sc_unit},pg_zt='已生产'  where pg_id=#{pg_id}
 	</update>
 	<insert id="add_xq">
 		insert into M_djfh_xq
@@ -68,7 +72,11 @@
 	</insert>
 	<select id="scdjwfh" resultType="m_pg">
 		select * from m_pg where
-		check_tag=#{check_tag}
+		check_tag='未审核'
+		<if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or pg_id like concat('%',#{keyWord},'%') ) 
+	 </if>
+	order by id desc
 	</select>
 	<select id="scgxfh" resultType="M_design_procedure_details">
 		select a.*
@@ -150,7 +158,10 @@
 		select a.*,b.sc_unit from m_pg
 		a,M_nbsc b where a.pg_id=b.pg_id and a.check_tag='审核通过' and
 		a.pg_zt='已生产'
-
+		<if test="keyWord!=null and keyWord!=''">
+		 	and (a.product_name like concat('%',#{keyWord},'%') or a.pg_id like concat('%',#{keyWord},'%') ) 
+	 </if>
+	order by id desc
 	</select>
 
 	<update id="xgzcb">
@@ -159,7 +170,7 @@
 
 	<insert id="addsg">
 		insert into s_gather
-		values(null,#{gather_id},#{storer},#{reason},DEFAULT,#{sc_unit},#{d},0,DEFAULT,#{storer},SYSDATE(),default,default,#{string},DEFAULT,DEFAULT,#{string2},#{cgDiaoduId})
+		values(null,#{gather_id},#{storer},#{reason},DEFAULT,#{sc_unit},#{d},0,DEFAULT,#{storer},SYSDATE(),default,default,#{string},DEFAULT,DEFAULT,#{string2},#{cgDiaoduId},#{check_yj})
 	</insert>
 
 	<insert id="addsgxq">
@@ -169,7 +180,7 @@
 
 	<insert id="addpay">
 		insert into s_pay
-		values(null,#{pay_id},#{storer},#{reason},DEFAULT,#{zjs},#{zcb},0,DEFAULT,#{storer},SYSDATE(),default,default,#{string},DEFAULT,DEFAULT,#{string2},#{pg_id})
+		values(null,#{pay_id},#{storer},#{reason},DEFAULT,#{zjs},#{zcb},0,DEFAULT,#{storer},SYSDATE(),default,default,#{string},DEFAULT,DEFAULT,#{string2},#{pg_id},default)
 	</insert>
 
 	<insert id="addpayxq">

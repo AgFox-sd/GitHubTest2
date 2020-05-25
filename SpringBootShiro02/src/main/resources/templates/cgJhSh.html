@@ -2,180 +2,232 @@
 <html lang="zh">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>采购计划审核</title>
 <link rel="icon" href="favicon.ico" type="image/ico">
 <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
-<meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="description"
+	content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
 <meta name="author" content="yinqi">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/materialdesignicons.min.css" rel="stylesheet">
 <link href="css/style.min.css" rel="stylesheet">
 <script type="text/javascript" src="js/axios.min.js"></script>
-<script type="text/javascript"   src="js/vue-2.4.0.js"></script>
+<script type="text/javascript" src="js/vue-2.4.0.js"></script>
 </head>
-  
-<body>
-<div id="app">
-<div class="lyear-layout-web">
-  <div class="lyear-layout-container">
-    
-    <header class="lyear-layout-header" style="margin-left: -18%;">
-      
-      <nav class="navbar navbar-default">
-        <div class="topbar">
-          
-          <div class="topbar-left">
-            <div class="lyear-aside-toggler">
-              <span class="lyear-toggler-bar"></span>
-              <span class="lyear-toggler-bar"></span>
-              <span class="lyear-toggler-bar"></span>
-            </div>
-            <span class="navbar-page-title">采购管理 -采购计划管理-采购计划审核</span>
-            <span style="margin-left: 500px;color: red">当前等待审核的采购计划总数:</span>
-            <span style="margin-left: 5px;color: red">{{ddshsum}}</span>
-          </div>
-        </div>
-      </nav>
-      
-    </header>
-    <!--页面主要内容-->
-    <main class="lyear-layout-content">
-      
-      <div class="container-fluid">
-        
-        <div class="row">
-          <div class="col-lg-12" style="margin-left: -25%;margin-top: -6%;">
-            <div class="card">
-              <div class="card-toolbar clearfix">
-                <form class="pull-right search-bar" method="get" action="#!" role="form">
-                  <div class="input-group">
-                    <div class="input-group-btn">
-                      <input type="hidden" name="search_field" id="search-field" value="title">
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div class="card-body">
-              <div class="table-responsive">
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th class="text-center">采购计划编号</th>
-					    <th class="text-center">计划制定人</th>
-						<th class="text-center">登记人</th>
-						<th class="text-center">登记时间</th>
-						<th class="text-center">备注</th>
-						<th class="text-center">审核</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-					<tr v-for="(cg,index) in cglist" :key="index" class="text-center">
-					    <td>{{cg.cgPlanId}}</td>
-					    <td>{{cg.register}}</td>
-					    <td>{{cg.register}}</td>
-						<td>{{cg.register_time}}</td>
-						<td>{{cg.remark}}</td>
-						<td>
-						 <a style="cursor: pointer;text-decoration:underline;" data-toggle="modal" data-target="#modal1" @click="gosh(cg.cgPlanId,cg.register,cg.register_time,cg.remark)">审核</a>
-						</td>
-					</tr>
-				</tbody>
-		
-                  </table>
-              </div>
-              
-              <!-- 审核模态框开始 -->
-		      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal1" :class="{'modal1':flag}">
-                  <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                        <h4 style="margin-left: 360px" class="modal-title" id="myLargeModalLabel">采购计划单
-                        <span style="margin-left: 150px">
-                           <input type="radio" checked="checked" name="hh" value="未通过">未通过
-                           <input style="margin-left: 15px" type="radio" name="hh" value="通过">通过
-                        </span>
-                        </h4>
-                      </div>
-                      <div class="modal-body">
-                    	 <form action="#" method="post">
-							  <div class="form-group">
-							    <label for="message-text" class="control-label">计划单编号:</label>
-					            <span style="margin-left: 10px;">{{cgPlanId}}</span>
-					            <input type="hidden" id="shr" th:value="${session.username}">
-					            <label for="message-text" class="control-label" style="margin-left: 200px">计划制定人:</label>
-					            <span style="margin-left: 10px;">{{register}}</span>
-					          </div>
-					          <div class="form-group">
-					   <table class="table table-bordered" >
-	                    <thead>
-	                      <tr>
-	                        <th class="text-center">序号</th>
-	                        <th class="text-center">产品编号</th>
-	                        <th class="text-center">产品名称</th>
-	                        <th class="text-center">描述</th>
-	                        <th class="text-center">数量</th>
-	                        <th class="text-center">出库单编号集合</th>
-	                      </tr>
-	                    </thead>
-	                    <tbody>
-	                      <tr v-for="(rksqmx,index) in cgsqlist" :key="index" class="text-center">
-		                        <td>{{rksqmx.id}}</td>
-                       			<td>{{rksqmx.product_id}}</td>
-                        		<td>{{rksqmx.product_name}}</td>
-                       			<td></td>
-                       			<td>{{rksqmx.amount}}</td>
-                       			<td></td>
-	                      </tr>
-	                    </tbody>
-	                  </table>
-					             
-					      </div>
-					          <div class="form-group" style="margin-top: 20px;margin-left: 3px">
-					            <label for="message-text" class="control-label" >登记人:</label>
-					            <span style="margin-left: 10px;">{{register}}</span>            
-					            <label for="message-text" class="control-label" style="margin-left: 370px">登记时间:</label>
-					            <span id="shr" style="margin-left: 10px;">{{register_time}}</span>
-					          </div>
-					          <div class="form-group" style="margin-top: 10px">
-					            <label for="message-text" class="control-label" style="margin-left: 5px;">审核意见:</label>
-					            <div>
-					            <textarea rows="3" cols="100" style="margin-left: 18px" v-model="check_suggestion"></textarea>		            
-					            </div>
-					          </div>
-		                </form>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
-                        <button type="button" class="btn btn-primary" @click="sh()">确定</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-		      <!-- 审核模态框结束 -->
-              
-              
-                
-              </div>
-            </div>
-          </div>
-          
-        </div>
-        
-      </div>
-      
-    </main>
-    <!--End 页面主要内容-->
-  </div>
-</div>
-</div>
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
-<script type="text/javascript" src="js/main.min.js"></script>
 
-<script>
+<body>
+	<div id="app">
+		<div class="lyear-layout-web">
+			<div class="lyear-layout-container">
+
+				<header class="lyear-layout-header" style="margin-left: -18%;">
+
+					<nav class="navbar navbar-default">
+						<div class="topbar">
+
+							<div class="topbar-left">
+								<div class="lyear-aside-toggler">
+									<span class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span>
+								</div>
+								<span class="navbar-page-title">采购管理 -采购计划管理-采购计划审核</span> <span
+									style="margin-left: 500px; color: red">当前等待审核的采购计划总数:</span> <span
+									style="margin-left: 5px; color: red">{{ddshsum}}</span>
+							</div>
+						</div>
+					</nav>
+
+				</header>
+				<!--页面主要内容-->
+				<main class="lyear-layout-content">
+
+				<div class="container-fluid">
+
+					<div class="row">
+						<div class="col-lg-12" style="margin-left: -25%; margin-top: -2%;">
+							<div class="card">
+								<div class="card-toolbar clearfix" id="ss">
+									<form class="pull-right search-bar" method="get" action="#!"
+										role="form">
+										<div class="input-group">
+											<input type="text" class="form-control"
+												placeholder="请输入登记人或者编号" v-model="keywords">
+											<div class="input-group-btn">
+												<input type="hidden" name="search_field" id="search-field"
+													value="title">
+												<button type="button" class="btn btn-primary btn-ms"
+													@click="load()">查询</button>
+											</div>
+										</div>
+									</form>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="table table-hover">
+											<thead>
+												<tr>
+													<th class="text-center">采购计划编号</th>
+													<th class="text-center">计划制定人</th>
+													<th class="text-center">登记人</th>
+													<th class="text-center">登记时间</th>
+													<th class="text-center">备注</th>
+													<th class="text-center">审核</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr v-for="(cg,key,index) in plcassPage.list"
+													class="text-center">
+													<td>{{cg.cgPlanId}}</td>
+													<td>{{cg.register}}</td>
+													<td>{{cg.register}}</td>
+													<td>{{cg.register_time}}</td>
+													<td>{{cg.remark}}</td>
+													<td><a
+														style="cursor: pointer; text-decoration: underline;"
+														data-toggle="modal" data-target="#modal1"
+														@click="gosh(cg.cgPlanId,cg.register,cg.register_time,cg.remark)">审核</a>
+													</td>
+												</tr>
+											</tbody>
+
+										</table>
+										<center style="display: none;" id="fy">
+											<ul class="pagination pagination-lg">
+												<ul class="pagination pagination-lg">
+													<li><a @click.prevent="searchid(plcassPage.firstPage)">首页</a></li>
+													<li><a href="#"
+														@click.prevent="searchid(plcassPage.prePage)">上一页</a></li>
+													<template v-for="pageNum in plcassPage.navigatepageNums">
+													<li><a href="#" @click.prevent="searchid(pageNum)">{{pageNum}}</a></li>
+													</template>
+													<li><a href="#"
+														@click.prevent="searchid(plcassPage.nextPage)">下一页</a></li>
+													<li><a href="#"
+														@click.prevent="searchid(plcassPage.lastPage)">末页</a></li>
+													<li><a>{{plcassPage.pageNum}}/{{plcassPage.pages}}</a></li>
+													<li><a><input type="text" v-model="size"
+															style="width: 40px; height: 35px;" value="1" /></a></li>
+													<li><a href="#" @click.prevent="load()">go</a></li>
+													<li><select style="height: 37px;" id="page"
+														@change="load()">
+															<option value="4">4条/页</option>
+															<option value="5">5条/页</option>
+															<option value="6">6条/页</option>
+													</select></li>
+												</ul>
+											</ul>
+										</center>
+									</div>
+
+									<!-- 审核模态框开始 -->
+									<div class="modal fade bs-example-modal-lg" tabindex="-1"
+										role="dialog" aria-labelledby="myLargeModalLabel" id="modal1"
+										:class="{'modal1':flag}">
+										<div class="modal-dialog modal-lg" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal"
+														aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button>
+													<h4 style="margin-left: 360px" class="modal-title"
+														id="myLargeModalLabel">
+														采购计划单 <span style="margin-left: 150px"> <input
+															type="radio" checked="checked" name="hh" value="未通过">未通过
+															<input style="margin-left: 15px" type="radio" name="hh"
+															value="通过">通过
+														</span>
+													</h4>
+												</div>
+												<div class="modal-body">
+													<form action="#" method="post">
+														<div class="form-group">
+															<label for="message-text" class="control-label">计划单编号:</label>
+															<span style="margin-left: 10px;">{{cgPlanId}}</span> <input
+																type="hidden" id="shr" th:value="${session.username}">
+															<label for="message-text" class="control-label"
+																style="margin-left: 200px">计划制定人:</label> <span
+																style="margin-left: 10px;">{{register}}</span>
+														</div>
+														<div class="form-group">
+															<table class="table table-bordered">
+																<thead>
+																	<tr>
+																		<th class="text-center">序号</th>
+																		<th class="text-center">产品编号</th>
+																		<th class="text-center">产品名称</th>
+																		<th class="text-center">描述</th>
+																		<th class="text-center">数量</th>
+																		<th class="text-center">出库单编号集合</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr v-for="(rksqmx,index) in cgsqlist" :key="index"
+																		class="text-center">
+																		<td>{{rksqmx.id}}</td>
+																		<td>{{rksqmx.product_id}}</td>
+																		<td>{{rksqmx.product_name}}</td>
+																		<td>医疗</td>
+																		<td>{{rksqmx.amount}}</td>
+																		<td></td>
+																	</tr>
+																</tbody>
+															</table>
+
+														</div>
+														<div class="form-group"
+															style="margin-top: 20px; margin-left: 3px">
+															<label for="message-text" class="control-label">登记人:</label>
+															<span style="margin-left: 10px;">{{register}}</span> <label
+																for="message-text" class="control-label"
+																style="margin-left: 370px">登记时间:</label> <span id="shr"
+																style="margin-left: 10px;">{{register_time}}</span>
+														</div>
+														<div class="form-group" style="margin-top: 10px">
+															<label for="message-text" class="control-label"
+																style="margin-left: 5px;">审核意见:</label>
+															<div>
+																<textarea rows="3" cols="100" style="margin-left: 18px"
+																	v-model="check_suggestion"></textarea>
+															</div>
+														</div>
+													</form>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-default"
+														data-dismiss="modal">返回</button>
+													<button type="button" class="btn btn-primary" @click="sh()">确定</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 审核模态框结束 -->
+
+
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+				</main>
+				<!--End 页面主要内容-->
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+	<script type="text/javascript" src="js/main.min.js"></script>
+	<script type="text/javascript" src="js/lightyear.js"></script>
+	<script src="js/bootstrap-notify.min.js"></script>
+	<script>
       Vue.filter('moneyFormat',function(money,length){
 	    return money.toFixed(length)
       })
@@ -190,7 +242,17 @@
     		  register_time:'',//登记时间
     		  remark:'',//备注
     		  check_suggestion:'', //审核意见
-    		  flag:false
+    		  flag:false,
+    		  size:1,
+	    	  keywords:'',
+			  params:{
+		    			  pageNum:1,
+		    			  pageSize:4,
+		    			  keyWord:''
+		      },
+		      plcassPage:{
+		    			  
+		      }
     		  
     	  },
     	  mounted(){//页面挂载完成调用查询全部的方法
@@ -198,14 +260,37 @@
     	        this.load2();
 		  },
 		  methods:{
-			  load:function(){//查询所有等待审核的采购计划单
-				  var check_tag="等待审核";
-				  axios.get('Cgddsh?check_tag='+check_tag+'').then(res=>{
-							this.cglist=res.data;
-				  }).catch(err=>{
-						alert('请求失败')
-				  })
-			  },
+			  load(){
+			  if(this.size>this.plcassPage.pages&&this.plcassPage.pages!=0){
+					this.size = this.plcassPage.pages;
+				}
+				this.params.pageNum  = this.size;
+				this.params.pageSize = $("#page").val();
+				//发送异步请求，请求后端控制器，获取所有的品牌信息
+				this.params.keyWord=this.keywords;						
+			    axios.post('Cgddsh',this.params).then(res=>{
+					this.plcassPage=res.data;
+					if(res.data.list!=""){
+					    $("#fy").show();
+				  }else{
+					    $("#fy").hide();
+				  }
+			  }).catch(err=>{
+					alert('请求失败')
+			  })
+				
+			},
+			loads(){
+				this.params.pageSize = $("#page").val();
+				//发送异步请求，请求后端控制器，获取所有的品牌信息
+				this.params.keyWord=this.keywords;						
+			  axios.post('Cgddsh',this.params).then(res=>{
+						this.plcassPage=res.data;
+			  }).catch(err=>{
+					alert('请求失败')
+			  })
+				
+			},
 			  load2:function(){  //查询所有等待审核的采购计划单总数
 				  var check_tag="等待审核";
 				  axios.get('Cgddshsum?check_tag='+check_tag+'').then(res=>{
@@ -234,7 +319,10 @@
 					 axios.post('Cgshtg',param).then(res=>{
 						 if(res.data>0){
 							 $("#modal1").modal('hide');
-							 alert('审核成功')
+							 setTimeout(function() {
+								 lightyear.loading('hide');
+							     lightyear.notify('审核成功！', 'success', 1000);
+							    }, 1e3)
 							 this.load();
 							 this.load2();
 						 }
@@ -243,14 +331,21 @@
 					 })
 				  }else{
 					  if(this.check_suggestion==""){
-						  alert('请说明审核意见')
+						  setTimeout(function() {
+								 lightyear.loading('hide');
+							     lightyear.notify('请填写审核意见！', 'danger', 1000);
+							    }, 1e3)
 					  }else{
 						  var check_tag="审核不通过";
 						  var param={cgPlanId:this.cgPlanId,checker:checker,check_tag:check_tag,check_suggestion:this.check_suggestion};
 						  axios.post('Cgshtg',param).then(res=>{
 								 if(res.data>0){
-									 alert('审核不通过,请修改或者重新制定采购计划')
+									 setTimeout(function() {
+										 lightyear.loading('hide');
+									     lightyear.notify('审核不通过,请重新制定生产计划！', 'danger', 1000);
+									    }, 1e3)
 									 $("#modal1").modal('hide');
+									 this.check_suggestion=""
 									 this.load();
 									 this.load2();
 								 }
@@ -258,14 +353,14 @@
 								alert('请求失败')
 						    })
 					  }
-					  
-					  
-					  
 				  }
-				  
-				  
-				  
-			  },
+			  },searchid(page){						
+					if (page < 0 || page > this.plcassPage.pages){
+	                    return false;
+	                }
+					this.params.pageNum=page;
+					this.loads();
+				},
 			  
 			  
 			  

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.D_file;
 import com.teams.pojo.S_gather;
 import com.teams.pojo.S_gather_details;
@@ -20,6 +21,7 @@ import com.teams.pojo.s_pay;
 import com.teams.pojo.s_pay_details;
 import com.teams.pojo.stockjh;
 import com.teams.service.LidongService;
+import com.teams.utils.Params;
 
 @Controller
 public class LidongController {
@@ -70,8 +72,8 @@ public class LidongController {
 	//查询所有等待审核的生产计划
 	@RequestMapping("/productShcx")
 	@ResponseBody
-	public List<m_apply> selectShcx(@RequestParam("check_tag")String check_tag){
-		return service.selectShcx(check_tag);
+	public PageInfo<m_apply> selectShcx(@RequestBody Params params){
+		return service.selectShcx(params);
 	}
 	
 	//查询所有等待审核的生产计划总数
@@ -98,8 +100,8 @@ public class LidongController {
 	//查询所有生产计划
 	@RequestMapping("/GetShjh")
 	@ResponseBody
-	public List<m_apply> selectShjh(){
-		return service.selectShjh();
+	public PageInfo<m_apply> selectShjh(@RequestBody Params params){
+		return service.selectShjh(params);
 	}
 	
 	
@@ -171,8 +173,14 @@ public class LidongController {
 	//查询所有入库单
 	@RequestMapping("/GetRkd")
 	@ResponseBody
-	public List<S_gather> selectGetRkd(@RequestParam("reason")String reason,@RequestParam("store_tag")String store_tag,@RequestParam("check_tag")String check_tag){
-		return service.selectGetRkd(reason,store_tag,check_tag);
+	public PageInfo<S_gather> selectGetRkd(@RequestBody Params params){
+		return service.selectGetRkd(params);
+	}
+	
+	@RequestMapping("/GetRkds")
+	@ResponseBody
+	public PageInfo<S_gather> selectGetRkds(@RequestBody Params params){
+		return service.selectGetRkds(params);
 	}
 	//查询入库单总数
 	@RequestMapping("/GetRkdsum")
@@ -204,10 +212,10 @@ public class LidongController {
 	//入库单复核通过
 	@RequestMapping("/GetRkdfhtg")
 	@ResponseBody
-	public int updGetRkdfhtg(@RequestParam("gather_id")String gather_id,@RequestParam("store_tag")String store_tag,@RequestParam("gathered_amount")Integer gathered_amount,@RequestParam("checker")String checker,@RequestParam("check_tag")String check_tag){
+	public int updGetRkdfhtg(String check_yj,@RequestParam("gather_id")String gather_id,@RequestParam("store_tag")String store_tag,@RequestParam("gathered_amount")Integer gathered_amount,@RequestParam("checker")String checker,@RequestParam("check_tag")String check_tag){
 		service.updGetRkmx(gather_id,gathered_amount,store_tag);
 		service.updGets_cell(gather_id,gathered_amount);
-		return service.updGetRkdfhtg(gather_id,store_tag,gathered_amount,checker,check_tag);
+		return service.updGetRkdfhtg(check_yj,gather_id,store_tag,gathered_amount,checker,check_tag);
 	}
 	
 	
@@ -240,8 +248,8 @@ public class LidongController {
 	//查询所有等待审核的出库申请单  --不为生产领料的
 	@RequestMapping("/productCkddsh")
 	@ResponseBody
-	public List<s_pay> selectCkddsh(@RequestParam("check_tag")String check_tag,@RequestParam("reason")String reason){
-		return service.selectCkddsh(check_tag,reason);
+	public PageInfo<s_pay> selectCkddsh(@RequestBody Params params){
+		return service.selectCkddsh(params);
 	}
 	
 	//查询所有审核状态的出库申请单总数    --审核状态
@@ -261,8 +269,8 @@ public class LidongController {
 	//查询所有的出库申请单  --不为生产领料
 	@RequestMapping("/GetCksqd")
 	@ResponseBody
-	public List<s_pay> selectGetCksqd(@RequestParam("reason")String reason){
-		return service.selectGetCksqd(reason);
+	public PageInfo<s_pay> selectGetCksqd(@RequestBody Params params){
+		return service.selectGetCksqd(params);
 	}
 	
 	

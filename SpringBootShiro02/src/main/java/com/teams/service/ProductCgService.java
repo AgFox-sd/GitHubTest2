@@ -2,9 +2,11 @@ package com.teams.service;
 
 import java.util.List;
 
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.D_file;
 import com.teams.pojo.cgPlan;
 import com.teams.pojo.cgPlanXq;
+import com.teams.utils.Params;
 
 public interface ProductCgService {
 
@@ -28,7 +30,7 @@ public interface ProductCgService {
 	List<cgPlanXq> selectCgmx(String cgPlanId);
 
 	//查询所有等待审核的采购计划单
-	List<cgPlan> selectCgddsh(String check_tag);
+	PageInfo<cgPlan> selectCgddsh(Params params);
 
 	//查询所有等待审核的采购计划单总数
 	int selectCgddshsum(String check_tag);
@@ -37,7 +39,7 @@ public interface ProductCgService {
 	int updCgshtg(cgPlan cgPlan);
 
 	//查询所有的采购计划单
-	List<cgPlan> selectGetCg();
+	PageInfo<cgPlan> selectGetCg(Params params);
 
 	//查询所有等待审核的采购计划单总数
 	int selectGetCgsum();

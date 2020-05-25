@@ -6,11 +6,12 @@ import com.teams.pojo.D_module_details;
 import com.teams.pojo.M_design_procedure;
 import com.teams.pojo.M_design_procedure_details;
 import com.teams.pojo.m_procedure_module;
+import com.teams.utils.Params;
 
 public interface ProductGxWlMapper {
 
 	//查询已设计完工序的产品信息
-	public List<M_design_procedure> productGxWl();
+	public List<M_design_procedure> productGxWl(Params param);
 
 	//查询设计完产品工序的工序信息
 	public List<M_design_procedure_details> productGxMx(String product_id);
@@ -35,13 +36,13 @@ public interface ProductGxWlMapper {
     void updWlZcb(double module_subtotal, String design_id);
 
 	//修改产品工序表为已设计
-	public int updGxWlSj(String design_module_tag,String design_id);
+	public int updGxWlSj(String check_yj,String design_module_tag,String design_id);
 
 	//修改产品表为已设计
 	public void productGxSj(String design_module_tag,String real_cost_price,String design_id);
 
 	//查询已设计完物料工序的产品
-	public List<M_design_procedure> productGxWlSh(String design_module_tag);
+	public List<M_design_procedure> productGxWlSh(Params params);
 
 	//修改产品工序为已审核
 	public int updateGxWlSh(String design_id);
@@ -59,7 +60,7 @@ public interface ProductGxWlMapper {
 	public List<m_procedure_module> cxsygx(String design_id);
 
 	//查询已设计或已审核的产品
-	public List<M_design_procedure> productGxWlCx();
+	public List<M_design_procedure> productGxWlCx(Params params);
 
 	void updmpm(int slsl, double d,String product_id, String design_id);
 
@@ -69,5 +70,19 @@ public interface ProductGxWlMapper {
 
 	int upddmd(int ky, String product_id, String design_id);
 
-	public List<M_design_procedure> productGxWlSh2();
+	public List<M_design_procedure> productGxWlSh2(Params params);
+
+	public void deletewlzc(String design_id, String gongxu_name, String string);
+
+	public void updzbzje(double zje, String design_id);
+
+	public void updatewlzc(int i, String product_id, String string);
+
+	public int updzje(String design_id, String gongxu_name);
+
+	public double selectwlzcb(String design_id);
+
+	public int updwlbgyj(String wlbg_yj, String design_id);
+
+	public int selectcf(String design_id);
 }

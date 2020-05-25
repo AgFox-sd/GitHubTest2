@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.D_file;
 import com.teams.pojo.s_cell;
 import com.teams.service.StockPzService;
+import com.teams.utils.Params;
 
 @Controller
 public class StockPzController {
@@ -21,8 +23,8 @@ public class StockPzController {
 	//查询库存配置未设计的产品和物料
 	@RequestMapping("selectWsj")
 	@ResponseBody
-	public List<D_file> selectWsj(){
-		return service.selectWsj();
+	public PageInfo<D_file> selectWsj(@RequestBody Params params){
+		return service.selectWsj(params);
 	}
 	
 	//查询库存配置未设计的产品和物料数量
@@ -54,10 +56,15 @@ public class StockPzController {
 	//查询所有未审核的库存配置信息
 	@RequestMapping("selectAll")
 	@ResponseBody
-	public List<s_cell> selectAll(String check_tag,String check_tags){
-		return service.selectAll(check_tag,check_tags);
+	public PageInfo<s_cell> selectAll(@RequestBody Params params){
+		return service.selectAll(params);
 	}
 	
+	@RequestMapping("selectAll1")
+	@ResponseBody
+	public PageInfo<s_cell> selectAll1(@RequestBody Params params){
+		return service.selectAll1(params);
+	}
 	//查询可变更的配置单总数
 	@RequestMapping("selectAllKbg")
 	@ResponseBody
@@ -86,11 +93,16 @@ public class StockPzController {
 		return service.updfh(s_cell);
 	}
 	
+	@RequestMapping("updfh1")
+	@ResponseBody
+	public int updfh1(@RequestBody s_cell s_cell) {
+		return service.updfh1(s_cell);
+	}
 	//查询所有库存配置信息
     @RequestMapping("selectSy")
 	@ResponseBody
-	public List<s_cell> selectSy(){
-		return service.selectSy();
+	public PageInfo<s_cell> selectSy(@RequestBody Params params){
+		return service.selectSy(params);
 	}
 	
 	//查询所有库存配置信息的总数

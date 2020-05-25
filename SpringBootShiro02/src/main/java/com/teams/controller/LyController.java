@@ -8,10 +8,12 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.M_design_procedure_details;
 import com.teams.pojo.M_djfh_xq;
 import com.teams.pojo.M_nbsc;
@@ -19,6 +21,7 @@ import com.teams.pojo.m_pg;
 import com.teams.pojo.M_sc;
 import com.teams.pojo.m_procedure_module;
 import com.teams.service.LyService;
+import com.teams.utils.Params;
 
 @Controller
 public class LyController {
@@ -28,8 +31,8 @@ public class LyController {
 	// 查询登记
 	@RequestMapping("/scdj")
 	@ResponseBody
-	public List<m_pg> scdj() {
-		List<m_pg> list = service.scdj("审核通过", "未生产");
+	public PageInfo<m_pg> scdj(@RequestBody Params params) {
+		PageInfo<m_pg> list = service.scdj(params);
 		return list;
 	}
 
@@ -90,9 +93,8 @@ public class LyController {
 	// 查询登记
 	@RequestMapping("/scdjwfh")
 	@ResponseBody
-	public List<m_pg> scdjwfh() {
-		List<m_pg> list = service.scdjwfh("未审核");
-		System.out.println(list);
+	public PageInfo<m_pg> scdjwfh(@RequestBody Params params) {
+		PageInfo<m_pg> list = service.scdjwfh(params);
 		return list;
 	}
 
@@ -145,11 +147,11 @@ public class LyController {
 
 		double zcb = service.gszcb(design_id) + service.wlzcb(design_id);
 		service.xgzcb(zcb,product_id);
-		service.xgscct(pg_id);
+		service.xgscct(sc_unit,pg_id);
 		String gather_id = Dindan();
 		String storer = (String) ses.getAttribute("username");
 		String reason = "生产入库";
-		service.addsg(gather_id,storer,reason,sc_unit,zcb*sc_unit,"审核通过","已登记","无");
+		service.addsg(gather_id,storer,reason,sc_unit,zcb*sc_unit,"审核通过","已登记","无","未审核");
 		service.addsgxq(gather_id,product_id,product_name,sc_unit,zcb,zcb*sc_unit,"已登记");
 		service.addnbsc(did, pg_id, product_id, product_name, sc_unit, zcb, zcb * sc_unit);
 		return 1;
@@ -178,8 +180,8 @@ public class LyController {
 	// 生产查询
 	@RequestMapping("/cxpgsc")
 	@ResponseBody
-	public List<m_pg> cxpgsc() {
-		return service.cxpgsc();
+	public PageInfo<m_pg> cxpgsc(@RequestBody Params params) {
+		return service.cxpgsc(params);
 	}
 
 	//生成订单编号

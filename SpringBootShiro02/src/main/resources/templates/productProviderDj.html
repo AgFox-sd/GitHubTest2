@@ -2,219 +2,270 @@
 <html lang="zh">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>采购管理 -产品供应商推荐管理-产品供应商推荐登记</title>
 <link rel="icon" href="favicon.ico" type="image/ico">
 <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
-<meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="description"
+	content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
 <meta name="author" content="yinqi">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/materialdesignicons.min.css" rel="stylesheet">
 <link href="css/style.min.css" rel="stylesheet">
 <script type="text/javascript" src="js/axios.min.js"></script>
-<script type="text/javascript"   src="js/vue-2.4.0.js"></script>
+<script type="text/javascript" src="js/vue-2.4.0.js"></script>
 </head>
-  
+
 <body>
-<div id="app">
-<div class="lyear-layout-web">
-  <div class="lyear-layout-container">
-   
-    <header class="lyear-layout-header" style="margin-left: -18%;">
-      
-      <nav class="navbar navbar-default">
-        <div class="topbar">
-          
-          <div class="topbar-left">
-            <div class="lyear-aside-toggler">
-              <span class="lyear-toggler-bar"></span>
-              <span class="lyear-toggler-bar"></span>
-              <span class="lyear-toggler-bar"></span>
-            </div>
-            <span class="navbar-page-title"> 采购管理 -产品供应商推荐管理-产品供应商推荐登记</span>
-          </div>
-        </div>
-      </nav>
-      
-    </header>
-    <!--页面主要内容-->
-    <main class="lyear-layout-content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-10" style="margin-left: -25%;margin-top: -6%;">
-            <div class="card">
-              <div class="card-toolbar clearfix">
-               <form class="pull-right search-bar" method="get" action="#!" role="form">
-                  <div class="input-group">
-                    <div class="input-group-btn">
-                      <input type="hidden" name="search_field" id="search-field" value="title">
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive" id="box1">
-                <div>
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th class="text-center">产品编号</th>
-                        <th class="text-center">产品名称</th>
-                        <th class="text-center">用途类型</th>
-                        <th class="text-center">风险级别</th>
-                        <th class="text-center">单位</th>
-                        <th class="text-center">产品档次</th>
-                        <th class="text-center">推荐供应商</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="mod in list" class="text-center">
-                        <td>{{mod.product_id}}</td>
-                        <td>{{mod.product_name}}</td>
-                       	<td>{{mod.tname}}</td>
-                        <td>{{mod.fname}}</td>
-                        <td>{{mod.amount_unit}}</td>
-                        <td>{{mod.pname}}</td>
-                        <td>
-                          <div class="btn-group">
-                             <button type="button"  id="sjbutton" class="btn btn-primary  btn-xs"  data-target=".bs-example-modal-lg" @click="Selidxx(mod.product_id,mod.product_name)">推荐供应商</button>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+	<div id="app">
+		<div class="lyear-layout-web">
+			<div class="lyear-layout-container">
 
-              </div>
+				<header class="lyear-layout-header" style="margin-left: -18%;">
 
-        </div>
-        <div class="btn-group" id="box2" style="display:none">
-       			    <div>
-          				<p style="margin-left: 390px;font-size: 25px;">产品供应商推荐登记</p>
+					<nav class="navbar navbar-default">
+						<div class="topbar">
 
-          	 			<a type="button" class="btn btn-pink  btn-xs" @click="Selad2()" style="margin-left:700px"  data-toggle="modal" data-target=".bs-example-modal-lg">添加供应商</a>
-       				</div>
-          		 	<div class="form-group" style="margin-left: 200px">
-						<label for="message-text" class="control-label">推荐人:</label>
-						<span id="tjr" th:text="${session.username}"></span>
-						<label for="message-text" class="control-label" style="margin-left: 200px">产品编号:</label>
-				   		<span name="product_id" >{{product_id}}</span>
-		          </div>
-		          <div class="form-group" style="margin-left: 200px">
-			          	
-						<label for="message-text" class="control-label" >登记人:</label>
-						<span th:text="${session.username}" id="djr"></span>
-						<label for="message-text" class="control-label" style="margin-left: 200px">产品名称:</label>
-						<span name="product_name" >{{product_name}}</span>
-						
-						
+							<div class="topbar-left">
+								<div class="lyear-aside-toggler">
+									<span class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span>
+								</div>
+								<span class="navbar-page-title"> 采购管理
+									-产品供应商推荐管理-产品供应商推荐登记</span>
+							</div>
+						</div>
+					</nav>
 
-		          </div>
-		          <div style="margin-left: 70px">
-		           <table class="table table-hover" >
-                    <thead>
-                      <tr>
-                        <th class="text-center">编号</th>
-                        <th class="text-center">供应商编号</th>
-                        <th class="text-center">供应商名称</th>
-                        <th class="text-center">风险级别</th>
-                        <th class="text-center"	>所在区域</th>
+				</header>
+				<!--页面主要内容-->
+				<main class="lyear-layout-content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-lg-10" style="margin-left: -25%; margin-top: -2%;">
+							<div class="card">
+								<div class="card-toolbar clearfix" id="ss">
+									<form class="pull-right search-bar" method="get" action="#!"
+										role="form">
+										<div class="input-group">
+											<input type="text" class="form-control"
+												placeholder="请输入产品名称或者编号" v-model="keywords">
+											<div class="input-group-btn">
+												<input type="hidden" name="search_field" id="search-field"
+													value="title">
+												<button type="button" class="btn btn-primary btn-ms"
+													@click="Selad()">查询</button>
+											</div>
+										</div>
+									</form>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive" id="box1">
+										<div>
+											<table class="table table-hover">
+												<thead>
+													<tr>
+														<th class="text-center">产品编号</th>
+														<th class="text-center">产品名称</th>
+														<th class="text-center">用途类型</th>
+														<th class="text-center">风险级别</th>
+														<th class="text-center">单位</th>
+														<th class="text-center">产品档次</th>
+														<th class="text-center">推荐供应商</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr v-for="(mod,key,index) in plcassPage.list"
+														class="text-center">
+														<td>{{mod.product_id}}</td>
+														<td>{{mod.product_name}}</td>
+														<td>{{mod.tname}}</td>
+														<td>{{mod.fname}}</td>
+														<td>{{mod.amount_unit}}</td>
+														<td>{{mod.pname}}</td>
+														<td>
+															<div class="btn-group">
+																<button type="button" id="sjbutton"
+																	class="btn btn-primary  btn-xs"
+																	data-target=".bs-example-modal-lg"
+																	@click="Selidxx(mod.product_id,mod.product_name)">推荐供应商</button>
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+											<center style="display: none;" id="fy">
+												<ul class="pagination pagination-lg">
+													<ul class="pagination pagination-lg">
+														<li><a
+															@click.prevent="searchid(plcassPage.firstPage)">首页</a></li>
+														<li><a href="#"
+															@click.prevent="searchid(plcassPage.prePage)">上一页</a></li>
+														<template v-for="pageNum in plcassPage.navigatepageNums">
+														<li><a href="#" @click.prevent="searchid(pageNum)">{{pageNum}}</a></li>
+														</template>
+														<li><a href="#"
+															@click.prevent="searchid(plcassPage.nextPage)">下一页</a></li>
+														<li><a href="#"
+															@click.prevent="searchid(plcassPage.lastPage)">末页</a></li>
+														<li><a>{{plcassPage.pageNum}}/{{plcassPage.pages}}</a></li>
+														<li><a><input type="text" v-model="size"
+																style="width: 40px; height: 35px;" value="1" /></a></li>
+														<li><a href="#" @click.prevent="Selad()">go</a></li>
+														<li><select style="height: 37px;" id="page"
+															@change="Selad()">
+																<option value="4">4条/页</option>
+																<option value="5">5条/页</option>
+																<option value="6">6条/页</option>
+														</select></li>
+													</ul>
+												</ul>
+											</center>
+										</div>
 
-                        <th>小计</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="wl in wlmxList" class="text-center">
-                       <td>{{wl.bh}}</td>
-                        <td>{{wl.mc}}</td>
-                       	<td>{{wl.lx}}</td>
-                        <td>{{wl.dc}}</td>
-                        <td>{{wl.sl}}</td>
-                        <td>{{wl.dw}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  
-                  
-                  </div>
-                 <button class="btn btn-w-xs btn-primary" style="margin-left: 700px" @click="QueRen()">确认</button>
-                <!-- 模态框开始 -->
-                  <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-                  <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                        <h4 class="modal-title" id="myLargeModalLabel">添加供应商</h4>
-                      </div>
-                      <div class="modal-body">
-                    	<form action="#" method="post">
-					   <div style="margin-left: 20px">
-			           <table class="table table-bordered" >
-	                    <thead>
-	                      <tr>
-	                        <th class="text-center">选择</th>
-	                        <th class="text-center">编号</th>
-	                        <th class="text-center">供应商编号</th>
-	                        <th class="text-center">供应商名称</th>
-	                        <th class="text-center">优质级别</th>
-	                        <th class="text-center">风险级别</th>	                        
-	                        <th class="text-center">所在区域</th>
-	                      </tr>
-	                    </thead>
-	                    <tbody>
-	                      <tr v-for="(wl,index) in wllist" :key="index" class="text-center">
-			                    <td>
-		                          <label class="lyear-checkbox checkbox-primary">
-		                            <input type="checkbox" value="{{wl.id}}"  class="xz" @click="fz()"><span  class="xz"></span>
-		                       </label>
-		                        </td>
-		                        <td>{{wl.id}}</td>
-                       			<td>{{wl.providerId}}</td>
-                        		<td>{{wl.providerName}}</td>
-                       			<td>一般</td>
-                       			<td>{{wl.fname}}</td>
-                       			<td>中国</td>
-	                      </tr>
-	                    </tbody>
-	                  </table>
-	                  </div>  
-		        		</form>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" @click="tianjia()" data-dissmiss="modal" data-dismiss="modal">点击添加</button>
-                      </div>
-                    </div>
-                  </div>
-                </div> 
-                <!-- 模态框结束 -->
-        </div>
-          		
-          		
-        </div>
-                <!-- 分页开始 -->
-                
-       			<!-- 分页结束 -->
-              </div>
-            </div>
-          </div>
-          
-        </div>
-        
-      </div>
-      
-    </main>
-    <!--End 页面主要内容-->
-  </div>
-</div>
-</div>
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
-<script type="text/javascript" src="js/main.min.js"></script>
+									</div>
+									<div class="btn-group" id="box2" style="display: none">
+										<div>
+											<p style="margin-left: 390px; font-size: 25px;">产品供应商推荐登记</p>
+
+											<a type="button" class="btn btn-pink  btn-xs"
+												@click="Selad2()" style="margin-left: 700px"
+												data-toggle="modal" data-target=".bs-example-modal-lg">添加供应商</a>
+										</div>
+										<div class="form-group" style="margin-left: 200px">
+											<label for="message-text" class="control-label">推荐人:</label>
+											<span id="tjr" th:text="${session.username}"></span> <label
+												for="message-text" class="control-label"
+												style="margin-left: 200px">产品编号:</label> <span
+												name="product_id">{{product_id}}</span>
+										</div>
+										<div class="form-group" style="margin-left: 200px">
+
+											<label for="message-text" class="control-label">登记人:</label>
+											<span th:text="${session.username}" id="djr"></span> <label
+												for="message-text" class="control-label"
+												style="margin-left: 200px">产品名称:</label> <span
+												name="product_name">{{product_name}}</span>
 
 
 
-<script>
+										</div>
+										<div style="margin-left: 70px">
+											<table class="table table-hover">
+												<thead>
+													<tr>
+														<th class="text-center">编号</th>
+														<th class="text-center">供应商编号</th>
+														<th class="text-center">供应商名称</th>
+														<th class="text-center">风险级别</th>
+														<th class="text-center">所在区域</th>
+
+														<th>小计</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr v-for="wl in wlmxList" class="text-center">
+														<td>{{wl.bh}}</td>
+														<td>{{wl.mc}}</td>
+														<td>{{wl.lx}}</td>
+														<td>{{wl.dc}}</td>
+														<td>{{wl.sl}}</td>
+														<td>{{wl.dw}}</td>
+													</tr>
+												</tbody>
+											</table>
+
+
+										</div>
+										<button class="btn btn-w-xs btn-primary"
+											style="margin-left: 700px" @click="QueRen()">确认</button>
+										<!-- 模态框开始 -->
+										<div class="modal fade bs-example-modal-lg" tabindex="-1"
+											role="dialog" aria-labelledby="myLargeModalLabel">
+											<div class="modal-dialog modal-lg" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<span aria-hidden="true">×</span>
+														</button>
+														<h4 class="modal-title" id="myLargeModalLabel">添加供应商</h4>
+													</div>
+													<div class="modal-body">
+														<form action="#" method="post">
+															<div style="margin-left: 20px">
+																<table class="table table-bordered">
+																	<thead>
+																		<tr>
+																			<th class="text-center">选择</th>
+																			<th class="text-center">编号</th>
+																			<th class="text-center">供应商编号</th>
+																			<th class="text-center">供应商名称</th>
+																			<th class="text-center">优质级别</th>
+																			<th class="text-center">风险级别</th>
+																			<th class="text-center">所在区域</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<tr v-for="(wl,index) in wllist" :key="index"
+																			class="text-center">
+																			<td><label
+																				class="lyear-checkbox checkbox-primary"> <input
+																					type="checkbox" value="{{wl.id}}" class="xz"
+																					@click="fz()"><span class="xz"></span>
+																			</label></td>
+																			<td>{{wl.id}}</td>
+																			<td>{{wl.providerId}}</td>
+																			<td>{{wl.providerName}}</td>
+																			<td>一般</td>
+																			<td>{{wl.fname}}</td>
+																			<td>中国</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</div>
+														</form>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-default"
+															data-dismiss="modal">关闭</button>
+														<button type="button" class="btn btn-primary"
+															@click="tianjia()" data-dissmiss="modal"
+															data-dismiss="modal">点击添加</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- 模态框结束 -->
+									</div>
+
+
+								</div>
+								<!-- 分页开始 -->
+
+								<!-- 分页结束 -->
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			</main>
+			<!--End 页面主要内容-->
+		</div>
+	</div>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+	<script type="text/javascript" src="js/main.min.js"></script>
+    <script type="text/javascript" src="js/lightyear.js"></script>
+	<script src="js/bootstrap-notify.min.js"></script>
+
+
+	<script>
 			var vm=new Vue({
 				el:'#app',
 				data:{
@@ -230,32 +281,65 @@
 				    five:'',
 				    dingdans:'',
 				    six:'',
-					product_id:''
+					product_id:'',
+					size:1,
+		    		keywords:'',
+					params:{
+			    			  pageNum:1,
+			    			  pageSize:4,
+			    			  keyWord:''
+			    	},
+			    	plcassPage:{
+			    			  
+			    	}
 				},
 				mounted(){//初始化显示完成调用
 					this.Selad();
+				    this.scbh();
 				},
 				methods:{
 					Selad(){
-						//发送异步请求，请求后端控制器，获取所有需要推荐信息
-						axios.post("selectrec").then(res=>{
-							this.list=res.data;
-						}).catch(err=>{
-							console.log("请求失败");
-						})
-						
-						//生成  05300+当前日期+6位随机数组成的流水号 --开始
+					if(this.size>this.plcassPage.pages&&this.plcassPage.pages!=0){
+						this.size = this.plcassPage.pages;
+					}
+					this.params.pageNum  = this.size;
+					this.params.pageSize = $("#page").val();
+					//发送异步请求，请求后端控制器，获取所有的品牌信息
+					this.params.keyWord=this.keywords;						
+				    axios.post('selectrec',this.params).then(res=>{
+						this.plcassPage=res.data;
+						if(res.data.list!=""){
+						    $("#fy").show();
+					  }else{
+						    $("#fy").hide();
+					  }
+				  }).catch(err=>{
+						alert('请求失败')
+				  })
+					
+				},
+				Selads(){
+					this.params.pageSize = $("#page").val();
+					//发送异步请求，请求后端控制器，获取所有的品牌信息
+					this.params.keyWord=this.keywords;						
+				  axios.post('selectrec',this.params).then(res=>{
+							this.plcassPage=res.data;
+				  }).catch(err=>{
+						alert('请求失败')
+				  })
+					
+				},scbh(){
 						var myDate =new Date();
 					    var a=myDate.getFullYear()+"0"+(myDate.getMonth()+1)+""+myDate.getDate();
 						var time="";
 						for(var i=0;i<6;i++){
 							time+=Math.floor(Math.random()*10)
 						}
-						var dingdan=0503+a+time;  //生成流水号结束
-						this.dingdans=dingdan
-						
+						var dingdan="503"+a+time;  //生成流水号结束
+						this.dingdans=dingdan	
 					},Selidxx(product_id,product_name){
 						 $("#box1").toggle();
+						 $("#ss").toggle();
 						 $("#box2").toggle();
 						 this.product_name=product_name;
 						 this.product_id=product_id;
@@ -306,9 +390,19 @@
 					},
 					QueRen(){
 						$("#box1").toggle();
+						$("#ss").toggle();
 						$("#box2").toggle();
 						this.Selad();
-						alert('推荐完成！');
+						setTimeout(function() {
+					        lightyear.loading('hide');
+					        lightyear.notify('推荐成功！', 'success', 1000);
+					    }, 1e3)
+					},searchid(page){						
+						if (page < 0 || page > this.plcassPage.pages){
+		                    return false;
+		                }
+						this.params.pageNum=page;
+						this.Selads();
 					}
 			}
 				

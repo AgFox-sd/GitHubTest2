@@ -43,14 +43,19 @@
       <div class="container-fluid">
         
         <div class="row">
-          <div class="col-lg-12" style="margin-left: -25%;margin-top: -6%;">
+          <div class="col-lg-12" style="margin-left: -25%;margin-top: -2%;">
             <div class="card">
-              <div class="card-toolbar clearfix">
-                <form class="pull-right search-bar" method="get" action="#!" role="form">
-                  <div class="input-group">
+             <div class="card-toolbar clearfix" id="ss">
+               <form class="pull-right search-bar" method="get" action="#!" role="form">
+                   <div class="input-group">
+                     <input type="text" class="form-control" placeholder="请输入名称或者编号"
+						  v-model="keywords" >
                     <div class="input-group-btn">
                       <input type="hidden" name="search_field" id="search-field" value="title">
-                    </div>
+                         <button type="button" class="btn btn-primary btn-ms" @click="load()">
+                 		查询
+                        </button>
+                     </div>
                   </div>
                 </form>
               </div>
@@ -70,7 +75,7 @@
                       </tr>
                     </thead>
                     <tbody>
-					<tr v-for="(wuzc,index) in list" :key="index" class="text-center">
+                      <tr v-for="(wuzc,key,index) in plcassPage.list" class="text-center">
 					    <td>{{wuzc.design_id}}</td>
 					    <td>{{wuzc.product_id}}</td>
 					    <td>{{wuzc.product_name}}</td>
@@ -80,7 +85,7 @@
 						<td>{{wuzc.check_tag}}</td>
 						<td>
 						  <div class="btn-group">
-                             <button type="button" class="btn btn-primary  btn-xs" data-toggle="modal" data-target="#modal1" @click="gosh(wuzc.design_id,wuzc.designer,wuzc.product_id,wuzc.product_name,wuzc.cost_price_sum,wuzc.module_describe)">查看详情</button>
+                             <button type="button" class="btn btn-primary  btn-xs" data-toggle="modal" data-target="#modal1" @click="gosh(wuzc.design_id,wuzc.designer,wuzc.product_id,wuzc.product_name,wuzc.cost_price_sum,wuzc.module_describe,wuzc.check_yj,wuzc.change_tag)">查看详情</button>
                           </div>
 						</td>
 					</tr>
@@ -88,7 +93,31 @@
 		
                   </table>
               </div>
-              
+                   <center style="display: none;" id="fy">
+                  <ul class="pagination pagination-lg">
+					<ul class="pagination pagination-lg">
+   						 <li><a  @click.prevent="searchid(plcassPage.firstPage)">首页</a></li>
+   						 <li><a href="#" @click.prevent="searchid(plcassPage.prePage)">上一页</a></li>
+  					 		<template v-for="pageNum in plcassPage.navigatepageNums">
+  					 		 <li><a href="#" @click.prevent="searchid(pageNum)">{{pageNum}}</a></li>
+  					 		</template>
+  					 		 <li><a href="#" @click.prevent="searchid(plcassPage.nextPage)">下一页</a></li>
+  			             <li><a href="#" @click.prevent="searchid(plcassPage.lastPage)">末页</a></li>
+  			             <li><a>{{plcassPage.pageNum}}/{{plcassPage.pages}}</a></li>
+  			             <li>
+  			             <a><input type="text" v-model="size" style="width:40px;height: 35px;" value="1"/></a>
+  			             </li>
+  			             <li><a href="#" @click.prevent="load()">go</a></li>
+  			             <li>
+  			             <select style="height: 37px;" id="page"  @change="load()">
+  			             <option value="4">4条/页</option>
+  			             <option value="5">5条/页</option>
+  			             <option value="6">6条/页</option>
+  			            	 </select>
+  			             </li>
+					</ul>
+				  </ul>	
+                  </center>              
               <!-- 审核模态框开始 -->
 		      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal1">
                   <div class="modal-dialog modal-lg" role="document">
@@ -152,10 +181,10 @@
 					            <span id="shr" style="margin-left: 10px;color: red" th:text="${session.username}"></span>
 					          </div>
 					          <div class="form-group" style="margin-top: 10px">
-					            <label for="message-text" class="control-label" style="margin-left: 18px;">设计要求:</label>
-					            <div>
-					            <textarea rows="3" cols="100" style="margin-left: 18px" v-model="module_describe"></textarea>		            
-					            </div>
+					            <label for="message-text" class="control-label" style="margin-left: 3px" id="box1">变更意见:</label>
+					            <span style="margin-left: 10px;color: red">{{change_yj}}</span>		            
+					            <label for="message-text" class="control-label" style="margin-left: 450px;">审核意见:</label>
+					           	<span style="margin-left: 10px;color: red">{{check_yj}}</span>		            
 					          </div>
 		                </form>
                       </div>
@@ -205,20 +234,63 @@
     		  product_name:'', //产品名称
     		  cost_price_sum:'', //物料总成本
     	      module_describe:'',//设计要求
+    	      check_yj:'',//审核意见
+    	      change_yj:'',
+    	      flag:false,
+    	      size:1,
+	    	  keywords:'',
+			  params:{
+		    			  pageNum:1,
+		    			  pageSize:4,
+		    			  keyWord:''
+		      },
+		      plcassPage:{
+		    			  
+		      }
     	  },
     	  mounted(){//页面挂载完成调用查询全部的方法
 				this.load();
     	        this.load2();
 		  },
 		  methods:{
-			  load:function(){//查询所有等待审核的物料设计单
-				  //var check_tag="等待审核";
-				  axios.get('selectcpgxs').then(res=>{
-							this.list=res.data;
+			  load:function(){
+				  if(this.size>this.plcassPage.pages&&this.plcassPage.pages!=0){
+						this.size = this.plcassPage.pages;
+					}
+					this.params.pageNum  = this.size;
+					this.params.pageSize = $("#page").val();
+					//发送异步请求，请求后端控制器，获取所有的品牌信息
+					this.params.keyWord=this.keywords;						
+				    axios.post('selectcpgxs',this.params).then(res=>{
+						this.plcassPage=res.data;
+						if(res.data.list!=""){
+						    $("#fy").show();
+					  }else{
+						    $("#fy").hide();
+					  }
 				  }).catch(err=>{
 						alert('请求失败')
 				  })
-			  },
+					
+				},
+				loads(){
+					this.params.pageSize = $("#page").val();
+					//发送异步请求，请求后端控制器，获取所有的品牌信息
+					this.params.keyWord=this.keywords;						
+				  axios.post('selectcpgxs',this.params).then(res=>{
+							this.plcassPage=res.data;
+				  }).catch(err=>{
+						alert('请求失败')
+				  })
+					
+				},
+				searchid(page){						
+					if (page < 0 || page > this.plcassPage.pages){
+	                    return false;
+	                }
+					this.params.pageNum=page;
+					this.loads();
+				},
 			  load2:function(){
 				  var check_tag="等待审核";
 				  axios.get('wuddshsum?check_tag='+check_tag+'').then(res=>{
@@ -236,9 +308,16 @@
 			    	  alert('请求失败')
 			      })
 			  },
-			  gosh:function(design_id,designer,product_id,product_name,cost_price_sum,module_describe){ 
+			  gosh:function(design_id,designer,product_id,product_name,cost_price_sum,module_describe,check_yj,change_yj){ 
 				  this.design_id=design_id;this.designer=designer;this.product_id=product_id;this.product_name=product_name;this.cost_price_sum=cost_price_sum;this.module_describe=module_describe;
-			      this.load3();
+				  this.change_yj=change_yj;
+				  this.check_yj=check_yj;
+				     if(this.change_yj==" "||this.change_yj==null){
+						  $("#box1").hide();
+					  }else{
+						  $("#box1").show();
+					  }
+					  this.load3();
 			  },
 			  sh:function(){
 					 

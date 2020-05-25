@@ -5,10 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.teams.mapper.recommendMapper;
 import com.teams.pojo.provider;
 import com.teams.pojo.recommend;
 import com.teams.pojo.recommendXq;
+import com.teams.utils.Params;
 
 @Service
 public class recommendServiceImpl implements recommendService{
@@ -16,9 +19,10 @@ public class recommendServiceImpl implements recommendService{
 	recommendMapper mapper;
 
 	@Override
-	public List<recommend> selectrec() {
+	public PageInfo<recommend> selectrec(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.selectrec();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectrec(params));
 	}
 
 	@Override
@@ -46,9 +50,10 @@ public class recommendServiceImpl implements recommendService{
 	}
 
 	@Override
-	public List<recommend> selectfname() {
+	public PageInfo<recommend> selectfname(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.selectfname();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectfname(params));
 	}
 
 	@Override
@@ -58,21 +63,22 @@ public class recommendServiceImpl implements recommendService{
 	}
 
 	@Override
-	public int updsh(String recommendId) {
+	public int updsh(String check_yj,String recommendId) {
 		// TODO Auto-generated method stub
-		return mapper.updsh(recommendId);
+		return mapper.updsh(check_yj,recommendId);
 	}
 
 	@Override
-	public int updshs(String recommendId) {
+	public int updshs(String check_yj,String recommendId) {
 		// TODO Auto-generated method stub
-		return mapper.updshs(recommendId);
+		return mapper.updshs(check_yj,recommendId);
 	}
 
 	@Override
-	public List<recommend> selectreco() {
+	public PageInfo<recommend> selectreco(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.selectreco();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectreco(params));
 	}
 
 	@Override
@@ -82,9 +88,10 @@ public class recommendServiceImpl implements recommendService{
 	}
 
 	@Override
-	public List<recommend> selectwbg() {
+	public PageInfo<recommend> selectwbg(Params params) {
 		// TODO Auto-generated method stub
-		return mapper.selectwbg();
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectwbg(params));
 	}
 
 	@Override
@@ -94,9 +101,9 @@ public class recommendServiceImpl implements recommendService{
 	}
 
 	@Override
-	public int updbgs(String recommendId) {
+	public int updbgs(String change_yj,String recommendId) {
 		// TODO Auto-generated method stub
-		return mapper.updbgs(recommendId);
+		return mapper.updbgs(change_yj,recommendId);
 	}
 
 

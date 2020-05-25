@@ -2,16 +2,18 @@ package com.teams.service;
 
 import java.util.List;
 
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.M_design_procedure_details;
 import com.teams.pojo.M_djfh_xq;
 import com.teams.pojo.M_nbsc;
 import com.teams.pojo.m_pg;
 import com.teams.pojo.M_sc;
 import com.teams.pojo.m_procedure_module;
+import com.teams.utils.Params;
 
 public interface LyService {
     //查询登记
-	List<m_pg> scdj(String check_tag, String pg_zt);
+	PageInfo<m_pg> scdj(Params params);
 	//根据产品编号查询工序
 			List<M_design_procedure_details> scgx(String product_id);
 			List<m_procedure_module> selectGxWl(String parent_id, String gongxu_name);
@@ -31,7 +33,7 @@ public interface LyService {
 					double cost_price, double subtotal_cbsj,String xq_sh);
 			
 			// 查询登记
-			List<m_pg> scdjwfh(String check_tag);
+			PageInfo<m_pg> scdjwfh(Params params);
 			
 			// 根据产品编号查询工序
 			List<M_design_procedure_details> scgxfh(String product_id);
@@ -59,13 +61,13 @@ public interface LyService {
 			List<M_sc> cxgxsl(String procedure_name,String did);
 			double gszcb(String design_id);
 			double wlzcb(String design_id);
-			void xgscct(String pg_id);
+			void xgscct(int sc_unit,String pg_id);
 			
 			//查询派工生产
-			List<m_pg> cxpgsc();
+			PageInfo<m_pg> cxpgsc(Params params);
 			void xgzcb(double zcb, String product_id);
 			void addsg(String gather_id, String storer, String reason, int sc_unit, double d, String string,
-					String string2,String cgDiaoduId );
+					String string2,String cgDiaoduId,String check_yj );
 			void addsgxq(String gather_id, String product_id, String product_name, int sc_unit, double zcb, double d,
 					String string);
 			void addpayxq(String pay_id, String product_id, String product_name, int i, double d, double e,

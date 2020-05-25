@@ -2,178 +2,252 @@
 <html lang="zh">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>库存管理-安全库存配置管理-安全库存配置单变更</title>
 <link rel="icon" href="favicon.ico" type="image/ico">
 <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
-<meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="description"
+	content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
 <meta name="author" content="yinqi">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/materialdesignicons.min.css" rel="stylesheet">
 <link href="css/style.min.css" rel="stylesheet">
 <script type="text/javascript" src="js/axios.min.js"></script>
-<script type="text/javascript"   src="js/vue-2.4.0.js"></script>
+<script type="text/javascript" src="js/vue-2.4.0.js"></script>
 </head>
-  
+
 <body>
-<div id="app">
-<div class="lyear-layout-web">
-  <div class="lyear-layout-container">
-   
-    <header class="lyear-layout-header" style="margin-left: -18%;">
-      
-      <nav class="navbar navbar-default">
-        <div class="topbar">
-          
-          <div class="topbar-left">
-            <div class="lyear-aside-toggler">
-              <span class="lyear-toggler-bar"></span>
-              <span class="lyear-toggler-bar"></span>
-              <span class="lyear-toggler-bar"></span>
-            </div>
-            <span class="navbar-page-title"> 库存管理-安全库存配置管理-安全库存配置单变更</span>
-            <span class="navbar-page-title" style="color: red;"> 当前可变更的配置单总数：{{count1}}例</span>
-        </div>
-        </div>
-      </nav>
-      
-    </header>
-    <!--页面主要内容-->
-    <main class="lyear-layout-content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-10" style="margin-left: -25%;margin-top: -6%;">
-            <div class="card">
-              <div class="card-toolbar clearfix">
-               <form class="pull-right search-bar" method="get" action="#!" role="form">
-                  <div class="input-group">
-                    <div class="input-group-btn">
-                      <input type="hidden" name="search_field" id="search-field" value="title">
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive" id="box1">
-                <div>
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th class="text-center">配置单编号</th>
-                        <th class="text-center">产品编号</th>
-                        <th class="text-center">产品名称</th>
-                        <th class="text-center">用途类型</th>
-                        <th class="text-center">分类</th>
-                        <th class="text-center">登记时间</th>
-                        <th class="text-center">变更</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="mod in list" class="text-center">
-                       	<td>{{mod.store_id}}</td>
-                        <td>{{mod.product_id}}</td>
-                        <td>{{mod.product_name}}</td>
-                        <td>{{mod.product_type}}</td>
-                        <td>{{mod.address}}</td>
-                        <td>{{mod.register_time}}</td>
-                        <td>
-                          <div class="btn-group">
-                             <button type="button"  id="sjbutton" class="btn btn-primary  btn-xs"  data-target=".bs-example-modal-lg" @click="Selidxx(mod.product_id)">变更</button>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+	<div id="app">
+		<div class="lyear-layout-web">
+			<div class="lyear-layout-container">
 
-              </div>
+				<header class="lyear-layout-header" style="margin-left: -18%;">
 
-        </div>
-        <div class="btn-group" id="box2" style="display:none">
-       			    <div>
-          				<p style="margin-left: 340px;font-size: 26px;">安全库存配置单</p>         				
-       				</div>
-          		 	<div class="form-group" style="margin-left: -20px">
-          		 		<label for="message-text" class="controllabel" style="margin-left: 200px">产品名称:</label>
-						<span name="product_name" >{{wllist.product_name}}</span>
-						<label for="message-text" class="control-label" style="margin-left: 200px">产品编号:</label>
-				   		<span name="product_id" >{{wllist.product_id}}</span>
-		            </div>
-		            <div class="form-group" style="margin-left: -20px">
-          		 		<label for="message-text" class="controllabel" style="margin-left: 157px">库存报警下限数:</label>
-						<input type="text" v-model="wllist.min_amount"/>					
-						<label for="message-text" class="control-label"style="margin-left: 26px">库存报警上限数:</label>
-				   		<input type="text" v-model="wllist.max_amount"/>		
-		            </div>
-		          <div class="form-group" style="margin-left: 163px">	
-		                <label for="message-text" class="control-label">配置单编号:</label>
-						<span id="djr">{{wllist.store_id}}</span>		          	
-						<label for="message-text" class="control-label" style="margin-left: 113px">设计人:</label>
-						<span th:text="${session.username}" id="djr"></span>
-		          </div>
-		          <div style="margin-left: 120px">
-		           <table class="table table-hover" border="1">
-                    <thead>
-                      <tr>
-                        <th class="text-center">序号</th>
-                        <th class="text-center">库存名称</th>
-                        <th class="text-center">存储地址编号</th>
-                        <th class="text-center">存储地址名称</th>
-                        <th class="text-center">最大存储量</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td class="text-center">{{wllist.id}}</td>
-                        <td class="text-center">{{wllist.stock_name}}</td>
-                       	<td class="text-center">01-01-01</td>
-                        <td class="text-center">{{wllist.address}}</td>
-                        <td class="text-center"><input type="text" v-model="wllist.max_capacity_amount" ></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  </div>
-                  <div class="form-group" style="margin-left: -20px">
-          		 		<label for="message-text" class="controllabel" style="margin-left: 200px">复核人:</label>
-						<span th:text="${session.username}" id="fhr" ></span>
-						<label for="message-text" class="control-label" style="margin-left: 200px">复核时间:</label>
-				   		<span name="product_id" >{{fhsj}}</span>
-		            </div>
-                 <button class="btn btn-w-xs btn-primary" style="margin-left: 500px;" @click="QueRen()">重新提交</button>
-                 <button class="btn btn-w-xs btn-primary" style="margin-left: 600px;margin-top: -38px;" @click="fanhui()">返回</button>
-       </div>
-          		
-          		
-        </div>
-                <!-- 分页开始 -->
-                
-       			<!-- 分页结束 -->
-              </div>
-            </div>
-          </div>
-          
-        </div>
-        
-      </div>
-      
-    </main>
-    <!--End 页面主要内容-->
-  </div>
-</div>
-</div>
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
-<script type="text/javascript" src="js/main.min.js"></script>
+					<nav class="navbar navbar-default">
+						<div class="topbar">
+
+							<div class="topbar-left">
+								<div class="lyear-aside-toggler">
+									<span class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span>
+								</div>
+								<span class="navbar-page-title"> 库存管理-安全库存配置管理-安全库存配置单变更</span>
+								<span class="navbar-page-title" style="color: red;">
+									当前可变更的配置单总数：{{count1}}例</span>
+							</div>
+						</div>
+					</nav>
+
+				</header>
+				<!--页面主要内容-->
+				<main class="lyear-layout-content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-lg-10" style="margin-left: -25%; margin-top: -2%;">
+							<div class="card">
+								<div class="card-toolbar clearfix" id="ss">
+									<form class="pull-right search-bar" method="get" action="#!"
+										role="form">
+										<div class="input-group">
+											<input type="text" class="form-control"
+												placeholder="请输入名称或者编号" v-model="keywords">
+											<div class="input-group-btn">
+												<input type="hidden" name="search_field" id="search-field"
+													value="title">
+												<button type="button" class="btn btn-primary btn-ms"
+													@click="Selad()">查询</button>
+											</div>
+										</div>
+									</form>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive" id="box1">
+										<div>
+											<table class="table table-hover">
+												<thead>
+													<tr>
+														<th class="text-center">配置单编号</th>
+														<th class="text-center">产品编号</th>
+														<th class="text-center">产品名称</th>
+														<th class="text-center">用途类型</th>
+														<th class="text-center">分类</th>
+														<th class="text-center">登记时间</th>
+														<th class="text-center">审核状态</th>
+														<th class="text-center">变更</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr v-for="(mod,key,index) in plcassPage.list"
+														class="text-center">														
+														<td>{{mod.store_id}}</td>
+														<td>{{mod.product_id}}</td>
+														<td>{{mod.product_name}}</td>
+														<td>{{mod.product_type}}</td>
+														<td>{{mod.address}}</td>
+														<td>{{mod.register_time}}</td>
+														<td>{{mod.check_tag}}</td>
+														<td>
+															<div class="btn-group">
+																<button type="button" id="sjbutton"
+																	class="btn btn-primary  btn-xs"
+																	data-target=".bs-example-modal-lg"
+																	@click="Selidxx(mod.product_id,mod.check_yj)">变更</button>
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+											<center style="display: none;" id="fy">
+												<ul class="pagination pagination-lg">
+													<ul class="pagination pagination-lg">
+														<li><a
+															@click.prevent="searchid(plcassPage.firstPage)">首页</a></li>
+														<li><a href="#"
+															@click.prevent="searchid(plcassPage.prePage)">上一页</a></li>
+														<template v-for="pageNum in plcassPage.navigatepageNums">
+														<li><a href="#" @click.prevent="searchid(pageNum)">{{pageNum}}</a></li>
+														</template>
+														<li><a href="#"
+															@click.prevent="searchid(plcassPage.nextPage)">下一页</a></li>
+														<li><a href="#"
+															@click.prevent="searchid(plcassPage.lastPage)">末页</a></li>
+														<li><a>{{plcassPage.pageNum}}/{{plcassPage.pages}}</a></li>
+														<li><a><input type="text" v-model="size"
+																style="width: 40px; height: 35px;" value="1" /></a></li>
+														<li><a href="#" @click.prevent="Selad()">go</a></li>
+														<li><select style="height: 37px;" id="page"
+															@change="Selad()">
+																<option value="4">4条/页</option>
+																<option value="5">5条/页</option>
+																<option value="6">6条/页</option>
+														</select></li>
+													</ul>
+												</ul>
+											</center>
+										</div>
+										</div>
+
+									</div>
+									<div class="btn-group" id="box2" style="display: none">
+										<div>
+											<p style="margin-left: 460px; font-size: 26px;">安全库存配置单</p>
+										</div>
+										<div class="form-group" style="margin-left: -20px">
+											<label for="message-text" class="controllabel"
+												style="margin-left: 270px">产品名称:</label> <span
+												name="product_name">{{wllist.product_name}}</span> <label
+												for="message-text" class="control-label"
+												style="margin-left: 370px">产品编号:</label> <span
+												name="product_id">{{wllist.product_id}}</span>
+										</div>
+										<div class="form-group" style="margin-left: -20px">
+											<label for="message-text" class="controllabel"
+												style="margin-left: 227px">库存报警下限数:</label> <input
+												type="text" v-model="wllist.min_amount" /> <label
+												for="message-text" class="control-label"
+												style="margin-left: 192px">库存报警上限数:</label> <input
+												type="text" v-model="wllist.max_amount" />
+										</div>
+										<div class="form-group" style="margin-left: 233px">
+											<label for="message-text" class="control-label">配置单编号:</label>
+											<span id="djr">{{wllist.store_id}}</span> <label
+												for="message-text" class="control-label"
+												style="margin-left: 273px">设计人:</label> <span
+												th:text="${session.username}" id="djr"></span>
+										</div>
+										<div style="margin-left: 20px">
+											<table class="table table-hover" border="1">
+												<thead>
+													<tr>
+														<th class="text-center">序号</th>
+														<th class="text-center">库存名称</th>
+														<th class="text-center">存储地址编号</th>
+														<th class="text-center">存储地址名称</th>
+														<th class="text-center">最大存储量</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td class="text-center">{{wllist.id}}</td>
+														<td class="text-center">{{wllist.stock_name}}</td>
+														<td class="text-center">01-01-01</td>
+														<td class="text-center">{{wllist.address}}</td>
+														<td class="text-center"><input type="text"
+															v-model="wllist.max_capacity_amount"></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div class="form-group" style="margin-left: -20px">
+											<label for="message-text" class="controllabel"
+												style="margin-left: 280px">复核人:</label> <span
+												th:text="${session.username}" id="fhr"></span> <label
+												for="message-text" class="control-label"
+												style="margin-left: 380px">复核时间:</label> <span
+												name="product_id">{{fhsj}}</span>
+										</div>
+										<div class="form-group" style="margin-left: -20px">
+											<label for="message-text" class="controllabel"
+												style="margin-left: 280px">变更意见:</label>  <div>
+					            <textarea rows="1" cols="100" style="margin-left: 278px" name="change_yj" v-model="change_yj"></textarea>		            
+					            </div> <label
+												for="message-text" class="control-label"
+												style="margin-left: 280px;color: red;" id="bgyj">审核意见:</label> <span
+												name="product_id" style="color: red;">{{check_yj}}</span>
+										</div>
+										<button class="btn btn-w-xs btn-primary"
+											style="margin-left: 800px;" @click="QueRen()">重新提交</button>
+										<button class="btn btn-w-xs btn-primary"
+											style="margin-left: 900px; margin-top: -38px;"
+											@click="fanhui()">返回</button>
+									</div>
 
 
+								</div>
+								<!-- 分页开始 -->
 
-<script>
+								<!-- 分页结束 -->
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			</main>
+			<!--End 页面主要内容-->
+		</div>
+	</div>
+	</div>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+	<script type="text/javascript" src="js/main.min.js"></script>
+    <script type="text/javascript" src="js/lightyear.js"></script>
+	<script src="js/bootstrap-notify.min.js"></script>
+
+
+	<script>
 			var vm=new Vue({
 				el:'#app',
 				data:{
 					list:[],
 					wllist:[],
-					count1:''
+					count1:'',
+					size:1,
+		    		keywords:'',
+					params:{
+			    			  pageNum:1,
+			    			  pageSize:4,
+			    			  keyWord:''
+			    	},
+			    	plcassPage:{
+			    			  
+			    	},
+			    	change_yj:'',
+			    	check_yj:''
 				},
 				mounted(){//初始化显示完成调用
 					this.Selad();
@@ -181,27 +255,59 @@
 				methods:{
 					Selad(){
 						//发送异步请求，请求后端控制器，获取所有的品牌信息
-						var check_tag="审核通过";
-						var check_tags="未审核";
-						axios.post("selectAll?check_tag="+check_tag+"&check_tags="+check_tags+"").then(res=>{
-							this.list=res.data;
-						}).catch(err=>{
-							console.log("请求失败");
-						})
-						
+						if(this.size>this.plcassPage.pages&&this.plcassPage.pages!=0){
+							this.size = this.plcassPage.pages;
+						}
+						this.params.pageNum  = this.size;
+						this.params.pageSize = $("#page").val();
+						//发送异步请求，请求后端控制器，获取所有的品牌信息
+						this.params.keyWord=this.keywords;						
+					    axios.post('selectAll1',this.params).then(res=>{
+							this.plcassPage=res.data;
+							if(res.data.list!=""){
+							    $("#fy").show();
+						  }else{
+							    $("#fy").hide();
+						  }
+					  }).catch(err=>{
+							alert('请求失败')
+					  })
+					    var check_tag='审核通过';
 						axios.post("selectAllKbg?check_tag="+check_tag+"").then(res=>{
 							this.count1=res.data;
 						}).catch(err=>{
 							console.log("请求失败");
 						})
-					},Selidxx(product_id){
+					},Selads(){
+						this.params.pageSize = $("#page").val();
+						//发送异步请求，请求后端控制器，获取所有的品牌信息
+						this.params.keyWord=this.keywords;						
+					    axios.post('selectAll1',this.params).then(res=>{
+							this.plcassPage=res.data;
+					  }).catch(err=>{
+							alert('请求失败')
+					  })
+						var check_tag='审核通过';
+						axios.get("selectAllKbg?check_tag="+check_tag+"").then(res=>{
+							this.count1=res.data;
+						}).catch(err=>{
+							console.log("请求失败");
+						})
+					},Selidxx(product_id,check_yj){
 						 $("#box1").toggle();
+						 $("#ss").toggle();
 						 $("#box2").toggle();
 						 axios.get("selectKcById?product_id="+product_id+"").then(res=>{
 							 this.wllist=res.data;
 							}).catch(err=>{
 								console.log("请求失败");
 							})
+						 if(check_yj==""||check_yj==null){
+							 $("#bgyj").hide();
+						 }else{
+							 this.check_yj=check_yj;
+							 $("#bgyj").show();
+						 }
 						 var myDate =new Date();
 						 var a=myDate.getFullYear()+"-0"+(myDate.getMonth()+1)+"-"+myDate.getDate()+" "+myDate.getHours()+":"+myDate.getMinutes()+":"+myDate.getSeconds();
                          this.fhsj=a;
@@ -209,23 +315,44 @@
 					QueRen(){
 						var reg = /^\d*$/;
 						if(this.wllist.min_amount==""){
-							alert("库存报警下限数不能为空！");
+							setTimeout(function() {
+								 lightyear.loading('hide');
+							     lightyear.notify('库存报警下限数不能为空！', 'danger', 1000);
+							    }, 1e3)
 						}else if(this.wllist.max_amount==""){
-							alert("库存报警上限数不能为空！");
+							setTimeout(function() {
+								 lightyear.loading('hide');
+							     lightyear.notify('库存报警上限数不能为空！', 'danger', 1000);
+							    }, 1e3)
 						}else if(this.wllist.max_capacity_amount==""){
-							alert("最大存储不能为空！");
+							setTimeout(function() {
+								 lightyear.loading('hide');
+							     lightyear.notify('最大存储不能为空！', 'danger', 1000);
+							    }, 1e3)
 						}else if(this.wllist.min_amount==0||this.wllist.max_amount==0||this.wllist.max_capacity_amount==0||!reg.test(this.wllist.min_amount)||!reg.test(this.wllist.max_amount)||!reg.test(this.wllist.max_capacity_amount)){
-							alert("库存上下限、库存量必须大于0，且不能含有字符！");
+							setTimeout(function() {
+								 lightyear.loading('hide');
+							     lightyear.notify('库存上下限、库存量必须大于0，且不能含有字符！', 'danger', 1000);
+							    }, 1e3)
+						}else if(this.change_yj==""){
+							setTimeout(function() {
+								 lightyear.loading('hide');
+							     lightyear.notify('请填写变更意见！', 'danger', 1000);
+							    }, 1e3)
 						}else{
 						    var fhr = $("#fhr").text();
 						    var check_tag="变更等待审核";
-						    var s_cell = {store_id:this.wllist.store_id,min_amount:this.wllist.min_amount,max_amount:this.wllist.max_amount,max_capacity_amount:this.wllist.max_capacity_amount,checker:fhr,check_tag:check_tag};
-							axios.post("updfh",s_cell).then(res=>{
+						    var s_cell = {store_id:this.wllist.store_id,min_amount:this.wllist.min_amount,max_amount:this.wllist.max_amount,max_capacity_amount:this.wllist.max_capacity_amount,checker:fhr,check_tag:check_tag,change_yj:this.change_yj};
+							axios.post("updfh1",s_cell).then(res=>{
 								 if(res.data>0){
 									 $("#box1").toggle();
+									 $("#ss").toggle();
 									 $("#box2").toggle();
 								     this.Selad();
-								     alert('变更提交成功！'); 
+								     setTimeout(function() {
+										 lightyear.loading('hide');
+									     lightyear.notify('变更提交成功！', 'success', 1);
+									    }, 1e3)
 								 }
 								}).catch(err=>{
 									console.log("请求失败");
@@ -233,8 +360,15 @@
 						}
 					},fanhui(){
 						$("#box1").toggle();
+						 $("#ss").toggle();
 						$("#box2").toggle();
-					}
+					},searchid(page){						
+						if (page < 0 || page > this.plcassPage.pages){
+		                    return false;
+		                }
+						this.params.pageNum=page;
+						this.Selads();
+					},
 			}
 			})
 			

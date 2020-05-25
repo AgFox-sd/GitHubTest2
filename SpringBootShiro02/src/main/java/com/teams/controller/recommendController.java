@@ -1,22 +1,23 @@
 package com.teams.controller;
 
-import java.lang.annotation.Retention;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.m_gys;
 import com.teams.pojo.provider;
 import com.teams.pojo.recommend;
 import com.teams.pojo.recommendXq;
 import com.teams.service.recommendService;
+import com.teams.utils.Params;
 
 @Controller
 public class recommendController {
@@ -25,8 +26,8 @@ public class recommendController {
     
     @RequestMapping("/selectrec")
     @ResponseBody
-    public List<recommend> selectrec(){
-    	List<recommend> list =service.selectrec();
+    public PageInfo<recommend> selectrec(@RequestBody Params params){
+    	PageInfo<recommend> list =service.selectrec(params);
     	return list;
     }
     
@@ -53,8 +54,8 @@ public class recommendController {
     
     @RequestMapping("/selectfname")
     @ResponseBody
-    public List<recommend> selectfname(){
-    	List<recommend> list=service.selectfname();
+    public PageInfo<recommend> selectfname(@RequestBody Params params){
+    	PageInfo<recommend> list=service.selectfname(params);
     	return list;
     }
     
@@ -68,22 +69,22 @@ public class recommendController {
     
     @RequestMapping("/updsh")
     @ResponseBody
-    public int updsh(@RequestParam("recommendId")String recommendId) {
-    	int row=service.updsh(recommendId);
+    public int updsh(@RequestParam("recommendId")String recommendId,String check_yj) {
+    	int row=service.updsh(check_yj,recommendId);
     	return row;
     }
     
     @RequestMapping("/updshs")
     @ResponseBody
-    public int updshs(@RequestParam("recommendId")String recommendId) {
-    	int row=service.updshs(recommendId);
+    public int updshs(@RequestParam("recommendId")String recommendId,String check_yj) {
+    	int row=service.updshs(check_yj,recommendId);
     	return row;
     }
     
     @RequestMapping("/selectreco")
     @ResponseBody
-    public List<recommend> selectreco(){
-    	List<recommend> list=service.selectreco();
+    public PageInfo<recommend> selectreco(@RequestBody Params params){
+    	PageInfo<recommend> list=service.selectreco(params);
     	return list;
     }
     
@@ -96,8 +97,8 @@ public class recommendController {
     
     @RequestMapping("/selectwbg")
     @ResponseBody
-    public List<recommend> selectwbg(){
-    	List<recommend> list =service.selectwbg();
+    public PageInfo<recommend> selectwbg(@RequestBody Params params){
+    	PageInfo<recommend> list =service.selectwbg(params);
     	return list;
     }
     
@@ -122,8 +123,8 @@ public class recommendController {
     	
     @RequestMapping("/updbgs")
     @ResponseBody
-    public int updbgs(@RequestParam("recommendId") String recommendId) {
-    	int row =service.updbgs(recommendId);
+    public int updbgs(String change_yj,@RequestParam("recommendId") String recommendId) {
+    	int row =service.updbgs(change_yj,recommendId);
     	return row;
     }
     }

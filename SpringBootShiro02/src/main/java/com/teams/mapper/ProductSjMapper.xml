@@ -7,11 +7,14 @@
 	<!--查询审核通过的产品信息 -->
 	<select id="selectProduct" resultType="D_file">
 		SELECT a.product_id,a.product_name,a.list_price,
-		a.factory_name,a.amount_unit,a.delete_tag,
+		a.check_tag,a.amount_unit,a.delete_tag,
 		b.tname,c.pname FROM D_FILE a,TYPE b,pclass c
 		WHERE b.`tid`=a.`tid`
 		AND c.`pid`=a.`pid`
-		AND CHECK_TAG=#{CHECK_TAG}
+		<if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+		 </if>
+		 order by id desc
 	</select>
 	<!--删除和恢复审核通过的产品信息 -->
 	<update id="updDelete_tag">
@@ -30,7 +33,11 @@
 		where a.fid=b.fid and
 		a.tid=c.tid and
 		a.pid=d.pid and
-		a.check_tag=#{check_tag}
+		a.check_tag='等待审核'
+		<if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+		 </if>
+		 order by id desc
 	</select>
 
 	<!-- 产品类型查询 -->
@@ -66,12 +73,16 @@
 
 	<!-- 产品物料设计单审核查询 -->
 	<select id="selectwusjsh" resultType="D_module">
-		select * from D_module where check_tag=#{check_tag} or check_tag='变更等待审核'
+		select * from D_module where (check_tag='等待审核' or check_tag='变更等待审核')
+		<if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+		 </if>
+		 order by id desc
 	</select>
 
 	<!-- 查询产品物料设计单等待审核总数 -->
 	<select id="selectwuddshsum" resultType="int">
-		SELECT count(1) from D_module where check_tag=#{check_tag}
+		SELECT count(1) from D_module where check_tag=#{check_tag} or check_tag='变更等待审核'
 	</select>
 
 	<!-- 查询产品设计单物料明细 -->
@@ -82,7 +93,7 @@
 	<!-- 物料组成设计通过 -->
 	<update id="updatewlsh">
 		update D_module set
-		checker=#{checker},check_time=now(),check_tag=#{check_tag}
+		checker=#{checker},check_time=now(),check_tag=#{check_tag},check_yj=#{check_yj}
 		where design_id=#{design_id}
 	</update>
 
@@ -99,7 +110,7 @@
 
 	<!-- 物料组成设计不通过 -->
 	<update id="delwlsj">
-			update D_module set check_tag='审核不通过',check_yj=#{check_yj}  where design_id=#{design_id}
+			update D_module set check_tag=#{check_tag},check_yj=#{check_yj}  where design_id=#{design_id}
 	</update>
 
 	<!-- 查询显示的信息为所有已通过复核的产品档案 -->
@@ -110,6 +121,10 @@
 		WHERE b.`tid`=a.`tid`
 		AND c.`pid`=a.`pid`
 		and change_tag='未变更'
+		<if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+		 </if>
+		 order by id desc
 	</select>
 
 	<!-- 通过产品编号(id)查询档案信息 -->
@@ -160,19 +175,27 @@
 	
 	
 	
-   <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
 	<!-- 查询通过审核的商品档案信息 -->
 	<select id="Selad" resultType="D_file">
-		SELECT a.product_id ,a.product_name,a.factory_name
-		,a.amount_unit,a.list_price ,c.tname ,d.pname
+		SELECT a.* ,c.tname ,d.pname
+		FROM d_file a,TYPE c,pclass d
+		WHERE a.tid=c.tid AND a.pid=d.pid AND a.check_tag='审核通过'  AND
+		c.tid=1
+		AND design_module_tag = '未设计'  AND a.delete_tag ='未删除'
+		<if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+		 </if>
+		 order by id desc
+	</select>
+
+    <select id="Selad2" resultType="D_file">
+		SELECT a.* ,c.tname ,d.pname
 		FROM d_file a,TYPE c,pclass d
 		WHERE a.tid=c.tid AND a.pid=d.pid AND a.check_tag=#{check_tag} AND
 		c.tid=#{tid}
 		AND design_module_tag = #{design_module_tag} AND a.delete_tag ='未删除'
         and a.product_id not in(select product_id from d_module_details where design_id=#{sjdh})
 	</select>
-
-
 	<!-- 物料组成设计单 -->
 	<insert id="productWlZc">
 		insert into d_module
@@ -252,16 +275,25 @@
 
 	<!-- 物料设计单查询 -->
 	<select id="selD_module" resultType="D_module">
-		select * from D_module
+		select * from D_module where 1=1
+		<if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+		 </if> 
+		order by id desc
 	</select>
 
     <select id="selD_moduleS" resultType="D_module">
 		select * from D_module where check_tag!='变更等待审核'
+		<if test="keyWord!=null and keyWord!=''">
+		 	and (product_name like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%') ) 
+		 </if> 
+		order by id desc
 	</select>
 	<!-- 物料查询详情 -->
 	<select id="selD_MODULE_DETAILS" resultType="D_module_details">
-		select * from
-		d_module_details where design_id=#{design_id}
+		select a.id,a.design_id,a.product_id,a.product_name,a.amount_unit,a.amount,a.residual_amount,a.cost_price,a.subtotal
+		,b.product_describe  from
+		d_module_details a,d_file b where design_id=#{design_id} group by a.id
 	</select>
 	<!-- 查询产品名称是否重复 -->
 	<select id="selectname" resultType="int">
@@ -308,4 +340,12 @@
 	<select id="selectCount" resultType="int">
 	select count(1) from d_module where design_id=#{sjdh}
 	</select>
+	
+	<update id="updatezje">
+	update d_module set cost_price_sum=cost_price_sum-#{subtotal} where design_id=#{design_id}
+	</update>
+	
+	<update id="updatejzje">
+	update d_module set cost_price_sum=cost_price_sum+#{subtotal} where design_id=#{design_id}
+	</update>
 </mapper>

@@ -2,30 +2,32 @@ package com.teams.service;
 
 import java.util.List;
 
-import org.apache.catalina.mapper.Mapper;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.teams.mapper.ProductGxMapper;
 import com.teams.pojo.D_file;
 import com.teams.pojo.M_design_procedure;
 import com.teams.pojo.M_design_procedure_details;
 import com.teams.pojo.M_gonxu;
+import com.teams.utils.Params;
 
 @Service
 public class ProductGxServicImpl implements ProductGxService{
 @Autowired
 	ProductGxMapper mapper;
 	@Override
-	public List<D_file> selecIds() {
+	public PageInfo<D_file> selecIds(Params param) {
 		// TODO Auto-generated method stub
-		return mapper.selecIds();
+		return PageHelper.startPage(param.getPageNum(),param.getPageSize())
+				.doSelectPageInfo(()->mapper.selecIds(param));
 	}
 	@Override
-	public List<M_gonxu> selectbz() {
+	public List<M_gonxu> selectbz(String parent_id) {
 		// TODO Auto-generated method stub
-		return mapper.selectbz();
+		return mapper.selectbz(parent_id);
 	}
 	@Override
 	public int addgx(String design_id, String product_id, String product_name, Double cost_price_sum, String designer,
@@ -40,9 +42,10 @@ public class ProductGxServicImpl implements ProductGxService{
 		return mapper.addgxmx(parent_id, procedure_id, labour_hour_amount, amount_unit, cost_price, subtotal, register);
 	}
 	@Override
-	public List<M_design_procedure> selectcpgx(String check_tag) {
+	public PageInfo<M_design_procedure> selectcpgx(Params param) {
 		// TODO Auto-generated method stub
-		return mapper.selectcpgx(check_tag);
+		return PageHelper.startPage(param.getPageNum(),param.getPageSize())
+				.doSelectPageInfo(()->mapper.selectcpgx(param));
 	}
 	@Override
 	public int updsj(String design_procedure_tag,String product_id) {
@@ -60,9 +63,9 @@ public class ProductGxServicImpl implements ProductGxService{
 		return mapper.updsjd(check_tag,checker, design_id);
 	}
 	@Override
-	public int delgxsj(String design_id) {
+	public int delgxsj(String check_yj,String design_id) {
 		// TODO Auto-generated method stub
-		return mapper.delgxsj(design_id);
+		return mapper.delgxsj(check_yj,design_id);
 	}
 	@Override
 	public int delgxsjs(String parent_id) {
@@ -70,14 +73,15 @@ public class ProductGxServicImpl implements ProductGxService{
 		return mapper.delgxsjs(parent_id);
 	}
 	@Override
-	public List<M_design_procedure> selectcpgxs() {
+	public PageInfo<M_design_procedure> selectcpgxs(Params param) {
 		// TODO Auto-generated method stub
-		return mapper.selectcpgxs();
+		return PageHelper.startPage(param.getPageNum(),param.getPageSize())
+				.doSelectPageInfo(()->mapper.selectcpgxs(param));
 	}
 	@Override
-	public int updbg(double cost_price_sum, String design_id) {
+	public int updbg(String design_id,String change_yj) {
 		// TODO Auto-generated method stub
-		return mapper.updbg(cost_price_sum, design_id);
+		return mapper.updbg(design_id,change_yj);
 	}
 	@Override
 	public int delgxbg(String parent_id) {
@@ -89,9 +93,29 @@ public class ProductGxServicImpl implements ProductGxService{
 	  return  mapper.updGx(design_procedure_tag,design_id);
 	}
 	@Override
-	public List<M_design_procedure> selectcpgxss() {
+	public PageInfo<M_design_procedure> selectcpgxss(Params param) {
 		// TODO Auto-generated method stub
-		return mapper.selectcpgxss();
+		return PageHelper.startPage(param.getPageNum(),param.getPageSize())
+				.doSelectPageInfo(()->mapper.selectcpgxss(param));
+	}
+	@Override
+	public void delgxsjd(int id, String parent_id) {
+		mapper.delgxsjd(id, parent_id);
+	}
+	@Override
+	public void updgxsjd(double xj, String parent_id) {
+		// TODO Auto-generated method stub
+		mapper.updgxsjd(xj, parent_id);
+	}
+	@Override
+	public int selectcount(String sjdh) {
+		// TODO Auto-generated method stub
+		return mapper.selectcount(sjdh);
+	}
+	@Override
+	public void updzje(double zje, String sjdh) {
+		// TODO Auto-generated method stub
+		mapper.updzje(zje, sjdh);
 	}
 
 

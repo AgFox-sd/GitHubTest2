@@ -2,14 +2,16 @@ package com.teams.service;
 
 import java.util.List;
 
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.D_file;
 import com.teams.pojo.provider;
 import com.teams.pojo.providerSq;
 import com.teams.pojo.providerSqXq;
+import com.teams.utils.Params;
 
 public interface ProviderSqDjService {
 	// 查询供应商审核通过
-	List<provider> selprovider();
+	PageInfo<provider> selprovider(Params params);
 
 	// 查询商品
 	List<D_file> selD_file(String providerSqId);
@@ -32,7 +34,7 @@ public interface ProviderSqDjService {
 
 	//审核
     //查询等待审核
-    List<providerSq> selproviderSq();
+	PageInfo<providerSq> selproviderSq(Params params);
     
     //查询详情
     List<providerSqXq> selcxxq(String providerSqId);
@@ -42,12 +44,13 @@ public interface ProviderSqDjService {
     
     //查询
     //登记查询所有
-    List<providerSq> seldjsy();
+    PageInfo<providerSq> seldjsy(Params params);
+    
     List<providerSqXq> selshxq(String providerSqId);
     
     //变更
     //查寻所有未变更
-    List<providerSq> selsywbg(String change_tag);
+    PageInfo<providerSq> selsywbg(Params params);
     
     //查询商品
     List<D_file> selspbg(String providerSqId);

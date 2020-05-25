@@ -2,15 +2,18 @@ package com.teams.service;
 
 import java.util.List;
 
+
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.D_module_details;
 import com.teams.pojo.M_design_procedure;
 import com.teams.pojo.M_design_procedure_details;
 import com.teams.pojo.m_procedure_module;
+import com.teams.utils.Params;
 
 public interface ProductGxWlService {
 
 	//查询已设计完工序的产品信息
-	List<M_design_procedure> productGxWl();
+	PageInfo<M_design_procedure> productGxWl(Params param);
 
 	//查询设计完产品工序的工序信息
 	List<M_design_procedure_details> productGxMx(String product_id);
@@ -35,13 +38,13 @@ public interface ProductGxWlService {
 	void updWlZcb(double module_subtotal, String design_id);
 
 	//修改产品工序表为已设计	
-	int updGxWlSj(String design_id,String design_module_tag);
+	int updGxWlSj(String check_yj,String design_id,String design_module_tag);
 
 	//修改产品表为已设计
 	void productGxSj(String design_module_tag,String real_cost_price,String design_id);
 
 	//查询已设计完物料工序的产品
-	List<M_design_procedure> productGxWlSh(String design_module_tag);
+	PageInfo<M_design_procedure> productGxWlSh(Params params);
 
 	//修改产品工序表为已审核
 	int updateGxWlSh(String design_id);
@@ -59,7 +62,7 @@ public interface ProductGxWlService {
 	List<m_procedure_module> cxsygx(String design_id);
 
 	//查询已设计或已审核的产品
-	List<M_design_procedure> productGxWlCx();
+	PageInfo<M_design_procedure> productGxWlCx(Params param);
 
 	void updmpm(int slsl,double d, String product_id, String design_id);
 
@@ -69,6 +72,20 @@ public interface ProductGxWlService {
 
 	int upddmd(int ky, String product_id, String design_id);
 
-	List<M_design_procedure> productGxWlSh2();
+	PageInfo<M_design_procedure> productGxWlSh2(Params param);
+
+	void deletewlzc(String design_id, String gongxu_name, String string);
+
+	void updzbzje(double zje, String design_id);
+
+	void updatewlzc(int i, String product_id, String string);
+
+	int updzje(String design_id, String gongxu_name);
+
+	double selectwlzcb(String design_id);
+
+	int updwlbgyj(String wlbg_yj, String design_id);
+
+	int selectcf(String design_id);
 
 }

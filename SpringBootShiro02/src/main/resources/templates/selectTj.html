@@ -2,108 +2,142 @@
 <html lang="zh">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>库存管理-动态库存管理-动态库存查询</title>
 <link rel="icon" href="favicon.ico" type="image/ico">
 <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
-<meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="description"
+	content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
 <meta name="author" content="yinqi">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/materialdesignicons.min.css" rel="stylesheet">
 <link href="css/style.min.css" rel="stylesheet">
 <script type="text/javascript" src="js/axios.min.js"></script>
-<script type="text/javascript"   src="js/vue-2.4.0.js"></script>
+<script type="text/javascript" src="js/vue-2.4.0.js"></script>
 </head>
-  
+
 <body>
-<div id="app">
-<div class="lyear-layout-web">
-  <div class="lyear-layout-container">
-   
-    <header class="lyear-layout-header" style="margin-left: -18%;">
-      
-      <nav class="navbar navbar-default">
-        <div class="topbar">
-          
-          <div class="topbar-left">
-            <div class="lyear-aside-toggler">
-              <span class="lyear-toggler-bar"></span>
-              <span class="lyear-toggler-bar"></span>
-              <span class="lyear-toggler-bar"></span>
-            </div>
-            <span class="navbar-page-title"> 库存管理-动态库存管理-动态库存查询</span>
-            <span class="navbar-page-title" style="color: black;"> 符合条件的产品总数：{{count1}}例</span>
-            <span class="navbar-page-title" style="color: black;"> 当前库存总数：{{count2}}件</span>
-            <span class="navbar-page-title" style="color: red;"> 当前库存上限报警产品种类数：{{count3}}种</span>
-            <span class="navbar-page-title" style="color: yellow;"> 当前库存下限报警产品种类数：{{count4}}种</span>
-          </div>
-        </div>
-      </nav>
-      
-    </header>
-    <!--页面主要内容-->
-    <main class="lyear-layout-content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-11" style="margin-left: -25%;margin-top: -6%;">
-            <div class="card">
-              <div class="card-toolbar clearfix">
-               <form class="pull-right search-bar" method="get" action="#!" role="form">
-                  <div class="input-group">
-                    <div class="input-group-btn">
-                      <input type="hidden" name="search_field" id="search-field" value="title">
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive" id="box1">
-                <div>
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th class="text-center">产品分类</th>
-                        <th class="text-center">产品类型</th>
-                        <th class="text-center">产品编号</th>
-                        <th class="text-center">产品名称</th>
-                        <th class="text-center">库存数量</th>
-                        <th class="text-center">安全库存上限</th>
-                        <th class="text-center">安全库存下限</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="diaodu in list" class="text-center">
-                        <td>{{diaodu.address}}</td>
-                        <td>{{diaodu.product_type}}</td>
-                       	<td>{{diaodu.product_id}}</td>
-                        <td>{{diaodu.product_name}}</td>
-                        <td>{{diaodu.amount}}</td>
-                        <td>{{diaodu.max_amount}}</td>
-                        <td>{{diaodu.min_amount}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
+	<div id="app">
+		<div class="lyear-layout-web">
+			<div class="lyear-layout-container">
 
-              </div>
-              </div>
-            </div>
-          </div>
-          </div>        
-      </div>
-      
-    </main>
-    <!--End 页面主要内容-->
-  </div>
-</div>
-</div>
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
-<script type="text/javascript" src="js/main.min.js"></script>
+				<header class="lyear-layout-header" style="margin-left: -18%;">
+
+					<nav class="navbar navbar-default">
+						<div class="topbar">
+
+							<div class="topbar-left">
+								<div class="lyear-aside-toggler">
+									<span class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span>
+								</div>
+								<span class="navbar-page-title"> 库存管理-动态库存管理-动态库存查询</span> <span
+									class="navbar-page-title" style="color: black;">
+									符合条件的产品总数：{{count1}}例</span> <span class="navbar-page-title"
+									style="color: black;"> 当前库存总数：{{count2}}件</span> <span
+									class="navbar-page-title" style="color: red;">
+									当前库存上限报警产品种类数：{{count3}}种</span> <span class="navbar-page-title"
+									style="color: red;"> 当前库存下限报警产品种类数：{{count4}}种</span>
+							</div>
+						</div>
+					</nav>
+
+				</header>
+				<!--页面主要内容-->
+				<main class="lyear-layout-content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-lg-11" style="margin-left: -25%; margin-top: 0%;">
+							<div class="card">
+								<div class="card-toolbar clearfix" id="ss">
+									<form class="pull-right search-bar" method="get" action="#!"
+										role="form">
+										<div class="input-group">
+											<input type="text" class="form-control"
+												placeholder="请输入产品名称或者编号" v-model="keywords">
+											<div class="input-group-btn">
+												<input type="hidden" name="search_field" id="search-field"
+													value="title">
+												<button type="button" class="btn btn-primary btn-ms"
+													@click="Selad()">查询</button>
+											</div>
+										</div>
+									</form>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive" id="box1">
+										<div>
+											<table class="table table-hover">
+												<thead>
+													<tr>
+														<th class="text-center">产品分类</th>
+														<th class="text-center">产品类型</th>
+														<th class="text-center">产品编号</th>
+														<th class="text-center">产品名称</th>
+														<th class="text-center">库存数量</th>
+														<th class="text-center">安全库存上限</th>
+														<th class="text-center">安全库存下限</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr v-for="(diaodu,key,index) in plcassPage.list" class="text-center">
+														<td>{{diaodu.address}}</td>
+														<td>{{diaodu.product_type}}</td>
+														<td>{{diaodu.product_id}}</td>
+														<td>{{diaodu.product_name}}</td>
+														<td>{{diaodu.amount}}</td>
+														<td>{{diaodu.max_amount}}</td>
+														<td>{{diaodu.min_amount}}</td>
+													</tr>
+												</tbody>
+											</table>
+					<center style="display: none;" id="fy">
+										<ul class="pagination pagination-lg">
+											<ul class="pagination pagination-lg">
+												<li><a @click.prevent="searchid(plcassPage.firstPage)">首页</a></li>
+												<li><a href="#"
+													@click.prevent="searchid(plcassPage.prePage)">上一页</a></li>
+												<template v-for="pageNum in plcassPage.navigatepageNums">
+												<li><a href="#" @click.prevent="searchid(pageNum)">{{pageNum}}</a></li>
+												</template>
+												<li><a href="#"
+													@click.prevent="searchid(plcassPage.nextPage)">下一页</a></li>
+												<li><a href="#"
+													@click.prevent="searchid(plcassPage.lastPage)">末页</a></li>
+												<li><a>{{plcassPage.pageNum}}/{{plcassPage.pages}}</a></li>
+												<li><a><input type="text" v-model="size"
+														style="width: 40px; height: 35px;" value="1" /></a></li>
+												<li><a href="#" @click.prevent="Selad()">go</a></li>
+												<li><select style="height: 37px;" id="page"
+													@change="Selad()">
+														<option value="4">4条/页</option>
+														<option value="5">5条/页</option>
+														<option value="6">6条/页</option>
+												</select></li>
+											</ul>
+										</ul>
+									</center>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</main>
+				<!--End 页面主要内容-->
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+	<script type="text/javascript" src="js/main.min.js"></script>
 
 
 
-<script>
+	<script>
 			var vm=new Vue({
 				el:'#app',
 				data:{
@@ -111,44 +145,101 @@
 					count1:'',
 					count2:'',
 					count3:'',
-				    count4:''
+				    count4:'',
+				    size:1,
+		    		keywords:'',
+					params:{
+			    			  pageNum:1,
+			    			  pageSize:4,
+			    			  keyWord:''
+			    	},
+			    	plcassPage:{
+			    			  
+			    	}
 				},
 				mounted(){//初始化显示完成调用
 					this.Selad();
 				},
 				methods:{
-					Selad(){
-						//发送异步请求，请求后端控制器，获取所有的品牌信息
-						axios.post("selectscell").then(res=>{
-							this.list=res.data;
-						}).catch(err=>{
-							console.log("请求失败");
-						})
-						
-						axios.post("selectscellcount1").then(res=>{
-							this.count1=res.data;
-						}).catch(err=>{
-							console.log("请求失败");
-						})
-						
-						axios.post("selectscellcount2").then(res=>{
-							this.count2=res.data;
-						}).catch(err=>{
-							console.log("请求失败");
-						})
-						axios.post("selectscellcount3").then(res=>{
-							this.count3=res.data;
-						}).catch(err=>{
-							console.log("请求失败");
-						})
-						
-						axios.post("selectscellcount4").then(res=>{
-							this.count4=res.data;
-						}).catch(err=>{
-							console.log("请求失败");
-						})
-						
+				 Selad(){
+					//发送异步请求，请求后端控制器，获取所有的品牌信息
+					if(this.size>this.plcassPage.pages&&this.plcassPage.pages!=0){
+						this.size = this.plcassPage.pages;
 					}
+					this.params.pageNum  = this.size;
+					this.params.pageSize = $("#page").val();
+					//发送异步请求，请求后端控制器，获取所有的品牌信息
+					this.params.keyWord=this.keywords;						
+				    axios.post('selectscell',this.params).then(res=>{
+						this.plcassPage=res.data;
+						if(res.data.list!=""){
+						    $("#fy").show();
+					  }else{
+						    $("#fy").hide();
+					  }
+				  }).catch(err=>{
+						alert('请求失败')
+				  })
+				    axios.post("selectscellcount1").then(res=>{
+						this.count1=res.data;
+					}).catch(err=>{
+						console.log("请求失败");
+					})
+					
+					axios.post("selectscellcount2").then(res=>{
+						this.count2=res.data;
+					}).catch(err=>{
+						console.log("请求失败");
+					})
+					axios.post("selectscellcount3").then(res=>{
+						this.count3=res.data;
+					}).catch(err=>{
+						console.log("请求失败");
+					})
+					
+					axios.post("selectscellcount4").then(res=>{
+						this.count4=res.data;
+					}).catch(err=>{
+						console.log("请求失败");
+					})
+				},Selads(){
+					this.params.pageSize = $("#page").val();
+					//发送异步请求，请求后端控制器，获取所有的品牌信息
+					this.params.keyWord=this.keywords;						
+				    axios.post('selectscell',this.params).then(res=>{
+						this.plcassPage=res.data;
+				  }).catch(err=>{
+						alert('请求失败')
+				  })
+				    axios.post("selectscellcount1").then(res=>{
+						this.count1=res.data;
+					}).catch(err=>{
+						console.log("请求失败");
+					})
+					
+					axios.post("selectscellcount2").then(res=>{
+						this.count2=res.data;
+					}).catch(err=>{
+						console.log("请求失败");
+					})
+					axios.post("selectscellcount3").then(res=>{
+						this.count3=res.data;
+					}).catch(err=>{
+						console.log("请求失败");
+					})
+					
+					axios.post("selectscellcount4").then(res=>{
+						this.count4=res.data;
+					}).catch(err=>{
+						console.log("请求失败");
+					})
+			},searchid(page){						
+				if (page < 0 || page > this.plcassPage.pages){
+                    return false;
+                }
+				this.params.pageNum=page;
+				this.Selads();
+			},
 			}
 				
 			})

@@ -4,15 +4,18 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.github.pagehelper.PageInfo;
 import com.teams.pojo.D_module_details;
 import com.teams.pojo.M_design_procedure;
 import com.teams.pojo.M_design_procedure_details;
 import com.teams.pojo.m_procedure_module;
 import com.teams.service.ProductGxWlService;
+import com.teams.utils.Params;
 
 @Controller
 public class ProductGxWlController {
@@ -23,8 +26,8 @@ public class ProductGxWlController {
 	//查询已设计完产品工序的产品信息
 	@RequestMapping("/productGxWl")
 	@ResponseBody
-	public List<M_design_procedure> productGxWl(){
-		List<M_design_procedure> list = service.productGxWl();
+	public PageInfo<M_design_procedure> productGxWl(@RequestBody Params param){
+		PageInfo<M_design_procedure> list = service.productGxWl(param);
 		return list;
 	}
 	
@@ -60,13 +63,42 @@ public class ProductGxWlController {
 		return service.selectGxWl(design_id,gongxu_name);
 	}
 	
+	@RequestMapping("/selectwlzcsj")
+	@ResponseBody
+	public List<m_procedure_module> selectwlzcsj(String gongxu_name,String design_id){
+		return service.selectGxWl(design_id,gongxu_name);
+	}
+	
+	@RequestMapping("/updsjdsl")
+	@ResponseBody
+	public int updsjdsl(String product_id,String design_id,String gongxu_name,String[] bh,int[] sl,double[] xj) {
+		double zje = 0;
+		for (int i = 0; i < xj.length; i++) {
+			service.deletewlzc(design_id,gongxu_name,bh[i]);
+			service.updatewlzc(sl[i],product_id,bh[i]);
+			zje+=xj[i];
+		}
+		service.updzbzje(zje,design_id);
+		return service.updzje(design_id,gongxu_name);
+	}
+	
+	@RequestMapping("/selectwlzcb")
+	@ResponseBody
+	public double selectwlzcb(String design_id) {
+		return service.selectwlzcb(design_id);
+	}
 	//修改产品工序表为已设计
 	@RequestMapping("/updGxWlSj")
 	@ResponseBody
 	public int updGxWlSj(String design_id) {
-		return service.updGxWlSj("已设计",design_id);
+		return service.updGxWlSj(" ","已设计",design_id);
 	}
 	
+	@RequestMapping("/selectcf")
+	@ResponseBody
+	public int selectcf(String design_id) {
+		return service.selectcf(design_id);
+	}
 	//修改产品工序表为已审核
 	@RequestMapping("/updateGxWlSh")
 	@ResponseBody
@@ -78,16 +110,16 @@ public class ProductGxWlController {
 	//查询已设计完物料工序的产品
 	@RequestMapping("/productGxWlSh")
 	@ResponseBody
-	public List<M_design_procedure> productGxWlSh(){
-		List<M_design_procedure> list = service.productGxWlSh("变更等待审核");
+	public PageInfo<M_design_procedure> productGxWlSh(@RequestBody Params params){
+		PageInfo<M_design_procedure> list = service.productGxWlSh(params);
 		return list;
 	}
 	
 	//查询已设计或已审核的产品
 	@RequestMapping("/productGxWlCx")
 	@ResponseBody
-	public List<M_design_procedure> productGxWlCx(){
-		List<M_design_procedure> list = service.productGxWlCx();
+	public PageInfo<M_design_procedure> productGxWlCx(@RequestBody Params param){
+		PageInfo<M_design_procedure> list = service.productGxWlCx(param);
 		return list;
 	}
 	
@@ -101,13 +133,10 @@ public class ProductGxWlController {
 	//修改相关表字段
 	@RequestMapping("/updateSySj")
 	@ResponseBody
-	public  int updateSySj(String design_id,int[] sl,String[] wlbh,String product_id) {
+	public  int updateSySj(String check_yj,String design_id,int[] sl,String[] wlbh,String product_id) {
 	service.updWlZcb2(design_id);
-	service.updCpGx2(design_id);
-		for (int i = 0; i < wlbh.length; i++) {
-			service.updWlMx2(sl[i],wlbh[i] ,product_id);
-		}		
-	return service.updGxWlSj("审核不通过",design_id);
+		
+	return service.updGxWlSj(check_yj,"审核不通过",design_id);
 	}
 	
 	
@@ -121,11 +150,17 @@ public class ProductGxWlController {
 	//查询已审核的产品信息
 	@RequestMapping("/productGxWlSh2")
 	@ResponseBody
-	public List<M_design_procedure> productGxWlSh2(){
-		List<M_design_procedure> list = service.productGxWlSh2();
+	public PageInfo<M_design_procedure> productGxWlSh2(@RequestBody Params param){
+		PageInfo<M_design_procedure> list = service.productGxWlSh2(param);
 		return list;
 	}
 	
+	@RequestMapping("/updwlbgyj")
+	@ResponseBody
+	public int updwlbgyj(String design_id,String wlbg_yj,String real_cost_price) {
+		service.productGxSj("未设计", real_cost_price, design_id);
+		return service.updwlbgyj(wlbg_yj,design_id);
+	}
 	//变更
 	@RequestMapping("/updgxwlbg")
 	@ResponseBody

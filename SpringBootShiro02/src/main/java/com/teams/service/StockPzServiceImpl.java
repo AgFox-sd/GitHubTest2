@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.teams.mapper.StockPzMapper;
 import com.teams.pojo.D_file;
 import com.teams.pojo.s_cell;
+import com.teams.utils.Params;
 
 @Transactional
 @Service
@@ -19,8 +22,9 @@ public class StockPzServiceImpl implements StockPzService{
 
 	//查询库存配置未设计的产品和物料
 	@Override
-	public List<D_file> selectWsj() {
-		return mapper.selectWsj();
+	public PageInfo<D_file> selectWsj(Params params) {
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectWsj(params));
 	}
 
 	//增加库存信息
@@ -55,20 +59,32 @@ public class StockPzServiceImpl implements StockPzService{
 
 	//查询所有未审核的库存配置信息
 	@Override
-	public List<s_cell> selectAll(String check_tag,String check_tags) {
-		return mapper.selectAll(check_tag,check_tags);
+	public PageInfo<s_cell> selectAll(Params params) {
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectAll(params));
 	}
 
+	@Override
+	public PageInfo<s_cell> selectAll1(Params params) {
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectAll1(params));
+	}
 	//审核库存配置信息
 	@Override
 	public int updfh(s_cell s_cell) {
 		return mapper.updfh(s_cell);
 	}
 
+	@Override
+	public int updfh1(s_cell s_cell) {
+		return mapper.updfh1(s_cell);
+	}
+	
 	//查询所有库存配置信息
 	@Override
-	public List<s_cell> selectSy() {
-		return mapper.selectSy();
+	public PageInfo<s_cell> selectSy(Params params) {
+		return PageHelper.startPage(params.getPageNum(),params.getPageSize())
+				.doSelectPageInfo(()->mapper.selectSy(params));
 	}
 
 	//查询库存配置未设计的产品和物料数量

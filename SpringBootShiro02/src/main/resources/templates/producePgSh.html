@@ -2,257 +2,310 @@
 <html lang="zh">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>生产派工单审核</title>
 <link rel="icon" href="favicon.ico" type="image/ico">
 <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
-<meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="description"
+	content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
 <meta name="author" content="yinqi">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/materialdesignicons.min.css" rel="stylesheet">
 <link href="css/style.min.css" rel="stylesheet">
 <script type="text/javascript" src="js/axios.min.js"></script>
-<script type="text/javascript"   src="js/vue-2.4.0.js"></script>
+<script type="text/javascript" src="js/vue-2.4.0.js"></script>
 </head>
-  
+
 <body>
-<div id="app">
-<div class="lyear-layout-web">
-  <div class="lyear-layout-container">
-   			 
-    <header class="lyear-layout-header" style="margin-left: -18%;">
-      
-      <nav class="navbar navbar-default">
-        <div class="topbar">
-          
-          <div class="topbar-left">
-            <div class="lyear-aside-toggler">
-              <span class="lyear-toggler-bar"></span>
-              <span class="lyear-toggler-bar"></span>
-              <span class="lyear-toggler-bar"></span>
-            </div>
-            <span class="navbar-page-title"> 生产管理 - 生产调度管理 - 生产派工单审核</span>
-          </div>
-        </div>
-      </nav>
-      
-    </header>
-    <!--页面主要内容-->
-    <main class="lyear-layout-content">
-      
-      <div class="container-fluid">
-        
-        <div class="row">
-          <div class="col-lg-12" style="margin-left: -25%;margin-top: -6%;">
-            <div class="card">
-              <div class="card-toolbar clearfix">
-                <form class="pull-right search-bar" method="get" action="#!" role="form">
-                  <div class="input-group">
-                    <div class="input-group-btn">
-                      <input type="hidden" name="search_field" id="search-field" value="title">
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div class="card-body">
-              <div class="table-responsive" id="box1" >
-              	<div style="margin-top: 15px;margin-bottom: 20px">
-		            <span style="margin-left: 600px;">当前等待审核的生产派工单总数:</span>
-		            <span style="margin-left: 10px">{{ddshsum}}</span>
-		        </div>
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th class="text-center">生产派工单编号</th>
-					    <th class="text-center">产品编号</th>
-					    <th class="text-center">产品名称</th>
-					    <th class="text-center">数量</th>
-						<th class="text-center">出库单编号集合</th>
-						<th class="text-center">登记时间</th>
-						<th class="text-center">审核</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-					<tr v-for="sh in list" class="text-center">
-					    <td>{{sh.pg_id}}</td>
-					    <td>{{sh.product_id}}</td>
-					    <td>{{sh.product_name}}</td>
-						<td>{{sh.amount}}</td>
-						<td></td>
-						<td>{{sh.pg_time}}</td>
-						<td>
-						  <div class="btn-group">
-                             <button type="button" class="btn btn-pink  btn-xs" data-toggle="modal" data-target="#modal1"
-                              @click="gosh(sh.pg_id,sh.product_id,sh.product_name,sh.amount,sh.pg_time,sh.jhdbh,sh.pg_ren)">
-                                                                              审核
-                             </button>
-                          </div>
-						</td>
-					</tr>
-				</tbody>
-		
-                  </table>
-              </div>
-               <!-- box2开始 -->
-        <div class="btn-group" id="box2" style="display:none">
-       			    <div>
-          				<p style="margin-left: 450px;margin-top: 20px;font-size: 25px;">生产派工单</p>
-       				</div>
-  					<div class="example-box" style="margin-left: 580px">
-		                  <label class="lyear-radio radio-inline radio-pink">
-		                    <input type="radio" name="hh"  value="通过" ><span>通过</span>
-		                  </label>
-		                  <label class="lyear-radio radio-inline radio-pink"  style="margin-left: 20px">
-		                    <input type="radio" name="hh" value="不通过" checked="checked"><span>不通过</span>
-		                  </label>
-		            <div style="margin-left: 180px">     
-		            <button type="button" class="btn btn-primary"  
-		            	@click="Queren()">
-		                                                 确认
-		            </button>
-		            <button  class="btn btn-pink"   @click="Fanhui()">返回</button>
-                	</div>
-                	</div>
-   					<div class="form-group" style="margin-left: 200px;margin-top: 20px">
-						  <label for="message-text" class="control-label">派工单编号:</label>
-					      <span style="margin-left: 10px;">{{pg_id}}</span>
-					</div>
-					<div class="form-group">
-					      <label for="message-text" class="control-label" style="margin-left: 200px">产品编号:</label>
-					      <span style="margin-left: 10px;">{{product_id}}</span>
-					      <label for="message-text" class="control-label" style="margin-left: 200px">产品名称:</label>
-					      <span style="margin-left: 10px;">{{product_name}}</span>
-					</div>
-					<div class="form-group" >
-					      <label for="message-text" class="control-label" style="margin-left: 200px">数量:</label>
-					      <span style="margin-left: 10px;">{{amount}}</span>
-					      <label for="message-text" class="control-label" style="margin-left: 350px">工单制定人:</label>
-					      <span style="margin-left: 10px;">{{pg_zdr}}</span>
-					</div>
-					<div class="form-group" style="margin-left: 150px">
-						  <table class="table table-hover" >
-				                  <thead>
-				                     <tr>
-				                        <th class="text-center">序号</th>
-				                        <th class="text-center">工序名称</th>
-				                        <th class="text-center">工序编号</th>
-				                        <th class="text-center">工序描述</th>
-				                        <th class="text-center">工时数(小时)</th>
-				                        <th class="text-center">工时成本小计(元)</th>
-				                        <th class="text-center">物料成本小计</th>
-				                        <th class="text-center">审核物料</th>
-				                      </tr>
-				                    </thead>
-				                    <tbody>
-				                    <tr v-for="gx in gxlist" class="text-center">
-					                    <td>{{gx.id}}</td>
-				                        <td>{{gx.name}}</td>
-				                       	<td>{{gx.procedure_id}}</td>
-				                        <td>{{gx.procedure_describe}}</td>
-				                        <td>{{gx.labour_hour_amount}}</td>
-				                        <td>{{gx.subtotal}}</td>
-				                        <td>{{gx.module_subtotal}}</td>
-				                        <td>
-				                        <a type="button" class="btn btn-pink  btn-xs"  data-toggle="modal" data-target=".bs-example-modal-lg" 
-				                         @click="ckwl(gx.parent_id,gx.name,gx.subtotal,gx.module_subtotal)">审核物料</a>
-				                        </td>
-				                     </tr>
-				                    </tbody>
-				                  </table>
-					      </div>
-					      <div class="form-group" style="margin-top: 20px">
-					           	<label for="message-text" class="control-label" style="margin-left: 200px" >工时总成本:</label>
-					            <span style="margin-left: 10px;" th:text="${session.gscb}"></span>	
-					            <label for="message-text" class="control-label" style="margin-left: 310px" >物料总成本:</label>
-					            <span style="margin-left: 10px;" th:text="${session.wlcb}"></span>		            
-					      </div>
-					      <div class="form-group" style="margin-top: 20px">
-					         	<label for="message-text" class="control-label" style="margin-left: 200px">登记人:</label>
-					            <span id="shr" style="margin-left: 10px;color: red" th:text="${session.username}"></span>
-					            <label for="message-text" class="control-label" style="margin-left: 350px">审核人:</label>
-					            <span id="shr" style="margin-left: 10px;color: red" th:text="${session.username}"></span>
-					    </div>
-					    <div class="form-group" style="margin-left: 150px;margin-top: 30px">
-								<label for="message-text" class="control-label" >意见:</label>
-								<textarea rows="3" cols="90" v-model="check_reason" name="check_reason"></textarea>
+	<div id="app">
+		<div class="lyear-layout-web">
+			<div class="lyear-layout-container">
+
+				<header class="lyear-layout-header" style="margin-left: -18%;">
+
+					<nav class="navbar navbar-default">
+						<div class="topbar">
+
+							<div class="topbar-left">
+								<div class="lyear-aside-toggler">
+									<span class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span>
+								</div>
+								<span class="navbar-page-title"> 生产管理 - 生产调度管理 - 生产派工单审核</span>
+								<div style="margin-top: 15px;color: red; ">
+											<span style="margin-left: 450px;">当前等待审核的生产派工单总数:</span> <span
+												style="margin-left: 10px">{{ddshsum}}</span>
+										</div>
+							</div>
 						</div>
-		<!-- 模态框开始 -->
-                  <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-                  <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                        <h4 class="modal-title" id="myLargeModalLabel" style="margin-left: 380px">工序物料单</h4>
-                      </div>
-                      <div class="modal-body">
-                      <div class="form-group" style="margin-left: 200px">
-						<label for="message-text" class="control-label" >设计单编号:</label>
-						<span>{{sjdbh}}</span>
-						<label for="message-text" class="control-label" style="margin-left: 200px" >工序名称:</label>
-						<span>{{gxmc}}</span>
-		         	 </div>
-                    <form action="#" method="post">
-					   <div style="margin-left: 10px">
-			           <table class="table table-hover" >
-	                    <thead>
-	                      <tr>
-	                        <th class="text-center">序号</th>
-	                        <th class="text-center">物料名称</th>
-	                        <th class="text-center">物料编号</th>
-	                        <th class="text-center">描述</th>
-	                        <th class="text-center">本工序数量</th>
-	                        <th class="text-center">单位</th>
-	                        <th class="text-center">单价(元)</th>
-	                        <th class="text-center">小计(元)</th>
-	                      </tr>
-	                    </thead>
-	                    <tbody>
-	                      <tr v-for="wl in wllist" class="text-center">
-			            	<td class="shtg">{{wl.id}}</td>
-	                        <td>{{wl.product_name}}</td>
-	                        <td>{{wl.product_id}}</td>
-	                        <td>{{wl.product_describe}}</td>
-	                        <td>{{wl.amount}}</td>
-	                        <td>{{wl.amount_unit}}</td>
-	                        <td>{{wl.cost_price}}</td>
-	                        <td>{{wl.subtotal}}</td>
-	                      </tr>
-	                    </tbody>
-	                  </table>
-	                  </div>  
-		        		</form>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" @click="shtg()">审核</button>
-                      </div>
-                    </div>
-                  </div>
-                </div> 
-                <!-- 模态框结束 -->
-        </div>
-        <!-- box2结束 --> 		
+					</nav>
 
-                
-                
-              </div>
-            </div>
-          </div>
-          
-        </div>
-        
-      </div>
-      
-    </main>
-    <!--End 页面主要内容-->
-  </div>
-</div>
-</div>
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
-<script type="text/javascript" src="js/main.min.js"></script>
+				</header>
+				<!--页面主要内容-->
+				<main class="lyear-layout-content">
 
-<script>
+				<div class="container-fluid">
+
+					<div class="row">
+						<div class="col-lg-12" style="margin-left: -25%; margin-top: -2%;">
+							<div class="card">
+							<div class="card-toolbar clearfix" id="ss">
+									<form class="pull-right search-bar" method="get" action="#!"
+										role="form">
+										<div class="input-group">
+											<input type="text" class="form-control"
+												placeholder="请输入计划单编号或产品名称或产品编号" v-model="keywords">
+											<div class="input-group-btn">
+												<input type="hidden" name="search_field" id="search-field"
+													value="title">
+												<button type="button" class="btn btn-primary btn-ms"
+													@click="load()">查询</button>
+											</div>
+										</div>
+									</form>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive" id="box1">
+										<table class="table table-hover">
+											<thead>
+												<tr>
+													<th class="text-center">生产派工单编号</th>
+													<th class="text-center">产品编号</th>
+													<th class="text-center">产品名称</th>
+													<th class="text-center">数量</th>
+													<th class="text-center">出库单编号集合</th>
+													<th class="text-center">登记时间</th>
+													<th class="text-center">审核</th>
+												</tr>
+											</thead>
+											<tbody>
+													<tr v-for="(sh,key,index) in plcassPage.list" class="text-center">
+													<td>{{sh.pg_id}}</td>
+													<td>{{sh.product_id}}</td>
+													<td>{{sh.product_name}}</td>
+													<td>{{sh.amount}}</td>
+													<td></td>
+													<td>{{sh.pg_time}}</td>
+													<td>
+														<div class="btn-group">
+															<button type="button" class="btn btn-pink  btn-xs"
+																data-toggle="modal" data-target="#modal1"
+																@click="gosh(sh.pg_id,sh.product_id,sh.product_name,sh.amount,sh.pg_time,sh.jhdbh,sh.pg_ren)">
+																审核</button>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+
+										</table>
+					<center style="display: none;" id="fy">
+										<ul class="pagination pagination-lg">
+											<ul class="pagination pagination-lg">
+												<li><a @click.prevent="searchid(plcassPage.firstPage)">首页</a></li>
+												<li><a href="#"
+													@click.prevent="searchid(plcassPage.prePage)">上一页</a></li>
+												<template v-for="pageNum in plcassPage.navigatepageNums">
+												<li><a href="#" @click.prevent="searchid(pageNum)">{{pageNum}}</a></li>
+												</template>
+												<li><a href="#"
+													@click.prevent="searchid(plcassPage.nextPage)">下一页</a></li>
+												<li><a href="#"
+													@click.prevent="searchid(plcassPage.lastPage)">末页</a></li>
+												<li><a>{{plcassPage.pageNum}}/{{plcassPage.pages}}</a></li>
+												<li><a><input type="text" v-model="size"
+														style="width: 40px; height: 35px;" value="1" /></a></li>
+												<li><a href="#" @click.prevent="load()">go</a></li>
+												<li><select style="height: 37px;" id="page"
+													@change="load()">
+														<option value="4">4条/页</option>
+														<option value="5">5条/页</option>
+														<option value="6">6条/页</option>
+												</select></li>
+											</ul>
+										</ul>
+									</center>
+									</div>
+									<!-- box2开始 -->
+									<div class="btn-group" id="box2" style="display: none">
+										<div>
+											<p
+												style="margin-left: 450px;font-size: 25px;">生产派工单</p>
+										</div>
+										<div class="example-box" style="margin-left: 640px">
+											<label class="lyear-radio radio-inline radio-pink"> <input
+												type="radio" name="hh" value="通过"><span>通过</span>
+											</label> <label class="lyear-radio radio-inline radio-pink"
+												style="margin-left: 20px"> <input type="radio"
+												name="hh" value="不通过" checked="checked"><span>不通过</span>
+											</label>
+										</div>
+										<div class="form-group"
+											style="margin-left: 200px;">
+											<label for="message-text" class="control-label">派工单编号:</label>
+											<span style="margin-left: 10px;">{{pg_id}}</span>
+										</div>
+										<div class="form-group">
+											<label for="message-text" class="control-label"
+												style="margin-left: 200px">产品编号:</label> <span
+												style="margin-left: 10px;">{{product_id}}</span> <label
+												for="message-text" class="control-label"
+												style="margin-left: 200px">产品名称:</label> <span
+												style="margin-left: 10px;">{{product_name}}</span>
+										</div>
+										<div class="form-group">
+											<label for="message-text" class="control-label"
+												style="margin-left: 200px">数量:</label> <span
+												style="margin-left: 10px;">{{amount}}</span> <label
+												for="message-text" class="control-label"
+												style="margin-left: 350px">工单制定人:</label> <span
+												style="margin-left: 10px;">{{pg_zdr}}</span>
+										</div>
+										<div class="form-group" style="margin-left: 150px">
+											<table class="table table-hover">
+												<thead>
+													<tr>
+														<th class="text-center">序号</th>
+														<th class="text-center">工序名称</th>
+														<th class="text-center">工序编号</th>
+														<th class="text-center">工序描述</th>
+														<th class="text-center">工时数(小时)</th>
+														<th class="text-center">工时成本小计(元)</th>
+														<th class="text-center">物料成本小计</th>
+														<th class="text-center">审核物料</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr v-for="gx in gxlist" class="text-center">
+														<td>{{gx.id}}</td>
+														<td>{{gx.name}}</td>
+														<td>{{gx.procedure_id}}</td>
+														<td>{{gx.procedure_describe}}</td>
+														<td>{{gx.labour_hour_amount}}</td>
+														<td>{{gx.subtotal}}</td>
+														<td>{{gx.module_subtotal}}</td>
+														<td><a type="button" class="btn btn-pink  btn-xs"
+															data-toggle="modal" data-target=".bs-example-modal-lg"
+															@click="ckwl(gx.parent_id,gx.name,gx.subtotal,gx.module_subtotal)">审核物料</a>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div class="form-group" style="margin-top: 20px">
+											<label for="message-text" class="control-label"
+												style="margin-left: 200px">工时总成本:</label> <span
+												style="margin-left: 10px;" th:text="${session.gscb}"></span>
+											<label for="message-text" class="control-label"
+												style="margin-left: 310px">物料总成本:</label> <span
+												style="margin-left: 10px;" th:text="${session.wlcb}"></span>
+										</div>
+										<div class="form-group" style="margin-top: 20px">
+											<label for="message-text" class="control-label"
+												style="margin-left: 200px">登记人:</label> <span id="shr"
+												style="margin-left: 10px; color: red"
+												th:text="${session.username}"></span> <label
+												for="message-text" class="control-label"
+												style="margin-left: 350px">审核人:</label> <span id="shr"
+												style="margin-left: 10px; color: red"
+												th:text="${session.username}"></span>
+										</div>
+										<div class="form-group"
+											style="margin-left: 150px; margin-top: 30px">
+											<label for="message-text" class="control-label">意见:</label>
+											<textarea rows="3" cols="90" v-model="check_reason"
+												id="check_reason"></textarea>
+										</div>
+										<div style="margin-left: 760px">
+												<button type="button" class="btn btn-primary"
+													@click="Queren()">确认</button>
+												<button class="btn btn-pink" @click="Fanhui()">返回</button>
+											</div>
+										<!-- 模态框开始 -->
+										<div class="modal fade bs-example-modal-lg" tabindex="-1"
+											role="dialog" aria-labelledby="myLargeModalLabel">
+											<div class="modal-dialog modal-lg" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<span aria-hidden="true">×</span>
+														</button>
+														<h4 class="modal-title" id="myLargeModalLabel"
+															style="margin-left: 380px">工序物料单</h4>
+													</div>
+													<div class="modal-body">
+														<div class="form-group" style="margin-left: 200px">
+															<label for="message-text" class="control-label">设计单编号:</label>
+															<span>{{sjdbh}}</span> <label for="message-text"
+																class="control-label" style="margin-left: 200px">工序名称:</label>
+															<span>{{gxmc}}</span>
+														</div>
+														<form action="#" method="post">
+															<div style="margin-left: 10px">
+																<table class="table table-hover">
+																	<thead>
+																		<tr>
+																			<th class="text-center">序号</th>
+																			<th class="text-center">物料名称</th>
+																			<th class="text-center">物料编号</th>
+																			<th class="text-center">描述</th>
+																			<th class="text-center">本工序数量</th>
+																			<th class="text-center">单位</th>
+																			<th class="text-center">单价(元)</th>
+																			<th class="text-center">小计(元)</th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<tr v-for="wl in wllist" class="text-center">
+																			<td class="shtg">{{wl.id}}</td>
+																			<td>{{wl.product_name}}</td>
+																			<td>{{wl.product_id}}</td>
+																			<td>{{wl.product_describe}}</td>
+																			<td>{{wl.amount}}</td>
+																			<td>{{wl.amount_unit}}</td>
+																			<td>{{wl.cost_price}}</td>
+																			<td>{{wl.subtotal}}</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</div>
+														</form>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-primary"
+															data-dismiss="modal" @click="shtg()">审核</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- 模态框结束 -->
+									</div>
+									<!-- box2结束 -->
+
+
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+				</main>
+				<!--End 页面主要内容-->
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+	<script type="text/javascript" src="js/main.min.js"></script>
+    <script type="text/javascript" src="js/lightyear.js"></script>
+    <script src="js/bootstrap-notify.min.js"></script>
+	<script>
       var vm=new Vue({
     	  el:'#app',
     	  data:{
@@ -272,20 +325,53 @@
 			  apply_id:'',
 			  pg_zdr:'',
 			  check_reason:'',//审核不通过原因
-			  tg:'通过',
+			  size:1,
+	    	  keywords:'',
+			  params:{
+		    			  pageNum:1,
+		    			  pageSize:4,
+		    			  keyWord:''
+		      },
+		      plcassPage:{
+		    			  
+		      }
     	  },
     	  mounted(){//页面挂载完成调用查询全部的方法
 				this.load();
     	        this.load2();
 		  },
 		  methods:{
-			  load:function(){//查询信息范围为所有未审核的派工单
-					axios.post("SelectPg").then(res=>{
-						this.list=res.data;
-					}).catch(err=>{
-						console.log("请求失败");
-					});
-			  },
+			  load(){
+			  if(this.size>this.plcassPage.pages&&this.plcassPage.pages!=0){
+					this.size = this.plcassPage.pages;
+				}
+				this.params.pageNum  = this.size;
+				this.params.pageSize = $("#page").val();
+				//发送异步请求，请求后端控制器，获取所有的品牌信息
+				this.params.keyWord=this.keywords;						
+			    axios.post('SelectPg',this.params).then(res=>{
+					this.plcassPage=res.data;
+					if(res.data.list!=""){
+					    $("#fy").show();
+				  }else{
+					    $("#fy").hide();
+				  }
+			  }).catch(err=>{
+					alert('请求失败')
+			  })
+				
+			},
+			loads(){
+				this.params.pageSize = $("#page").val();
+				//发送异步请求，请求后端控制器，获取所有的品牌信息
+				this.params.keyWord=this.keywords;						
+			  axios.post('SelectPg',this.params).then(res=>{
+						this.plcassPage=res.data;
+			  }).catch(err=>{
+					alert('请求失败')
+			  })
+				
+			},
 			  load2(){
 				  axios.post("SelSum").then(res=>{
 					  this.ddshsum=res.data;
@@ -301,6 +387,7 @@
 			      
 				  //盒子切换
 				  $("#box1").toggle();
+				  $("#ss").toggle();
 				  $("#box2").toggle();
 				  
 				  this.Prt();//查工序
@@ -330,30 +417,50 @@
 					 var an=$("input[name=hh]:checked").val(); //获取单选按钮的值
 					 var checker=$("#shr").text()  //审核人
 					  if(an=="通过"){
-							 var check_tag="审核通过";
-							 axios.get('updPgtg?check_tag='+check_tag+'&pg_id='+this.pg_id+'&check_reason='+this.tg+'').then(res=>{
-								 if(res.data>0){
-									 alert('审核成功')
-									 this.load();
-									 this.load2();
-									 $("#box1").toggle();
-									 $("#box2").toggle();
-								 }
-							 }).catch(err=>{
-								 alert('请求失败')
-							 });
+						  
+						  if(this.check_reason==""){
+							  setTimeout(function() {
+									 lightyear.loading('hide');
+								     lightyear.notify('请输入审核意见！', 'danger', 1000);
+								    }, 1e3)
+						  }else{
+							  var check_tag="审核通过";
+								 axios.get('updPgtg?check_tag='+check_tag+'&pg_id='+this.pg_id+'&check_reason='+this.check_reason+'').then(res=>{
+									 if(res.data>0){
+										 setTimeout(function() {
+											 lightyear.loading('hide');
+										     lightyear.notify('审核通过！', 'success', 1000);
+										    }, 1e3)
+										 this.load();
+										 this.load2();
+										 $("#box1").toggle();
+										 $("#box2").toggle();
+									 }
+								 }).catch(err=>{
+									 alert('请求失败')
+								 }); 
+						  }
+						  
+							
 						  }else if(an=="不通过"){
 							  if(this.check_reason==""){
-								  alert('请输入审核不通过原因！')
+								  setTimeout(function() {
+										 lightyear.loading('hide');
+									     lightyear.notify('请输入审核不通过原因！', 'danger', 1000);
+									    }, 1e3)
 							  }else{
 								  var manufacture_tag="未派工";
 								  var url="delpg?product_id="+this.product_id+"&apply_id="+this.apply_id+"&manufacture_tag="+manufacture_tag+"&pg_id="+this.pg_id+"&check_reason="+this.check_reason+"";
 								  axios.get(url).then(res=>{
 									  if(res.data>0){
-										  alert('审核不通过,请重新制定生产派工单')
+										  setTimeout(function() {
+												 lightyear.loading('hide');
+											     lightyear.notify('审核不通过,请重新制定生产计划派工单！', 'danger', 1000);
+											    }, 1e3)
 										  this.load();		
 										  this.load2();
 										  $("#box1").toggle();
+										  $("#ss").toggle();
 									      $("#box2").toggle();
 									  }
 								  }).catch(err=>{
@@ -367,6 +474,7 @@
 				},
 				Fanhui(){
 					$("#box1").toggle();
+					$("#ss").toggle();
 				    $("#box2").toggle();
 				},shtg(){
 					var an=$("input[name=hh]:checked").val();
@@ -384,16 +492,28 @@
 					     var url="scly?mc="+mc+"&bh="+bh+"&sl="+sl+"&dj="+dj+"&pg_id="+this.pg_id+"&amount="+this.amount+"";
 						 axios.get(url).then(res=>{
 						 if(res.data>0){
-								alert('审核通过！')
+							 setTimeout(function() {
+								 lightyear.loading('hide');
+							     lightyear.notify('审核通过！', 'success', 1000);
+							    }, 1e3)
 						 }
 						 }).catch(err=>{
 							  alert('请求失败')
 						  })
 					}else{
-						alert("审核不通过！");
+						setTimeout(function() {
+							 lightyear.loading('hide');
+						     lightyear.notify('审核为不通过！', 'danger', 1000);
+						    }, 1e3)
 					}
 					
-				}
+				},searchid(page){						
+					if (page < 0 || page > this.plcassPage.pages){
+	                    return false;
+	                }
+					this.params.pageNum=page;
+					this.loads();
+				},
     	  }
       
       }) 

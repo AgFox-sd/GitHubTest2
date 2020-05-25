@@ -20,13 +20,14 @@ public class s_pay {
 	 private String attemper_time; //调度时间
 	 private String store_tag; //库存标志：K002-1: 已登记，K002-2: 已调度
 	 private String sjbh;
+	 private String check_yj;
 	public s_pay() {
 		super();
 	}
 	public s_pay(int id, String pay_id, String storer, String reason, String reasonexact, double amount_sum,
 			double cost_price_sum, double paid_amount_sum, String remark, String register, String register_time,
 			String checker, String check_time, String check_tag, String attemper, String attemper_time,
-			String store_tag,String sjbh) {
+			String store_tag,String sjbh,String check_yj) {
 		super();
 		this.id = id;
 		this.pay_id = pay_id;
@@ -46,6 +47,7 @@ public class s_pay {
 		this.attemper_time = attemper_time;
 		this.store_tag = store_tag;
 		this.sjbh = sjbh;
+		this.check_yj=check_yj;
 	}
 	public int getId() {
 		return id;
@@ -154,6 +156,12 @@ public class s_pay {
 	}
 	public void setSjbh(String sjbh) {
 		this.sjbh = sjbh;
+	}
+	public String getCheck_yj() {
+		return check_yj;
+	}
+	public void setCheck_yj(String check_yj) {
+		this.check_yj = check_yj;
 	}
 	 
 	 

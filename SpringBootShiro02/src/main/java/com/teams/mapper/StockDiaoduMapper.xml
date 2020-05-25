@@ -8,18 +8,34 @@
     <!-- 查询所有入库单 -->
     <select id="selectoutStock" resultType="S_gather">
     select * from s_gather where check_tag='审核通过'  and store_tag ='已登记'
+     <if test="keyWord!=null and keyWord!=''">
+		 	and (gather_id like concat('%',#{keyWord},'%') or storer like concat('%',#{keyWord},'%') ) 
+	 </if>
+	order by id desc
     </select>
     
     <select id="selectAlloutStock" resultType="S_gather">
-    select * from s_gather 
+    select * from s_gather where 1=1
+     <if test="keyWord!=null and keyWord!=''">
+		 	and (gather_id like concat('%',#{keyWord},'%') or reason like concat('%',#{keyWord},'%') ) 
+	 </if>
+	order by id desc
     </select>
     
     <select id="selectAllinStock" resultType="s_pay">
-    select * from s_pay 
+    select * from s_pay where 1=1
+    <if test="keyWord!=null and keyWord!=''">
+		 	and (pay_id like concat('%',#{keyWord},'%') or reason like concat('%',#{keyWord},'%') ) 
+	 </if>
+	order by id desc
     </select>
     <!-- 查询所有出库单 -->
     <select id="selectoutStock1" resultType="s_pay">
     select * from s_pay where check_tag='审核通过'  and store_tag ='已登记'
+    <if test="keyWord!=null and keyWord!=''">
+		 	and (pay_id like concat('%',#{keyWord},'%') or storer like concat('%',#{keyWord},'%') ) 
+	 </if>
+	order by id desc
     </select>   
     
      <select id="selectoutStockcount1" resultType="int">
@@ -136,6 +152,9 @@
      pay_tag='已调度'  where product_id =#{product_id}  and pay_id = #{pay_id}
     </update>
     
+    <update id="updshyj">
+    update s_pay set check_yj=#{check_yj} where pay_id = #{pay_id}
+    </update>
     <update id="updZb1">
     update s_pay set paid_amount_sum=paid_amount_sum+#{paid_amount}
     where pay_id = #{pay_id}
@@ -192,6 +211,9 @@
     <!-- 查询库存 -->
     <select id="selectscell" resultType="s_cell">
     select * from s_cell where check_tag='审核通过'
+     <if test="keyWord!=null and keyWord!=''">
+		 	and (product_id like concat('%',#{keyWord},'%') or product_name like concat('%',#{keyWord},'%') ) 
+	 </if>
     </select>
     
     <select id="selectscellcount1" resultType="int">
@@ -213,11 +235,25 @@
     <!-- 查询所有的入库单 -->
      <select id="selectGetCkd" resultType="s_pay">
         select * from s_pay 
-        where reason=#{reason}
-        and store_tag=#{store_tag}
-        and check_tag=#{check_tag}
+        where reason='生产领料'
+        and store_tag='已调度'
+        and check_tag='等待审核'
+        <if test="keyWord!=null and keyWord!=''">
+		 	and (pay_id like concat('%',#{keyWord},'%') or storer like concat('%',#{keyWord},'%') ) 
+	    </if>
+	    order by id desc
      </select>
      
+      <select id="selectGetCkds" resultType="s_pay">
+        select * from s_pay 
+        where reason='生产领料'
+        and store_tag='已登记'
+        and check_tag='等待审核'
+        <if test="keyWord!=null and keyWord!=''">
+		 	and (pay_id like concat('%',#{keyWord},'%') or storer like concat('%',#{keyWord},'%') ) 
+	    </if>
+	    order by id desc
+     </select>
      <update id="updpg">
      update m_pg set scly='已领料' where pg_id=#{pg_id}
      </update>

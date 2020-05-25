@@ -42,15 +42,19 @@
 				<main class="lyear-layout-content">
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-lg-10" style="margin-left: -25%; margin-top: -6%;">
+						<div class="col-lg-10" style="margin-left: -25%; margin-top: -2%;">
 							<div class="card">
-								<div class="card-toolbar clearfix">
+								<div class="card-toolbar clearfix" id="ss">
 									<form class="pull-right search-bar" method="get" action="#!"
 										role="form">
 										<div class="input-group">
+											<input type="text" class="form-control"
+												placeholder="请输入供应商名称或者编号" v-model="keywords">
 											<div class="input-group-btn">
 												<input type="hidden" name="search_field" id="search-field"
 													value="title">
+												<button type="button" class="btn btn-primary btn-ms"
+													@click="Selad()">查询</button>
 											</div>
 										</div>
 									</form>
@@ -70,7 +74,8 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr v-for="v in list" :key="index" class="text-center">
+													<tr v-for="(v,key,index) in plcassPage.list"
+														class="text-center">
 														<td>{{v.providerSqId}}</td>
 														<td>{{v.providerId}}</td>
 														<td>{{v.providerName}}</td>
@@ -86,38 +91,64 @@
 												</tbody>
 
 											</table>
-
+											<center style="display: none;" id="fy">
+												<ul class="pagination pagination-lg">
+													<ul class="pagination pagination-lg">
+														<li><a
+															@click.prevent="searchid(plcassPage.firstPage)">首页</a></li>
+														<li><a href="#"
+															@click.prevent="searchid(plcassPage.prePage)">上一页</a></li>
+														<template v-for="pageNum in plcassPage.navigatepageNums">
+														<li><a href="#" @click.prevent="searchid(pageNum)">{{pageNum}}</a></li>
+														</template>
+														<li><a href="#"
+															@click.prevent="searchid(plcassPage.nextPage)">下一页</a></li>
+														<li><a href="#"
+															@click.prevent="searchid(plcassPage.lastPage)">末页</a></li>
+														<li><a>{{plcassPage.pageNum}}/{{plcassPage.pages}}</a></li>
+														<li><a><input type="text" v-model="size"
+																style="width: 40px; height: 35px;" value="1" /></a></li>
+														<li><a href="#" @click.prevent="Selad()">go</a></li>
+														<li><select style="height: 37px;" id="page"
+															@change="Selad()">
+																<option value="4">4条/页</option>
+																<option value="5">5条/页</option>
+																<option value="6">6条/页</option>
+														</select></li>
+													</ul>
+												</ul>
+											</center>
 										</div>
 
 									</div>
 									<div class="btn-group" id="box2" style="display: none">
 										<div>
 											<button type="button" class="btn btn-pink  btn-xs"
-												@click="Selad2()" style="margin-left: 700px"
+												@click="Selad2()" style="margin-left: 750px"
 												data-toggle="modal" data-target=".bs-example-modal-lg">添加商品</button>
 											<button class="btn btn-xs btn-primary" @click="QueRen()">预览</button>
 										</div>
 										<div>
-											<h3 style="margin-left: 390px">供应商报价单</h3>
+											<p style="margin-left: 470px;font-size: 25px;">供应商报价单</p>
 											<hr></hr>
 										</div>
 										<div>
 											<label for="message-text" class="control-label"
-												style="margin-left: 70px">报价单编号:</label> <span>{{providerSqId}}</span>
+												style="margin-left: 200px">报价单编号:</label> <span>{{providerSqId}}</span>
 										</div>
-										<div>
+										<div style="margin-top: 10px;">
 											<label for="message-text" class="control-label"
-												style="margin-left: 70px">供应商名称:</label> <span id="sjdh">{{providerName}}</span>
+												style="margin-left: 200px">供应商名称:</label> <span id="sjdh">{{providerName}}</span>
 											<label for="message-text" class="control-label"
 												style="margin-left: 300px">供应商编号:</label> <span>{{providerId}}</span>
 										</div>
-										<div>
+										<div style="margin-top: 10px;">
 											<label for="message-text" class="control-label"
-												style="margin-left: 70px">供应商电话:</label> <span>{{providerPhone}}</span>
+												style="margin-left: 200px">供应商电话:</label> <span>{{providerPhone}}</span>
 											<label for="message-text" class="control-label"
-												style="margin-left: 300px">供货时间:</label> <span>{{supply_time}}</span>
+												style="margin-left: 280px">供货时间:</label> <span>{{supply_time}}</span>
 										</div>
-										<div style="margin-left: 10px">
+										<div style="margin-left: 150px;margin-top: 10px;">
 											<table class="table table-hover">
 												<thead>
 													<tr>
@@ -135,32 +166,32 @@
 														<td>{{wl.unit}}</td>
 														<td><input type="test" v-model="wl.price" /></td>
 														<td><a href="#"
-															@click="delid(wl.id,wl.product_id,wl.product_name)">删除</a></td>
+															@click.prevent="delid(wl.id,wl.product_id,wl.product_name)">删除</a></td>
 													</tr>
 												</tbody>
 											</table>
 										</div>
 										<div class="form-group">
 											<div class="row">
-												<div class="col-md-4" style="margin-left: 70px">
+												<div class="col-md-4" style="margin-left: 200px">
 													<label for="message-text" class="control-label">变更人:</label>
 													<span> {{register}}</span>
 												</div>
-												<div class="col-md-4" style="margin-left: 70px">
+												<div class="col-md-4" style="margin-left: 652px;margin-top: -33px;">
 													<label for="message-text" class="control-label">审核意见:</label>
 													<span>{{shbz}}</span>
 												</div>
 											</div>
 										</div>
-										<div class="form-group" style="margin-left: 70px">
+										<div class="form-group" style="margin-left: 200px">
 											<label for="message-text" class="control-label">变更意见:</label>
-											 <textarea rows="3"  cols="100" v-model="bgbz"></textarea>  
+											<textarea rows="3" cols="100" v-model="bgbz"></textarea>
 										</div>
-										<button class="btn btn-xs btn-primary"
-											style="margin-left: 10px" @click="gb()">关闭</button>
+										<button class="btn btn-primary"
+											style="margin-left: 900px" @click="gb()">关闭</button>
 										<!-- 模态框开始 -->
 										<div class="modal fade bs-example-modal-lg" tabindex="-1"
-											role="dialog" aria-labelledby="myLargeModalLabel" >
+											role="dialog" aria-labelledby="myLargeModalLabel">
 											<div class="modal-dialog modal-lg" role="document">
 												<div class="modal-content">
 													<div class="modal-header">
@@ -216,17 +247,17 @@
 
 									<div class="btn-group" id="box3" style="display: none">
 										<div>
-											<h3 style="margin-left: 390px">供应商报价单</h3>
+											<p style="margin-left: 470px;font-size: 25px;">供应商报价单</p>
 											<label for="message-text" class="control-label"
-												style="margin-left: 70px">供应商编号:</label> <span>{{providerId}}</span>
+												style="margin-left: 200px">供应商编号:</label> <span>{{providerId}}</span>
 											<label for="message-text" class="control-label"
-												style="margin-left: 200px">供应商名称:</label> <span id="sjdh">{{providerName}}</span>
+												style="margin-left: 300px">供应商名称:</label> <span id="sjdh">{{providerName}}</span>
 										</div>
 										<div>
 											<label for="message-text" class="control-label"
-												style="margin-left: 70px">供应商电话:</label> <span>{{providerPhone}}</span>
+												style="margin-left: 200px;margin-top: 20px;">供应商电话:</label> <span>{{providerPhone}}</span>
 										</div>
-										<table class="table table-hover">
+										<table class="table table-hover" style="margin-left: 120px;">
 											<thead>
 												<tr>
 													<th class="text-center">商品编号</th>
@@ -248,8 +279,9 @@
 												</tr>
 											</tbody>
 										</table>
-										<button class="btn btn-xs btn-primary" @click="qd()">确定</button>
+											<button class="btn btn-primary" style="margin-left: 800px;" @click="qd()">确定</button>										
 									</div>
+									
 								</div>
 							</div>
 							<!-- 分页开始 -->
@@ -270,8 +302,11 @@
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
 	<script type="text/javascript" src="js/main.min.js"></script>
-	<script type="text/javascript">
-$(function(){
+	<script type="text/javascript"></script>
+	<script type="text/javascript" src="js/lightyear.js"></script>
+	<script src="js/bootstrap-notify.min.js"></script>
+<script type="text/javascript">
+ $(function(){
     $('.search-bar .dropdown-menu a').click(function() {
         var field = $(this).data('field') || '';
         $('#search-field').val(field);
@@ -301,6 +336,16 @@ $(function(){
 					change_tag:'已变更',
 					check_tag:'等待审核',
 					bgbz:'',
+		    		size:1,
+		    		keywords:'',
+					params:{
+			    			  pageNum:1,
+			    			  pageSize:4,
+			    			  keyWord:''
+			    	},
+			    	plcassPage:{
+			    			  
+			    	}
 				},
 				mounted(){//初始化显示完成调用
 					this.Selad();
@@ -308,13 +353,35 @@ $(function(){
 				},
 				methods:{
 					Selad(){
-						//发送异步请求，请求后端控制器，获取所有的品牌信息
-						axios.get('selsywbg').then(res=>{
-							this.list=res.data;
+					if(this.size>this.plcassPage.pages&&this.plcassPage.pages!=0){
+						this.size = this.plcassPage.pages;
+					}
+					this.params.pageNum  = this.size;
+					this.params.pageSize = $("#page").val();
+					//发送异步请求，请求后端控制器，获取所有的品牌信息
+					this.params.keyWord=this.keywords;						
+				    axios.post('selsywbg',this.params).then(res=>{
+						this.plcassPage=res.data;
+						if(res.data.list!=""){
+						    $("#fy").show();
+					  }else{
+						    $("#fy").hide();
+					  }
 				  }).catch(err=>{
 						alert('请求失败')
 				  })
-					},
+				},
+				Selads(){
+					this.params.pageSize = $("#page").val();
+					//发送异步请求，请求后端控制器，获取所有的品牌信息
+					this.params.keyWord=this.keywords;						
+				  axios.post('selsywbg',this.params).then(res=>{
+							this.plcassPage=res.data;
+				  }).catch(err=>{
+						alert('请求失败')
+				  })
+					
+				},
 					Selidxx(providerId,providerName,providerPhone,providerSqId,supply_time,register,providerSqXqId,shbz){
 						 this.providerId = providerId;
 						 this.providerName = providerName;
@@ -326,6 +393,7 @@ $(function(){
 						 this.shbz=shbz;
 						 this.sy();
 						 $("#box1").toggle();
+						 $("#ss").toggle();
 						 $("#box2").toggle();	
 					},
 					sy(){
@@ -364,7 +432,10 @@ $(function(){
 						});
 					   var url="seladd?providerSqId="+this.providerSqId+"&providerSqXqId="+this.providerSqXqId+"&product_id="+bh+"&product_name="+mc+"&unit="+dw+"&price="+dj+"&subtotal="+dj+"";
 					    axios.get(url).then(res=>{
-					    	alert('成功');
+					    	 setTimeout(function() {
+							        lightyear.loading('hide');
+							        lightyear.notify('添加成功！', 'success', 1000);
+							    }, 1e3)
 					    	this.sy();
 					    }).catch(err=>{
 							alert('请求失败')
@@ -377,7 +448,10 @@ $(function(){
 						var bh=[];
 						var mc=[];
 						if(this.bgbz==""){
-							alert("请输入变更原因!!!");
+							 setTimeout(function() {
+							        lightyear.loading('hide');
+							        lightyear.notify('请输入变更意见！', 'danger', 1000);
+							    }, 1e3)
 							 $("#box2").toggle();
 							 $("#box3").toggle();
 						}else{
@@ -392,7 +466,10 @@ $(function(){
 								axios.get(url).then(res=>{
 									this.slist=res.data;
 								});
-						    	alert('成功');
+								 setTimeout(function() {
+								        lightyear.loading('hide');
+								        lightyear.notify("修改成功！", 'success', 1000);
+								    }, 1e3)
 						    }).catch(err=>{
 								alert('请求失败')
 							})
@@ -400,15 +477,21 @@ $(function(){
 					},
 					qd(){
 						 $("#box1").toggle();
+						 $("#ss").toggle();
 						 $("#box3").toggle();
-						 location.reload();
 						 if(this.bgbz==""){
-							 alert("请输入变更原因");
+							 setTimeout(function() {
+							        lightyear.loading('hide');
+							        lightyear.notify('请输入变更意见！', 'danger', 1000);
+							    }, 1e3)
 							 $("#box1").toggle();
 						 }else{
 							 var url="updybg?changer="+this.register+"&change_tag="+this.change_tag+"&check_tag="+this.check_tag+"&bgbz="+this.bgbz+"&providerSqId="+this.providerSqId+"&providerId="+this.providerId+"";							
 							 axios.get(url).then(res=>{
-							    	alert('变更成功');
+								 setTimeout(function() {
+								        lightyear.loading('hide');
+								        lightyear.notify('变更成功！请审核！', 'success', 1000);
+								    }, 1e3)
 							        this.Selad();
 								}).catch(err=>{
 								alert('请求失败')
@@ -419,14 +502,24 @@ $(function(){
 					    	var url="delid?id="+id+"&product_id="+product_id+"&product_name="+product_name+"";
 							axios.get(url).then(res=>{
 								 this.sy();
-					    	alert('成功');
+								 setTimeout(function() {
+								        lightyear.loading('hide');
+								        lightyear.notify('删除成功！', 'success', 1000);
+								    }, 1e3)
 					    }).catch(err=>{
 							alert('请求失败')
 						})
 					},
 					gb(){
 						$("#box1").toggle();
+						$("#ss").toggle();
 						$("#box2").toggle();
+					},searchid(page){						
+						if (page < 0 || page > this.plcassPage.pages){
+		                    return false;
+		                }
+						this.params.pageNum=page;
+						this.Selads();
 					}
 			}
 			})

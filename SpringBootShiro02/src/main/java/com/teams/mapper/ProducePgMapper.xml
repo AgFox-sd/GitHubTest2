@@ -8,8 +8,11 @@
   		<!-- 查询已通过审核并未派工的生产计划 -->
   		<select id="SelectApply" resultType="m_apply_mx">
   			SELECT a.*,b.check_time,b.`check_tag` FROM m_apply_mx a,m_apply b  WHERE
-			a.`apply_id` IN(SELECT apply_id FROM m_apply WHERE check_tag=#{check_tag}) AND a.manufacture_tag=#{manufacture_tag} AND b.`check_tag`='审核通过'
-			GROUP BY a.id
+			a.`apply_id` IN(SELECT apply_id FROM m_apply WHERE check_tag='审核通过') AND a.manufacture_tag='未派工' AND b.`check_tag`='审核通过'
+			<if test="keyWord!=null and keyWord!=''">
+		 	and (a.apply_id like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%')  or product_name like concat('%',#{keyWord},'%') ) 
+		    </if>
+		    GROUP BY a.id 
   		</select>
   
   		<!-- 通过产品编号查询工序-->
@@ -41,6 +44,13 @@
 			select * from m_pg where check_tag=#{check_tag}
 		</select>
   		
+  		<select id="SelectPgs" resultType="m_pg">
+			select * from m_pg where check_tag='等待审核'
+			<if test="keyWord!=null and keyWord!=''">
+		 	and (jhdbh like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%')  or product_name like concat('%',#{keyWord},'%') ) 
+		    </if>
+		    order BY id desc
+		</select>
   		<!-- 查询生产派工单总数 -->
   		<select id="SelSum" resultType="int">
   			select  count(1) from m_pg where check_tag=#{check_tag}
@@ -65,7 +75,11 @@
        
        <!-- 生产派工单查询-->
 	   <select id="SelectPG2" resultType="m_pg">
-			select * from m_pg 
+			select * from m_pg where 1=1
+			<if test="keyWord!=null and keyWord!=''">
+		 	and (jhdbh like concat('%',#{keyWord},'%') or product_id like concat('%',#{keyWord},'%')  or product_name like concat('%',#{keyWord},'%') ) 
+		    </if>
+		    order BY id desc
 	   </select>
 	   
 	   <!-- 查询符合条件的生产派工单总数-->

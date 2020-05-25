@@ -2,193 +2,242 @@
 <html lang="zh">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 <title>出库申请单查询</title>
 <link rel="icon" href="favicon.ico" type="image/ico">
 <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
-<meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+<meta name="description"
+	content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
 <meta name="author" content="yinqi">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/materialdesignicons.min.css" rel="stylesheet">
 <link href="css/style.min.css" rel="stylesheet">
 <script type="text/javascript" src="js/axios.min.js"></script>
-<script type="text/javascript"   src="js/vue-2.4.0.js"></script>
+<script type="text/javascript" src="js/vue-2.4.0.js"></script>
 </head>
-  
-<body>
-<div id="app">
-<div class="lyear-layout-web">
-  <div class="lyear-layout-container">
-    
-    <header class="lyear-layout-header" style="margin-left: -18%;">
-      
-      <nav class="navbar navbar-default">
-        <div class="topbar">
-          
-          <div class="topbar-left">
-            <div class="lyear-aside-toggler">
-              <span class="lyear-toggler-bar"></span>
-              <span class="lyear-toggler-bar"></span>
-              <span class="lyear-toggler-bar"></span>
-            </div>
-            <span class="navbar-page-title">库存管理 -出库申请管理-出库申请查询</span>
-            <span style="margin-left: 350px;color: blue;">等待审核出库申请单总数:</span>
-            <span style="margin-left: 5px;color: blue;">{{ddshsum}}</span>
-            <span style="margin-left: 20px;color: red">通过审核出库申请单总数:</span>
-            <span style="margin-left: 5px;color: red">{{tgfynum}}</span>
-            <span style="margin-left: 20px;color: yellow">审核不通过出库申请单总数:</span>
-            <span style="margin-left: 5px;color: yellow">{{shbtgnum}}</span>
-          </div>
-        </div>
-      </nav>
-      
-    </header>
-    <!--页面主要内容-->
-    <main class="lyear-layout-content">
-      
-      <div class="container-fluid">
-        
-        <div class="row">
-          <div class="col-lg-12" style="margin-left: -25%;margin-top: -6%;">
-            <div class="card">
-              <div class="card-toolbar clearfix">
-                <form class="pull-right search-bar" method="get" action="#!" role="form">
-                  <div class="input-group">
-                    <div class="input-group-btn">
-                      <input type="hidden" name="search_field" id="search-field" value="title">
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div class="card-body">
-              <div class="table-responsive">
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th class="text-center">申请单编号</th>
-					    <th class="text-center">出库理由</th>
-						<th class="text-center">登记时间</th>
-						<th class="text-center">总件数</th>
-						<th class="text-center">审核状态</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-					<tr v-for="(cksq,index) in Cksqdlist" :key="index" class="text-center">
-					    <td>
-					       <a style="cursor: pointer;" data-toggle="modal" data-target="#modal1" @click="Getcx(cksq.pay_id,cksq.check_tag,cksq.storer,cksq.reason,cksq.amount_sum,cksq.cost_price_sum,cksq.register,cksq.register_time,cksq.checker,cksq.check_time,cksq.remark)">{{cksq.pay_id}}</a>
-					    </td>
-					    <td>{{cksq.reason}}</td>
-					    <td>{{cksq.register_time}}</td>
-						<td>{{cksq.amount_sum}}</td>
-						<td style="color: red">{{cksq.check_tag}}</td>
-					</tr>
-				</tbody>
-		
-                  </table>
-              </div>
-              
-              <!-- 入库申请单明细模态框开始 -->
-		      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal1">
-                  <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                        <h4 style="margin-left: 360px" class="modal-title" id="myLargeModalLabel">出库申请单</h4>
-                      </div>
-                      <div class="modal-body">
-                   <form action="#" method="post">
-					 <div class="form-group">
-						  <label for="message-text" class="control-label">出库申请单编号:</label>
-					      <span style="margin-left: 10px;">{{pay_id}}</span>
-					      <label for="message-text" class="control-label" style="margin-left: 200px">审核状态:</label>
-					      <span style="margin-left: 10px;color: blue">{{check_tag}}</span>
-					 </div>
-					 <div class="form-group">
-						  <label for="message-text" class="control-label">出库人:</label>
-					      <span style="margin-left: 10px;">{{storer}}</span>
-					      <label for="message-text" class="control-label" style="margin-left: 370px">出库理由:</label>
-					      <span style="margin-left: 10px;">{{reason}}</span>
-					 </div>
-					 <div class="form-group">
-					   <table class="table table-bordered" >
-	                    <thead>
-	                      <tr>
-	                        <th class="text-center">序号</th>
-	                        <th class="text-center">产品编号</th>
-	                        <th class="text-center">产品名称</th>
-	                        <th class="text-center">描述</th>
-	                        <th class="text-center">数量</th>
-	                        <th class="text-center">单位</th>
-	                        <th class="text-center">单价(元)</th>
-	                        <th class="text-center">单位(元)</th>
-	                      </tr>
-	                    </thead>
-	                    <tbody>
-	                      <tr v-for="(cksqmx,index) in Cksqdmxlist" :key="index" class="text-center">
-	                            <td>{{cksqmx.id}}</td>
-                       			<td>{{cksqmx.product_name}}</td>
-                        		<td>{{cksqmx.pay_id}}</td>
-                       			<td>{{cksqmx.product_describe}}</td>
-                       			<td>{{cksqmx.amount}}</td>
-                       			<td>{{cksqmx.amount_unit}}</td>
-                       			<td>{{cksqmx.cost_price | moneyFormat(2)}}</td>
-                       			<td>{{cksqmx.subtotal | moneyFormat(2)}}</td>
-	                      </tr>
-	                    </tbody>
-	                  </table>
-					      </div>
-					          <div class="form-group">
-						         <label for="message-text" class="control-label" >总件数:</label>
-						         <span style="margin-left: 10px;color: red">{{amount_sum}}</span>
-						         <label for="message-text" class="control-label" style="margin-left: 370px">总金额(元):</label>
-						         <span style="margin-left: 10px;color: red">{{cost_price_sum}}</span>
-		                      </div>
-					          <div class="form-group">
-					            <label for="message-text" class="control-label" >登记人:</label>
-					            <span style="margin-left: 10px;">{{register}}</span>		            
-					            <label for="message-text" class="control-label" style="margin-left: 370px">登记时间:</label>
-					            <span style="margin-left: 10px;">{{register_time}}</span>
-					          </div>
-					          <div class="form-group">
-					            <label for="message-text" class="control-label">审核人:</label>
-					            <span style="margin-left: 10px;color: red">{{checker}}</span>		            
-					            <label for="message-text" class="control-label" style="margin-left: 370px">审核时间:</label>
-					            <span style="margin-left: 10px;">{{check_time}}</span>
-					          </div>
-					          <div class="form-group">
-					            <label for="message-text" class="control-label">备注:</label>
-					            <span style="margin-left: 10px;">{{remark}}</span>		            
-					          </div>
-		                </form>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-		      <!-- 入库申请单明细模态框结束-->
-                
-                
-              </div>
-            </div>
-          </div>
-          
-        </div>
-        
-      </div>
-      
-    </main>
-    <!--End 页面主要内容-->
-  </div>
-</div>
-</div>
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
-<script type="text/javascript" src="js/main.min.js"></script>
 
-<script>
+<body>
+	<div id="app">
+		<div class="lyear-layout-web">
+			<div class="lyear-layout-container">
+
+				<header class="lyear-layout-header" style="margin-left: -18%;">
+
+					<nav class="navbar navbar-default">
+						<div class="topbar">
+
+							<div class="topbar-left">
+								<div class="lyear-aside-toggler">
+									<span class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span> <span
+										class="lyear-toggler-bar"></span>
+								</div>
+								<span class="navbar-page-title">库存管理 -出库申请管理-出库申请查询</span> <span
+									style="margin-left: 160px; color: black;">等待审核出库申请单总数:</span> <span
+									style="margin-left: 5px; color: black;">{{ddshsum}}例</span> <span
+									style="margin-left: 20px; color: red">通过审核出库申请单总数:</span> <span
+									style="margin-left: 5px; color: red">{{tgfynum}}例</span> <span
+									style="margin-left: 20px; color: red">审核不通过出库申请单总数:</span> <span
+									style="margin-left: 5px; color: red">{{shbtgnum}}例</span>
+							</div>
+						</div>
+					</nav>
+
+				</header>
+				<!--页面主要内容-->
+				<main class="lyear-layout-content">
+
+				<div class="container-fluid">
+
+					<div class="row">
+						<div class="col-lg-12" style="margin-left: -25%; margin-top: 0%;">
+							<div class="card">
+								<div class="card-toolbar clearfix" id="ss">
+									<form class="pull-right search-bar" method="get" action="#!"
+										role="form">
+										<div class="input-group">
+											<input type="text" class="form-control"
+												placeholder="请输入入库人或者编号" v-model="keywords">
+											<div class="input-group-btn">
+												<input type="hidden" name="search_field" id="search-field"
+													value="title">
+												<button type="button" class="btn btn-primary btn-ms"
+													@click="load()">查询</button>
+											</div>
+										</div>
+									</form>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="table table-hover">
+											<thead>
+												<tr>
+													<th class="text-center">申请单编号</th>
+													<th class="text-center">出库理由</th>
+													<th class="text-center">登记时间</th>
+													<th class="text-center">总件数</th>
+													<th class="text-center">审核状态</th>
+												</tr>
+											</thead>
+											<tbody>
+													<tr v-for="(cksq,key,index) in plcassPage.list"
+													class="text-center">
+													<td><a style="cursor: pointer;" data-toggle="modal"
+														data-target="#modal1"
+														@click="Getcx(cksq.pay_id,cksq.check_tag,cksq.storer,cksq.reason,cksq.amount_sum,cksq.cost_price_sum,cksq.register,cksq.register_time,cksq.checker,cksq.check_time,cksq.remark,cksq.check_yj)">{{cksq.pay_id}}</a>
+													</td>
+													<td>{{cksq.reason}}</td>
+													<td>{{cksq.register_time}}</td>
+													<td>{{cksq.amount_sum}}</td>
+													<td style="color: red">{{cksq.check_tag}}</td>
+												</tr>
+											</tbody>
+
+										</table>
+											<center style="display: none;" id="fy">
+												<ul class="pagination pagination-lg">
+													<ul class="pagination pagination-lg">
+														<li><a
+															@click.prevent="searchid(plcassPage.firstPage)">首页</a></li>
+														<li><a href="#"
+															@click.prevent="searchid(plcassPage.prePage)">上一页</a></li>
+														<template v-for="pageNum in plcassPage.navigatepageNums">
+														<li><a href="#" @click.prevent="searchid(pageNum)">{{pageNum}}</a></li>
+														</template>
+														<li><a href="#"
+															@click.prevent="searchid(plcassPage.nextPage)">下一页</a></li>
+														<li><a href="#"
+															@click.prevent="searchid(plcassPage.lastPage)">末页</a></li>
+														<li><a>{{plcassPage.pageNum}}/{{plcassPage.pages}}</a></li>
+														<li><a><input type="text" v-model="size"
+																style="width: 40px; height: 35px;" value="1" /></a></li>
+														<li><a href="#" @click.prevent="load()">go</a></li>
+														<li><select style="height: 37px;" id="page"
+															@change="load()">
+																<option value="4">4条/页</option>
+																<option value="5">5条/页</option>
+																<option value="6">6条/页</option>
+														</select></li>
+													</ul>
+												</ul>
+											</center>	
+									</div>
+
+									<!-- 入库申请单明细模态框开始 -->
+									<div class="modal fade bs-example-modal-lg" tabindex="-1"
+										role="dialog" aria-labelledby="myLargeModalLabel" id="modal1">
+										<div class="modal-dialog modal-lg" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal"
+														aria-label="Close">
+														<span aria-hidden="true">×</span>
+													</button>
+													<h4 style="margin-left: 360px" class="modal-title"
+														id="myLargeModalLabel">出库申请单</h4>
+												</div>
+												<div class="modal-body">
+													<form action="#" method="post">
+														<div class="form-group">
+															<label for="message-text" class="control-label">出库申请单编号:</label>
+															<span style="margin-left: 10px;">{{pay_id}}</span> <label
+																for="message-text" class="control-label"
+																style="margin-left: 200px">审核状态:</label> <span
+																style="margin-left: 10px; color: blue">{{check_tag}}</span>
+														</div>
+														<div class="form-group">
+															<label for="message-text" class="control-label">出库人:</label>
+															<span style="margin-left: 10px;">{{storer}}</span> <label
+																for="message-text" class="control-label"
+																style="margin-left: 370px">出库理由:</label> <span
+																style="margin-left: 10px;">{{reason}}</span>
+														</div>
+														<div class="form-group">
+															<table class="table table-bordered">
+																<thead>
+																	<tr>
+																		<th class="text-center">序号</th>
+																		<th class="text-center">产品编号</th>
+																		<th class="text-center">产品名称</th>
+																		<th class="text-center">描述</th>
+																		<th class="text-center">数量</th>
+																		<th class="text-center">单位</th>
+																		<th class="text-center">单价(元)</th>
+																		<th class="text-center">单位(元)</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr v-for="(cksqmx,index) in Cksqdmxlist" :key="index"
+																		class="text-center">
+																		<td>{{cksqmx.id}}</td>
+																		<td>{{cksqmx.product_name}}</td>
+																		<td>{{cksqmx.pay_id}}</td>
+																		<td>{{cksqmx.product_describe}}</td>
+																		<td>{{cksqmx.amount}}</td>
+																		<td>{{cksqmx.amount_unit}}</td>
+																		<td>{{cksqmx.cost_price | moneyFormat(2)}}</td>
+																		<td>{{cksqmx.subtotal | moneyFormat(2)}}</td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+														<div class="form-group">
+															<label for="message-text" class="control-label">总件数:</label>
+															<span style="margin-left: 10px; color: red">{{amount_sum}}</span>
+															<label for="message-text" class="control-label"
+																style="margin-left: 370px">总金额(元):</label> <span
+																style="margin-left: 10px; color: red">{{cost_price_sum}}</span>
+														</div>
+														<div class="form-group">
+															<label for="message-text" class="control-label">登记人:</label>
+															<span style="margin-left: 10px;">{{register}}</span> <label
+																for="message-text" class="control-label"
+																style="margin-left: 370px">登记时间:</label> <span
+																style="margin-left: 10px;">{{register_time}}</span>
+														</div>
+														<div class="form-group">
+															<label for="message-text" class="control-label">审核人:</label>
+															<span style="margin-left: 10px; color: red">{{checker}}</span>
+															<label for="message-text" class="control-label"
+																style="margin-left: 370px">审核时间:</label> <span
+																style="margin-left: 10px;">{{check_time}}</span>
+														</div>
+														<div class="form-group">
+															<label for="message-text" class="control-label">审核意见:</label>
+															<span style="margin-left: 10px;">{{check_yj}}</span>
+														</div>
+													</form>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-default"
+														data-dismiss="modal">返回</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 入库申请单明细模态框结束-->
+
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+				</main>
+				<!--End 页面主要内容-->
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+	<script type="text/javascript" src="js/main.min.js"></script>
+
+	<script>
       Vue.filter('moneyFormat',function(money,length){
 	    return money.toFixed(length)
       })
@@ -210,7 +259,19 @@
     		  register_time:'',//登记时间
     		  checker:'', //审核人
     		  check_time:'',//审核时间
-    		  remark:''//备注
+    		  remark:'',//备注
+    		   size:1,
+	    		keywords:'',
+				params:{
+		    			  pageNum:1,
+		    			  pageSize:4,
+		    			  keyWord:''
+		    	},
+		    	plcassPage:{
+		    			  
+		    	},
+		    	change_yj:'',
+		    	check_yj:'',
     		  
     	  },
     	  mounted(){//页面挂载完成调用查询全部的方法
@@ -220,14 +281,36 @@
     	        this.load4();
 		  },
 		  methods:{
-			  load:function(){//查询所有出库申请单  --不为生产领料
-				  var reason="生产领料";
-				  axios.get('GetCksqd?reason='+reason+'').then(res=>{
-							this.Cksqdlist=res.data;
-				  }).catch(err=>{
-						alert('请求失败')
-				  })
-			  },
+			  load:function(){//查询所有等待审核的入库申请单  --不为生产领料
+					//发送异步请求，请求后端控制器，获取所有的品牌信息
+						if(this.size>this.plcassPage.pages&&this.plcassPage.pages!=0){
+							this.size = this.plcassPage.pages;
+						}
+						this.params.pageNum  = this.size;
+						this.params.pageSize = $("#page").val();
+						//发送异步请求，请求后端控制器，获取所有的品牌信息
+						this.params.keyWord=this.keywords;						
+					    axios.post('GetCksqd',this.params).then(res=>{
+							this.plcassPage=res.data;
+							if(res.data.list!=""){
+							    $("#fy").show();
+						  }else{
+							    $("#fy").hide();
+						  }
+					  }).catch(err=>{
+							alert('请求失败')
+					  })
+				  },loads:function(){//查询所有等待审核的入库申请单  --不为生产领料
+						this.params.pageNum  = this.size;
+						this.params.pageSize = $("#page").val();
+						//发送异步请求，请求后端控制器，获取所有的品牌信息
+						this.params.keyWord=this.keywords;						
+					    axios.post('GetCksqd',this.params).then(res=>{
+							this.plcassPage=res.data;
+					  }).catch(err=>{
+							alert('请求失败')
+					  })
+				  },
 			  load2:function(){  //查询所有等待审核的出库申请单总数
 				  var reason="生产领料";
 				  var check_tag="等待审核";
@@ -262,14 +345,16 @@
 			    	  alert('请求失败')
 			      })
 			  },
-			  Getcx:function(pay_id,check_tag,storer,reason,amount_sum,cost_price_sum,register,register_time,checker,check_time,remark){ 
-				  this.pay_id=pay_id;this.check_tag=check_tag;this.storer=storer;this.reason=reason;this.amount_sum=amount_sum;this.cost_price_sum=cost_price_sum;this.register=register;this.register_time=register_time;this.checker=checker;this.check_time=check_time;this.remark=remark;
+			  Getcx:function(pay_id,check_tag,storer,reason,amount_sum,cost_price_sum,register,register_time,checker,check_time,remark,check_yj){ 
+				 this.check_yj=check_yj; this.pay_id=pay_id;this.check_tag=check_tag;this.storer=storer;this.reason=reason;this.amount_sum=amount_sum;this.cost_price_sum=cost_price_sum;this.register=register;this.register_time=register_time;this.checker=checker;this.check_time=check_time;this.remark=remark;
 			      this.load5();
-			  },
-			  
-				  
-				  
-				  
+			  },searchid(page){						
+					if (page < 0 || page > this.plcassPage.pages){
+	                    return false;
+	                }
+					this.params.pageNum=page;
+					this.loads();
+				},
 			  }
 			  
       
